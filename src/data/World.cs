@@ -31,7 +31,7 @@ namespace Game.Data
             for (int i = Height - 1; i >= 0; i--)
             {
                 var _block = Block(new Point(x, i));
-                if (!_block.IsAir)
+                if (!_block.CanWalkThrough)
                     return (_block, i);
             }
             return (Blocks.Air, 0);
@@ -96,8 +96,8 @@ namespace Game.Data
             var world = new World(blockGrid, gravity, blockUpdatesPerTick);
             // create height map
             var chunkWidth = 16;
-            var relativeWidth = (int)(world.Width / chunkWidth);
-            var midHeight = (int)(world.Height / 2);
+            var relativeWidth = world.Width / chunkWidth;
+            var midHeight = world.Height / 2;
             var heightVariation = 32;
             var heightmap = new int[world.Width];
             for (int w = 0; w < relativeWidth; w++)
@@ -111,7 +111,8 @@ namespace Game.Data
             var heightmapSmooth = new int[world.Width];
             var currentHeights = new int[scanRadius * 2];
             var thirdHeight = (int)(world.Height / 3f);
-            for (int x = 0; x < world.Width; x++)
+            int x;
+            for (x = 0; x < world.Width; x++)
             {
                 // get average height of surrounding area
                 for (int scanX = -scanRadius; scanX < scanRadius; scanX++)
@@ -122,7 +123,7 @@ namespace Game.Data
                 heightmapSmooth[x] = (int)currentHeights.Average();
             }
             // place blocks using smoothed height map
-            for (int x = 0; x < world.Width; x++)
+            for (x = 0; x < world.Width; x++)
             {
                 var heightMax = heightmapSmooth[x] - 1;
                 for (int y = 0; y < heightmapSmooth[x]; y++)
@@ -135,7 +136,51 @@ namespace Game.Data
                     world.Block(new Point(x, y)) = block;
                 }
             }
-            // TODO generate trees across surface of map
+            // generate trees
+            var treeMinSpacing = 7;
+            var treeChance = 0.2f;
+            var treeMinHeight = 6;
+            var treeMaxHeight = 10;
+            var branchChance = 0.1f;
+            var maxBranchLength = 3;
+            for (x = treeMinSpacing; x < world.Width - treeMinSpacing; x++)
+            {
+                // test tree chance
+                if (Util.Random.NextDouble() < treeChance)
+                {
+                    // generate tree
+                    var startY = heightmapSmooth[x];
+                    var height = Util.Random.Next(treeMinHeight, treeMaxHeight + 1);
+                    var branchDirection = 0; // TODO implement
+                    for (int y = startY; y < startY + height; y++)
+                    {
+                        var setPoint = new Point(x, y);
+                        world.Block(setPoint) = Blocks.Wood;
+                        // dont place branch on floor level
+                        if (y != startY)
+                        {
+                            // test branch chance
+                            if (Util.Random.NextDouble() < branchChance)
+                            {
+                                if (branchDirection == 0)
+                                    branchDirection = Util.Random.NextBool() ? 1 : -1;
+                                else
+                                    branchDirection = branchDirection == 1 ? -1 : 1;
+                                var branchLength = Util.Random.Next(maxBranchLength) + 1;
+                                for (int i = 0; i < branchLength; i++)
+                                {
+                                    var branchPoint = setPoint + new Point(branchDirection * (i + 1), 0);
+                                    world.Block(branchPoint) = Blocks.Wood;
+                                }
+                            }
+                            else
+                                branchDirection = 0;
+                        }
+                    }
+                    // TODO generate leaves on trees
+                    x += treeMinSpacing;
+                }
+            }
             // return generated world
             return world;
         }

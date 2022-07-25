@@ -6,13 +6,13 @@ namespace Game.Data
     {
         public string Name { get; private set; }
         public Color Color { get; private set; }
-        public bool IsAir { get; private set; }
+        public bool CanWalkThrough { get; private set; }
 
-        public Block(string name, Color color, bool isAir = false)
+        public Block(string name, Color color, bool canWalkThrough = false)
         {
             Name = name;
             Color = color;
-            IsAir = isAir;
+            CanWalkThrough = canWalkThrough;
         }
 
         public virtual void Update(Point position, World world) {}
@@ -32,7 +32,7 @@ namespace Game.Data
         public sealed override void Update(Point position, World world)
         {
             // if able to spread
-            if (position.Y + 1 == world.Height || world.Block(position + Util.UpPoint).IsAir)
+            if (position.Y + 1 == world.Height || world.Block(position + Util.UpPoint).CanWalkThrough)
             {
                 // check blocks to spread to
                 var offset = _spreadOffsets.GetRandom();
@@ -42,7 +42,7 @@ namespace Game.Data
                 {
                     var block = world.Block(checkPos);
                     var upPos = checkPos + Util.UpPoint;
-                    if (block == Blocks.Dirt && (upPos.Y == world.Height || world.Block(upPos).IsAir))
+                    if (block == Blocks.Dirt && (upPos.Y == world.Height || world.Block(upPos).CanWalkThrough))
                         world.Block(checkPos) = Blocks.Grass;
                 }
             }
@@ -57,5 +57,7 @@ namespace Game.Data
         public static readonly Block Dirt = new Block("Dirt", new Color(96, 48, 0));
         public static readonly Block Grass = new BlockGrass("Grass", new Color(48, 160, 32));
         public static readonly Block Stone = new Block("Stone", new Color(192, 192, 192));
+        public static readonly Block Wood = new Block("Wood", new Color(128, 92, 32), true);
+        public static readonly Block Leaves = new Block("Leaves", new Color(64, 224, 48), true);
     }
 }

@@ -25,7 +25,7 @@ namespace Game
         private readonly Point WindowSize = new Point(1280, 720);
         private readonly Point WorldSize = new Point(1024, 512);
 
-        private readonly Vector2 PlayerSize = new Vector2(0.75f, 1.75f);
+        private readonly Vector2 PlayerSize = new Vector2(1.8f, 2.8f);
 
         private readonly Color ColorBackground = new Color(128, 128, 128);
         private readonly Color ColorPlayer = new Color(255, 0, 0);
@@ -54,7 +54,7 @@ namespace Game
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsFixedTimeStep = false; // TODO figure out drawing at max 60fps if fixedtimestep is false
-            // TargetElapsedTime = TimeSpan.FromMilliseconds(1000f / FPS);
+            TargetElapsedTime = TimeSpan.FromMilliseconds(1000f / FPS);
             IsMouseVisible = true;
             // TODO handle resizing and detecting
             // Window.AllowUserResizing = true;

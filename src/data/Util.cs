@@ -10,5 +10,7 @@ namespace Game.Data
         public static readonly Point UpPoint = new Point(0, 1);
 
         public static T GetRandom<T>(this T[] t) => t[Random.Next(t.Length)];
+
+        public static bool NextBool(this Random random) => random.NextDouble() < 0.5;
     }
 }

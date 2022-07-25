@@ -43,9 +43,9 @@ namespace Game.Data
             Position += (_velocity * display.TickStep) * _moveSpeed;
             // test floor
             var blockPos = Position.ToPoint();
-            if (world.Block(blockPos).IsAir)
+            if (world.Block(blockPos).CanWalkThrough)
             {
-                if (world.Block(blockPos - Util.UpPoint).IsAir)
+                if (world.Block(blockPos - Util.UpPoint).CanWalkThrough)
                     IsGrounded = false;
             }
             else
