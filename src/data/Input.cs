@@ -1,3 +1,4 @@
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
 namespace Game.Data
@@ -23,14 +24,7 @@ namespace Game.Data
 
         public bool ButtonRightFirstDown() => _mouseStates[0].RightButton == ButtonState.Pressed && _mouseStates[1].RightButton == ButtonState.Released;
 
-        public (int x, int y) MousePosition
-        {
-            get
-            {
-                var mousePos = _mouseStates[0].Position;
-                return (mousePos.X, mousePos.Y);
-            }
-        }
+        public Point MousePosition => _mouseStates[0].Position;
 
         public int ScrollWheel
         {

@@ -119,7 +119,7 @@ namespace Game.Data
                     var _x = x + scanX;
                     currentHeights[scanX + scanRadius] = _x < 0 || _x >= world.Width ? thirdHeight : heightmap[_x];
                 }
-                heightmapSmooth[x] = (int)currentHeights.Average();
+                heightmapSmooth[x] = (int)Math.Round(currentHeights.Average());
             }
             // place blocks using smoothed height map
             for (x = 0; x < world.Width; x++)
