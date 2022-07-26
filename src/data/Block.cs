@@ -27,7 +27,7 @@ namespace Game.Data
             new Point(-1, -1), new Point(1, -1),
         };
 
-        public BlockGrass(string name, Color color) : base(name, color) {}
+        public BlockGrass(string name, Color color, bool canWalkThrough = false) : base(name, color, canWalkThrough) {}
 
         public sealed override void Update(Point position, World world)
         {
@@ -51,6 +51,24 @@ namespace Game.Data
         }
     }
 
+    public sealed class BlockLeaves : Block
+    {
+        public BlockLeaves(string name, Color color, bool canWalkThrough = false) : base (name, color, canWalkThrough) {}
+
+        public sealed override void Update(Point position, World world)
+        {
+            // check surrounding blocks for logs
+            for (int y = -1; y <= 1; y++)
+                for (int x = -1; x <= 1; x++)
+                    // if wood detected
+                    if (world.Block(position + new Point(x, y)) == Blocks.Wood)
+                        // finish block update
+                        return;
+            // if reached, remove leaves
+            world.Block(position) = Blocks.Air;
+        }
+    }
+
     public static class Blocks
     {
         public static readonly Block Air = new Block("Air", new Color(240, 255, 255), true);
@@ -58,6 +76,6 @@ namespace Game.Data
         public static readonly Block Grass = new BlockGrass("Grass", new Color(48, 160, 32));
         public static readonly Block Stone = new Block("Stone", new Color(192, 192, 192));
         public static readonly Block Wood = new Block("Wood", new Color(128, 92, 32), true);
-        public static readonly Block Leaves = new Block("Leaves", new Color(64, 224, 48), true);
+        public static readonly Block Leaves = new BlockLeaves("Leaves", new Color(64, 224, 48), true);
     }
 }
