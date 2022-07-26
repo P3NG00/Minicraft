@@ -40,7 +40,9 @@ namespace Game.Data
         {
             for (int i = 0; i < BlockUpdatesPerTick; i++)
             {
+                // get random point
                 var pos = Util.Random.NextPoint(Size);
+                // update block at that point
                 Block(pos).Update(pos, this);
             }
         }

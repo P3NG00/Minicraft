@@ -5,6 +5,8 @@ namespace Game.Data
 {
     public static class Util
     {
+        public static bool Debug = false;
+
         public static readonly Random Random = new Random();
 
         public static readonly Point UpPoint = new Point(0, 1);

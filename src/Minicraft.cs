@@ -41,7 +41,6 @@ namespace Game
         private World _world;
         private Input _input = new Input();
         private float _tickDelta = 0f;
-        private bool _debug = false;
         private Vector2 _mouseBlock;
         private Point _mouseBlockInt;
         private Block _currentBlock = Blocks.Dirt;
@@ -116,7 +115,7 @@ namespace Game
                 if (_input.KeyFirstDown(Keys.F1))
                     Window.IsBorderless = !Window.IsBorderless;
                 if (_input.KeyFirstDown(Keys.F12))
-                    _debug = !_debug;
+                    Util.Debug = !Util.Debug;
                 if (_input.KeyFirstDown(Keys.D1))
                     _currentBlock = Blocks.Dirt;
                 if (_input.KeyFirstDown(Keys.D2))
@@ -128,12 +127,6 @@ namespace Game
                 if (_input.KeyFirstDown(Keys.D5))
                     _currentBlock = Blocks.Leaves;
                 _display.BlockScale = Math.Clamp(_display.BlockScale + _input.ScrollWheel, BLOCK_SCALE_MIN, BLOCK_SCALE_MAX);
-                // update world
-                _world.Update();
-                // update player
-                _player.Update(_input, _display, _world);
-                // update display handler
-                _display.Update(_player);
                 // get block position from mouse
                 var mousePos = _input.MousePosition.ToVector2();
                 mousePos.Y = _display.WindowSize.Y - mousePos.Y - 1;
@@ -148,6 +141,12 @@ namespace Game
                     else if (_input.ButtonRightFirstDown())
                         _world.Block(_mouseBlockInt) = _currentBlock;
                 }
+                // update world
+                _world.Update();
+                // update player
+                _player.Update(_input, _display, _world);
+                // update display handler
+                _display.Update(_player);
             }
             // base call
             base.Update(gameTime);
@@ -171,7 +170,7 @@ namespace Game
             var drawPos = new Vector2(UI_SPACER, _display.WindowSize.Y - Display.Font.LineSpacing - UI_SPACER);
             _display.DrawString(drawPos, $"current block: {_currentBlock.Name}", ColorFontUI);
             // draw debug
-            if (_debug)
+            if (Util.Debug)
             {
                 var debugInfo = new[] {$"window_size: {_display.WindowSize.X}x{_display.WindowSize.Y}",
                                        $"world_size: {_world.Width}x{_world.Height}",
