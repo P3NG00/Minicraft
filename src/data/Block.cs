@@ -15,7 +15,12 @@ namespace Game.Data
             CanWalkThrough = canWalkThrough;
         }
 
-        public virtual void Update(Point position, World world) {}
+        public virtual void Update(Point position, World world)
+        {
+            // add position to updated list
+            if (Debug.Enabled && Debug.TrackUpdated)
+                Debug.UpdatedPoints.Add(position);
+        }
     }
 
     public sealed class BlockGrass : Block
@@ -46,8 +51,11 @@ namespace Game.Data
                         world.Block(checkPos) = Blocks.Grass;
                 }
             }
+            // if unable to spread
             else
                 world.Block(position) = Blocks.Dirt;
+            // base call
+            base.Update(position, world);
         }
     }
 
@@ -72,6 +80,8 @@ namespace Game.Data
                     return;
             // if reached then no wood was found. remove leaves
             world.Block(position) = Blocks.Air;
+            // base call
+            base.Update(position, world);
         }
     }
 

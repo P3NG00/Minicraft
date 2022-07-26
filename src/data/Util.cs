@@ -5,8 +5,6 @@ namespace Game.Data
 {
     public static class Util
     {
-        public static bool Debug = false;
-
         public static readonly Random Random = new Random();
 
         public static T GetRandom<T>(this T[] t) => t[Random.Next(t.Length)];

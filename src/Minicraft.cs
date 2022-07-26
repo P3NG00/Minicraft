@@ -105,6 +105,8 @@ namespace Game
                 _tickDelta -= _display.TickStep;
                 // increment tick counter
                 _ticks[0]++;
+                // clear previously updated positions
+                Debug.UpdatedPoints.Clear();
                 // update input
                 _input.Update();
                 // handle input
@@ -114,8 +116,10 @@ namespace Game
                     _display.ShowGrid = !_display.ShowGrid;
                 if (_input.KeyFirstDown(Keys.F1))
                     Window.IsBorderless = !Window.IsBorderless;
+                if (Debug.Enabled && _input.KeyFirstDown(Keys.F11))
+                    Debug.TrackUpdated = !Debug.TrackUpdated;
                 if (_input.KeyFirstDown(Keys.F12))
-                    Util.Debug = !Util.Debug;
+                    Debug.Enabled = !Debug.Enabled;
                 if (_input.KeyFirstDown(Keys.D1))
                     _currentBlock = Blocks.Dirt;
                 if (_input.KeyFirstDown(Keys.D2))
@@ -172,7 +176,7 @@ namespace Game
             var drawPos = new Vector2(UI_SPACER, _display.WindowSize.Y - Display.Font.LineSpacing - UI_SPACER);
             _display.DrawString(drawPos, $"current block: {_currentBlock.Name}", ColorFontUI);
             // draw debug
-            if (Util.Debug)
+            if (Debug.Enabled)
             {
                 var debugInfo = new[] {$"window_size: {_display.WindowSize.X}x{_display.WindowSize.Y}",
                                        $"world_size: {_world.Width}x{_world.Height}",

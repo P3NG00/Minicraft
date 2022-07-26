@@ -78,7 +78,13 @@ namespace Game.Data
                     var _x = x + visualStartX;
                     var _y = y + visualStartY;
                     var drawPos = new Vector2(_x * display.BlockScale, (-1 - _y) * display.BlockScale) - display.CameraOffset;
-                    display.Draw(drawPos, drawScale, Block(new Point(_x, _y)).Color);
+                    var blockPos = new Point(_x, _y);
+                    Color color;
+                    if (Debug.Enabled && Debug.TrackUpdated && Debug.UpdatedPoints.Contains(blockPos))
+                        color = new Color(255, 0, 255); // TODO move color into constant
+                    else
+                        color = Block(blockPos).Color;
+                    display.Draw(drawPos, drawScale, color);
                 }
             }
         }
