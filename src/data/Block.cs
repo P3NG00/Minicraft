@@ -53,18 +53,24 @@ namespace Game.Data
 
     public sealed class BlockLeaves : Block
     {
+        private static readonly Point[] _checkOffsets = new []
+        {
+            new Point(-1,  1), new Point(0,  1), new Point(1,  1),
+            new Point(-1,  0),                   new Point(1,  0),
+            new Point(-1, -1), new Point(0, -1), new Point(1, -1)
+        };
+
         public BlockLeaves(string name, Color color, bool canWalkThrough = false) : base (name, color, canWalkThrough) {}
 
         public sealed override void Update(Point position, World world)
         {
             // check surrounding blocks for logs
-            for (int y = -1; y <= 1; y++)
-                for (int x = -1; x <= 1; x++)
-                    // if wood detected
-                    if (world.Block(position + new Point(x, y)) == Blocks.Wood)
-                        // finish block update
-                        return;
-            // if reached, remove leaves
+            foreach (var offset in _checkOffsets)
+                // if wood detected
+                if (world.Block(position + offset) == Blocks.Wood)
+                    // finish block update
+                    return;
+            // if reached then no wood was found. remove leaves
             world.Block(position) = Blocks.Air;
         }
     }
