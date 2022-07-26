@@ -174,7 +174,7 @@ namespace Game
             if (_debug)
             {
                 var debugInfo = new[] {$"window_size: {_display.WindowSize.X}x{_display.WindowSize.Y}",
-                                       $"world_size: {_world.Width}x{_world.Height} ({_world.Area})",
+                                       $"world_size: {_world.Width}x{_world.Height}",
                                        $"time: {(_ticks[0] / (float)_display.TicksPerSecond):0.000}",
                                        $"ticks: {_ticks[0]} ({_display.TicksPerSecond} ticks/sec)",
                                        $"ticks_this_frame: {_ticks[0] - _ticks[1]}",

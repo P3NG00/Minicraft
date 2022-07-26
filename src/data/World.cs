@@ -6,9 +6,10 @@ namespace Game.Data
 {
     public sealed class World
     {
-        public int Width { get; private set; }
-        public int Height { get; private set; }
-        public int Area { get; private set; }
+        public int Width => Size.X;
+        public int Height => Size.Y;
+
+        public Point Size { get; private set; }
         public float Gravity { get; private set; }
         public int BlockUpdatesPerTick { get; private set; }
 
@@ -17,9 +18,7 @@ namespace Game.Data
         private World(Block[][] blockGrid, float gravity, int blockUpdatesPerTick)
         {
             _blockGrid = blockGrid;
-            Width = _blockGrid[0].Length;
-            Height = _blockGrid.Length;
-            Area = Width * Height;
+            Size = new Point(_blockGrid[0].Length, _blockGrid.Length);
             Gravity = gravity;
             BlockUpdatesPerTick = blockUpdatesPerTick;
         }
@@ -41,7 +40,7 @@ namespace Game.Data
         {
             for (int i = 0; i < BlockUpdatesPerTick; i++)
             {
-                var pos = new Point(Util.Random.Next(Width), Util.Random.Next(Height));
+                var pos = Util.Random.NextPoint(Size);
                 Block(pos).Update(pos, this);
             }
         }
