@@ -140,6 +140,8 @@ namespace Game
                         _world.Block(_mouseBlockInt) = Blocks.Air;
                     else if (_input.ButtonRightFirstDown())
                         _world.Block(_mouseBlockInt) = _currentBlock;
+                    else if (_input.ButtonMiddleFirstDown())
+                        _world.Block(_mouseBlockInt).Update(_mouseBlockInt, _world);
                 }
                 // update world
                 _world.Update();

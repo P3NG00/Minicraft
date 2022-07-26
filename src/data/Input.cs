@@ -22,6 +22,8 @@ namespace Game.Data
 
         public bool ButtonLeftFirstDown() => _mouseStates[0].LeftButton == ButtonState.Pressed && _mouseStates[1].LeftButton == ButtonState.Released;
 
+        public bool ButtonMiddleFirstDown() => _mouseStates[0].MiddleButton == ButtonState.Pressed && _mouseStates[1].MiddleButton == ButtonState.Released;
+
         public bool ButtonRightFirstDown() => _mouseStates[0].RightButton == ButtonState.Pressed && _mouseStates[1].RightButton == ButtonState.Released;
 
         public Point MousePosition => _mouseStates[0].Position;
