@@ -52,7 +52,7 @@ namespace Game
         {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-            IsFixedTimeStep = false; // TODO figure out drawing at max 60fps if fixedtimestep is false
+            IsFixedTimeStep = true;
             TargetElapsedTime = TimeSpan.FromMilliseconds(1000f / FPS);
             IsMouseVisible = true;
             // TODO handle resizing and detecting
