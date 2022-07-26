@@ -39,6 +39,9 @@ namespace Game.Data
                 _velocity.Y = _jumpVelocity;
                 IsGrounded = false;
             }
+            // add velocity if falling
+            if (!IsGrounded)
+                _velocity.Y -= world.Gravity * display.TickStep;
             // add movement this tick
             Position += (_velocity * display.TickStep) * _moveSpeed;
             // test floor
@@ -54,9 +57,6 @@ namespace Game.Data
                 _velocity.Y = 0f;
                 IsGrounded = true;
             }
-            // add velocity if falling
-            if (!IsGrounded)
-                _velocity.Y -= world.Gravity * display.TickStep;
             // TODO take into account wall tiles
         }
 
