@@ -50,10 +50,10 @@ namespace Game.Data
         {
             var drawScale = display.ShowGrid ? new Vector2(display.BlockScale - 1) : new Vector2(display.BlockScale);
             // find edge to start drawing
-            var visualWidth = (int)MathF.Ceiling(display.WindowSize.X / display.BlockScale) + 3;
-            var visualHeight = (int)MathF.Ceiling(display.WindowSize.Y / display.BlockScale) + 3;
+            var visualWidth = (int)MathF.Ceiling(display.WindowSize.X / display.BlockScale) + 4;
+            var visualHeight = (int)MathF.Ceiling(display.WindowSize.Y / display.BlockScale) + 4;
             var visualStartX = (int)MathF.Floor(player.Position.X - (visualWidth / 2f));
-            var visualStartY = (int)MathF.Floor(player.Position.Y - (visualHeight / 2f));
+            var visualStartY = (int)MathF.Ceiling(player.Position.Y - (visualHeight / 2f)) + 2;
             // fix variables if outside of bounds
             if (visualStartX < 0)
             {

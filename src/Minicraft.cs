@@ -137,7 +137,7 @@ namespace Game
                 // get block position from mouse
                 var mousePos = new Vector2(_input.MousePosition.x, _input.MousePosition.y);
                 mousePos.Y = _display.WindowSize.Y - mousePos.Y - 1;
-                _mouseBlock = ((mousePos - (_display.WindowSize.ToVector2() / 2f)) / _display.BlockScale) + _player.Position;
+                _mouseBlock = ((mousePos - (_display.WindowSize.ToVector2() / 2f)) / _display.BlockScale) + (_player.Position + new Vector2(0, _player.Dimensions.Y / 2f));
                 _mouseBlockInt = _mouseBlock.ToPoint();
                 // catch out of bounds
                 if (_mouseBlockInt.X >= 0 && _mouseBlockInt.X < _world.Width &&

@@ -8,18 +8,18 @@ namespace Game.Data
     {
         public Vector2 Position = Vector2.Zero;
         public bool IsGrounded { get; private set; } = false;
+        public Vector2 Dimensions { get; private set; }
         public Vector2 Velocity => _velocity;
 
         private Vector2 _velocity = Vector2.Zero;
         private Color _color;
-        private Vector2 _dimensions;
         private float _moveSpeed;
         private float _jumpVelocity;
 
         public Entity(Color color, Vector2 dimensions, float moveSpeed, float jumpVelocity)
         {
             _color = color;
-            _dimensions = dimensions;
+            Dimensions = dimensions;
             _moveSpeed = moveSpeed;
             _jumpVelocity = jumpVelocity;
         }
@@ -63,7 +63,7 @@ namespace Game.Data
         public void Draw(Display display)
         {
             // get current screen size of player
-            var currentSize = _dimensions * display.BlockScale;
+            var currentSize = Dimensions * display.BlockScale;
             // find offset to reach top-left corner for draw pos
             var drawOffset = new Vector2(currentSize.X / 2, currentSize.Y);
             // get relative screen position

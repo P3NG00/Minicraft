@@ -34,7 +34,7 @@ namespace Game.Data
         {
             var cameraOffset = -(WindowSize.ToVector2() / 2f);
             cameraOffset.X = cameraOffset.X + (player.Position.X * BlockScale);
-            cameraOffset.Y = cameraOffset.Y - (player.Position.Y * BlockScale);
+            cameraOffset.Y = cameraOffset.Y - ((player.Position.Y + (player.Dimensions.Y / 2f)) * BlockScale);
             CameraOffset = cameraOffset;
         }
 
