@@ -27,11 +27,6 @@ namespace Game
 
         private readonly Vector2 PlayerSize = new Vector2(1.8f, 2.8f);
 
-        private readonly Color ColorBackground = new Color(128, 128, 128);
-        private readonly Color ColorPlayer = new Color(255, 0, 0);
-        private readonly Color ColorFontDebug = new Color(0, 0, 0);
-        private readonly Color ColorFontUI = new Color(255, 255, 255);
-
         // monogame
         private GraphicsDeviceManager _graphics;
 
@@ -68,7 +63,7 @@ namespace Game
             // create world
             _world = World.GenerateWorld(WorldSize, WORLD_GRAVITY, (int)(((WorldSize.X * WorldSize.Y) * WORLD_UPDATED_PER_SECOND) / _display.TicksPerSecond));
             // create player
-            _player = new Entity(ColorPlayer, PlayerSize, PLAYER_SPEED, PLAYER_JUMP);
+            _player = new Entity(Colors.Player, PlayerSize, PLAYER_SPEED, PLAYER_JUMP);
             var playerX = _world.Width / 2f;
             _player.Position = new Vector2(playerX, _world.GetTopBlock((int)playerX).y) + new Vector2(0.5f);
             // load font
@@ -165,7 +160,7 @@ namespace Game
                 _lastFps[i + 1] = _lastFps[i];
             _lastFps[0] = 1000f / (float)gameTime.ElapsedGameTime.TotalMilliseconds;
             // fill background
-            GraphicsDevice.Clear(ColorBackground);
+            GraphicsDevice.Clear(Colors.Background);
             // begin drawing
             _display.SpriteBatch.Begin();
             // draw world
@@ -174,7 +169,7 @@ namespace Game
             _player.Draw(_display);
             // draw ui
             var drawPos = new Vector2(UI_SPACER, _display.WindowSize.Y - Display.Font.LineSpacing - UI_SPACER);
-            _display.DrawString(drawPos, $"current block: {_currentBlock.Name}", ColorFontUI);
+            _display.DrawString(drawPos, $"current block: {_currentBlock.Name}", Colors.FontUI);
             // draw debug
             if (Debug.Enabled)
             {
@@ -195,7 +190,7 @@ namespace Game
                 for (int i = 0; i < debugInfo.Length; i++)
                 {
                     drawPos = new Vector2(UI_SPACER, (i * (UI_SPACER + Display.Font.LineSpacing)) + UI_SPACER);
-                    _display.DrawString(drawPos, debugInfo[i], ColorFontDebug);
+                    _display.DrawString(drawPos, debugInfo[i], Colors.FontDebug);
                 }
             }
             // end drawing

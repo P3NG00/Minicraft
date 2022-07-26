@@ -81,7 +81,7 @@ namespace Game.Data
                     var blockPos = new Point(_x, _y);
                     Color color;
                     if (Debug.Enabled && Debug.TrackUpdated && Debug.UpdatedPoints.Contains(blockPos))
-                        color = new Color(255, 0, 255); // TODO move color into constant
+                        color = Colors.DebugUpdate;
                     else
                         color = Block(blockPos).Color;
                     display.Draw(drawPos, drawScale, color);
