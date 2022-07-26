@@ -1,4 +1,3 @@
-using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -12,6 +11,7 @@ namespace Game.Data
         public SpriteBatch SpriteBatch { get; private set; }
         public Point WindowSize { get; private set; }
         public int FramesPerSecond { get; private set; }
+        public float FrameStep { get; private set; }
         public int TicksPerSecond { get; private set; }
         public float TickStep { get; private set; }
         public Vector2 CameraOffset { get; private set; }
@@ -24,6 +24,7 @@ namespace Game.Data
             SpriteBatch = spriteBatch;
             WindowSize = windowSize;
             FramesPerSecond = fps;
+            FrameStep = 1f / FramesPerSecond;
             TicksPerSecond = tps;
             TickStep = 1f / TicksPerSecond;
             BlockScale = blockScale;
@@ -32,8 +33,8 @@ namespace Game.Data
         public void Update(Entity player)
         {
             var cameraOffset = -(WindowSize.ToVector2() / 2f);
-            cameraOffset.X = MathF.Round(cameraOffset.X + (player.Position.X * BlockScale));
-            cameraOffset.Y = MathF.Round(cameraOffset.Y - (player.Position.Y * BlockScale));
+            cameraOffset.X = cameraOffset.X + (player.Position.X * BlockScale);
+            cameraOffset.Y = cameraOffset.Y - (player.Position.Y * BlockScale);
             CameraOffset = cameraOffset;
         }
 

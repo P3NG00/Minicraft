@@ -151,7 +151,7 @@ namespace Game.Data
                     // generate tree
                     var startY = heightmapSmooth[x];
                     var height = Util.Random.Next(treeMinHeight, treeMaxHeight + 1);
-                    var branchDirection = 0; // TODO implement
+                    var branchDirection = 0;
                     for (int y = startY; y < startY + height; y++)
                     {
                         var setPoint = new Point(x, y);
@@ -165,7 +165,7 @@ namespace Game.Data
                                 if (branchDirection == 0)
                                     branchDirection = Util.Random.NextBool() ? 1 : -1;
                                 else
-                                    branchDirection = branchDirection == 1 ? -1 : 1;
+                                    branchDirection = branchDirection == -1 ? 1 : -1;
                                 var branchLength = Util.Random.Next(maxBranchLength) + 1;
                                 for (int i = 0; i < branchLength; i++)
                                 {

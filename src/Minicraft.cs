@@ -18,7 +18,7 @@ namespace Game
         private const int BLOCK_SCALE_MAX = 75;
         private const float WORLD_UPDATED_PER_SECOND = 1f / 32f;
         private const float WORLD_GRAVITY = 10f;
-        private const float PLAYER_SPEED = 3f;
+        private const float PLAYER_SPEED = 5f;
         private const float PLAYER_JUMP = 3.5f;
         private const int UI_SPACER = 5;
 
@@ -34,7 +34,6 @@ namespace Game
 
         // monogame
         private GraphicsDeviceManager _graphics;
-        private SpriteBatch _spriteBatch;
 
         // variables
         private Display _display;
@@ -62,13 +61,11 @@ namespace Game
 
         protected override void LoadContent()
         {
-            // create spritebatch
-            _spriteBatch = new SpriteBatch(GraphicsDevice);
             // create square for drawing
             Display.TextureSquare = new Texture2D(GraphicsDevice, 1, 1);
             Display.TextureSquare.SetData(new[] {Color.White});
             // create display handler
-            _display = new Display(_spriteBatch, WindowSize, BLOCK_SCALE, FPS, TPS);
+            _display = new Display(new SpriteBatch(GraphicsDevice), WindowSize, BLOCK_SCALE, FPS, TPS);
             // create world
             _world = World.GenerateWorld(WorldSize, WORLD_GRAVITY, (int)(((WorldSize.X * WorldSize.Y) * WORLD_UPDATED_PER_SECOND) / _display.TicksPerSecond));
             // create player
@@ -126,6 +123,10 @@ namespace Game
                     _currentBlock = Blocks.Grass;
                 if (_input.KeyFirstDown(Keys.D3))
                     _currentBlock = Blocks.Stone;
+                if (_input.KeyFirstDown(Keys.D4))
+                    _currentBlock = Blocks.Wood;
+                if (_input.KeyFirstDown(Keys.D5))
+                    _currentBlock = Blocks.Leaves;
                 _display.BlockScale = Math.Clamp(_display.BlockScale + _input.ScrollWheel, BLOCK_SCALE_MIN, BLOCK_SCALE_MAX);
                 // update world
                 _world.Update();
@@ -161,7 +162,7 @@ namespace Game
             // fill background
             GraphicsDevice.Clear(ColorBackground);
             // begin drawing
-            _spriteBatch.Begin();
+            _display.SpriteBatch.Begin();
             // draw world
             _world.Draw(_display, _player);
             // draw player
@@ -193,7 +194,7 @@ namespace Game
                 }
             }
             // end drawing
-            _spriteBatch.End();
+            _display.SpriteBatch.End();
             // base call
             base.Draw(gameTime);
         }
