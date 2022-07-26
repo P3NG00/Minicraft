@@ -48,7 +48,7 @@ namespace Game.Data
             var blockPos = Position.ToPoint();
             if (world.Block(blockPos).CanWalkThrough)
             {
-                if (world.Block(blockPos - Util.UpPoint).CanWalkThrough)
+                if (world.Block(blockPos + new Point(0, -1)).CanWalkThrough)
                     IsGrounded = false;
             }
             else

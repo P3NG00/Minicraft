@@ -32,7 +32,7 @@ namespace Game.Data
         public sealed override void Update(Point position, World world)
         {
             // if able to spread
-            if (position.Y + 1 == world.Height || world.Block(position + Util.UpPoint).CanWalkThrough)
+            if (position.Y + 1 == world.Height || world.Block(position + new Point(0, 1)).CanWalkThrough)
             {
                 // check blocks to spread to
                 var offset = _spreadOffsets.GetRandom();
@@ -41,7 +41,7 @@ namespace Game.Data
                     checkPos.Y >= 0 && checkPos.Y < world.Height)
                 {
                     var block = world.Block(checkPos);
-                    var upPos = checkPos + Util.UpPoint;
+                    var upPos = checkPos + new Point(0, 1);
                     if (block == Blocks.Dirt && (upPos.Y == world.Height || world.Block(upPos).CanWalkThrough))
                         world.Block(checkPos) = Blocks.Grass;
                 }
