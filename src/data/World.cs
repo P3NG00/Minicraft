@@ -137,7 +137,7 @@ namespace Game.Data
                 }
             }
             // generate trees
-            var treeMinSpacing = 7;
+            var treeMinSpacing = 6;
             var treeChance = 0.2f;
             var treeMinHeight = 6;
             var treeMaxHeight = 10;
@@ -156,28 +156,41 @@ namespace Game.Data
                     {
                         var setPoint = new Point(x, y);
                         world.Block(setPoint) = Blocks.Wood;
-                        // dont place branch on floor level
-                        if (y != startY)
+                        // leaves and branches start  2 blocks above ground
+                        if (y > startY + 1)
                         {
+                            // create leaves on sides of tree
+                            foreach (int s in new[] {-1, 1})
+                                world.Block(setPoint + new Point(s, 0)) = Blocks.Leaves;
                             // test branch chance
                             if (Util.Random.NextDouble() < branchChance)
                             {
+                                // create branch
                                 if (branchDirection == 0)
                                     branchDirection = Util.Random.NextBool() ? 1 : -1;
                                 else
                                     branchDirection = branchDirection == -1 ? 1 : -1;
                                 var branchLength = Util.Random.Next(maxBranchLength) + 1;
+                                Point branchPoint = default;
                                 for (int i = 0; i < branchLength; i++)
                                 {
-                                    var branchPoint = setPoint + new Point(branchDirection * (i + 1), 0);
+                                    branchPoint = setPoint + new Point(branchDirection * (i + 1), 0);
+                                    // place branch block
                                     world.Block(branchPoint) = Blocks.Wood;
+                                    // place leaves surrounding branch
+                                    foreach (int o in new[] {-1, 1})
+                                        world.Block(branchPoint + new Point(0, o)) = Blocks.Leaves;
                                 }
+                                // places leaves on end of branch
+                                world.Block(branchPoint + new Point(branchDirection, 0)) = Blocks.Leaves;
                             }
                             else
                                 branchDirection = 0;
                         }
                     }
-                    // TODO generate leaves on trees
+                    // place leaves on top of tree
+                    world.Block(new Point(x, startY + height)) = Blocks.Leaves;
+                    // space trees by minimum amount
                     x += treeMinSpacing;
                 }
             }
