@@ -133,7 +133,6 @@ namespace Game.Data
                     }
                 }
             }
-            // TODO take into account both vertical and horizontal collision happening at same time and correctly handling it
             // update position
             Position = testPosition;
         }

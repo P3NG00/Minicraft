@@ -91,7 +91,7 @@ namespace Game.Data
 
         public static World GenerateWorld(Point worldSize, float gravity, int blockUpdatesPerTick)
         {
-            // TODO adjust _chunk_width, _height_variation, and _scan_radius variables for different effects
+            // TODO make hardcoded values in this section into adjustable variables
             // create grid of air blocks for modification
             var blockGrid = new Block[worldSize.Y][];
             for (int y = 0; y < worldSize.Y; y++)
