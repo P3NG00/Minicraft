@@ -34,30 +34,59 @@ namespace Game.Data
                 h++;
             _velocity.X = h;
             // check jump
-            if (input.KeyHeld(Keys.Space) && _velocity.Y == 0f)
+            if (IsGrounded && input.KeyHeld(Keys.Space))
             {
                 _velocity.Y = _jumpVelocity;
                 IsGrounded = false;
             }
-            // add velocity if falling
-            if (!IsGrounded)
+            // add velocity if falling // TODO add max velocity
+            else if (!IsGrounded)
                 _velocity.Y -= world.Gravity * display.TickStep;
-            // add movement this tick
-            Position += (_velocity * display.TickStep) * _moveSpeed;
-            // test floor
-            var blockPos = Position.ToPoint();
-            if (world.Block(blockPos).CanWalkThrough)
+            // find projected new position
+            var testPosition = Position + ((_velocity * display.TickStep) * _moveSpeed);
+            // find collision points
+            var top = (int)(testPosition.Y + Dimensions.Y);
+            var bottom = (int)(testPosition.Y);
+            var left = (int)(testPosition.X - (Dimensions.X / 2f));
+            var right = (int)(testPosition.X + (Dimensions.X / 2f));
+            // player not grounded, vertical velocity is not zero
+            if (!IsGrounded)
             {
-                if (world.Block(blockPos + new Point(0, -1)).CanWalkThrough)
-                    IsGrounded = false;
+                // if moving downwards
+                if (_velocity.Y < 0f)
+                {
+                    // test feet blocks
+                    for (int x = left; x <= right; x++)
+                    {
+                        if (!world.Block(new Point(x, bottom)).CanWalkThrough)
+                        {
+                            testPosition.Y = MathF.Ceiling(testPosition.Y);
+                            _velocity.Y = 0f;
+                            IsGrounded = true;
+                            break;
+                        }
+                    }
+                }
+                else
+                {
+                    // TODO test upwards collision
+                }
             }
             else
             {
-                Position.Y = MathF.Ceiling(Position.Y);
-                _velocity.Y = 0f;
-                IsGrounded = true;
+                // test walking on air
+                bool onAir = true;
+                for (int x = left; x <= right && onAir; x++)
+                {
+                    if (!world.Block(new Point(x, bottom - 1)).CanWalkThrough)
+                        onAir = false;
+                }
+                if (onAir)
+                    IsGrounded = false;
             }
-            // TODO take into account wall tiles
+            // test walls
+            // update position
+            Position = testPosition;
         }
 
         public void Draw(Display display)
