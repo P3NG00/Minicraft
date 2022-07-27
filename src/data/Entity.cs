@@ -83,6 +83,7 @@ namespace Game.Data
                     }
                 }
             }
+            // player grounded
             else
             {
                 // test walking on air
@@ -95,6 +96,11 @@ namespace Game.Data
                 if (onAir)
                     IsGrounded = false;
             }
+            // update bound values
+            top = (int)(testPosition.Y + Dimensions.Y);
+            bottom = (int)(testPosition.Y);
+            left = (int)(testPosition.X - halfWidth);
+            right = (int)(testPosition.X + halfWidth);
             // test horizontal collision
             if (_velocity.X != 0f)
             {
