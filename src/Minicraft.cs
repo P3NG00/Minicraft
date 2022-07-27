@@ -13,9 +13,9 @@ namespace Game
         private const string TITLE = "Minicraft";
         private const int FPS = 60;
         private const int TPS = 32;
-        private const int BLOCK_SCALE = 25;
-        private const int BLOCK_SCALE_MIN = 2;
-        private const int BLOCK_SCALE_MAX = 75;
+        private const int BLOCK_SCALE = 20;
+        private const int BLOCK_SCALE_MIN = 5;
+        private const int BLOCK_SCALE_MAX = 25;
         private const float WORLD_UPDATED_PER_SECOND = 1f / 32f;
         private const float WORLD_GRAVITY = 10f;
         private const float PLAYER_SPEED = 5f;
@@ -185,7 +185,7 @@ namespace Game
                                        $"block_scale: {_display.BlockScale}",
                                        $"mouse_x: {_mouseBlock.X:0.000} ({_mouseBlockInt.X})",
                                        $"mouse_y: {_mouseBlock.Y:0.000} ({_mouseBlockInt.Y})",
-                                       $"player_velocity: {_player.Velocity.Length()}",
+                                       $"player_velocity: {_player.Velocity.Length():0.000}",
                                        $"player_grounded: {_player.IsGrounded}"};
                 for (int i = 0; i < debugInfo.Length; i++)
                 {
