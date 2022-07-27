@@ -52,7 +52,7 @@ namespace Game.Data
             // player not grounded, vertical velocity is not zero
             if (!IsGrounded)
             {
-                // if moving downwards
+                // down
                 if (_velocity.Y < 0f)
                 {
                     // test feet blocks
@@ -67,9 +67,19 @@ namespace Game.Data
                         }
                     }
                 }
+                // up
                 else
                 {
-                    // TODO test upwards collision
+                    // test head blocks
+                    for (int x = left; x <= right; x++)
+                    {
+                        if (!world.Block(new Point(x, top)).CanWalkThrough)
+                        {
+                            testPosition.Y = top - Dimensions.Y;
+                            _velocity.Y = 0f;
+                            break;
+                        }
+                    }
                 }
             }
             else
@@ -84,7 +94,23 @@ namespace Game.Data
                 if (onAir)
                     IsGrounded = false;
             }
-            // test walls
+            // test horizontal collision
+            if (_velocity.X != 0f)
+            {
+                // left
+                if (_velocity.X < 0f)
+                {
+                    // TODO
+                    Console.WriteLine("Left Horizontal Collision Not Implemented");
+                }
+                // right
+                else
+                {
+                    // TODO
+                    Console.WriteLine("Right Horizontal Collision Not Implemented");
+                }
+            }
+
             // update position
             Position = testPosition;
         }
