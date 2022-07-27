@@ -127,7 +127,7 @@ namespace Game.Data
                         if (!world.Block(new Point(right, y)).CanWalkThrough)
                         {
                             testPosition.X = right - halfWidth;
-                            _velocity.Y = 0f;
+                            _velocity.X = 0f;
                             break;
                         }
                     }
