@@ -47,8 +47,9 @@ namespace Game.Data
             // find collision points
             var top = (int)(testPosition.Y + Dimensions.Y);
             var bottom = (int)(testPosition.Y);
-            var left = (int)(testPosition.X - (Dimensions.X / 2f));
-            var right = (int)(testPosition.X + (Dimensions.X / 2f));
+            var halfWidth = Dimensions.X / 2f;
+            var left = (int)(testPosition.X - halfWidth);
+            var right = (int)(testPosition.X + halfWidth);
             // player not grounded, vertical velocity is not zero
             if (!IsGrounded)
             {
@@ -100,17 +101,33 @@ namespace Game.Data
                 // left
                 if (_velocity.X < 0f)
                 {
-                    // TODO
-                    Console.WriteLine("Left Horizontal Collision Not Implemented");
+                    // test left blocks
+                    for (int y = bottom; y <= top; y++)
+                    {
+                        if (!world.Block(new Point(left, y)).CanWalkThrough)
+                        {
+                            testPosition.X = left + 1 + halfWidth;
+                            _velocity.X = 0f;
+                            break;
+                        }
+                    }
                 }
                 // right
                 else
                 {
-                    // TODO
-                    Console.WriteLine("Right Horizontal Collision Not Implemented");
+                    // test right blocks
+                    for (int y = bottom; y <= top; y++)
+                    {
+                        if (!world.Block(new Point(right, y)).CanWalkThrough)
+                        {
+                            testPosition.X = right - halfWidth;
+                            _velocity.Y = 0f;
+                            break;
+                        }
+                    }
                 }
             }
-
+            // TODO take into account both vertical and horizontal collision happening at same time and correctly handling it
             // update position
             Position = testPosition;
         }
