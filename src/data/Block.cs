@@ -73,13 +73,21 @@ namespace Game.Data
         public sealed override void Update(Point position, World world)
         {
             // check surrounding blocks for logs
+            bool log = false;
             foreach (var offset in _checkOffsets)
+            {
                 // if wood detected
                 if (world.Block(position + offset) == Blocks.Wood)
-                    // finish block update
-                    return;
-            // if reached then no wood was found. remove leaves
-            world.Block(position) = Blocks.Air;
+                {
+                    // set log flag
+                    log = true;
+                    // break check loop
+                    break;
+                }
+            }
+            // if no log, remove leaves
+            if (!log)
+                world.Block(position) = Blocks.Air;
             // base call
             base.Update(position, world);
         }
