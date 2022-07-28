@@ -12,17 +12,17 @@ namespace Game.Data
         public float Gravity { get; private set; }
         public int BlockUpdatesPerTick { get; private set; }
 
-        private Block[][] _blockGrid;
+        private Block[,] _blockGrid;
 
-        public World(Block[][] blockGrid, float gravity, int blockUpdatesPerTick)
+        public World(Block[,] blockGrid, float gravity, int blockUpdatesPerTick)
         {
             _blockGrid = blockGrid;
-            Size = new Point(_blockGrid[0].Length, _blockGrid.Length);
+            Size = new Point(_blockGrid.GetLength(1), _blockGrid.GetLength(0));
             Gravity = gravity;
             BlockUpdatesPerTick = blockUpdatesPerTick;
         }
 
-        public ref Block Block(Point position) => ref _blockGrid[position.Y][position.X];
+        public ref Block Block(Point position) => ref _blockGrid[position.Y, position.X];
 
         public (Block block, int y) GetTopBlock(int x)
         {

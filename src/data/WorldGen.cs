@@ -18,14 +18,13 @@ namespace Game.Data
 
         public static World GenerateWorld(Point worldSize, float gravity, int blockUpdatesPerTick)
         {
+            int x;
+            int y;
             // create grid of air blocks for modification
-            var blockGrid = new Block[worldSize.Y][];
-            for (int y = 0; y < worldSize.Y; y++)
-            {
-                var blockLayer = new Block[worldSize.X];
-                Array.Fill(blockLayer, Blocks.Air);
-                blockGrid[y] = blockLayer;
-            }
+            var blockGrid = new Block[worldSize.Y, worldSize.X];
+            for (y = 0; y < worldSize.Y; y++)
+                for (x = 0; x < worldSize.X; x++)
+                    blockGrid[y, x] = Blocks.Air;
             var world = new World(blockGrid, gravity, blockUpdatesPerTick);
             // create height map
             var relativeWidth = world.Width / CHUNK_WIDTH;
@@ -41,7 +40,6 @@ namespace Game.Data
             var heightmapSmooth = new int[world.Width];
             var currentHeights = new int[SMOOTH_SCAN_RADIUS * 2];
             var thirdHeight = (int)(world.Height / 3f);
-            int x;
             for (x = 0; x < world.Width; x++)
             {
                 // get average height of surrounding area
@@ -55,8 +53,8 @@ namespace Game.Data
             // place blocks using smoothed height map
             for (x = 0; x < world.Width; x++)
             {
-                var heightMax = heightmapSmooth[x];
-                for (int y = 0; y <= heightmapSmooth[x]; y++)
+                var heightMax = heightmapSmooth[x] - 1;
+                for (y = 0; y < heightmapSmooth[x]; y++)
                 {
                     var block = Blocks.Dirt;
                     if (y == heightMax)
@@ -76,7 +74,7 @@ namespace Game.Data
                     var startY = heightmapSmooth[x];
                     var height = Util.Random.Next(TREE_HEIGHT_MIN, TREE_HEIGHT_MAX + 1);
                     var branchDirection = 0;
-                    for (int y = startY; y < startY + height; y++)
+                    for (y = startY; y < startY + height; y++)
                     {
                         var setPoint = new Point(x, y);
                         world.Block(setPoint) = Blocks.Wood;
