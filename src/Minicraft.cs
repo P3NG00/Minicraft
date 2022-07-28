@@ -27,14 +27,15 @@ namespace Game
         private Vector2 _mouseBlock;
         private Point _mouseBlockInt;
         private Block _currentBlock = Blocks.Dirt;
-        private int[] _ticks = new[] {0, 0};
+        private int[] _ticks = new [] {0, 0};
+        private int[] _lastTickDifferences = new int[10];
         private float[] _lastFps = new float[10];
 
         public Minicraft()
         {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-            IsFixedTimeStep = true;
+            IsFixedTimeStep = false;
             TargetElapsedTime = TimeSpan.FromMilliseconds(1000f / Display.FRAMES_PER_SECOND);
             IsMouseVisible = true;
             // TODO handle resizing and detecting
@@ -67,7 +68,6 @@ namespace Game
             // set window properties
             GraphicsDevice.SamplerStates[0] = SamplerState.PointClamp;
             Window.AllowAltF4 = false;
-            _graphics.SynchronizeWithVerticalRetrace = false;
             _graphics.PreferredBackBufferWidth = Display.WindowSize.X;
             _graphics.PreferredBackBufferHeight = Display.WindowSize.Y;
             _graphics.ApplyChanges();
@@ -79,6 +79,11 @@ namespace Game
         {
             // add delta time
             _tickDelta += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            // move last tick count down
+            for (int i = _lastTickDifferences.Length - 2; i >= 0; i--)
+                _lastTickDifferences[i + 1] = _lastTickDifferences[i];
+            // set last tick difference
+            _lastTickDifferences[0] = _ticks[0] - _ticks[1];
             // update last tick count
             _ticks[1] = _ticks[0];
             // update for every tick step
@@ -167,9 +172,9 @@ namespace Game
                     $"world_size: {_world.Width}x{_world.Height}",
                     $"time: {(_ticks[0] / (float)World.TICKS_PER_SECOND):0.000}",
                     $"ticks: {_ticks[0]} ({World.TICKS_PER_SECOND} ticks/sec)",
-                    $"ticks_this_frame: {_ticks[0] - _ticks[1]}",
                     $"show_grid: {Display.ShowGrid}",
-                    $"fps: {_lastFps.Average():0.000}",
+                    $"frames_per_second: {_lastFps.Average():0.000}",
+                    $"ticks_per_frame: {_lastTickDifferences.Average():0.000}",
                     $"x: {_player.Position.X:0.000}",
                     $"y: {_player.Position.Y:0.000}",
                     $"block_scale: {Display.BlockScale}",
