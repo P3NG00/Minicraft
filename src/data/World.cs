@@ -144,12 +144,12 @@ namespace Game.Data
                 }
             }
             // generate trees
-            var treeMinSpacing = 6;
+            var treeMinSpacing = 5;
             var treeChance = 0.2f;
-            var treeMinHeight = 6;
-            var treeMaxHeight = 10;
-            var branchChance = 0.1f;
-            var maxBranchLength = 3;
+            var treeMinHeight = 8;
+            var treeMaxHeight = 24;
+            var branchChance = 0.15f;
+            var maxBranchLength = 5;
             for (x = treeMinSpacing; x < world.Width - treeMinSpacing; x++)
             {
                 // test tree chance
