@@ -58,16 +58,16 @@ namespace Game
             // create square for drawing
             Display.TextureSquare = new Texture2D(GraphicsDevice, 1, 1);
             Display.TextureSquare.SetData(new[] {Color.White});
+            // load font
+            Display.Font = Content.Load<SpriteFont>("type_writer");
             // create display handler
             _display = new Display(new SpriteBatch(GraphicsDevice), WindowSize, BLOCK_SCALE, FPS, TPS);
             // create world
             _world = WorldGen.GenerateWorld(WorldSize, WORLD_GRAVITY, (int)(((WorldSize.X * WorldSize.Y) * WORLD_UPDATED_PER_SECOND) / _display.TicksPerSecond));
             // create player
             _player = new Entity(Colors.Player, PlayerSize, PLAYER_SPEED, PLAYER_JUMP);
-            var playerX = _world.Width / 2f;
-            _player.Position = new Vector2(playerX, _world.GetTopBlock((int)playerX).y) + new Vector2(0.5f);
-            // load font
-            Display.Font = Content.Load<SpriteFont>("type_writer");
+            var playerX = (int)(_world.Width / 2f);
+            _player.Position = new Vector2(playerX, Math.Max(_world.GetTopBlock(playerX - 1).y, _world.GetTopBlock(playerX).y) + 1);
             // base call
             base.LoadContent();
         }
