@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using Microsoft.Xna.Framework;
+using SimplexNoise;
 
 namespace Game.Data
 {
@@ -15,6 +16,8 @@ namespace Game.Data
         private const int BRANCH_LENGTH_MAX = 5;
         private const float TREE_CHANCE = 0.2f;
         private const float BRANCH_CHANCE = 0.15f;
+        private const float CAVE_NOISE_SCALE = 0.02f;
+        private const float CAVE_NOISE_CUTOFF = 64f;
 
         public static World GenerateWorld(Point worldSize, float gravity, int blockUpdatesPerTick)
         {
@@ -64,6 +67,12 @@ namespace Game.Data
                     world.Block(new Point(x, y)) = block;
                 }
             }
+            // generate caves
+            var noiseMap = Noise.Calc2D(world.Width, world.Height, CAVE_NOISE_SCALE);
+            for (y = 0; y < world.Height; y++)
+                for (x = 0; x < world.Width; x++)
+                    if (noiseMap[x, y] < CAVE_NOISE_CUTOFF)
+                        world.Block(new Point(x, y)) = Blocks.Air;
             // generate trees
             for (x = TREE_SPACING_MIN; x < world.Width - TREE_SPACING_MIN; x++)
             {
