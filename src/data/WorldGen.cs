@@ -82,42 +82,67 @@ namespace Game.Data
                 if (topBlock.block == Blocks.Grass && Util.Random.TestChance(TREE_CHANCE))
                 {
                     // generate tree
-                    var startY = topBlock.y;
+                    var startY = topBlock.y + 1;
                     var height = Util.Random.Next(TREE_HEIGHT_MIN, TREE_HEIGHT_MAX + 1);
                     var branchDirection = 0;
                     for (y = startY; y < startY + height; y++)
                     {
                         var setPoint = new Point(x, y);
                         world.Block(setPoint) = Blocks.Wood;
-                        // leaves and branches start  2 blocks above ground
-                        if (y > startY + 1)
+                        // leaves and branches start 2 blocks above ground
+                        if (y >= startY + 2)
                         {
                             // create leaves on sides of tree
                             foreach (int s in new[] {-1, 1})
-                                world.Block(setPoint + new Point(s, 0)) = Blocks.Leaves;
+                            {
+                                // get reference of side block
+                                ref Block sideBlock = ref world.Block(setPoint + new Point(s, 0));
+                                if (sideBlock == Blocks.Air)
+                                    sideBlock = Blocks.Leaves;
+                            }
                             // test branch chance
                             if (Util.Random.TestChance(BRANCH_CHANCE))
                             {
                                 // create branch
-                                if (branchDirection == 0)
-                                    branchDirection = Util.Random.NextBool() ? 1 : -1;
-                                else
-                                    branchDirection = branchDirection == -1 ? 1 : -1;
+                                branchDirection = (branchDirection == 0 ? Util.Random.NextBool() : branchDirection == -1) ? 1 : -1;
                                 var branchLength = Util.Random.Next(BRANCH_LENGTH_MAX) + 1;
                                 Point branchPoint = default;
                                 for (int i = 0; i < branchLength; i++)
                                 {
+                                    // find new branch point
                                     branchPoint = setPoint + new Point(branchDirection * (i + 1), 0);
-                                    // place branch block
-                                    world.Block(branchPoint) = Blocks.Wood;
+                                    // break placement if invalid position
+                                    if (branchPoint.X < 0 || branchPoint.X >= world.Width)
+                                        break;
+                                    // get reference of block at that position
+                                    ref Block branchBlock = ref world.Block(branchPoint);
+                                    // replace if valid
+                                    if (branchBlock == Blocks.Air || branchBlock == Blocks.Leaves)
+                                        branchBlock = Blocks.Wood;
                                     // place leaves surrounding branch
                                     foreach (int o in new[] {-1, 1})
-                                        world.Block(branchPoint + new Point(0, o)) = Blocks.Leaves;
+                                    {
+                                        // get reference of block at new branch point
+                                        ref Block leafBlock = ref world.Block(branchPoint + new Point(0, o));
+                                        // replace if valid
+                                        if (leafBlock == Blocks.Air)
+                                            leafBlock = Blocks.Leaves;
+                                    }
                                 }
-                                // places leaves on end of branch
-                                world.Block(branchPoint + new Point(branchDirection, 0)) = Blocks.Leaves;
+                                // get position of end of branch
+                                var endPoint = branchPoint + new Point(branchDirection, 0);
+                                // test position
+                                if (endPoint.X >= 0 && endPoint.X < world.Width)
+                                {
+                                    // get reference of block at branch endpoint
+                                    ref Block endBlock = ref world.Block(endPoint);
+                                    // replace if valid
+                                    if (endBlock == Blocks.Air)
+                                        world.Block(endPoint) = Blocks.Leaves;
+                                }
                             }
                             else
+                                // reset branch direction
                                 branchDirection = 0;
                         }
                     }
