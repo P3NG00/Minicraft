@@ -170,9 +170,9 @@ namespace Game
                 foreach (var debugInfo in new[] {
                     $"window_size: {Display.WindowSize.X}x{Display.WindowSize.Y}",
                     $"world_size: {_world.Width}x{_world.Height}",
+                    $"show_grid: {Display.ShowGrid}",
                     $"time: {(_ticks[0] / (float)World.TICKS_PER_SECOND):0.000}",
                     $"ticks: {_ticks[0]} ({World.TICKS_PER_SECOND} ticks/sec)",
-                    $"show_grid: {Display.ShowGrid}",
                     $"frames_per_second: {_lastFps.Average():0.000}",
                     $"ticks_per_frame: {_lastTickDifferences.Average():0.000}",
                     $"x: {_player.Position.X:0.000}",
