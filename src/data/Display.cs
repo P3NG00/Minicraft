@@ -3,34 +3,24 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Game.Data
 {
-    public sealed class Display
+    public static class Display
     {
+        public static SpriteBatch SpriteBatch;
         public static Texture2D TextureSquare;
         public static SpriteFont Font;
 
-        public SpriteBatch SpriteBatch { get; private set; }
-        public Point WindowSize { get; private set; }
-        public int FramesPerSecond { get; private set; }
-        public float FrameStep { get; private set; }
-        public int TicksPerSecond { get; private set; }
-        public float TickStep { get; private set; }
-        public Vector2 CameraOffset { get; private set; }
+        public const int FRAMES_PER_SECOND = 60;
+        public const int BLOCK_SCALE_MIN = 5;
+        public const int BLOCK_SCALE_MAX = 25;
 
-        public bool ShowGrid = false;
-        public int BlockScale;
+        public static readonly Point WindowSize = new Point(1280, 720);
+        public static readonly float FrameStep = 1f / FRAMES_PER_SECOND;
 
-        public Display(SpriteBatch spriteBatch, Point windowSize, int blockScale, int fps, int tps)
-        {
-            SpriteBatch = spriteBatch;
-            WindowSize = windowSize;
-            FramesPerSecond = fps;
-            FrameStep = 1f / FramesPerSecond;
-            TicksPerSecond = tps;
-            TickStep = 1f / TicksPerSecond;
-            BlockScale = blockScale;
-        }
+        public static Vector2 CameraOffset;
+        public static bool ShowGrid = false;
+        public static int BlockScale = 20;
 
-        public void Update(Entity player)
+        public static void Update(Entity player)
         {
             var cameraOffset = -(WindowSize.ToVector2() / 2f);
             cameraOffset.X = cameraOffset.X + (player.Position.X * BlockScale);
@@ -38,8 +28,8 @@ namespace Game.Data
             CameraOffset = cameraOffset;
         }
 
-        public void Draw(Vector2 position, Vector2 size, Color color) => SpriteBatch.Draw(TextureSquare, position, null, color, 0f, Vector2.Zero, size, SpriteEffects.None, 0f);
+        public static void Draw(Vector2 position, Vector2 size, Color color) => SpriteBatch.Draw(TextureSquare, position, null, color, 0f, Vector2.Zero, size, SpriteEffects.None, 0f);
 
-        public void DrawString(Vector2 position, string text, Color color) => SpriteBatch.DrawString(Font, text, position, color);
+        public static void DrawString(Vector2 position, string text, Color color) => SpriteBatch.DrawString(Font, text, position, color);
     }
 }

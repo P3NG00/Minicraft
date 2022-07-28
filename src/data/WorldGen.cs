@@ -5,7 +5,7 @@ using SimplexNoise;
 
 namespace Game.Data
 {
-    public sealed class WorldGen
+    public static class WorldGen
     {
         private const int CHUNK_WIDTH = 16;
         private const int CHUNK_HEIGHT_VARIATION_RADIUS = 32;
@@ -20,16 +20,17 @@ namespace Game.Data
         private const float CAVE_NOISE_SCALE = 0.02f;
         private const float CAVE_NOISE_CUTOFF = 64f;
 
-        public static World GenerateWorld(Point worldSize, float gravity, int blockUpdatesPerTick)
+        public static World GenerateWorld()
         {
             int x;
             int y;
             // create grid of air blocks for modification
+            var worldSize = World.DefaultSize;
             var blockGrid = new Block[worldSize.Y, worldSize.X];
             for (y = 0; y < worldSize.Y; y++)
                 for (x = 0; x < worldSize.X; x++)
                     blockGrid[y, x] = Blocks.Air;
-            var world = new World(blockGrid, gravity, blockUpdatesPerTick);
+            var world = new World(blockGrid);
             // create height map
             var relativeWidth = world.Width / CHUNK_WIDTH;
             var midHeight = world.Height / 2;

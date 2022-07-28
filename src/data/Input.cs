@@ -3,12 +3,12 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Game.Data
 {
-    public sealed class Input
+    public static class Input
     {
-        private readonly KeyboardState[] _keyStates = new KeyboardState[2];
-        private readonly MouseState[] _mouseStates = new MouseState[2];
+        private static readonly KeyboardState[] _keyStates = new KeyboardState[2];
+        private static readonly MouseState[] _mouseStates = new MouseState[2];
 
-        public void Update()
+        public static void Update()
         {
             _keyStates[1] = _keyStates[0];
             _keyStates[0] = Keyboard.GetState();
@@ -16,19 +16,19 @@ namespace Game.Data
             _mouseStates[0] = Mouse.GetState();
         }
 
-        public bool KeyFirstDown(Keys key) => _keyStates[0].IsKeyDown(key) && _keyStates[1].IsKeyUp(key);
+        public static bool KeyFirstDown(Keys key) => _keyStates[0].IsKeyDown(key) && _keyStates[1].IsKeyUp(key);
 
-        public bool KeyHeld(Keys key) => _keyStates[0].IsKeyDown(key);
+        public static bool KeyHeld(Keys key) => _keyStates[0].IsKeyDown(key);
 
-        public bool ButtonLeftFirstDown() => _mouseStates[0].LeftButton == ButtonState.Pressed && _mouseStates[1].LeftButton == ButtonState.Released;
+        public static bool ButtonLeftFirstDown() => _mouseStates[0].LeftButton == ButtonState.Pressed && _mouseStates[1].LeftButton == ButtonState.Released;
 
-        public bool ButtonMiddleFirstDown() => _mouseStates[0].MiddleButton == ButtonState.Pressed && _mouseStates[1].MiddleButton == ButtonState.Released;
+        public static bool ButtonMiddleFirstDown() => _mouseStates[0].MiddleButton == ButtonState.Pressed && _mouseStates[1].MiddleButton == ButtonState.Released;
 
-        public bool ButtonRightFirstDown() => _mouseStates[0].RightButton == ButtonState.Pressed && _mouseStates[1].RightButton == ButtonState.Released;
+        public static bool ButtonRightFirstDown() => _mouseStates[0].RightButton == ButtonState.Pressed && _mouseStates[1].RightButton == ButtonState.Released;
 
-        public Point MousePosition => _mouseStates[0].Position;
+        public static Point MousePosition => _mouseStates[0].Position;
 
-        public int ScrollWheel
+        public static int ScrollWheel
         {
             get
             {

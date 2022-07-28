@@ -24,26 +24,26 @@ namespace Game.Data
             _jumpVelocity = jumpVelocity;
         }
 
-        public void Update(Input input, Display display, World world)
+        public void Update(World world)
         {
             // set horizontal movement
             int h = 0;
-            if (input.KeyHeld(Keys.A))
+            if (Input.KeyHeld(Keys.A))
                 h--;
-            if (input.KeyHeld(Keys.D))
+            if (Input.KeyHeld(Keys.D))
                 h++;
             _velocity.X = h;
             // check jump
-            if (IsGrounded && input.KeyHeld(Keys.Space))
+            if (IsGrounded && Input.KeyHeld(Keys.Space))
             {
                 _velocity.Y = _jumpVelocity;
                 IsGrounded = false;
             }
             // add velocity if falling // TODO add max velocity
             else if (!IsGrounded)
-                _velocity.Y -= world.Gravity * display.TickStep;
+                _velocity.Y -= World.GRAVITY * World.TickStep;
             // find projected new position
-            var testPosition = Position + ((_velocity * display.TickStep) * _moveSpeed);
+            var testPosition = Position + ((_velocity * World.TickStep) * _moveSpeed);
             // find collision points
             var top = (int)(testPosition.Y + Dimensions.Y);
             var bottom = (int)(testPosition.Y);
@@ -137,20 +137,20 @@ namespace Game.Data
             Position = testPosition;
         }
 
-        public void Draw(Display display)
+        public void Draw()
         {
             // get current screen size of player
-            var currentSize = Dimensions * display.BlockScale;
+            var currentSize = Dimensions * Display.BlockScale;
             // find offset to reach top-left corner for draw pos
             var drawOffset = new Vector2(currentSize.X / 2, currentSize.Y);
             // get relative screen position
-            var relativePosition = Position * display.BlockScale;
+            var relativePosition = Position * Display.BlockScale;
             // flip screen y position
             relativePosition.Y *= -1;
             // find final screen draw position
-            var drawPos = relativePosition - drawOffset - display.CameraOffset;
+            var drawPos = relativePosition - drawOffset - Display.CameraOffset;
             // draw to surface
-            display.Draw(drawPos, currentSize, _color);
+            Display.Draw(drawPos, currentSize, _color);
         }
     }
 }

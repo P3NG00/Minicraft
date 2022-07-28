@@ -5,21 +5,26 @@ namespace Game.Data
 {
     public sealed class World
     {
+        public const float WORLD_UPDATED_PER_SECOND = 1f / 32f;
+        public const int TICKS_PER_SECOND = 32;
+        public const float GRAVITY = 10f;
+
+        public static readonly float TickStep = 1f / TICKS_PER_SECOND;
+        public static Point DefaultSize => new Point(1024, 512);
+
         public int Width => Size.X;
         public int Height => Size.Y;
 
         public Point Size { get; private set; }
-        public float Gravity { get; private set; }
         public int BlockUpdatesPerTick { get; private set; }
 
         private Block[,] _blockGrid;
 
-        public World(Block[,] blockGrid, float gravity, int blockUpdatesPerTick)
+        public World(Block[,] blockGrid)
         {
             _blockGrid = blockGrid;
             Size = new Point(_blockGrid.GetLength(1), _blockGrid.GetLength(0));
-            Gravity = gravity;
-            BlockUpdatesPerTick = blockUpdatesPerTick;
+            BlockUpdatesPerTick = (int)(((Width * Height) * WORLD_UPDATED_PER_SECOND) / World.TICKS_PER_SECOND);
         }
 
         public ref Block Block(Point position) => ref _blockGrid[position.Y, position.X];
@@ -46,12 +51,12 @@ namespace Game.Data
             }
         }
 
-        public void Draw(Display display, Entity player)
+        public void Draw(Entity player)
         {
-            var drawScale = display.ShowGrid ? new Vector2(display.BlockScale - 1) : new Vector2(display.BlockScale);
+            var drawScale = Display.ShowGrid ? new Vector2(Display.BlockScale - 1) : new Vector2(Display.BlockScale);
             // find edge to start drawing
-            var visualWidth = (int)MathF.Ceiling(display.WindowSize.X / display.BlockScale) + 4;
-            var visualHeight = (int)MathF.Ceiling(display.WindowSize.Y / display.BlockScale) + 4;
+            var visualWidth = (int)MathF.Ceiling(Display.WindowSize.X / Display.BlockScale) + 4;
+            var visualHeight = (int)MathF.Ceiling(Display.WindowSize.Y / Display.BlockScale) + 4;
             var visualStartX = (int)MathF.Floor(player.Position.X - (visualWidth / 2f));
             var visualStartY = (int)MathF.Ceiling(player.Position.Y - (visualHeight / 2f)) + 2;
             // fix variables if outside of bounds
@@ -76,14 +81,14 @@ namespace Game.Data
                 {
                     var _x = x + visualStartX;
                     var _y = y + visualStartY;
-                    var drawPos = new Vector2(_x * display.BlockScale, (-1 - _y) * display.BlockScale) - display.CameraOffset;
+                    var drawPos = new Vector2(_x * Display.BlockScale, (-1 - _y) * Display.BlockScale) - Display.CameraOffset;
                     var blockPos = new Point(_x, _y);
                     Color color;
                     if (Debug.Enabled && Debug.TrackUpdated && Debug.UpdatedPoints.Contains(blockPos))
                         color = Colors.DebugUpdate;
                     else
                         color = Block(blockPos).Color;
-                    display.Draw(drawPos, drawScale, color);
+                    Display.Draw(drawPos, drawScale, color);
                 }
             }
         }
