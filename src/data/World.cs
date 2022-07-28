@@ -26,11 +26,11 @@ namespace Game.Data
 
         public (Block block, int y) GetTopBlock(int x)
         {
-            for (int i = Height - 1; i >= 0; i--)
+            for (int y = Height - 1; y >= 0; y--)
             {
-                var _block = Block(new Point(x, i));
+                var _block = Block(new Point(x, y));
                 if (!_block.CanWalkThrough)
-                    return (_block, i);
+                    return (_block, y);
             }
             return (Blocks.Air, 0);
         }

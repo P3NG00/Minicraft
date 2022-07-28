@@ -9,6 +9,7 @@ namespace Game.Data
     {
         private const int CHUNK_WIDTH = 16;
         private const int CHUNK_HEIGHT_VARIATION_RADIUS = 32;
+        private const int STONE_OFFSET = 32;
         private const int SMOOTH_SCAN_RADIUS = 32;
         private const int TREE_SPACING_MIN = 5;
         private const int TREE_HEIGHT_MIN = 8;
@@ -58,14 +59,7 @@ namespace Game.Data
             {
                 var heightMax = heightmapSmooth[x] - 1;
                 for (y = 0; y < heightmapSmooth[x]; y++)
-                {
-                    var block = Blocks.Dirt;
-                    if (y == heightMax)
-                        block = Blocks.Grass;
-                    else if (y < heightMax - 32)
-                        block = Blocks.Stone;
-                    world.Block(new Point(x, y)) = block;
-                }
+                    world.Block(new Point(x, y)) = y <= heightMax - STONE_OFFSET ? Blocks.Stone : Blocks.Dirt;
             }
             // generate caves
             var noiseMap = Noise.Calc2D(world.Width, world.Height, CAVE_NOISE_SCALE);
@@ -73,14 +67,22 @@ namespace Game.Data
                 for (x = 0; x < world.Width; x++)
                     if (noiseMap[x, y] < CAVE_NOISE_CUTOFF)
                         world.Block(new Point(x, y)) = Blocks.Air;
-            // generate trees
+            // place grass on top-most dirt blocks
+            for (x = 0; x < world.Width; x++)
+            {
+                var topBlock = world.GetTopBlock(x);
+                if (topBlock.block == Blocks.Dirt)
+                    world.Block(new Point(x, topBlock.y)) = Blocks.Grass;
+            }
+            // generate trees on on surface grass
             for (x = TREE_SPACING_MIN; x < world.Width - TREE_SPACING_MIN; x++)
             {
+                var topBlock = world.GetTopBlock(x);
                 // test tree chance
-                if (Util.Random.TestChance(TREE_CHANCE))
+                if (topBlock.block == Blocks.Grass && Util.Random.TestChance(TREE_CHANCE))
                 {
                     // generate tree
-                    var startY = heightmapSmooth[x];
+                    var startY = topBlock.y;
                     var height = Util.Random.Next(TREE_HEIGHT_MIN, TREE_HEIGHT_MAX + 1);
                     var branchDirection = 0;
                     for (y = startY; y < startY + height; y++)
