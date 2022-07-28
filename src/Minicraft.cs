@@ -128,11 +128,12 @@ namespace Game
                 if (_mouseBlockInt.X >= 0 && _mouseBlockInt.X < _world.Width &&
                     _mouseBlockInt.Y >= 0 && _mouseBlockInt.Y < _world.Height)
                 {
-                    if (Input.ButtonLeftFirstDown())
+                    bool ctrl = Input.KeyHeld(Keys.LeftControl) || Input.KeyHeld(Keys.RightControl);
+                    if (ctrl ? Input.ButtonLeftFirstDown() : Input.ButtonLeftDown())
                         _world.Block(_mouseBlockInt) = Blocks.Air;
-                    else if (Input.ButtonRightFirstDown())
+                    else if (ctrl ? Input.ButtonRightFirstDown() : Input.ButtonRightDown())
                         _world.Block(_mouseBlockInt) = _currentBlock;
-                    else if (Input.ButtonMiddleFirstDown())
+                    else if (ctrl ? Input.ButtonMiddleFirstDown() : Input.ButtonMiddleDown())
                         _world.Block(_mouseBlockInt).Update(_mouseBlockInt, _world);
                 }
                 // update world

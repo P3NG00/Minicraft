@@ -20,6 +20,12 @@ namespace Game.Data
 
         public static bool KeyHeld(Keys key) => _keyStates[0].IsKeyDown(key);
 
+        public static bool ButtonLeftDown() => _mouseStates[0].LeftButton == ButtonState.Pressed;
+
+        public static bool ButtonMiddleDown() => _mouseStates[0].MiddleButton == ButtonState.Pressed;
+
+        public static bool ButtonRightDown() => _mouseStates[0].RightButton == ButtonState.Pressed;
+
         public static bool ButtonLeftFirstDown() => _mouseStates[0].LeftButton == ButtonState.Pressed && _mouseStates[1].LeftButton == ButtonState.Released;
 
         public static bool ButtonMiddleFirstDown() => _mouseStates[0].MiddleButton == ButtonState.Pressed && _mouseStates[1].MiddleButton == ButtonState.Released;
