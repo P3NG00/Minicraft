@@ -76,13 +76,19 @@ namespace Game.Data
             bool log = false;
             foreach (var offset in _checkOffsets)
             {
-                // if wood detected
-                if (world.Block(position + offset) == Blocks.Wood)
+                var checkPos = position + offset;
+                // test valid position
+                if (checkPos.X >= 0 && checkPos.X < world.Width &&
+                    checkPos.Y >= 0 && checkPos.Y < world.Height)
                 {
-                    // set log flag
-                    log = true;
-                    // break check loop
-                    break;
+                    // if wood detected
+                    if (world.Block(checkPos) == Blocks.Wood)
+                    {
+                        // set log flag
+                        log = true;
+                        // break check loop
+                        break;
+                    }
                 }
             }
             // if no log, remove leaves
