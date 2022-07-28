@@ -61,7 +61,7 @@ namespace Game
             // create display handler
             _display = new Display(new SpriteBatch(GraphicsDevice), WindowSize, BLOCK_SCALE, FPS, TPS);
             // create world
-            _world = World.GenerateWorld(WorldSize, WORLD_GRAVITY, (int)(((WorldSize.X * WorldSize.Y) * WORLD_UPDATED_PER_SECOND) / _display.TicksPerSecond));
+            _world = WorldGen.GenerateWorld(WorldSize, WORLD_GRAVITY, (int)(((WorldSize.X * WorldSize.Y) * WORLD_UPDATED_PER_SECOND) / _display.TicksPerSecond));
             // create player
             _player = new Entity(Colors.Player, PlayerSize, PLAYER_SPEED, PLAYER_JUMP);
             var playerX = _world.Width / 2f;
