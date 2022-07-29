@@ -13,7 +13,7 @@ namespace Game.Data
         public const int BLOCK_SCALE_MIN = 5;
         public const int BLOCK_SCALE_MAX = 25;
 
-        public static readonly Point WindowSize = new Point(1280, 720);
+        public static Point WindowSize = new Point(1280, 720);
         public static readonly float FrameStep = 1f / FRAMES_PER_SECOND;
 
         public static Vector2 CameraOffset;

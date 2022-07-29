@@ -38,8 +38,19 @@ namespace Game
             IsFixedTimeStep = false;
             TargetElapsedTime = TimeSpan.FromMilliseconds(1000f / Display.FRAMES_PER_SECOND);
             IsMouseVisible = true;
-            // TODO handle resizing and detecting
-            // Window.AllowUserResizing = true;
+            Window.AllowUserResizing = true;
+            Window.ClientSizeChanged += new EventHandler<EventArgs>((sender, eventArgs) =>
+            {
+                Display.WindowSize = new Point(Window.ClientBounds.Width, Window.ClientBounds.Height);
+                UpdateWindowSize();
+            });
+        }
+
+        private void UpdateWindowSize()
+        {
+            _graphics.PreferredBackBufferWidth = Display.WindowSize.X;
+            _graphics.PreferredBackBufferHeight = Display.WindowSize.Y;
+            _graphics.ApplyChanges();
         }
 
         protected override void LoadContent()
@@ -68,15 +79,14 @@ namespace Game
             // set window properties
             GraphicsDevice.SamplerStates[0] = SamplerState.PointClamp;
             Window.AllowAltF4 = false;
-            _graphics.PreferredBackBufferWidth = Display.WindowSize.X;
-            _graphics.PreferredBackBufferHeight = Display.WindowSize.Y;
-            _graphics.ApplyChanges();
+            UpdateWindowSize();
             // base call
             base.Initialize();
         }
 
         protected override void Update(GameTime gameTime)
         {
+            Console.WriteLine();
             // add delta time
             _tickDelta += (float)gameTime.ElapsedGameTime.TotalSeconds;
             // move last tick count down
