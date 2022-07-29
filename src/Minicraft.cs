@@ -17,9 +17,6 @@ namespace Game
 
         private readonly Vector2 PlayerSize = new Vector2(1.8f, 2.8f);
 
-        // monogame
-        private GraphicsDeviceManager _graphics;
-
         // variables
         private Entity _player;
         private World _world;
@@ -33,7 +30,7 @@ namespace Game
 
         public Minicraft()
         {
-            _graphics = new GraphicsDeviceManager(this);
+            Display.Graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsFixedTimeStep = false;
             TargetElapsedTime = TimeSpan.FromMilliseconds(1000f / Display.FRAMES_PER_SECOND);
@@ -48,9 +45,9 @@ namespace Game
 
         private void UpdateWindowSize()
         {
-            _graphics.PreferredBackBufferWidth = Display.WindowSize.X;
-            _graphics.PreferredBackBufferHeight = Display.WindowSize.Y;
-            _graphics.ApplyChanges();
+            Display.Graphics.PreferredBackBufferWidth = Display.WindowSize.X;
+            Display.Graphics.PreferredBackBufferHeight = Display.WindowSize.Y;
+            Display.Graphics.ApplyChanges();
         }
 
         protected override void LoadContent()

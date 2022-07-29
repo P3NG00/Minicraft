@@ -8,6 +8,7 @@ namespace Game.Data
         public static SpriteBatch SpriteBatch;
         public static Texture2D TextureSquare;
         public static SpriteFont Font;
+        public static GraphicsDeviceManager Graphics;
 
         public const int FRAMES_PER_SECOND = 60;
         public const int BLOCK_SCALE_MIN = 5;
