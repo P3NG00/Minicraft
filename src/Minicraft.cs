@@ -11,14 +11,10 @@ namespace Game
     {
         // constants
         private const string TITLE = "Minicraft";
-        private const float PLAYER_SPEED = 5f;
-        private const float PLAYER_JUMP = 3.5f;
         private const int UI_SPACER = 5;
 
-        private readonly Vector2 PlayerSize = new Vector2(1.8f, 2.8f);
-
         // variables
-        private Entity _player;
+        private Player _player;
         private World _world;
         private float _tickDelta = 0f;
         private Vector2 _mouseBlock;
@@ -62,9 +58,8 @@ namespace Game
             // create world
             _world = WorldGen.GenerateWorld();
             // create player
-            _player = new Entity(Colors.Player, PlayerSize, PLAYER_SPEED, PLAYER_JUMP);
             var playerX = (int)(_world.Width / 2f);
-            _player.Position = new Vector2(playerX, Math.Max(_world.GetTopBlock(playerX - 1).y, _world.GetTopBlock(playerX).y) + 1);
+            _player = new Player(new Vector2(playerX, Math.Max(_world.GetTopBlock(playerX - 1).y, _world.GetTopBlock(playerX).y) + 1));
             // base call
             base.LoadContent();
         }

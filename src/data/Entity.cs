@@ -4,46 +4,34 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Game.Data
 {
-    public sealed class Entity
+    public abstract class Entity
     {
-        public Vector2 Position = Vector2.Zero;
-        public bool IsGrounded { get; private set; } = false;
+        public Vector2 Position;
+        public bool IsGrounded { get; protected set; } = false;
         public Vector2 Dimensions { get; private set; }
-        public Vector2 Velocity => _velocity;
+        public Vector2 Velocity;
+        public float JumpVelocity => _jumpVelocity;
 
-        private Vector2 _velocity = Vector2.Zero;
-        private Color _color;
-        private float _moveSpeed;
-        private float _jumpVelocity;
+        private readonly Color _color;
+        private readonly float _moveSpeed;
+        private readonly float _jumpVelocity;
 
-        public Entity(Color color, Vector2 dimensions, float moveSpeed, float jumpVelocity)
+        public Entity(Vector2 position, Color color, Vector2 dimensions, float moveSpeed, float jumpVelocity)
         {
+            Position = position;
             _color = color;
             Dimensions = dimensions;
             _moveSpeed = moveSpeed;
             _jumpVelocity = jumpVelocity;
         }
 
-        public void Update(World world)
+        public virtual void Update(World world)
         {
-            // set horizontal movement
-            int h = 0;
-            if (Input.KeyHeld(Keys.A))
-                h--;
-            if (Input.KeyHeld(Keys.D))
-                h++;
-            _velocity.X = h;
-            // check jump
-            if (IsGrounded && Input.KeyHeld(Keys.Space))
-            {
-                _velocity.Y = _jumpVelocity;
-                IsGrounded = false;
-            }
             // add velocity if falling // TODO add max velocity
-            else if (!IsGrounded)
-                _velocity.Y -= World.GRAVITY * World.TickStep;
+            if (!IsGrounded)
+                Velocity.Y -= World.GRAVITY * World.TickStep;
             // find projected new position
-            var testPosition = Position + ((_velocity * World.TickStep) * _moveSpeed);
+            var testPosition = Position + ((Velocity * World.TickStep) * _moveSpeed);
             // find collision points
             var top = (int)(testPosition.Y + Dimensions.Y);
             var bottom = (int)(testPosition.Y);
@@ -54,7 +42,7 @@ namespace Game.Data
             if (!IsGrounded)
             {
                 // down
-                if (_velocity.Y < 0f)
+                if (Velocity.Y < 0f)
                 {
                     // test feet blocks
                     for (int x = left; x <= right; x++)
@@ -62,7 +50,7 @@ namespace Game.Data
                         if (!world.Block(new Point(x, bottom)).CanWalkThrough)
                         {
                             testPosition.Y = MathF.Ceiling(testPosition.Y);
-                            _velocity.Y = 0f;
+                            Velocity.Y = 0f;
                             IsGrounded = true;
                             break;
                         }
@@ -77,7 +65,7 @@ namespace Game.Data
                         if (!world.Block(new Point(x, top)).CanWalkThrough)
                         {
                             testPosition.Y = top - Dimensions.Y;
-                            _velocity.Y = 0f;
+                            Velocity.Y = 0f;
                             break;
                         }
                     }
@@ -102,10 +90,10 @@ namespace Game.Data
             left = (int)(testPosition.X - halfWidth);
             right = (int)(testPosition.X + halfWidth);
             // test horizontal collision
-            if (_velocity.X != 0f)
+            if (Velocity.X != 0f)
             {
                 // left
-                if (_velocity.X < 0f)
+                if (Velocity.X < 0f)
                 {
                     // test left blocks
                     for (int y = bottom; y <= top; y++)
@@ -113,7 +101,7 @@ namespace Game.Data
                         if (!world.Block(new Point(left, y)).CanWalkThrough)
                         {
                             testPosition.X = left + 1 + halfWidth;
-                            _velocity.X = 0f;
+                            Velocity.X = 0f;
                             break;
                         }
                     }
@@ -127,7 +115,7 @@ namespace Game.Data
                         if (!world.Block(new Point(right, y)).CanWalkThrough)
                         {
                             testPosition.X = right - halfWidth;
-                            _velocity.X = 0f;
+                            Velocity.X = 0f;
                             break;
                         }
                     }
@@ -151,6 +139,34 @@ namespace Game.Data
             var drawPos = relativePosition - drawOffset - Display.CameraOffset;
             // draw to surface
             Display.Draw(drawPos, currentSize, _color);
+        }
+    }
+
+    public sealed class Player : Entity
+    {
+        private static readonly Vector2 PlayerSize = new Vector2(1.8f, 2.8f);
+        private const float PLAYER_SPEED = 5f;
+        private const float PLAYER_JUMP = 3.5f;
+
+        public Player(Vector2 position) : base(position, Colors.Player, PlayerSize, PLAYER_SPEED, PLAYER_JUMP) {}
+
+        public sealed override void Update(World world)
+        {
+            // set horizontal movement
+            int h = 0;
+            if (Input.KeyHeld(Keys.A))
+                h--;
+            if (Input.KeyHeld(Keys.D))
+                h++;
+            Velocity.X = h;
+            // check jump
+            if (IsGrounded && Input.KeyHeld(Keys.Space))
+            {
+                Velocity.Y = JumpVelocity;
+                IsGrounded = false;
+            }
+            // base call
+            base.Update(world);
         }
     }
 }
