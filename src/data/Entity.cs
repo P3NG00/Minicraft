@@ -25,6 +25,8 @@ namespace Game.Data
         private float _lastHeight;
         private float _life;
 
+        public bool Alive => _life != 0f;
+
         public Entity(Vector2 position, float maxLife, Color color, Vector2 dimensions, float moveSpeed, float jumpVelocity)
         {
             Position = position;
@@ -39,12 +41,7 @@ namespace Game.Data
 
         public void ResetHealth() => _life = MaxLife;
 
-        public void Damage(float amount)
-        {
-            _life -= amount;
-            if (_life <= 0f)
-                _life = 0f;
-        }
+        public void Damage(float amount) => _life = Math.Max(_life - amount, 0f);
 
         public virtual void Update(World world)
         {
@@ -198,7 +195,7 @@ namespace Game.Data
             // base call
             base.Update(world);
             // check life
-            if (Life <= 0f)
+            if (!Alive)
             {
                 // reset health
                 ResetHealth();
