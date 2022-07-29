@@ -6,23 +6,44 @@ namespace Game.Data
 {
     public abstract class Entity
     {
+        private const float FALL_DISTANCE_MIN = 3f;
+        private const float FALL_DAMAGE_PER_BLOCK = 1f;
+
         public Vector2 Position;
         public bool IsGrounded { get; protected set; } = false;
         public Vector2 Dimensions { get; private set; }
         public Vector2 Velocity;
-        public float JumpVelocity => _jumpVelocity;
+        public float MaxLife;
+
+        public float Life => _life;
+
+        public readonly float MoveSpeed;
+        public readonly float JumpVelocity;
 
         private readonly Color _color;
-        private readonly float _moveSpeed;
-        private readonly float _jumpVelocity;
 
-        public Entity(Vector2 position, Color color, Vector2 dimensions, float moveSpeed, float jumpVelocity)
+        private float _lastHeight;
+        private float _life;
+
+        public Entity(Vector2 position, float maxLife, Color color, Vector2 dimensions, float moveSpeed, float jumpVelocity)
         {
             Position = position;
+            _lastHeight = position.Y;
+            MaxLife = maxLife;
+            _life = maxLife;
             _color = color;
             Dimensions = dimensions;
-            _moveSpeed = moveSpeed;
-            _jumpVelocity = jumpVelocity;
+            MoveSpeed = moveSpeed;
+            JumpVelocity = jumpVelocity;
+        }
+
+        public void ResetHealth() => _life = MaxLife;
+
+        public void Damage(float amount)
+        {
+            _life -= amount;
+            if (_life <= 0f)
+                _life = 0f;
         }
 
         public virtual void Update(World world)
@@ -31,7 +52,7 @@ namespace Game.Data
             if (!IsGrounded)
                 Velocity.Y -= World.GRAVITY * World.TickStep;
             // find projected new position
-            var testPosition = Position + ((Velocity * World.TickStep) * _moveSpeed);
+            var testPosition = Position + ((Velocity * World.TickStep) * MoveSpeed);
             // find collision points
             var top = (int)(testPosition.Y + Dimensions.Y);
             var bottom = (int)(testPosition.Y);
@@ -52,6 +73,9 @@ namespace Game.Data
                             testPosition.Y = MathF.Ceiling(testPosition.Y);
                             Velocity.Y = 0f;
                             IsGrounded = true;
+                            var fallenDistance = _lastHeight - Position.Y - FALL_DISTANCE_MIN;
+                            if (fallenDistance > 0f)
+                                Damage(fallenDistance * FALL_DAMAGE_PER_BLOCK);
                             break;
                         }
                     }
@@ -74,13 +98,13 @@ namespace Game.Data
             // player grounded
             else
             {
+                // update last height
+                _lastHeight = Position.Y;
                 // test walking on air
                 bool onAir = true;
                 for (int x = left; x <= right && onAir; x++)
-                {
                     if (!world.Block(new Point(x, bottom - 1)).CanWalkThrough)
                         onAir = false;
-                }
                 if (onAir)
                     IsGrounded = false;
             }
@@ -144,11 +168,17 @@ namespace Game.Data
 
     public sealed class Player : Entity
     {
-        private static readonly Vector2 PlayerSize = new Vector2(1.8f, 2.8f);
         private const float PLAYER_SPEED = 5f;
         private const float PLAYER_JUMP = 3.5f;
+        private static readonly Vector2 PlayerSize = new Vector2(1.8f, 2.8f);
 
-        public Player(Vector2 position) : base(position, Colors.Player, PlayerSize, PLAYER_SPEED, PLAYER_JUMP) {}
+        public Player(World world) : base(Vector2.Zero, 10, Colors.Player, PlayerSize, PLAYER_SPEED, PLAYER_JUMP) => Respawn(world);
+
+        public void Respawn(World world)
+        {
+            var playerX = (int)(world.Width / 2f);
+            Position = new Vector2(playerX, Math.Max(world.GetTopBlock(playerX - 1).y, world.GetTopBlock(playerX).y) + 1);
+        }
 
         public sealed override void Update(World world)
         {
@@ -167,6 +197,14 @@ namespace Game.Data
             }
             // base call
             base.Update(world);
+            // check life
+            if (Life <= 0f)
+            {
+                // reset health
+                ResetHealth();
+                // respawn
+                Respawn(world);
+            }
         }
     }
 }

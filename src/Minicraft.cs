@@ -58,8 +58,7 @@ namespace Game
             // create world
             _world = WorldGen.GenerateWorld();
             // create player
-            var playerX = (int)(_world.Width / 2f);
-            _player = new Player(new Vector2(playerX, Math.Max(_world.GetTopBlock(playerX - 1).y, _world.GetTopBlock(playerX).y) + 1));
+            _player = new Player(_world);
             // base call
             base.LoadContent();
         }
@@ -165,7 +164,13 @@ namespace Game
             _player.Draw();
             // draw ui
             var drawPos = new Vector2(UI_SPACER, Display.WindowSize.Y - Display.Font.LineSpacing - UI_SPACER);
-            Display.DrawString(drawPos, $"current block: {_currentBlock.Name}", Colors.FontUI);
+            foreach (var uiInfo in new [] {
+                $"current block: {_currentBlock.Name}",
+                $"life: {_player.Life:0.#}/{_player.MaxLife:0.#}"})
+            {
+                Display.DrawString(drawPos, uiInfo, Colors.FontUI);
+                drawPos.Y -= UI_SPACER + Display.Font.LineSpacing;
+            }
             // draw debug
             if (Debug.Enabled)
             {
@@ -183,7 +188,7 @@ namespace Game
                     $"block_scale: {Display.BlockScale}",
                     $"mouse_x: {_mouseBlock.X:0.000} ({_mouseBlockInt.X})",
                     $"mouse_y: {_mouseBlock.Y:0.000} ({_mouseBlockInt.Y})",
-                    $"player_velocity: {_player.Velocity.Length():0.000}",
+                    $"player_velocity: {_player.Velocity.Length() * _player.MoveSpeed:0.000}",
                     $"player_grounded: {_player.IsGrounded}"})
                 {
                     Display.DrawString(drawPos, debugInfo, Colors.FontDebug);
