@@ -139,7 +139,7 @@ namespace Game.Data
                                     ref Block endBlock = ref world.Block(endPoint);
                                     // replace if valid
                                     if (endBlock == Blocks.Air)
-                                        world.Block(endPoint) = Blocks.Leaves;
+                                        endBlock = Blocks.Leaves;
                                 }
                             }
                             else
