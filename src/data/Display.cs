@@ -29,6 +29,13 @@ namespace Game.Data
             CameraOffset = cameraOffset;
         }
 
+        public static void UpdateWindowSize()
+        {
+            Graphics.PreferredBackBufferWidth = Display.WindowSize.X;
+            Graphics.PreferredBackBufferHeight = Display.WindowSize.Y;
+            Graphics.ApplyChanges();
+        }
+
         public static void Draw(Vector2 position, Vector2 size, Color color) => SpriteBatch.Draw(TextureSquare, position, null, color, 0f, Vector2.Zero, size, SpriteEffects.None, 0f);
 
         public static void DrawString(Vector2 position, string text, Color color) => SpriteBatch.DrawString(Font, text, position, color);

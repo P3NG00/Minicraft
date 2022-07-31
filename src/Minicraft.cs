@@ -35,15 +35,8 @@ namespace Game
             Window.ClientSizeChanged += new EventHandler<EventArgs>((sender, eventArgs) =>
             {
                 Display.WindowSize = new Point(Window.ClientBounds.Width, Window.ClientBounds.Height);
-                UpdateWindowSize();
+                Display.UpdateWindowSize();
             });
-        }
-
-        private void UpdateWindowSize()
-        {
-            Display.Graphics.PreferredBackBufferWidth = Display.WindowSize.X;
-            Display.Graphics.PreferredBackBufferHeight = Display.WindowSize.Y;
-            Display.Graphics.ApplyChanges();
         }
 
         protected override void LoadContent()
@@ -70,7 +63,7 @@ namespace Game
             // set window properties
             GraphicsDevice.SamplerStates[0] = SamplerState.PointClamp;
             Window.AllowAltF4 = false;
-            UpdateWindowSize();
+            Display.UpdateWindowSize();
             // base call
             base.Initialize();
         }
