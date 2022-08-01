@@ -6,7 +6,7 @@ namespace Game.Data
 {
     public abstract class Entity
     {
-        private const float FALL_DISTANCE_MIN = 3f;
+        private const float FALL_DISTANCE_MIN = 4f;
         private const float FALL_DAMAGE_PER_BLOCK = 1f;
 
         public Vector2 Position;
