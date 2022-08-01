@@ -61,7 +61,7 @@ namespace Game
 
         protected override void Update(GameTime gameTime)
         {
-            GameInfo.Update(_player, _world, (float)gameTime.ElapsedGameTime.TotalSeconds); // TODO change this to use milliseconds
+            GameInfo.Update(_player, _world, (float)gameTime.ElapsedGameTime.TotalSeconds);
             // update for every tick step
             while (GameInfo.Tick())
             {
