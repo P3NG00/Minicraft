@@ -22,8 +22,7 @@ namespace Game.Data
 
         public static World GenerateWorld()
         {
-            int x;
-            int y;
+            int x, y;
             // create grid of air blocks for modification
             var worldSize = World.DefaultSize;
             var blockGrid = new Block[worldSize.Y, worldSize.X];
