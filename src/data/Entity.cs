@@ -167,9 +167,10 @@ namespace Game.Data
     {
         private const float PLAYER_SPEED = 5f;
         private const float PLAYER_JUMP = 3.5f;
+        private const float PLAYER_LIFE = 10f;
         private static readonly Vector2 PlayerSize = new Vector2(1.8f, 2.8f);
 
-        public Player(World world) : base(Vector2.Zero, 10, Colors.Player, PlayerSize, PLAYER_SPEED, PLAYER_JUMP) => Respawn(world);
+        public Player(World world) : base(Vector2.Zero, PLAYER_LIFE, Colors.Entity_Player, PlayerSize, PLAYER_SPEED, PLAYER_JUMP) => Respawn(world);
 
         public void Respawn(World world)
         {
@@ -203,5 +204,15 @@ namespace Game.Data
                 Respawn(world);
             }
         }
+    }
+
+    public sealed class NPC : Entity
+    {
+        private const float NPC_SPEED = 3f;
+        private const float NPC_JUMP = 3f;
+        private const float NPC_LIFE = 2f;
+        private static readonly Vector2 NPCSize = new Vector2(1.5f, 2.2f);
+
+        public NPC(Vector2 position) : base(position, NPC_LIFE, Colors.Entity_NPC, NPCSize, NPC_SPEED, NPC_JUMP) {}
     }
 }

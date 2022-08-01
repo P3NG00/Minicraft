@@ -50,18 +50,6 @@ namespace Game.Data
             mousePos.Y = Display.WindowSize.Y - mousePos.Y - 1;
             LastMouseBlock = ((mousePos - (Display.WindowSize.ToVector2() / 2f)) / Display.BlockScale) + (player.Position + new Vector2(0, player.Dimensions.Y / 2f));
             LastMouseBlockInt = LastMouseBlock.ToPoint();
-            // catch out of bounds
-            if (LastMouseBlockInt.X >= 0 && LastMouseBlockInt.X < world.Width &&
-                LastMouseBlockInt.Y >= 0 && LastMouseBlockInt.Y < world.Height)
-            {
-                bool ctrl = Input.KeyHeld(Keys.LeftControl) || Input.KeyHeld(Keys.RightControl);
-                if (ctrl ? Input.ButtonLeftFirstDown() : Input.ButtonLeftDown())
-                    world.Block(LastMouseBlockInt) = Blocks.Air;
-                else if (ctrl ? Input.ButtonRightFirstDown() : Input.ButtonRightDown())
-                    world.Block(LastMouseBlockInt) = CurrentBlock;
-                else if (ctrl ? Input.ButtonMiddleFirstDown() : Input.ButtonMiddleDown())
-                    world.Block(LastMouseBlockInt).Update(LastMouseBlockInt, world);
-            }
         }
 
         public static void UpdateFramesPerSecond(float timeThisFrame)

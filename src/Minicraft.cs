@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Game.Data;
+using System.Collections.Generic;
 
 namespace Game
 {
@@ -13,6 +14,7 @@ namespace Game
 
         // variables
         private Player _player;
+        private List<NPC> _npcList = new List<NPC>();
         private World _world;
 
         public Minicraft()
@@ -91,10 +93,24 @@ namespace Game
                 if (Input.KeyFirstDown(Keys.D5))
                     GameInfo.CurrentBlock = Blocks.Leaves;
                 Display.BlockScale = Math.Clamp(Display.BlockScale + Input.ScrollWheel, Display.BLOCK_SCALE_MIN, Display.BLOCK_SCALE_MAX);
+                // catch out of bounds
+                if (GameInfo.LastMouseBlockInt.X >= 0 && GameInfo.LastMouseBlockInt.X < _world.Width &&
+                    GameInfo.LastMouseBlockInt.Y >= 0 && GameInfo.LastMouseBlockInt.Y < _world.Height)
+                {
+                    bool ctrl = Input.KeyHeld(Keys.LeftControl) || Input.KeyHeld(Keys.RightControl);
+                    if (ctrl ? Input.ButtonLeftFirstDown() : Input.ButtonLeftDown())
+                        _world.Block(GameInfo.LastMouseBlockInt) = Blocks.Air;
+                    if (ctrl ? Input.ButtonRightFirstDown() : Input.ButtonRightDown())
+                        _world.Block(GameInfo.LastMouseBlockInt) = GameInfo.CurrentBlock;
+                    if (Input.ButtonMiddleFirstDown())
+                        _npcList.Add(new NPC(GameInfo.LastMouseBlock));
+                }
                 // update world
                 _world.Update();
                 // update player
                 _player.Update(_world);
+                // update npc's
+                _npcList.ForEach(npc => npc.Update(_world));
                 // update display handler
                 Display.Update(_player);
             }
@@ -113,6 +129,8 @@ namespace Game
             _world.Draw(_player);
             // draw player
             _player.Draw();
+            // draw npc's
+            _npcList.ForEach(npc => npc.Draw());
             // draw ui
             UI.Draw(_player, _world);
             // end drawing
