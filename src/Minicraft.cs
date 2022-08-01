@@ -13,6 +13,8 @@ namespace Game
         private const string TITLE = "Minicraft";
         private const int UI_SPACER = 5;
 
+        private readonly Vector2 BarSize = new Vector2(150, 30);
+
         // variables
         private Player _player;
         private World _world;
@@ -155,15 +157,23 @@ namespace Game
             _world.Draw(_player);
             // draw player
             _player.Draw();
-            // draw ui
-            var drawPos = new Vector2(UI_SPACER, Display.WindowSize.Y - Display.Font.LineSpacing - UI_SPACER);
-            foreach (var uiInfo in new [] {
-                $"current block: {_currentBlock.Name}",
-                $"life: {_player.Life:0.#}/{_player.MaxLife:0.#}"})
-            {
-                Display.DrawString(drawPos, uiInfo, Colors.FontUI);
-                drawPos.Y -= UI_SPACER + Display.Font.LineSpacing;
-            }
+            // draw health bar
+            var drawPos = new Vector2((Display.WindowSize.X / 2f) - (BarSize.X / 2f), Display.WindowSize.Y - BarSize.Y);
+            Display.Draw(drawPos, BarSize, Colors.UI_Bar);
+            // adjust size to fit within bar
+            drawPos += new Vector2(UI_SPACER);
+            var healthSize = BarSize - (new Vector2(UI_SPACER) * 2);
+            // readjust size to display real health
+            healthSize.X *= _player.Life / _player.MaxLife;
+            Display.Draw(drawPos, healthSize, Colors.UI_Life);
+            // draw health numbers on top of bar
+            var healthString = $"{_player.Life:0.#}/{_player.MaxLife:0.#}";
+            var textSize = Display.Font.MeasureString(healthString);
+            drawPos = new Vector2((Display.WindowSize.X / 2f) - (textSize.X / 2f), Display.WindowSize.Y - 22);
+            Display.DrawString(drawPos, healthString, Colors.UI_TextLife);
+            // draw currently selected block
+            drawPos = new Vector2(UI_SPACER, Display.WindowSize.Y - Display.Font.LineSpacing - UI_SPACER);
+            Display.DrawString(drawPos, $"current block: {_currentBlock.Name}", Colors.UI_TextBlock);
             // draw debug
             if (Debug.Enabled)
             {
@@ -184,7 +194,7 @@ namespace Game
                     $"player_velocity: {_player.Velocity.Length() * _player.MoveSpeed:0.000}",
                     $"player_grounded: {_player.IsGrounded}"})
                 {
-                    Display.DrawString(drawPos, debugInfo, Colors.FontDebug);
+                    Display.DrawString(drawPos, debugInfo, Colors.UI_TextDebug);
                     drawPos.Y += UI_SPACER + Display.Font.LineSpacing;
                 }
             }
