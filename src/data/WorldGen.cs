@@ -62,6 +62,7 @@ namespace Game.Data
                     world.Block(new Point(x, y)) = y <= heightMax - STONE_OFFSET ? Blocks.Stone : Blocks.Dirt;
             }
             // generate caves
+            Noise.Seed = Util.Random.Next(int.MinValue, int.MaxValue);
             var noiseMap = Noise.Calc2D(world.Width, world.Height, CAVE_NOISE_SCALE);
             for (y = 0; y < world.Height; y++)
                 for (x = 0; x < world.Width; x++)
