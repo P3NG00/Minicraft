@@ -84,7 +84,7 @@ namespace Game.Data
                     var drawPos = new Vector2(_x * Display.BlockScale, (-1 - _y) * Display.BlockScale) - Display.CameraOffset;
                     var blockPos = new Point(_x, _y);
                     Color color;
-                    if (Debug.Enabled && Debug.TrackUpdated && Debug.UpdatedPoints.Contains(blockPos))
+                    if (Debug.Enabled && Debug.TrackUpdated && Debug.UpdatedPoints.Remove(blockPos))
                         color = Colors.BlockUpdate;
                     else
                         color = Block(blockPos).Color;
