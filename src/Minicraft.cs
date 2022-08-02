@@ -9,12 +9,14 @@ namespace Game
 {
     public class Minicraft : Microsoft.Xna.Framework.Game
     {
-        private const string TITLE = "Minicraft";
+        public const string TITLE = "Minicraft";
 
-        private Scene _scene = new GameScene(WorldGen.GenerateWorld()); // TODO change to pass in custom generated world
+        private static Minicraft _instance;
+        private static Scene _scene = new MainMenuScene();
 
         public Minicraft()
         {
+            _instance = this;
             Display.Graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsFixedTimeStep = false;
@@ -34,7 +36,8 @@ namespace Game
             Display.TextureSquare = new Texture2D(GraphicsDevice, 1, 1);
             Display.TextureSquare.SetData(new[] {Color.White});
             // load font
-            Display.Font = Content.Load<SpriteFont>("type_writer");
+            Display.FontUI = Content.Load<SpriteFont>("type_writer_ui");
+            Display.FontTitle = Content.Load<SpriteFont>("type_writer_title");
             // create display handler
             Display.SpriteBatch = new SpriteBatch(GraphicsDevice);
             // base call
@@ -59,7 +62,7 @@ namespace Game
             Input.Update();
             // handle input
             if (Input.KeyFirstDown(Keys.End))
-                Exit();
+                EndProgram();
             if (Input.KeyFirstDown(Keys.F1))
                 Window.IsBorderless = !Window.IsBorderless;
             // update scene
@@ -81,5 +84,9 @@ namespace Game
             // base call
             base.Draw(gameTime);
         }
+
+        public static void SetScene(Scene scene) => _scene = scene;
+
+        public static void EndProgram() => _instance.Exit();
     }
 }

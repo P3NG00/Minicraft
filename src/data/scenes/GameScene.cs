@@ -12,9 +12,10 @@ namespace Game.Data.Scenes
         private readonly List<NPC> _npcList = new List<NPC>();
         private readonly World _world;
 
-        public GameScene(World world)
+        public GameScene()
         {
-            _world = world;
+            // TODO change to accept world as passed in parameter for custom generated worlds
+            _world = WorldGen.GenerateWorld();
             _player = new Player(_world);
         }
 
@@ -22,6 +23,8 @@ namespace Game.Data.Scenes
         {
             GameInfo.Update(_player, _world, (float)gameTime.ElapsedGameTime.TotalSeconds);
             // handle input
+            if (Input.KeyFirstDown(Keys.Escape))
+                Minicraft.SetScene(new MainMenuScene());
             if (Input.KeyFirstDown(Keys.Tab))
                 Display.ShowGrid = !Display.ShowGrid;
             if (Debug.Enabled && Input.KeyFirstDown(Keys.F11))
@@ -44,11 +47,11 @@ namespace Game.Data.Scenes
                 GameInfo.LastMouseBlockInt.Y >= 0 && GameInfo.LastMouseBlockInt.Y < _world.Height)
             {
                 bool ctrl = Input.KeyHeld(Keys.LeftControl) || Input.KeyHeld(Keys.RightControl);
-                if (ctrl ? Input.ButtonLeftFirstDown() : Input.ButtonLeftDown())
+                if (ctrl ? Input.MouseLeftFirstDown() : Input.MouseLeftHeld())
                     _world.Block(GameInfo.LastMouseBlockInt) = Blocks.Air;
-                if (ctrl ? Input.ButtonRightFirstDown() : Input.ButtonRightDown())
+                if (ctrl ? Input.MouseRightFirstDown() : Input.MouseRightHeld())
                     _world.Block(GameInfo.LastMouseBlockInt) = GameInfo.CurrentBlock;
-                if (Input.ButtonMiddleFirstDown())
+                if (Input.MouseMiddleFirstDown())
                     _npcList.Add(new NPC(GameInfo.LastMouseBlock));
             }
             // update for every tick step
@@ -158,12 +161,12 @@ namespace Game.Data.Scenes
             Display.Draw(drawPos, healthSize, Colors.UI_Life);
             // draw health numbers on top of bar
             var healthString = $"{player.Life:0.#}/{player.MaxLife:0.#}";
-            var textSize = Display.Font.MeasureString(healthString);
+            var textSize = Display.FontUI.MeasureString(healthString);
             drawPos = new Vector2((Display.WindowSize.X / 2f) - (textSize.X / 2f), Display.WindowSize.Y - 22);
-            Display.DrawString(drawPos, healthString, Colors.UI_TextLife);
+            Display.DrawString(Display.FontUI, drawPos, healthString, Colors.UI_TextLife);
             // draw currently selected block
-            drawPos = new Vector2(UI_SPACER, Display.WindowSize.Y - Display.Font.LineSpacing - UI_SPACER);
-            Display.DrawString(drawPos, $"current block: {GameInfo.CurrentBlock.Name}", Colors.UI_TextBlock);
+            drawPos = new Vector2(UI_SPACER, Display.WindowSize.Y - Display.FontUI.LineSpacing - UI_SPACER);
+            Display.DrawString(Display.FontUI, drawPos, $"current block: {GameInfo.CurrentBlock.Name}", Colors.UI_TextBlock);
             // draw debug
             if (Debug.Enabled)
             {
@@ -184,8 +187,8 @@ namespace Game.Data.Scenes
                     $"player_velocity: {player.Velocity.Length() * player.MoveSpeed:0.000}",
                     $"player_grounded: {player.IsGrounded}"})
                 {
-                    Display.DrawString(drawPos, debugInfo, Colors.UI_TextDebug);
-                    drawPos.Y += UI_SPACER + Display.Font.LineSpacing;
+                    Display.DrawString(Display.FontUI, drawPos, debugInfo, Colors.UI_TextDebug);
+                    drawPos.Y += UI_SPACER + Display.FontUI.LineSpacing;
                 }
             }
         }

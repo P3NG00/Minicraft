@@ -18,5 +18,6 @@
 /processor:FontDescriptionProcessor
 /processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=Compressed
-/build:type_writer.spritefont
+/build:type_writer_ui.spritefont
+/build:type_writer_title.spritefont
 

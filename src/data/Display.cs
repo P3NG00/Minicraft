@@ -7,7 +7,8 @@ namespace Game.Data
     {
         public static SpriteBatch SpriteBatch;
         public static Texture2D TextureSquare;
-        public static SpriteFont Font;
+        public static SpriteFont FontUI;
+        public static SpriteFont FontTitle;
         public static GraphicsDeviceManager Graphics;
 
         public const int FRAMES_PER_SECOND = 60;
@@ -38,6 +39,8 @@ namespace Game.Data
 
         public static void Draw(Vector2 position, Vector2 size, Color color) => SpriteBatch.Draw(TextureSquare, position, null, color, 0f, Vector2.Zero, size, SpriteEffects.None, 0f);
 
-        public static void DrawString(Vector2 position, string text, Color color) => SpriteBatch.DrawString(Font, text, position, color);
+        public static void Draw(Rectangle rectangle, Color color) => SpriteBatch.Draw(TextureSquare, rectangle, null, color, 0f, Vector2.Zero, SpriteEffects.None, 0f);
+
+        public static void DrawString(SpriteFont font, Vector2 position, string text, Color color) => SpriteBatch.DrawString(font, text, position, color);
     }
 }
