@@ -214,5 +214,7 @@ namespace Game.Data
         private static readonly Vector2 NPCSize = new Vector2(1.5f, 2.2f);
 
         public NPC(Vector2 position) : base(position, NPC_LIFE, Colors.Entity_NPC, NPCSize, NPC_SPEED, NPC_JUMP) {}
+
+        // TODO override update to add AI movement to NPC
     }
 }
