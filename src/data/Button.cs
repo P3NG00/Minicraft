@@ -29,19 +29,10 @@ namespace Game.Data
             _action = actionOnClick;
         }
 
-        private Rectangle Rectangle
-        {
-            get
-            {
-                var pos = ((Display.WindowSize.ToVector2() * _relativeCenter) - (_size.ToVector2() / 2f)).ToPoint();
-                return new Rectangle(pos, _size);
-            }
-        }
-
         public void Update()
         {
-            // get rectangle
-            _lastRect = Rectangle;
+            // find rectangle bounds
+            _lastRect = new Rectangle(((Display.WindowSize.ToVector2() * _relativeCenter) - (_size.ToVector2() / 2f)).ToPoint(), _size);
             // test bounds
             _highlighted = _lastRect.Contains(Input.MousePosition);
             if (Input.MouseLeftFirstUp() && _highlighted)

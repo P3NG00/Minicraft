@@ -47,6 +47,7 @@ namespace Game
             // set window properties
             GraphicsDevice.SamplerStates[0] = SamplerState.PointClamp;
             Window.AllowAltF4 = false;
+            // fix initial window size
             Display.UpdateWindowSize();
             // base call
             base.Initialize();
