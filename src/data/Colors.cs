@@ -5,7 +5,8 @@ namespace Game.Data
     public static class Colors
     {
         public static readonly Color Background = new Color(96, 96, 96);
-        public static readonly Color Button_Menu = new Color(0, 0, 0);
+        public static readonly Color Button_CreateWorld = new Color(0, 0, 0);
+        public static readonly Color Button_Exit = new Color(48, 0, 0);
         public static readonly Color BlockUpdate = new Color(255, 0, 255);
         public static readonly Color Entity_Player = new Color(255, 0, 0);
         public static readonly Color Entity_NPC = new Color(255, 128, 0);

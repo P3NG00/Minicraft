@@ -5,8 +5,8 @@ namespace Game.Data.Scenes
 {
     public sealed class MainMenuScene : Scene
     {
-        private readonly Button _buttonWorld = new Button(new Vector2(0.5f, 0.6f), new Point(250, 50), "create world", Colors.Button_Menu, () => Minicraft.SetScene(new GameScene()));
-        private readonly Button _buttonExit = new Button(new Vector2(0.5f, 0.8f), new Point(150, 40), "exit", Colors.Button_Menu, Minicraft.EndProgram);
+        private readonly Button _buttonWorld = new Button(new Vector2(0.5f, 0.6f), new Point(250, 50), "create world", Colors.Button_CreateWorld, () => Minicraft.SetScene(new GameScene()));
+        private readonly Button _buttonExit = new Button(new Vector2(0.5f, 0.8f), new Point(120, 30), "exit", Colors.Button_Exit, Minicraft.EndProgram);
 
         public void Update(GameTime gameTime)
         {
