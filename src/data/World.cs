@@ -77,18 +77,14 @@ namespace Game.Data
             // draw each visible block
             for (int y = 0; y < visualHeight; y++)
             {
+                var blockY = y + visualStartY;
+                var drawY = (-1 - blockY) * Display.BlockScale;
                 for (int x = 0; x < visualWidth; x++)
                 {
-                    var _x = x + visualStartX;
-                    var _y = y + visualStartY;
-                    var drawPos = new Vector2(_x * Display.BlockScale, (-1 - _y) * Display.BlockScale) - Display.CameraOffset;
-                    var blockPos = new Point(_x, _y);
-                    Color color;
-                    if (Debug.Enabled && Debug.TrackUpdated && Debug.UpdatedPoints.Remove(blockPos))
-                        color = Colors.BlockUpdate;
-                    else
-                        color = Block(blockPos).Color;
-                    Display.Draw(drawPos, drawScale, color);
+                    var blockX = x + visualStartX;
+                    var drawPos = new Vector2(blockX * Display.BlockScale, drawY) - Display.CameraOffset;
+                    var blockPos = new Point(blockX, blockY);
+                    Display.Draw(drawPos, drawScale, Debug.Enabled && Debug.TrackUpdated && Debug.UpdatedPoints.Remove(blockPos) ? Colors.BlockUpdate : Block(blockPos).Color);
                 }
             }
         }
