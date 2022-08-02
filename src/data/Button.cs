@@ -9,17 +9,23 @@ namespace Game.Data
         private readonly Vector2 _relativeCenter;
         private readonly Point _size;
         private readonly string _text;
-        private readonly Color _color;
         private readonly Action _action;
 
-        private Rectangle _lastRect;
+        public Color ColorBox;
+        public Color ColorText;
+        public Color? ColorBoxHighlight = null;
+        public Color? ColorTextHighlight = null;
 
-        public Button(Vector2 relativeCenter, Point size, string text, Color color, Action actionOnClick)
+        private Rectangle _lastRect;
+        private bool _highlighted = false;
+
+        public Button(Vector2 relativeCenter, Point size, string text, Color colorBox, Color colorText, Action actionOnClick)
         {
             _relativeCenter = relativeCenter;
             _size = size;
             _text = text;
-            _color = color;
+            ColorBox = colorBox;
+            ColorText = colorText;
             _action = actionOnClick;
         }
 
@@ -34,20 +40,21 @@ namespace Game.Data
 
         public void Update()
         {
-            // test if clicked
+            // get rectangle
             _lastRect = Rectangle;
-            if (Input.MouseLeftFirstUp() && _lastRect.Contains(Input.MousePosition))
+            // test bounds
+            _highlighted = _lastRect.Contains(Input.MousePosition);
+            if (Input.MouseLeftFirstUp() && _highlighted)
                 _action();
         }
 
         public void Draw()
         {
             // draw box
-            Display.Draw(_lastRect, _color);
-            // TODO draw text centered in box
-            var textSize = Display.FontUI.MeasureString(_text);
-            var drawPos = _lastRect.Center.ToVector2() - (textSize / 2f);
-            Display.DrawString(Display.FontUI, drawPos, _text, Colors.UI_TextMenu);
+            Display.Draw(_lastRect, _highlighted && ColorBoxHighlight.HasValue ? ColorBoxHighlight.Value : ColorBox);
+            // draw text centered in box
+            var drawPos = _lastRect.Center.ToVector2() - (Display.FontUI.MeasureString(_text) / 2f);
+            Display.DrawString(Display.FontUI, drawPos, _text, _highlighted && ColorTextHighlight.HasValue ? ColorTextHighlight.Value : ColorText);
         }
     }
 }

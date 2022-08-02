@@ -15,12 +15,22 @@ namespace Game.Data
         public const int BLOCK_SCALE_MIN = 5;
         public const int BLOCK_SCALE_MAX = 25;
 
-        public static Point WindowSize = new Point(1280, 720);
         public static readonly float FrameStep = 1f / FRAMES_PER_SECOND;
+        public static Point WindowSize
+        {
+            get => _windowSize;
+            set
+            {
+                _windowSize = value;
+                UpdateWindowSize();
+            }
+        }
 
         public static Vector2 CameraOffset;
         public static bool ShowGrid = false;
         public static int BlockScale = 20;
+
+        private static Point _windowSize = new Point(1280, 720);
 
         public static void Update(Entity player)
         {

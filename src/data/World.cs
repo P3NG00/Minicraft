@@ -84,7 +84,7 @@ namespace Game.Data
                     var blockX = x + visualStartX;
                     var drawPos = new Vector2(blockX * Display.BlockScale, drawY) - Display.CameraOffset;
                     var blockPos = new Point(blockX, blockY);
-                    Display.Draw(drawPos, drawScale, Debug.Enabled && Debug.TrackUpdated && Debug.UpdatedPoints.Remove(blockPos) ? Colors.BlockUpdate : Block(blockPos).Color);
+                    Display.Draw(drawPos, drawScale, Debug.Enabled && Debug.TrackUpdated && Debug.UpdatedPoints.Remove(blockPos) ? Colors.Debug_BlockUpdate : Block(blockPos).Color);
                 }
             }
         }

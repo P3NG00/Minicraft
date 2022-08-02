@@ -23,11 +23,7 @@ namespace Game
             TargetElapsedTime = TimeSpan.FromMilliseconds(1000f / Display.FRAMES_PER_SECOND);
             IsMouseVisible = true;
             Window.AllowUserResizing = true;
-            Window.ClientSizeChanged += new EventHandler<EventArgs>((sender, eventArgs) =>
-            {
-                Display.WindowSize = new Point(Window.ClientBounds.Width, Window.ClientBounds.Height);
-                Display.UpdateWindowSize();
-            });
+            Window.ClientSizeChanged += new EventHandler<EventArgs>((sender, eventArgs) => Display.WindowSize = new Point(Window.ClientBounds.Width, Window.ClientBounds.Height));
         }
 
         protected override void LoadContent()

@@ -110,8 +110,7 @@ namespace Game.Data.Scenes
                 // return success
                 return true;
             }
-            else
-                return false;
+            return false;
         }
 
         public static void Update(Player player, World world, float timeThisUpdate)
