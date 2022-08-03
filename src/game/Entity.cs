@@ -1,8 +1,9 @@
 using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+using Minicraft.Utils;
 
-namespace Game.Data
+namespace Minicraft.Game
 {
     public abstract class Entity
     {

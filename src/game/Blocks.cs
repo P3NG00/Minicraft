@@ -1,6 +1,6 @@
 using Microsoft.Xna.Framework;
 
-namespace Game.Data
+namespace Minicraft.Game
 {
     public static class Blocks
     {

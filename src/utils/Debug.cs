@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 
-namespace Game.Data
+namespace Minicraft.Utils
 {
     public static class Debug
     {

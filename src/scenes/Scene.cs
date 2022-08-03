@@ -1,6 +1,6 @@
 using Microsoft.Xna.Framework;
 
-namespace Game.Data.Scenes
+namespace Minicraft.Scenes
 {
     public interface Scene
     {

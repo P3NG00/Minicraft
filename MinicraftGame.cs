@@ -2,19 +2,19 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Game.Data;
-using Game.Data.Scenes;
+using Minicraft.Scenes;
+using Minicraft.Utils;
 
-namespace Game
+namespace Minicraft
 {
-    public class Minicraft : Microsoft.Xna.Framework.Game
+    public class MinicraftGame : Microsoft.Xna.Framework.Game
     {
         public const string TITLE = "Minicraft";
 
-        private static Minicraft _instance;
+        private static MinicraftGame _instance;
         private static Scene _scene = new MainMenuScene();
 
-        public Minicraft()
+        public MinicraftGame()
         {
             _instance = this;
             Display.Graphics = new GraphicsDeviceManager(this);

@@ -1,9 +1,10 @@
 using System;
 using System.Linq;
 using Microsoft.Xna.Framework;
+using Minicraft.Utils;
 using SimplexNoise;
 
-namespace Game.Data
+namespace Minicraft.Game
 {
     public static class WorldGen
     {

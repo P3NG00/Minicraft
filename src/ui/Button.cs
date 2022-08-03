@@ -1,7 +1,8 @@
 using System;
 using Microsoft.Xna.Framework;
+using Minicraft.Utils;
 
-namespace Game.Data
+namespace Minicraft.UI
 {
     public sealed class Button
     {

@@ -1,7 +1,8 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Minicraft.Game;
 
-namespace Game.Data
+namespace Minicraft.Utils
 {
     public static class Display
     {
@@ -32,7 +33,7 @@ namespace Game.Data
 
         private static Point _windowSize = new Point(1280, 720);
 
-        public static void Update(Entity player)
+        public static void Update(Player player)
         {
             var cameraOffset = -(WindowSize.ToVector2() / 2f);
             cameraOffset.X = cameraOffset.X + (player.Position.X * BlockScale);

@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+using Minicraft.Game;
+using Minicraft.Utils;
 
-namespace Game.Data.Scenes
+namespace Minicraft.Scenes
 {
     public sealed class GameScene : Scene
     {
@@ -54,7 +56,7 @@ namespace Game.Data.Scenes
             _lastMouseBlockInt = _lastMouseBlock.ToPoint();
             // handle input
             if (Input.KeyFirstDown(Keys.Escape))
-                Minicraft.SetScene(new MainMenuScene());
+                MinicraftGame.SetScene(new MainMenuScene());
             if (Input.KeyFirstDown(Keys.Tab))
                 Display.ShowGrid = !Display.ShowGrid;
             if (Debug.Enabled && Input.KeyFirstDown(Keys.F11))
