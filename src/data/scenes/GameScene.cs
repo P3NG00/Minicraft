@@ -8,9 +8,26 @@ namespace Game.Data.Scenes
 {
     public sealed class GameScene : Scene
     {
+        private const int UI_SPACER = 5;
+
+        private static readonly Vector2 BarSize = new Vector2(150, 30);
+
+        private int Ticks => _ticks[0];
+        private float AverageFramesPerSecond => _lastFps.Average();
+        private float AverageTicksPerFrame => (float)_lastTickDifferences.Average();
+
+        private float _tickDelta = 0f;
+        private int[] _ticks = new [] {0, 0};
+        private int[] _lastTickDifferences = new int[10];
+        private float[] _lastFps = new float[10];
+
         private readonly Player _player;
         private readonly List<NPC> _npcList = new List<NPC>();
         private readonly World _world;
+
+        private Block _currentBlock = Blocks.Dirt;
+        private Vector2 _lastMouseBlock;
+        private Point _lastMouseBlockInt;
 
         public GameScene()
         {
@@ -21,7 +38,20 @@ namespace Game.Data.Scenes
 
         public void Update(GameTime gameTime)
         {
-            GameInfo.Update(_player, _world, (float)gameTime.ElapsedGameTime.TotalSeconds);
+            // add delta time
+            _tickDelta += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            // move last tick count down
+            for (int i = _lastTickDifferences.Length - 2; i >= 0; i--)
+                _lastTickDifferences[i + 1] = _lastTickDifferences[i];
+            // set last tick difference
+            _lastTickDifferences[0] = _ticks[0] - _ticks[1];
+            // update last tick count
+            _ticks[1] = _ticks[0];
+            // get block position from mouse
+            var mousePos = Input.MousePosition.ToVector2();
+            mousePos.Y = Display.WindowSize.Y - mousePos.Y - 1;
+            _lastMouseBlock = ((mousePos - (Display.WindowSize.ToVector2() / 2f)) / Display.BlockScale) + (_player.Position + new Vector2(0, _player.Dimensions.Y / 2f));
+            _lastMouseBlockInt = _lastMouseBlock.ToPoint();
             // handle input
             if (Input.KeyFirstDown(Keys.Escape))
                 Minicraft.SetScene(new MainMenuScene());
@@ -32,30 +62,30 @@ namespace Game.Data.Scenes
             if (Input.KeyFirstDown(Keys.F12))
                 Debug.Enabled = !Debug.Enabled;
             if (Input.KeyFirstDown(Keys.D1))
-                GameInfo.CurrentBlock = Blocks.Dirt;
+                _currentBlock = Blocks.Dirt;
             if (Input.KeyFirstDown(Keys.D2))
-                GameInfo.CurrentBlock = Blocks.Grass;
+                _currentBlock = Blocks.Grass;
             if (Input.KeyFirstDown(Keys.D3))
-                GameInfo.CurrentBlock = Blocks.Stone;
+                _currentBlock = Blocks.Stone;
             if (Input.KeyFirstDown(Keys.D4))
-                GameInfo.CurrentBlock = Blocks.Wood;
+                _currentBlock = Blocks.Wood;
             if (Input.KeyFirstDown(Keys.D5))
-                GameInfo.CurrentBlock = Blocks.Leaves;
+                _currentBlock = Blocks.Leaves;
             Display.BlockScale = Math.Clamp(Display.BlockScale + Input.ScrollWheel, Display.BLOCK_SCALE_MIN, Display.BLOCK_SCALE_MAX);
             // catch out of bounds
-            if (GameInfo.LastMouseBlockInt.X >= 0 && GameInfo.LastMouseBlockInt.X < _world.Width &&
-                GameInfo.LastMouseBlockInt.Y >= 0 && GameInfo.LastMouseBlockInt.Y < _world.Height)
+            if (_lastMouseBlockInt.X >= 0 && _lastMouseBlockInt.X < _world.Width &&
+                _lastMouseBlockInt.Y >= 0 && _lastMouseBlockInt.Y < _world.Height)
             {
                 bool ctrl = Input.KeyHeld(Keys.LeftControl) || Input.KeyHeld(Keys.RightControl);
                 if (ctrl ? Input.MouseLeftFirstDown() : Input.MouseLeftHeld())
-                    _world.Block(GameInfo.LastMouseBlockInt) = Blocks.Air;
+                    _world.Block(_lastMouseBlockInt) = Blocks.Air;
                 if (ctrl ? Input.MouseRightFirstDown() : Input.MouseRightHeld())
-                    _world.Block(GameInfo.LastMouseBlockInt) = GameInfo.CurrentBlock;
+                    _world.Block(_lastMouseBlockInt) = _currentBlock;
                 if (Input.MouseMiddleFirstDown())
-                    _npcList.Add(new NPC(GameInfo.LastMouseBlock));
+                    _npcList.Add(new NPC(_lastMouseBlock));
             }
             // update for every tick step
-            while (GameInfo.Tick())
+            while (Tick())
             {
                 // clear previously updated positions
                 Debug.UpdatedPoints.Clear();
@@ -70,7 +100,7 @@ namespace Game.Data.Scenes
 
         public void Draw(GameTime gameTime)
         {
-            GameInfo.UpdateFramesPerSecond((float)gameTime.ElapsedGameTime.TotalMilliseconds);
+            UpdateFramesPerSecond((float)gameTime.ElapsedGameTime.TotalMilliseconds);
             // update display handler
             Display.Update(_player);
             // draw world
@@ -80,26 +110,50 @@ namespace Game.Data.Scenes
             // draw npc's
             _npcList.ForEach(npc => npc.Draw());
             // draw ui
-            UI.Draw(_player, _world);
+            // draw health bar
+            var drawPos = new Vector2((Display.WindowSize.X / 2f) - (BarSize.X / 2f), Display.WindowSize.Y - BarSize.Y);
+            Display.Draw(drawPos, BarSize, Colors.UI_Bar);
+            // adjust size to fit within bar
+            drawPos += new Vector2(UI_SPACER);
+            var healthSize = BarSize - (new Vector2(UI_SPACER) * 2);
+            // readjust size to display real health
+            healthSize.X *= _player.Life / _player.MaxLife;
+            Display.Draw(drawPos, healthSize, Colors.UI_Life);
+            // draw health numbers on top of bar
+            var healthString = $"{_player.Life:0.#}/{_player.MaxLife:0.#}";
+            var textSize = Display.FontUI.MeasureString(healthString);
+            drawPos = new Vector2((Display.WindowSize.X / 2f) - (textSize.X / 2f), Display.WindowSize.Y - 22);
+            Display.DrawString(Display.FontUI, drawPos, healthString, Colors.UI_TextLife);
+            // draw currently selected block
+            drawPos = new Vector2(UI_SPACER, Display.WindowSize.Y - Display.FontUI.LineSpacing - UI_SPACER);
+            Display.DrawString(Display.FontUI, drawPos, $"current block: {_currentBlock.Name}", Colors.UI_TextBlock);
+            // draw debug
+            if (Debug.Enabled)
+            {
+                drawPos = new Vector2(UI_SPACER);
+                foreach (var debugInfo in new[] {
+                    $"window_size: {Display.WindowSize.X}x{Display.WindowSize.Y}",
+                    $"world_size: {_world.Width}x{_world.Height}",
+                    $"show_grid: {Display.ShowGrid}",
+                    $"time: {(Ticks / (float)World.TICKS_PER_SECOND):0.000}",
+                    $"ticks: {Ticks} ({World.TICKS_PER_SECOND} ticks/sec)",
+                    $"frames_per_second: {AverageFramesPerSecond:0.000}",
+                    $"ticks_per_frame: {AverageTicksPerFrame:0.000}",
+                    $"x: {_player.Position.X:0.000}",
+                    $"y: {_player.Position.Y:0.000}",
+                    $"block_scale: {Display.BlockScale}",
+                    $"mouse_x: {_lastMouseBlock.X:0.000} ({_lastMouseBlockInt.X})",
+                    $"mouse_y: {_lastMouseBlock.Y:0.000} ({_lastMouseBlockInt.Y})",
+                    $"player_velocity: {_player.Velocity.Length() * _player.MoveSpeed:0.000}",
+                    $"player_grounded: {_player.IsGrounded}"})
+                {
+                    Display.DrawString(Display.FontUI, drawPos, debugInfo, Colors.UI_TextDebug);
+                    drawPos.Y += UI_SPACER + Display.FontUI.LineSpacing;
+                }
+            }
         }
-    }
 
-    static class GameInfo
-    {
-        private static float _tickDelta = 0f;
-        private static int[] _ticks = new [] {0, 0};
-        private static int[] _lastTickDifferences = new int[10];
-        private static float[] _lastFps = new float[10];
-
-        public static Block CurrentBlock = Blocks.Dirt;
-        public static Vector2 LastMouseBlock { get; private set; }
-        public static Point LastMouseBlockInt { get; private set; }
-
-        public static int Ticks => _ticks[0];
-        public static float AverageFramesPerSecond => _lastFps.Average();
-        public static float AverageTicksPerFrame => (float)_lastTickDifferences.Average();
-
-        public static bool Tick()
+        private bool Tick()
         {
             if (_tickDelta >= World.TickStep)
             {
@@ -113,83 +167,13 @@ namespace Game.Data.Scenes
             return false;
         }
 
-        public static void Update(Player player, World world, float timeThisUpdate)
-        {
-            // add delta time
-            _tickDelta += timeThisUpdate;
-            // move last tick count down
-            for (int i = _lastTickDifferences.Length - 2; i >= 0; i--)
-                _lastTickDifferences[i + 1] = _lastTickDifferences[i];
-            // set last tick difference
-            _lastTickDifferences[0] = _ticks[0] - _ticks[1];
-            // update last tick count
-            _ticks[1] = _ticks[0];
-            // get block position from mouse
-            var mousePos = Input.MousePosition.ToVector2();
-            mousePos.Y = Display.WindowSize.Y - mousePos.Y - 1;
-            LastMouseBlock = ((mousePos - (Display.WindowSize.ToVector2() / 2f)) / Display.BlockScale) + (player.Position + new Vector2(0, player.Dimensions.Y / 2f));
-            LastMouseBlockInt = LastMouseBlock.ToPoint();
-        }
-
-        public static void UpdateFramesPerSecond(float timeThisFrame)
+        private void UpdateFramesPerSecond(float timeThisFrame)
         {
             // move values down
             for (int i = _lastFps.Length - 2; i >= 0; i--)
                 _lastFps[i + 1] = _lastFps[i];
             // store fps value
             _lastFps[0] = 1000f / timeThisFrame;
-        }
-    }
-
-    static class UI
-    {
-        private const int UI_SPACER = 5;
-
-        private static readonly Vector2 BarSize = new Vector2(150, 30);
-
-        public static void Draw(Player player, World world)
-        {
-            // draw health bar
-            var drawPos = new Vector2((Display.WindowSize.X / 2f) - (BarSize.X / 2f), Display.WindowSize.Y - BarSize.Y);
-            Display.Draw(drawPos, BarSize, Colors.UI_Bar);
-            // adjust size to fit within bar
-            drawPos += new Vector2(UI_SPACER);
-            var healthSize = BarSize - (new Vector2(UI_SPACER) * 2);
-            // readjust size to display real health
-            healthSize.X *= player.Life / player.MaxLife;
-            Display.Draw(drawPos, healthSize, Colors.UI_Life);
-            // draw health numbers on top of bar
-            var healthString = $"{player.Life:0.#}/{player.MaxLife:0.#}";
-            var textSize = Display.FontUI.MeasureString(healthString);
-            drawPos = new Vector2((Display.WindowSize.X / 2f) - (textSize.X / 2f), Display.WindowSize.Y - 22);
-            Display.DrawString(Display.FontUI, drawPos, healthString, Colors.UI_TextLife);
-            // draw currently selected block
-            drawPos = new Vector2(UI_SPACER, Display.WindowSize.Y - Display.FontUI.LineSpacing - UI_SPACER);
-            Display.DrawString(Display.FontUI, drawPos, $"current block: {GameInfo.CurrentBlock.Name}", Colors.UI_TextBlock);
-            // draw debug
-            if (Debug.Enabled)
-            {
-                drawPos = new Vector2(UI_SPACER);
-                foreach (var debugInfo in new[] {
-                    $"window_size: {Display.WindowSize.X}x{Display.WindowSize.Y}",
-                    $"world_size: {world.Width}x{world.Height}",
-                    $"show_grid: {Display.ShowGrid}",
-                    $"time: {(GameInfo.Ticks / (float)World.TICKS_PER_SECOND):0.000}",
-                    $"ticks: {GameInfo.Ticks} ({World.TICKS_PER_SECOND} ticks/sec)",
-                    $"frames_per_second: {GameInfo.AverageFramesPerSecond:0.000}",
-                    $"ticks_per_frame: {GameInfo.AverageTicksPerFrame:0.000}",
-                    $"x: {player.Position.X:0.000}",
-                    $"y: {player.Position.Y:0.000}",
-                    $"block_scale: {Display.BlockScale}",
-                    $"mouse_x: {GameInfo.LastMouseBlock.X:0.000} ({GameInfo.LastMouseBlockInt.X})",
-                    $"mouse_y: {GameInfo.LastMouseBlock.Y:0.000} ({GameInfo.LastMouseBlockInt.Y})",
-                    $"player_velocity: {player.Velocity.Length() * player.MoveSpeed:0.000}",
-                    $"player_grounded: {player.IsGrounded}"})
-                {
-                    Display.DrawString(Display.FontUI, drawPos, debugInfo, Colors.UI_TextDebug);
-                    drawPos.Y += UI_SPACER + Display.FontUI.LineSpacing;
-                }
-            }
         }
     }
 }
