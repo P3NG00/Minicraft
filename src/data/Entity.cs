@@ -198,6 +198,7 @@ namespace Game.Data
             // check life
             if (!Alive)
             {
+                // TODO display death screen and click button to respawn
                 // reset health
                 ResetHealth();
                 // respawn
@@ -213,8 +214,43 @@ namespace Game.Data
         private const float NPC_LIFE = 2f;
         private static readonly Vector2 NPCSize = new Vector2(1.5f, 2.2f);
 
-        public NPC(Vector2 position) : base(position, NPC_LIFE, Colors.Entity_NPC, NPCSize, NPC_SPEED, NPC_JUMP) {}
+        private const int NPC_AI_UPDATE_TICKS_MIN = World.TICKS_PER_SECOND * 3;
+        private const int NPC_AI_UPDATE_TICKS_MAX = World.TICKS_PER_SECOND * 5;
+        private const float NPC_AI_GOAL_DISTANCE_MIN = 0.5f;
 
-        // TODO override update to add AI movement to NPC
+        private int? _goalX = null;
+        private int _aiUpdateTicks;
+
+        public NPC(Vector2 position) : base(position, NPC_LIFE, Colors.Entity_NPC, NPCSize, NPC_SPEED, NPC_JUMP) => ResetAIUpdateTimer();
+
+        private void ResetAIUpdateTimer() => _aiUpdateTicks = Util.Random.Next(NPC_AI_UPDATE_TICKS_MIN, NPC_AI_UPDATE_TICKS_MAX + 1);
+
+        public sealed override void Update(World world)
+        {
+            // decrement update ticks
+            _aiUpdateTicks--;
+            // test update
+            if (_aiUpdateTicks == 0)
+            {
+                _goalX = _goalX.HasValue ? null : (int?)Util.Random.Next(world.Width);
+                ResetAIUpdateTimer();
+            }
+            // test goal
+            if (_goalX.HasValue)
+            {
+                // if goal reached
+                if (Math.Abs(Position.X - _goalX.Value) <= NPC_AI_GOAL_DISTANCE_MIN)
+                {
+                    _goalX = null;
+                    ResetAIUpdateTimer();
+                }
+                else
+                    Velocity.X = Position.X < _goalX.Value ? 1f : -1f;
+            }
+            else
+                Velocity.X = 0f;
+            // base call
+            base.Update(world);
+        }
     }
 }
