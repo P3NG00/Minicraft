@@ -11,21 +11,20 @@ namespace Minicraft.Game
         public const float GRAVITY = 10f;
 
         public static readonly float TickStep = 1f / TICKS_PER_SECOND;
-        public static Point DefaultSize => new Point(1024, 512);
 
-        public int Width => Size.X;
-        public int Height => Size.Y;
+        public int Width => _size.X;
+        public int Height => _size.Y;
 
-        public Point Size { get; private set; }
-        public int BlockUpdatesPerTick { get; private set; }
+        private readonly Point _size;
+        private readonly int _blockUpdatesPerTick;
 
         private Block[,] _blockGrid;
 
         public World(Block[,] blockGrid)
         {
             _blockGrid = blockGrid;
-            Size = new Point(_blockGrid.GetLength(1), _blockGrid.GetLength(0));
-            BlockUpdatesPerTick = (int)(((Width * Height) * WORLD_UPDATED_PER_SECOND) / World.TICKS_PER_SECOND);
+            _size = new Point(_blockGrid.GetLength(1), _blockGrid.GetLength(0));
+            _blockUpdatesPerTick = (int)(((Width * Height) * WORLD_UPDATED_PER_SECOND) / World.TICKS_PER_SECOND);
         }
 
         public ref Block Block(Point position) => ref _blockGrid[position.Y, position.X];
@@ -43,10 +42,10 @@ namespace Minicraft.Game
 
         public void Update()
         {
-            for (int i = 0; i < BlockUpdatesPerTick; i++)
+            for (int i = 0; i < _blockUpdatesPerTick; i++)
             {
                 // get random point
-                var pos = Util.Random.NextPoint(Size);
+                var pos = Util.Random.NextPoint(_size);
                 // update block at that point
                 Block(pos).Update(pos, this);
             }

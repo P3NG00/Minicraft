@@ -44,6 +44,12 @@ namespace Minicraft.Game
 
         public void Damage(float amount) => _life = Math.Max(_life - amount, 0f);
 
+        public void Jump()
+        {
+            Velocity.Y = JumpVelocity;
+            IsGrounded = false;
+        }
+
         public virtual void Update(World world)
         {
             // add velocity if falling // TODO add max velocity
@@ -190,10 +196,7 @@ namespace Minicraft.Game
             Velocity.X = h;
             // check jump
             if (IsGrounded && Input.KeyHeld(Keys.Space))
-            {
-                Velocity.Y = JumpVelocity;
-                IsGrounded = false;
-            }
+                Jump();
             // base call
             base.Update(world);
             // check life
@@ -246,7 +249,11 @@ namespace Minicraft.Game
                     ResetAIUpdateTimer();
                 }
                 else
+                {
+                    // set velocity towards goal
                     Velocity.X = Position.X < _goalX.Value ? 1f : -1f;
+                    // TODO jump if block in way
+                }
             }
             else
                 Velocity.X = 0f;

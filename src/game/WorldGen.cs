@@ -8,6 +8,7 @@ namespace Minicraft.Game
 {
     public static class WorldGen
     {
+        private static readonly Point WorldSize = new Point(1024, 512);
         private const int CHUNK_WIDTH = 16;
         private const int CHUNK_HEIGHT_VARIATION_RADIUS = 32;
         private const int STONE_OFFSET = 32;
@@ -25,10 +26,9 @@ namespace Minicraft.Game
         {
             int x, y;
             // create grid of air blocks for modification
-            var worldSize = World.DefaultSize;
-            var blockGrid = new Block[worldSize.Y, worldSize.X];
-            for (y = 0; y < worldSize.Y; y++)
-                for (x = 0; x < worldSize.X; x++)
+            var blockGrid = new Block[WorldSize.Y, WorldSize.X];
+            for (y = 0; y < WorldSize.Y; y++)
+                for (x = 0; x < WorldSize.X; x++)
                     blockGrid[y, x] = Blocks.Air;
             var world = new World(blockGrid);
             // create height map
