@@ -100,7 +100,7 @@ namespace Minicraft.Game
                 }
             }
             // player grounded
-            else
+            if (IsGrounded)
             {
                 // update last height
                 _lastHeight = Position.Y;
