@@ -3,11 +3,11 @@ using Minicraft.Utils;
 
 namespace Minicraft.Game
 {
-    public class Block
+    public partial class Block
     {
-        public string Name { get; private set; }
-        public Color Color { get; private set; }
-        public bool CanWalkThrough { get; private set; }
+        public readonly string Name;
+        public readonly Color Color;
+        public readonly bool CanWalkThrough;
 
         public Block(string name, Color color, bool canWalkThrough = false)
         {
@@ -22,6 +22,23 @@ namespace Minicraft.Game
             if (Debug.Enabled && Debug.TrackUpdated)
                 Debug.UpdatedPoints.Add(position);
         }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is Blocks blocks)
+                return this == blocks;
+            if (obj is Block block)
+                return this == block;
+            return false;
+        }
+
+        public override int GetHashCode() => Name.GetHashCode() + Color.GetHashCode() + CanWalkThrough.GetHashCode();
+
+        public static implicit operator Block(Blocks blockType) => _blockArray[((int)blockType)];
+
+        public static bool operator ==(Block block, Blocks blockType) => block == (Block)blockType;
+
+        public static bool operator !=(Block block, Blocks blockType) => block != (Block)blockType;
     }
 
     public sealed class BlockGrass : Block
@@ -40,7 +57,7 @@ namespace Minicraft.Game
             // if able to spread
             if (position.Y + 1 == world.Height || world.Block(position + new Point(0, 1)).CanWalkThrough)
             {
-                // check blocks to spread to
+                // check random spread position
                 var offset = _spreadOffsets.GetRandom();
                 var checkPos = position + offset;
                 if (checkPos.X >= 0 && checkPos.X < world.Width &&
@@ -65,7 +82,7 @@ namespace Minicraft.Game
         private static readonly Point[] _checkOffsets = new []
         {
             new Point(-1,  1), new Point(0,  1), new Point(1,  1),
-            new Point(-1,  0),                   new Point(1,  0),
+            new Point(-1,  0), /*   center   */  new Point(1,  0),
             new Point(-1, -1), new Point(0, -1), new Point(1, -1),
         };
 
