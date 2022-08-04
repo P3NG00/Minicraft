@@ -8,7 +8,10 @@ namespace Minicraft.Game
 {
     public static class WorldGen
     {
-        private static readonly Point WorldSize = new Point(1024, 512);
+        public const string SAVE_FILE = "save";
+
+        public static readonly Point WorldSize = new Point(1024, 512);
+
         private const int CHUNK_WIDTH = 16;
         private const int CHUNK_HEIGHT_VARIATION_RADIUS = 32;
         private const int STONE_OFFSET = 32;

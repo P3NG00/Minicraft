@@ -31,10 +31,9 @@ namespace Minicraft.Scenes
         private Vector2 _lastMouseBlock;
         private Point _lastMouseBlockInt;
 
-        public GameScene()
+        public GameScene(World world)
         {
-            // TODO change to accept world as passed in parameter for custom generated worlds
-            _world = WorldGen.GenerateWorld();
+            _world = world;
             _player = new Player(_world);
         }
 
@@ -55,11 +54,19 @@ namespace Minicraft.Scenes
             _lastMouseBlock = ((mousePos - (Display.WindowSize.ToVector2() / 2f)) / Display.BlockScale) + (_player.Position + new Vector2(0, _player.Dimensions.Y / 2f));
             _lastMouseBlockInt = _lastMouseBlock.ToPoint();
             // handle input
-            // TODO add a 'save' keybind and save the world block types to a serialized file
             if (Input.KeyFirstDown(Keys.Escape))
+            {
+                _world.Save();
                 MinicraftGame.SetScene(new MainMenuScene());
+            }
+            // end key will cause program to end in main loop. this is here to detect and save the world before closing
+            if (Input.KeyFirstDown(Keys.End))
+                _world.Save();
             if (Input.KeyFirstDown(Keys.Tab))
                 Display.ShowGrid = !Display.ShowGrid;
+            bool ctrl = Input.KeyHeld(Keys.LeftControl) || Input.KeyHeld(Keys.RightControl);
+            if (ctrl && Input.KeyFirstDown(Keys.F1))
+                _world.Save();
             if (Debug.Enabled && Input.KeyFirstDown(Keys.F11))
                 Debug.TrackUpdated = !Debug.TrackUpdated;
             if (Input.KeyFirstDown(Keys.F12))
@@ -79,7 +86,6 @@ namespace Minicraft.Scenes
             if (_lastMouseBlockInt.X >= 0 && _lastMouseBlockInt.X < _world.Width &&
                 _lastMouseBlockInt.Y >= 0 && _lastMouseBlockInt.Y < _world.Height)
             {
-                bool ctrl = Input.KeyHeld(Keys.LeftControl) || Input.KeyHeld(Keys.RightControl);
                 if (ctrl ? Input.MouseLeftFirstDown() : Input.MouseLeftHeld())
                     _world.BlockTypeAt(_lastMouseBlockInt) = BlockType.Air;
                 if (ctrl ? Input.MouseRightFirstDown() : Input.MouseRightHeld())

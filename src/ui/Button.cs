@@ -10,8 +10,8 @@ namespace Minicraft.UI
         private readonly Vector2 _relativeCenter;
         private readonly Point _size;
         private readonly string _text;
-        private readonly Action _action;
 
+        public Action Action;
         public Color ColorBox;
         public Color ColorText;
         public Color? ColorBoxHighlight = null;
@@ -20,14 +20,13 @@ namespace Minicraft.UI
         private Rectangle _lastRect;
         private bool _highlighted = false;
 
-        public Button(Vector2 relativeCenter, Point size, string text, Color colorBox, Color colorText, Action actionOnClick)
+        public Button(Vector2 relativeCenter, Point size, string text, Color colorBox, Color colorText)
         {
             _relativeCenter = relativeCenter;
             _size = size;
             _text = text;
             ColorBox = colorBox;
             ColorText = colorText;
-            _action = actionOnClick;
         }
 
         public void Update()
@@ -37,7 +36,7 @@ namespace Minicraft.UI
             // test bounds
             _highlighted = _lastRect.Contains(Input.MousePosition);
             if (Input.MouseLeftFirstUp() && _highlighted)
-                _action();
+                Action();
         }
 
         public void Draw()

@@ -60,7 +60,7 @@ namespace Minicraft
             // handle input
             if (Input.KeyFirstDown(Keys.End))
                 EndProgram();
-            if (Input.KeyFirstDown(Keys.F1))
+            if (Input.KeyFirstDown(Keys.F10))
                 Window.IsBorderless = !Window.IsBorderless;
             // update scene
             _scene.Update(gameTime);

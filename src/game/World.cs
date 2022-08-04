@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using Microsoft.Xna.Framework;
 using Minicraft.Utils;
 
@@ -86,6 +87,15 @@ namespace Minicraft.Game
                     var blockPos = new Point(blockX, blockY);
                     Display.Draw(drawPos, drawScale, Debug.Enabled && Debug.TrackUpdated && Debug.UpdatedPoints.Remove(blockPos) ? Colors.Debug_BlockUpdate : BlockTypeAt(blockPos).GetBlock().Color);
                 }
+            }
+        }
+
+        public void Save()
+        {
+            using (var stream = new StreamWriter(File.OpenWrite(WorldGen.SAVE_FILE)))
+            {
+                foreach (var v in _blockGrid)
+                    stream.Write((char)v);
             }
         }
     }

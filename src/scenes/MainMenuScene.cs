@@ -1,5 +1,7 @@
+using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+using Minicraft.Game;
 using Minicraft.UI;
 using Minicraft.Utils;
 
@@ -7,15 +9,23 @@ namespace Minicraft.Scenes
 {
     public sealed class MainMenuScene : Scene
     {
-        private readonly Button _buttonWorld = new Button(new Vector2(0.5f, 0.6f), new Point(250, 50), "create world", Colors.MainMenu_Button_CreateWorld, Colors.MainMenu_Text_CreateWorld, () => MinicraftGame.SetScene(new GameScene()));
-        private readonly Button _buttonExit = new Button(new Vector2(0.5f, 0.8f), new Point(120, 30), "exit", Colors.MainMenu_Button_Exit, Colors.MainMenu_Text_Exit, MinicraftGame.EndProgram);
+        private readonly Button _buttonWorldNew = new Button(new Vector2(0.5f, 0.6f), new Point(250, 50), "create world", Colors.MainMenu_Button_World, Colors.MainMenu_Text_World);
+        private readonly Button _buttonWorldContinue = new Button(new Vector2(0.5f, 0.7f), new Point(250, 50), "continue world", Colors.MainMenu_Button_World, Colors.MainMenu_Text_World);
+        private readonly Button _buttonExit = new Button(new Vector2(0.5f, 0.8f), new Point(120, 30), "exit", Colors.MainMenu_Button_Exit, Colors.MainMenu_Text_Exit);
+        private readonly bool _savedWorld;
 
         public MainMenuScene()
         {
-            _buttonWorld.ColorBoxHighlight = Colors.MainMenu_Button_CreateWorld_Highlight;
-            _buttonWorld.ColorTextHighlight = Colors.MainMenu_Text_CreateWorld_Highlight;
+            _buttonWorldNew.Action = () => MinicraftGame.SetScene(new GameScene(WorldGen.GenerateWorld()));
+            _buttonWorldNew.ColorBoxHighlight = Colors.MainMenu_Button_World_Highlight;
+            _buttonWorldNew.ColorTextHighlight = Colors.MainMenu_Text_World_Highlight;
+            _buttonWorldContinue.Action = LoadSavedWorld;
+            _buttonWorldContinue.ColorBoxHighlight = Colors.MainMenu_Button_World_Highlight;
+            _buttonWorldContinue.ColorTextHighlight = Colors.MainMenu_Text_World_Highlight;
+            _buttonExit.Action = MinicraftGame.EndProgram;
             _buttonExit.ColorBoxHighlight = Colors.MainMenu_Button_Exit_Highlight;
             _buttonExit.ColorTextHighlight = Colors.MainMenu_Text_Exit_Highlight;
+            _savedWorld = File.Exists("save");
         }
 
         public void Update(GameTime gameTime)
@@ -24,8 +34,10 @@ namespace Minicraft.Scenes
             if (Input.KeyFirstDown(Keys.Escape))
                 MinicraftGame.EndProgram();
             // update buttons
-            _buttonWorld.Update();
+            _buttonWorldNew.Update();
             _buttonExit.Update();
+            if (_savedWorld)
+                _buttonWorldContinue.Update();
         }
 
         public void Draw(GameTime gameTime)
@@ -36,8 +48,22 @@ namespace Minicraft.Scenes
             var y = (Display.WindowSize.Y / 3f) - (textSize.Y / 2f);
             Display.DrawString(Display.FontTitle, new Vector2(x, y), MinicraftGame.TITLE, Colors.UI_Title);
             // draw buttons
-            _buttonWorld.Draw();
+            _buttonWorldNew.Draw();
             _buttonExit.Draw();
+            if (_savedWorld)
+                _buttonWorldContinue.Draw();
+        }
+
+        public void LoadSavedWorld()
+        {
+            var blockGrid = new BlockType[WorldGen.WorldSize.Y, WorldGen.WorldSize.X];
+            using (var stream = File.OpenText(WorldGen.SAVE_FILE))
+            {
+                for (int y = 0; y < WorldGen.WorldSize.Y; y++)
+                    for (int x = 0; x < WorldGen.WorldSize.X; x++)
+                        blockGrid[y, x] = (BlockType)stream.Read();
+            }
+            MinicraftGame.SetScene(new GameScene(new World(blockGrid)));
         }
     }
 }
