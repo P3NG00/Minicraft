@@ -27,7 +27,7 @@ namespace Minicraft.Scenes
         private readonly List<NPC> _npcList = new List<NPC>();
         private readonly World _world;
 
-        private Block _currentBlock = Blocks.Dirt;
+        private BlockType _currentBlock = BlockType.Dirt;
         private Vector2 _lastMouseBlock;
         private Point _lastMouseBlockInt;
 
@@ -55,6 +55,7 @@ namespace Minicraft.Scenes
             _lastMouseBlock = ((mousePos - (Display.WindowSize.ToVector2() / 2f)) / Display.BlockScale) + (_player.Position + new Vector2(0, _player.Dimensions.Y / 2f));
             _lastMouseBlockInt = _lastMouseBlock.ToPoint();
             // handle input
+            // TODO add a 'save' keybind and save the world block types to a serialized file
             if (Input.KeyFirstDown(Keys.Escape))
                 MinicraftGame.SetScene(new MainMenuScene());
             if (Input.KeyFirstDown(Keys.Tab))
@@ -64,15 +65,15 @@ namespace Minicraft.Scenes
             if (Input.KeyFirstDown(Keys.F12))
                 Debug.Enabled = !Debug.Enabled;
             if (Input.KeyFirstDown(Keys.D1))
-                _currentBlock = Blocks.Dirt;
+                _currentBlock = BlockType.Dirt;
             if (Input.KeyFirstDown(Keys.D2))
-                _currentBlock = Blocks.Grass;
+                _currentBlock = BlockType.Grass;
             if (Input.KeyFirstDown(Keys.D3))
-                _currentBlock = Blocks.Stone;
+                _currentBlock = BlockType.Stone;
             if (Input.KeyFirstDown(Keys.D4))
-                _currentBlock = Blocks.Wood;
+                _currentBlock = BlockType.Wood;
             if (Input.KeyFirstDown(Keys.D5))
-                _currentBlock = Blocks.Leaves;
+                _currentBlock = BlockType.Leaves;
             Display.BlockScale = Math.Clamp(Display.BlockScale + Input.ScrollWheel, Display.BLOCK_SCALE_MIN, Display.BLOCK_SCALE_MAX);
             // catch out of bounds
             if (_lastMouseBlockInt.X >= 0 && _lastMouseBlockInt.X < _world.Width &&
@@ -80,9 +81,9 @@ namespace Minicraft.Scenes
             {
                 bool ctrl = Input.KeyHeld(Keys.LeftControl) || Input.KeyHeld(Keys.RightControl);
                 if (ctrl ? Input.MouseLeftFirstDown() : Input.MouseLeftHeld())
-                    _world.Block(_lastMouseBlockInt) = Blocks.Air;
+                    _world.BlockTypeAt(_lastMouseBlockInt) = BlockType.Air;
                 if (ctrl ? Input.MouseRightFirstDown() : Input.MouseRightHeld())
-                    _world.Block(_lastMouseBlockInt) = _currentBlock;
+                    _world.BlockTypeAt(_lastMouseBlockInt) = _currentBlock;
                 if (Input.MouseMiddleFirstDown())
                     _npcList.Add(new NPC(_lastMouseBlock));
             }
@@ -128,7 +129,7 @@ namespace Minicraft.Scenes
             Display.DrawString(Display.FontUI, drawPos, healthString, Colors.UI_TextLife);
             // draw currently selected block
             drawPos = new Vector2(UI_SPACER, Display.WindowSize.Y - Display.FontUI.LineSpacing - UI_SPACER);
-            Display.DrawString(Display.FontUI, drawPos, $"current block: {_currentBlock.Name}", Colors.UI_TextBlock);
+            Display.DrawString(Display.FontUI, drawPos, $"current block: {_currentBlock.GetBlock().Name}", Colors.UI_TextBlock);
             // draw debug
             if (Debug.Enabled)
             {

@@ -72,7 +72,7 @@ namespace Minicraft.Game
                     // test feet blocks
                     for (int x = left; x <= right; x++)
                     {
-                        if (!world.Block(new Point(x, bottom)).CanWalkThrough)
+                        if (!world.BlockTypeAt(new Point(x, bottom)).GetBlock().CanWalkThrough)
                         {
                             testPosition.Y = MathF.Ceiling(testPosition.Y);
                             Velocity.Y = 0f;
@@ -90,7 +90,7 @@ namespace Minicraft.Game
                     // test head blocks
                     for (int x = left; x <= right; x++)
                     {
-                        if (!world.Block(new Point(x, top)).CanWalkThrough)
+                        if (!world.BlockTypeAt(new Point(x, top)).GetBlock().CanWalkThrough)
                         {
                             testPosition.Y = top - Dimensions.Y;
                             Velocity.Y = 0f;
@@ -107,7 +107,7 @@ namespace Minicraft.Game
                 // test walking on air
                 bool onAir = true;
                 for (int x = left; x <= right && onAir; x++)
-                    if (!world.Block(new Point(x, bottom - 1)).CanWalkThrough)
+                    if (!world.BlockTypeAt(new Point(x, bottom - 1)).GetBlock().CanWalkThrough)
                         onAir = false;
                 if (onAir)
                     IsGrounded = false;
@@ -126,7 +126,7 @@ namespace Minicraft.Game
                     // test left blocks
                     for (int y = bottom; y <= top; y++)
                     {
-                        if (!world.Block(new Point(left, y)).CanWalkThrough)
+                        if (!world.BlockTypeAt(new Point(left, y)).GetBlock().CanWalkThrough)
                         {
                             testPosition.X = left + 1 + halfWidth;
                             Velocity.X = 0f;
@@ -140,7 +140,7 @@ namespace Minicraft.Game
                     // test right blocks
                     for (int y = bottom; y <= top; y++)
                     {
-                        if (!world.Block(new Point(right, y)).CanWalkThrough)
+                        if (!world.BlockTypeAt(new Point(right, y)).GetBlock().CanWalkThrough)
                         {
                             testPosition.X = right - halfWidth;
                             Velocity.X = 0f;
@@ -182,7 +182,7 @@ namespace Minicraft.Game
         public void Respawn(World world)
         {
             var playerX = (int)(world.Width / 2f);
-            Position = new Vector2(playerX, Math.Max(world.GetTopBlock(playerX - 1).y, world.GetTopBlock(playerX).y) + 1);
+            Position = new Vector2(playerX, Math.Max(world.GetTop(playerX - 1).y, world.GetTop(playerX).y) + 1);
         }
 
         public sealed override void Update(World world)

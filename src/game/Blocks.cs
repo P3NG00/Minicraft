@@ -2,7 +2,7 @@ using Microsoft.Xna.Framework;
 
 namespace Minicraft.Game
 {
-    public enum Blocks
+    public enum BlockType
     {
         Air = 0,
         Dirt = 1,

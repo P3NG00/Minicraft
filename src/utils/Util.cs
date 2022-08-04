@@ -1,5 +1,6 @@
 using System;
 using Microsoft.Xna.Framework;
+using Minicraft.Game;
 
 namespace Minicraft.Utils
 {
@@ -8,6 +9,8 @@ namespace Minicraft.Utils
         public static readonly Random Random = new Random();
 
         public static T GetRandom<T>(this T[] t) => t[Random.Next(t.Length)];
+
+        public static Block GetBlock(this BlockType blockType) => (Block)blockType;
 
         public static bool TestChance(this Random random, float chance)
         {

@@ -25,7 +25,7 @@ namespace Minicraft.Game
 
         public override bool Equals(object obj)
         {
-            if (obj is Blocks blocks)
+            if (obj is BlockType blocks)
                 return this == blocks;
             if (obj is Block block)
                 return this == block;
@@ -34,11 +34,11 @@ namespace Minicraft.Game
 
         public override int GetHashCode() => Name.GetHashCode() + Color.GetHashCode() + CanWalkThrough.GetHashCode();
 
-        public static implicit operator Block(Blocks blockType) => _blockArray[((int)blockType)];
+        public static implicit operator Block(BlockType blockType) => _blockArray[((int)blockType)];
 
-        public static bool operator ==(Block block, Blocks blockType) => block == (Block)blockType;
+        public static bool operator ==(Block block, BlockType blockType) => block == (Block)blockType;
 
-        public static bool operator !=(Block block, Blocks blockType) => block != (Block)blockType;
+        public static bool operator !=(Block block, BlockType blockType) => block != (Block)blockType;
     }
 
     public sealed class BlockGrass : Block
@@ -55,7 +55,7 @@ namespace Minicraft.Game
         public sealed override void Update(Point position, World world)
         {
             // if able to spread
-            if (position.Y + 1 == world.Height || world.Block(position + new Point(0, 1)).CanWalkThrough)
+            if (position.Y + 1 == world.Height || world.BlockTypeAt(position + new Point(0, 1)).GetBlock().CanWalkThrough)
             {
                 // check random spread position
                 var offset = _spreadOffsets.GetRandom();
@@ -63,15 +63,15 @@ namespace Minicraft.Game
                 if (checkPos.X >= 0 && checkPos.X < world.Width &&
                     checkPos.Y >= 0 && checkPos.Y < world.Height)
                 {
-                    var block = world.Block(checkPos);
+                    ref BlockType block = ref world.BlockTypeAt(checkPos);
                     var upPos = checkPos + new Point(0, 1);
-                    if (block == Blocks.Dirt && (upPos.Y == world.Height || world.Block(upPos).CanWalkThrough))
-                        world.Block(checkPos) = Blocks.Grass;
+                    if (block == BlockType.Dirt && (upPos.Y == world.Height || world.BlockTypeAt(upPos).GetBlock().CanWalkThrough))
+                        block = BlockType.Grass;
                 }
             }
             // if unable to spread
             else
-                world.Block(position) = Blocks.Dirt;
+                world.BlockTypeAt(position) = BlockType.Dirt;
             // base call
             base.Update(position, world);
         }
@@ -100,7 +100,7 @@ namespace Minicraft.Game
                     checkPos.Y >= 0 && checkPos.Y < world.Height)
                 {
                     // if wood detected
-                    if (world.Block(checkPos) == Blocks.Wood)
+                    if (world.BlockTypeAt(checkPos) == BlockType.Wood)
                     {
                         // set log flag
                         log = true;
@@ -111,7 +111,7 @@ namespace Minicraft.Game
             }
             // if no log, remove leaves
             if (!log)
-                world.Block(position) = Blocks.Air;
+                world.BlockTypeAt(position) = BlockType.Air;
             // base call
             base.Update(position, world);
         }
