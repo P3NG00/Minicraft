@@ -93,10 +93,8 @@ namespace Minicraft.Game
         public void Save()
         {
             using (var stream = new StreamWriter(File.OpenWrite(WorldGen.SAVE_FILE)))
-            {
                 foreach (var v in _blockGrid)
                     stream.Write((char)v);
-            }
         }
     }
 }

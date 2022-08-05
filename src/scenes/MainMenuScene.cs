@@ -60,11 +60,9 @@ namespace Minicraft.Scenes
         {
             var blockGrid = new BlockType[WorldGen.WorldSize.Y, WorldGen.WorldSize.X];
             using (var stream = File.OpenText(WorldGen.SAVE_FILE))
-            {
                 for (int y = 0; y < WorldGen.WorldSize.Y; y++)
                     for (int x = 0; x < WorldGen.WorldSize.X; x++)
                         blockGrid[y, x] = (BlockType)stream.Read();
-            }
             MinicraftGame.SetScene(new GameScene(new World(blockGrid)));
         }
     }
