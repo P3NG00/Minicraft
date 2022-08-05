@@ -16,7 +16,7 @@ namespace Minicraft.Scenes
 
         public MainMenuScene()
         {
-            _buttonWorldNew.Action = () => MinicraftGame.SetScene(new GameScene(WorldGen.GenerateWorld()));
+            _buttonWorldNew.Action = CreateNewWorld;
             _buttonWorldNew.ColorBoxHighlight = Colors.MainMenu_Button_World_Highlight;
             _buttonWorldNew.ColorTextHighlight = Colors.MainMenu_Text_World_Highlight;
             _buttonWorldContinue.Action = LoadSavedWorld;
@@ -54,7 +54,9 @@ namespace Minicraft.Scenes
                 _buttonWorldContinue.Draw();
         }
 
-        public void LoadSavedWorld()
+        private void CreateNewWorld() => MinicraftGame.SetScene(new GameScene(WorldGen.GenerateWorld()));
+
+        private void LoadSavedWorld()
         {
             var blockGrid = new BlockType[WorldGen.WorldSize.Y, WorldGen.WorldSize.X];
             using (var stream = File.OpenText(WorldGen.SAVE_FILE))
