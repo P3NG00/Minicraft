@@ -63,47 +63,33 @@ namespace Minicraft.Game
             var halfWidth = Dimensions.X / 2f;
             var left = (int)(testPosition.X - halfWidth);
             var right = (int)(testPosition.X + halfWidth);
-            // player not grounded, vertical velocity is not zero
+            // entity not grounded, vertical velocity is not zero
             if (!IsGrounded)
             {
-                // down
-                if (Velocity.Y < 0f)
+                var blocked = false;
+                var isMovingDown = Velocity.Y < 0f;
+                var side = isMovingDown ? bottom : top;
+                for (int x = left; x <= right && !blocked; x++)
+                    if (!world.BlockTypeAt(new Point(x, side)).GetBlock().CanWalkThrough)
+                        blocked = true;
+                if (blocked)
                 {
-                    // test feet blocks
-                    for (int x = left; x <= right; x++)
+                    Velocity.Y = 0f;
+                    if (isMovingDown)
                     {
-                        if (!world.BlockTypeAt(new Point(x, bottom)).GetBlock().CanWalkThrough)
-                        {
-                            testPosition.Y = MathF.Ceiling(testPosition.Y);
-                            Velocity.Y = 0f;
-                            IsGrounded = true;
-                            var fallenDistance = _lastHeight - Position.Y - FALL_DISTANCE_MIN;
-                            if (fallenDistance > 0f)
-                                Damage(fallenDistance * FALL_DAMAGE_PER_BLOCK);
-                            break;
-                        }
+                        testPosition.Y = MathF.Ceiling(testPosition.Y);
+                        IsGrounded = true;
+                        var fallenDistance = _lastHeight - Position.Y - FALL_DISTANCE_MIN;
+                        if (fallenDistance > 0f)
+                            Damage(fallenDistance * FALL_DAMAGE_PER_BLOCK);
                     }
-                }
-                // up
-                else
-                {
-                    // test head blocks
-                    for (int x = left; x <= right; x++)
-                    {
-                        if (!world.BlockTypeAt(new Point(x, top)).GetBlock().CanWalkThrough)
-                        {
-                            testPosition.Y = top - Dimensions.Y;
-                            Velocity.Y = 0f;
-                            break;
-                        }
-                    }
+                    else
+                        testPosition.Y = top - Dimensions.Y;
                 }
             }
-            // player grounded
-            if (IsGrounded)
+            // entity grounded
+            else
             {
-                // update last height
-                _lastHeight = Position.Y;
                 // test walking on air
                 bool onAir = true;
                 for (int x = left; x <= right && onAir; x++)
@@ -120,42 +106,29 @@ namespace Minicraft.Game
             // test horizontal collision
             if (Velocity.X != 0f)
             {
-                // left
-                if (Velocity.X < 0f)
+                bool blocked = false;
+                var isMovingLeft = Velocity.X < 0f;
+                var side = isMovingLeft ? left : right;
+                var sideOffset = isMovingLeft ? left + 1 + halfWidth : right - halfWidth;
+                for (int y = bottom; y <= top && !blocked; y++)
+                    if (!world.BlockTypeAt(new Point(side, y)).GetBlock().CanWalkThrough)
+                        blocked = true;
+                if (blocked)
                 {
-                    // test left blocks
-                    for (int y = bottom; y <= top; y++)
-                    {
-                        if (!world.BlockTypeAt(new Point(left, y)).GetBlock().CanWalkThrough)
-                        {
-                            testPosition.X = left + 1 + halfWidth;
-                            Velocity.X = 0f;
-                            break;
-                        }
-                    }
-                }
-                // right
-                else
-                {
-                    // test right blocks
-                    for (int y = bottom; y <= top; y++)
-                    {
-                        if (!world.BlockTypeAt(new Point(right, y)).GetBlock().CanWalkThrough)
-                        {
-                            testPosition.X = right - halfWidth;
-                            Velocity.X = 0f;
-                            break;
-                        }
-                    }
+                    testPosition.X = sideOffset;
+                    Velocity.X = 0f;
                 }
             }
             // update position
             Position = testPosition;
+            // if grounded, update last height
+            if (IsGrounded)
+                _lastHeight = Position.Y;
         }
 
         public void Draw()
         {
-            // get current screen size of player
+            // get current screen size of entity
             var currentSize = Dimensions * Display.BlockScale;
             // find offset to reach top-left corner for draw pos
             var drawOffset = new Vector2(currentSize.X / 2, currentSize.Y);
