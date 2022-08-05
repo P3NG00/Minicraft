@@ -25,7 +25,7 @@ namespace Minicraft.Scenes
             _buttonExit.Action = MinicraftGame.EndProgram;
             _buttonExit.ColorBoxHighlight = Colors.MainMenu_Button_Exit_Highlight;
             _buttonExit.ColorTextHighlight = Colors.MainMenu_Text_Exit_Highlight;
-            _savedWorld = File.Exists("save");
+            _savedWorld = File.Exists(WorldGen.SAVE_FILE);
         }
 
         public void Update(GameTime gameTime)
