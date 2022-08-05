@@ -39,8 +39,56 @@ namespace Minicraft.Scenes
 
         public void Update(GameTime gameTime)
         {
+            UpdateTicks((float)gameTime.ElapsedGameTime.TotalSeconds);
+            // handle input
+            HandleInput();
+            // update for every tick step
+            while (Tick())
+            {
+                // clear previously updated positions
+                Debug.UpdatedPoints.Clear();
+                // update world
+                _world.Update();
+                // update player
+                _player.Update(_world);
+                // update npc's
+                _npcList.ForEach(npc => npc.Update(_world));
+            }
+        }
+
+        public void Draw(GameTime gameTime)
+        {
+            UpdateFramesPerSecond((float)gameTime.ElapsedGameTime.TotalMilliseconds);
+            // update display handler
+            Display.Update(_player);
+            // draw world
+            _world.Draw(_player);
+            // draw player
+            _player.Draw();
+            // draw npc's
+            _npcList.ForEach(npc => npc.Draw());
+            // draw ui
+            DrawUI();
+        }
+
+        private bool Tick()
+        {
+            if (_tickDelta >= World.TickStep)
+            {
+                // decrement delta time by tick step
+                _tickDelta -= World.TickStep;
+                // increment tick counter
+                _ticks[0]++;
+                // return success
+                return true;
+            }
+            return false;
+        }
+
+        private void UpdateTicks(float timeThisUpdate)
+        {
             // add delta time
-            _tickDelta += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            _tickDelta += timeThisUpdate;
             // move last tick count down
             for (int i = _lastTickDifferences.Length - 2; i >= 0; i--)
                 _lastTickDifferences[i + 1] = _lastTickDifferences[i];
@@ -48,12 +96,19 @@ namespace Minicraft.Scenes
             _lastTickDifferences[0] = _ticks[0] - _ticks[1];
             // update last tick count
             _ticks[1] = _ticks[0];
-            // get block position from mouse
-            var mousePos = Input.MousePosition.ToVector2();
-            mousePos.Y = Display.WindowSize.Y - mousePos.Y - 1;
-            _lastMouseBlock = ((mousePos - (Display.WindowSize.ToVector2() / 2f)) / Display.BlockScale) + (_player.Position + new Vector2(0, _player.Dimensions.Y / 2f));
-            _lastMouseBlockInt = _lastMouseBlock.ToPoint();
-            // handle input
+        }
+
+        private void UpdateFramesPerSecond(float timeThisFrame)
+        {
+            // move values down
+            for (int i = _lastFps.Length - 2; i >= 0; i--)
+                _lastFps[i + 1] = _lastFps[i];
+            // store fps value
+            _lastFps[0] = 1000f / timeThisFrame;
+        }
+
+        private void HandleInput()
+        {
             if (Input.KeyFirstDown(Keys.Escape))
             {
                 _world.Save();
@@ -82,6 +137,11 @@ namespace Minicraft.Scenes
             if (Input.KeyFirstDown(Keys.D5))
                 _currentBlock = BlockType.Leaves;
             Display.BlockScale = Math.Clamp(Display.BlockScale + Input.ScrollWheel, Display.BLOCK_SCALE_MIN, Display.BLOCK_SCALE_MAX);
+            // get block position from mouse
+            var mousePos = Input.MousePosition.ToVector2();
+            mousePos.Y = Display.WindowSize.Y - mousePos.Y - 1;
+            _lastMouseBlock = ((mousePos - (Display.WindowSize.ToVector2() / 2f)) / Display.BlockScale) + (_player.Position + new Vector2(0, _player.Dimensions.Y / 2f));
+            _lastMouseBlockInt = _lastMouseBlock.ToPoint();
             // catch out of bounds
             if (_lastMouseBlockInt.X >= 0 && _lastMouseBlockInt.X < _world.Width &&
                 _lastMouseBlockInt.Y >= 0 && _lastMouseBlockInt.Y < _world.Height)
@@ -93,32 +153,10 @@ namespace Minicraft.Scenes
                 if (Input.MouseMiddleFirstDown())
                     _npcList.Add(new NPC(_lastMouseBlock));
             }
-            // update for every tick step
-            while (Tick())
-            {
-                // clear previously updated positions
-                Debug.UpdatedPoints.Clear();
-                // update world
-                _world.Update();
-                // update player
-                _player.Update(_world);
-                // update npc's
-                _npcList.ForEach(npc => npc.Update(_world));
-            }
         }
 
-        public void Draw(GameTime gameTime)
+        private void DrawUI()
         {
-            UpdateFramesPerSecond((float)gameTime.ElapsedGameTime.TotalMilliseconds);
-            // update display handler
-            Display.Update(_player);
-            // draw world
-            _world.Draw(_player);
-            // draw player
-            _player.Draw();
-            // draw npc's
-            _npcList.ForEach(npc => npc.Draw());
-            // draw ui
             // draw health bar
             var drawPos = new Vector2((Display.WindowSize.X / 2f) - (BarSize.X / 2f), Display.WindowSize.Y - BarSize.Y);
             Display.Draw(drawPos, BarSize, Colors.UI_Bar);
@@ -160,29 +198,6 @@ namespace Minicraft.Scenes
                     drawPos.Y += UI_SPACER + Display.FontUI.LineSpacing;
                 }
             }
-        }
-
-        private bool Tick()
-        {
-            if (_tickDelta >= World.TickStep)
-            {
-                // decrement delta time by tick step
-                _tickDelta -= World.TickStep;
-                // increment tick counter
-                _ticks[0]++;
-                // return success
-                return true;
-            }
-            return false;
-        }
-
-        private void UpdateFramesPerSecond(float timeThisFrame)
-        {
-            // move values down
-            for (int i = _lastFps.Length - 2; i >= 0; i--)
-                _lastFps[i + 1] = _lastFps[i];
-            // store fps value
-            _lastFps[0] = 1000f / timeThisFrame;
         }
     }
 }
