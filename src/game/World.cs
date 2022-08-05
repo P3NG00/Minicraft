@@ -56,10 +56,10 @@ namespace Minicraft.Game
         {
             var drawScale = Display.ShowGrid ? new Vector2(Display.BlockScale - 1) : new Vector2(Display.BlockScale);
             // find edge to start drawing
-            var visualWidth = (int)MathF.Ceiling(Display.WindowSize.X / Display.BlockScale) + 4;
-            var visualHeight = (int)MathF.Ceiling(Display.WindowSize.Y / Display.BlockScale) + 4;
-            var visualStartX = (int)MathF.Floor(player.Position.X - (visualWidth / 2f));
-            var visualStartY = (int)MathF.Ceiling(player.Position.Y - (visualHeight / 2f)) + 2;
+            var visualWidth = (int)Math.Ceiling((double)Display.WindowSize.X / (double)Display.BlockScale) + 4;
+            var visualHeight = (int)Math.Ceiling((double)Display.WindowSize.Y / (double)Display.BlockScale) + 4;
+            var visualStartX = (int)Math.Floor(player.Position.X - (visualWidth / 2f));
+            var visualStartY = (int)Math.Ceiling(player.Position.Y - (visualHeight / 2f)) + 2;
             // fix variables if outside of bounds
             if (visualStartX < 0)
             {

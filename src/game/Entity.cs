@@ -77,7 +77,7 @@ namespace Minicraft.Game
                     Velocity.Y = 0f;
                     if (isMovingDown)
                     {
-                        testPosition.Y = MathF.Ceiling(testPosition.Y);
+                        testPosition.Y = (float)Math.Ceiling(testPosition.Y);
                         IsGrounded = true;
                         var fallenDistance = _lastHeight - Position.Y - FALL_DISTANCE_MIN;
                         if (fallenDistance > 0f)

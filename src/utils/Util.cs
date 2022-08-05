@@ -8,6 +8,8 @@ namespace Minicraft.Utils
     {
         public static readonly Random Random = new Random();
 
+        public static int Clamp(this int i, int min, int max) => Math.Max(Math.Min(i, max), min);
+
         public static T GetRandom<T>(this T[] t) => t[Random.Next(t.Length)];
 
         public static Block GetBlock(this BlockType blockType) => (Block)blockType;

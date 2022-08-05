@@ -136,7 +136,7 @@ namespace Minicraft.Scenes
                 _currentBlock = BlockType.Wood;
             if (Input.KeyFirstDown(Keys.D5))
                 _currentBlock = BlockType.Leaves;
-            Display.BlockScale = Math.Clamp(Display.BlockScale + Input.ScrollWheel, Display.BLOCK_SCALE_MIN, Display.BLOCK_SCALE_MAX);
+            Display.BlockScale = (Display.BlockScale + Input.ScrollWheel).Clamp(Display.BLOCK_SCALE_MIN, Display.BLOCK_SCALE_MAX);
             // get block position from mouse
             var mousePos = Input.MousePosition.ToVector2();
             mousePos.Y = Display.WindowSize.Y - mousePos.Y - 1;
