@@ -33,7 +33,7 @@ namespace Minicraft.Utils
 
         private static Point _windowSize = new Point(1280, 720);
 
-        public static void Update(Player player)
+        public static void UpdateCameraOffset(Player player)
         {
             var cameraOffset = -(WindowSize.ToVector2() / 2f);
             cameraOffset.X = cameraOffset.X + (player.Position.X * BlockScale);

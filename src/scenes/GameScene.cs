@@ -60,7 +60,7 @@ namespace Minicraft.Scenes
         {
             UpdateFramesPerSecond((float)gameTime.ElapsedGameTime.TotalMilliseconds);
             // update display handler
-            Display.Update(_player);
+            Display.UpdateCameraOffset(_player);
             // draw world
             _world.Draw(_player);
             // draw player
