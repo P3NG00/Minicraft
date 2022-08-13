@@ -72,8 +72,12 @@ namespace Minicraft.Game
                 var sideOffset = isMovingLeft ? left + 1 + halfWidth : right - halfWidth;
                 // check side blocks
                 for (int y = bottom; y <= top && !blocked; y++)
-                    if (!world.GetBlockType(side, y).GetBlock().CanWalkThrough)
+                {
+                    var sidePoint = new Point(side, y);
+                    Debug.AddCollisionCheck(sidePoint);
+                    if (!world.GetBlockType(sidePoint).GetBlock().CanWalkThrough)
                         blocked = true;
+                }
                 if (blocked)
                 {
                     // fix position
@@ -95,8 +99,12 @@ namespace Minicraft.Game
                 var isMovingDown = Velocity.Y < 0f;
                 var side = isMovingDown ? bottom : top;
                 for (int x = left; x <= right && !blocked; x++)
-                    if (!world.GetBlockType(x, side).GetBlock().CanWalkThrough)
+                {
+                    var sidePoint = new Point(x, side);
+                    Debug.AddCollisionCheck(sidePoint);
+                    if (!world.GetBlockType(sidePoint).GetBlock().CanWalkThrough)
                         blocked = true;
+                }
                 if (blocked)
                 {
                     Velocity.Y = 0f;
@@ -118,8 +126,12 @@ namespace Minicraft.Game
                 // test walking on air
                 bool onAir = true;
                 for (int x = left; x <= right && onAir; x++)
-                    if (!world.GetBlockType(x, bottom - 1).GetBlock().CanWalkThrough)
+                {
+                    var blockPoint = new Point(x, bottom - 1);
+                    Debug.AddCollisionCheck(blockPoint);
+                    if (!world.GetBlockType(blockPoint).GetBlock().CanWalkThrough)
                         onAir = false;
+                }
                 if (onAir)
                     IsGrounded = false;
             }

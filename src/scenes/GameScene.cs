@@ -47,7 +47,7 @@ namespace Minicraft.Scenes
             while (Tick())
             {
                 // clear previously updated positions
-                Debug.UpdatedPoints.Clear();
+                Debug.ClearDebugUpdates();
                 // update world
                 _world.Update();
                 // update player

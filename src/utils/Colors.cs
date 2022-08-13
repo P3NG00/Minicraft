@@ -5,7 +5,6 @@ namespace Minicraft.Utils
     public static class Colors
     {
         public static readonly Color Background = new Color(96, 96, 96);
-        public static readonly Color Debug_BlockUpdate = new Color(255, 0, 255);
         public static readonly Color Entity_Player = new Color(255, 0, 0);
         public static readonly Color Entity_NPC = new Color(255, 128, 0);
         public static readonly Color UI_Bar = new Color(0, 0, 0);
@@ -14,6 +13,10 @@ namespace Minicraft.Utils
         public static readonly Color UI_TextDebug = new Color(0, 0, 0);
         public static readonly Color UI_TextBlock = new Color(0, 0, 0);
         public static readonly Color UI_TextLife = new Color(255, 255, 255);
+
+        // debug
+        public static readonly Color DebugReason_BlockUpdate = new Color(255, 0, 255);
+        public static readonly Color DebugReason_CollisionCheck = new Color(0, 0, 255);
 
         // main menu buttons
         public static readonly Color MainMenu_Button_World = new Color(0, 0, 0);

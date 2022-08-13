@@ -21,7 +21,7 @@ namespace Minicraft.Game.Blocks
         {
             // add position to updated list
             if (Debug.Enabled && Debug.TrackUpdated)
-                Debug.UpdatedPoints.Add(position);
+                Debug.AddBlockUpdate(position);
         }
 
         public override bool Equals(object obj)
