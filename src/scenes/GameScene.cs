@@ -144,8 +144,8 @@ namespace Minicraft.Scenes
             _lastMouseBlock = ((mousePos - (Display.WindowSize.ToVector2() / 2f)) / Display.BlockScale) + (_player.Position + new Vector2(0, _player.Dimensions.Y / 2f));
             _lastMouseBlockInt = _lastMouseBlock.ToPoint();
             // catch out of bounds
-            if (_lastMouseBlockInt.X >= 0 && _lastMouseBlockInt.X < _world.Width &&
-                _lastMouseBlockInt.Y >= 0 && _lastMouseBlockInt.Y < _world.Height)
+            if (_lastMouseBlockInt.X >= 0 && _lastMouseBlockInt.X < World.WIDTH &&
+                _lastMouseBlockInt.Y >= 0 && _lastMouseBlockInt.Y < World.HEIGHT)
             {
                 if (ctrl ? Input.MouseLeftFirstDown() : Input.MouseLeftHeld())
                     _world.SetBlockType(_lastMouseBlockInt, BlockType.Air);
@@ -181,7 +181,7 @@ namespace Minicraft.Scenes
                 drawPos = new Vector2(UI_SPACER);
                 foreach (var debugInfo in new[] {
                     $"window_size: {Display.WindowSize.X}x{Display.WindowSize.Y}",
-                    $"world_size: {_world.Width}x{_world.Height}",
+                    $"world_size: {World.WIDTH}x{World.HEIGHT}",
                     $"show_grid: {Display.ShowGrid}",
                     $"time: {(Ticks / (float)World.TICKS_PER_SECOND):0.000}",
                     $"ticks: {Ticks} ({World.TICKS_PER_SECOND} ticks/sec)",

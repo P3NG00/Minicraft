@@ -18,16 +18,16 @@ namespace Minicraft.Game.Blocks
         public sealed override void Update(Point position, World world)
         {
             // if able to spread
-            if (position.Y + 1 == world.Height || world.GetBlockType(position + new Point(0, 1)).GetBlock().CanWalkThrough)
+            if (position.Y + 1 == World.HEIGHT || world.GetBlockType(position + new Point(0, 1)).GetBlock().CanWalkThrough)
             {
                 // check random spread position
                 var offset = _spreadOffsets.GetRandom();
                 var checkPos = position + offset;
-                if (checkPos.X >= 0 && checkPos.X < world.Width &&
-                    checkPos.Y >= 0 && checkPos.Y < world.Height)
+                if (checkPos.X >= 0 && checkPos.X < World.WIDTH &&
+                    checkPos.Y >= 0 && checkPos.Y < World.HEIGHT)
                 {
                     var upPos = checkPos + new Point(0, 1);
-                    if (world.GetBlockType(checkPos) == BlockType.Dirt && (upPos.Y == world.Height || world.GetBlockType(upPos).GetBlock().CanWalkThrough))
+                    if (world.GetBlockType(checkPos) == BlockType.Dirt && (upPos.Y == World.HEIGHT || world.GetBlockType(upPos).GetBlock().CanWalkThrough))
                         world.SetBlockType(checkPos, BlockType.Grass);
                 }
             }

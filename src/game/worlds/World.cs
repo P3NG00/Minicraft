@@ -1,33 +1,23 @@
 using System;
-using System.IO;
 using Microsoft.Xna.Framework;
 using Minicraft.Game.Blocks;
 using Minicraft.Utils;
 
 namespace Minicraft.Game.Worlds
 {
-    public sealed class World
+    public sealed partial class World
     {
         public const float WORLD_UPDATED_PER_SECOND = 1f / 32f;
         public const int TICKS_PER_SECOND = 32;
         public const float GRAVITY = 10f;
+        public const string SAVE_FILE = "save";
+        public const int WIDTH = 1024;
+        public const int HEIGHT = 512;
+        public const float TickStep = 1f / TICKS_PER_SECOND;
 
-        public static readonly float TickStep = 1f / TICKS_PER_SECOND;
+        private const int BLOCK_UPDATES_PER_TICK = (int)(((WIDTH * HEIGHT) * WORLD_UPDATED_PER_SECOND) / World.TICKS_PER_SECOND);
 
-        public int Width => _size.X;
-        public int Height => _size.Y;
-
-        private readonly Point _size;
-        private readonly int _blockUpdatesPerTick;
-
-        private BlockType[,] _blockGrid;
-
-        public World(BlockType[,] blockGrid)
-        {
-            _blockGrid = blockGrid;
-            _size = new Point(_blockGrid.GetLength(1), _blockGrid.GetLength(0));
-            _blockUpdatesPerTick = (int)(((Width * Height) * WORLD_UPDATED_PER_SECOND) / World.TICKS_PER_SECOND);
-        }
+        private BlockType[,] _blockGrid = new BlockType[HEIGHT, WIDTH];
 
         private ref BlockType BlockTypeAt(int x, int y) => ref _blockGrid[y, x];
 
@@ -41,7 +31,7 @@ namespace Minicraft.Game.Worlds
 
         public (BlockType block, int y) GetTop(int x)
         {
-            for (int y = Height - 1; y >= 0; y--)
+            for (int y = HEIGHT - 1; y >= 0; y--)
             {
                 var _block = GetBlockType(x, y);
                 if (!_block.GetBlock().CanWalkThrough)
@@ -52,10 +42,10 @@ namespace Minicraft.Game.Worlds
 
         public void Update()
         {
-            for (int i = 0; i < _blockUpdatesPerTick; i++)
+            for (int i = 0; i < BLOCK_UPDATES_PER_TICK; i++)
             {
                 // get random point
-                var pos = Util.Random.NextPoint(_size);
+                var pos = Util.Random.NextPoint(new Point(WIDTH, HEIGHT));
                 // update block at that point
                 GetBlockType(pos).GetBlock().Update(pos, this);
             }
@@ -69,7 +59,7 @@ namespace Minicraft.Game.Worlds
             var visualHeight = (int)Math.Ceiling((double)Display.WindowSize.Y / (double)Display.BlockScale) + 4;
             var visualStartX = (int)Math.Floor(player.Position.X - (visualWidth / 2f));
             var visualStartY = (int)Math.Ceiling(player.Position.Y - (visualHeight / 2f)) + 2;
-            // fix variables if outside of bounds
+            // fix variables if out of bounds
             if (visualStartX < 0)
             {
                 visualWidth += visualStartX;
@@ -80,11 +70,11 @@ namespace Minicraft.Game.Worlds
                 visualHeight += visualStartY;
                 visualStartY = 0;
             }
-            if (visualWidth >= Width - visualStartX)
-                visualWidth = Width - visualStartX - 1;
-            if (visualHeight >= Height - visualStartY)
-                visualHeight = Height - visualStartY - 1;
-            // draw each visible block
+            if (visualWidth >= WIDTH - visualStartX)
+                visualWidth = WIDTH - visualStartX - 1;
+            if (visualHeight >= HEIGHT - visualStartY)
+                visualHeight = HEIGHT - visualStartY - 1;
+            // draw visible blocks
             for (int y = 0; y < visualHeight; y++)
             {
                 var blockY = y + visualStartY;
@@ -97,13 +87,6 @@ namespace Minicraft.Game.Worlds
                     Display.Draw(drawPos, drawScale, Debug.Enabled && Debug.TrackUpdated && Debug.UpdatedPoints.Remove(blockPos) ? Colors.Debug_BlockUpdate : GetBlockType(blockPos).GetBlock().Color);
                 }
             }
-        }
-
-        public void Save()
-        {
-            using (var stream = new StreamWriter(File.OpenWrite(WorldGen.SAVE_FILE)))
-                foreach (var v in _blockGrid)
-                    stream.Write((char)v);
         }
     }
 }

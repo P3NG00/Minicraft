@@ -30,7 +30,7 @@ namespace Minicraft.Game.Entities
             // test update
             if (_aiUpdateTicks == 0)
             {
-                _goalX = _goalX.HasValue ? null : (int?)Util.Random.Next(world.Width);
+                _goalX = _goalX.HasValue ? null : (int?)Util.Random.Next(World.WIDTH);
                 ResetAIUpdateTimer();
             }
             // test goal

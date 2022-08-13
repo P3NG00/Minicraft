@@ -22,8 +22,8 @@ namespace Minicraft.Game.Blocks
             {
                 var checkPos = position + offset;
                 // test valid position
-                if (checkPos.X >= 0 && checkPos.X < world.Width &&
-                    checkPos.Y >= 0 && checkPos.Y < world.Height)
+                if (checkPos.X >= 0 && checkPos.X < World.WIDTH &&
+                    checkPos.Y >= 0 && checkPos.Y < World.HEIGHT)
                 {
                     // if wood detected
                     if (world.GetBlockType(checkPos) == BlockType.Wood)

@@ -17,19 +17,19 @@ namespace Minicraft.Game.Entities
 
         public void Respawn(World world)
         {
-            var playerX = (int)(world.Width / 2f);
-            Position = new Vector2(playerX, Math.Max(world.GetTop(playerX - 1).y, world.GetTop(playerX).y) + 1);
+            var x = (int)(World.WIDTH / 2f);
+            var y = Math.Max(world.GetTop(x - 1).y, world.GetTop(x).y) + 1;
+            Position = new Vector2(x, y);
         }
 
         public sealed override void Update(World world)
         {
             // set horizontal movement
-            int h = 0;
+            Velocity.X = 0;
             if (Input.KeyHeld(Keys.A))
-                h--;
+                Velocity.X--;
             if (Input.KeyHeld(Keys.D))
-                h++;
-            Velocity.X = h;
+                Velocity.X++;
             // check jump
             if (IsGrounded && Input.KeyHeld(Keys.Space))
                 Jump();
