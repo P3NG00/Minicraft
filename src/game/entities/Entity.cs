@@ -1,9 +1,10 @@
 using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
-using Game.Utils;
+using Minicraft.Game.Worlds;
+using Minicraft.Utils;
 
-namespace Game.Game
+namespace Minicraft.Game
 {
     public abstract class Entity
     {
@@ -70,7 +71,7 @@ namespace Game.Game
                 var isMovingDown = Velocity.Y < 0f;
                 var side = isMovingDown ? bottom : top;
                 for (int x = left; x <= right && !blocked; x++)
-                    if (!world.BlockTypeAt(new Point(x, side)).GetBlock().CanWalkThrough)
+                    if (!world.GetBlockType(x, side).GetBlock().CanWalkThrough)
                         blocked = true;
                 if (blocked)
                 {
@@ -93,7 +94,7 @@ namespace Game.Game
                 // test walking on air
                 bool onAir = true;
                 for (int x = left; x <= right && onAir; x++)
-                    if (!world.BlockTypeAt(new Point(x, bottom - 1)).GetBlock().CanWalkThrough)
+                    if (!world.GetBlockType(x, bottom - 1).GetBlock().CanWalkThrough)
                         onAir = false;
                 if (onAir)
                     IsGrounded = false;
@@ -111,7 +112,7 @@ namespace Game.Game
                 var side = isMovingLeft ? left : right;
                 var sideOffset = isMovingLeft ? left + 1 + halfWidth : right - halfWidth;
                 for (int y = bottom; y <= top && !blocked; y++)
-                    if (!world.BlockTypeAt(new Point(side, y)).GetBlock().CanWalkThrough)
+                    if (!world.GetBlockType(side, y).GetBlock().CanWalkThrough)
                         blocked = true;
                 if (blocked)
                 {

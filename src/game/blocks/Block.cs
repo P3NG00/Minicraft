@@ -1,7 +1,8 @@
 using Microsoft.Xna.Framework;
-using Game.Utils;
+using Minicraft.Game.Worlds;
+using Minicraft.Utils;
 
-namespace Game.Game
+namespace Minicraft.Game.Blocks
 {
     public partial class Block
     {
@@ -55,7 +56,7 @@ namespace Game.Game
         public sealed override void Update(Point position, World world)
         {
             // if able to spread
-            if (position.Y + 1 == world.Height || world.BlockTypeAt(position + new Point(0, 1)).GetBlock().CanWalkThrough)
+            if (position.Y + 1 == world.Height || world.GetBlockType(position + new Point(0, 1)).GetBlock().CanWalkThrough)
             {
                 // check random spread position
                 var offset = _spreadOffsets.GetRandom();
@@ -63,15 +64,14 @@ namespace Game.Game
                 if (checkPos.X >= 0 && checkPos.X < world.Width &&
                     checkPos.Y >= 0 && checkPos.Y < world.Height)
                 {
-                    ref BlockType block = ref world.BlockTypeAt(checkPos);
                     var upPos = checkPos + new Point(0, 1);
-                    if (block == BlockType.Dirt && (upPos.Y == world.Height || world.BlockTypeAt(upPos).GetBlock().CanWalkThrough))
-                        block = BlockType.Grass;
+                    if (world.GetBlockType(checkPos) == BlockType.Dirt && (upPos.Y == world.Height || world.GetBlockType(upPos).GetBlock().CanWalkThrough))
+                        world.SetBlockType(checkPos, BlockType.Grass);
                 }
             }
             // if unable to spread
             else
-                world.BlockTypeAt(position) = BlockType.Dirt;
+                world.SetBlockType(position, BlockType.Dirt);
             // base call
             base.Update(position, world);
         }
@@ -100,7 +100,7 @@ namespace Game.Game
                     checkPos.Y >= 0 && checkPos.Y < world.Height)
                 {
                     // if wood detected
-                    if (world.BlockTypeAt(checkPos) == BlockType.Wood)
+                    if (world.GetBlockType(checkPos) == BlockType.Wood)
                     {
                         // set log flag
                         log = true;
@@ -111,7 +111,7 @@ namespace Game.Game
             }
             // if no log, remove leaves
             if (!log)
-                world.BlockTypeAt(position) = BlockType.Air;
+                world.SetBlockType(position, BlockType.Air);
             // base call
             base.Update(position, world);
         }

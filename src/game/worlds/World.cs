@@ -1,9 +1,10 @@
 using System;
 using System.IO;
 using Microsoft.Xna.Framework;
-using Game.Utils;
+using Minicraft.Game.Blocks;
+using Minicraft.Utils;
 
-namespace Game.Game
+namespace Minicraft.Game.Worlds
 {
     public sealed class World
     {
@@ -28,13 +29,21 @@ namespace Game.Game
             _blockUpdatesPerTick = (int)(((Width * Height) * WORLD_UPDATED_PER_SECOND) / World.TICKS_PER_SECOND);
         }
 
-        public ref BlockType BlockTypeAt(Point position) => ref _blockGrid[position.Y, position.X];
+        private ref BlockType BlockTypeAt(int x, int y) => ref _blockGrid[y, x];
+
+        public BlockType GetBlockType(Point point) => GetBlockType(point.X, point.Y);
+
+        public BlockType GetBlockType(int x, int y) => BlockTypeAt(x, y);
+
+        public void SetBlockType(Point point, BlockType blockType) => SetBlockType(point.X, point.Y, blockType);
+
+        public void SetBlockType(int x, int y, BlockType blockType) => BlockTypeAt(x, y) = blockType;
 
         public (BlockType block, int y) GetTop(int x)
         {
             for (int y = Height - 1; y >= 0; y--)
             {
-                var _block = BlockTypeAt(new Point(x, y));
+                var _block = GetBlockType(x, y);
                 if (!_block.GetBlock().CanWalkThrough)
                     return (_block, y);
             }
@@ -48,7 +57,7 @@ namespace Game.Game
                 // get random point
                 var pos = Util.Random.NextPoint(_size);
                 // update block at that point
-                BlockTypeAt(pos).GetBlock().Update(pos, this);
+                GetBlockType(pos).GetBlock().Update(pos, this);
             }
         }
 
@@ -85,7 +94,7 @@ namespace Game.Game
                     var blockX = x + visualStartX;
                     var drawPos = new Vector2(blockX * Display.BlockScale, drawY) - Display.CameraOffset;
                     var blockPos = new Point(blockX, blockY);
-                    Display.Draw(drawPos, drawScale, Debug.Enabled && Debug.TrackUpdated && Debug.UpdatedPoints.Remove(blockPos) ? Colors.Debug_BlockUpdate : BlockTypeAt(blockPos).GetBlock().Color);
+                    Display.Draw(drawPos, drawScale, Debug.Enabled && Debug.TrackUpdated && Debug.UpdatedPoints.Remove(blockPos) ? Colors.Debug_BlockUpdate : GetBlockType(blockPos).GetBlock().Color);
                 }
             }
         }

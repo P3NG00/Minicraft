@@ -1,12 +1,13 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
-using Game.Game;
-using Game.Utils;
+using Minicraft.Game;
+using Minicraft.Game.Blocks;
+using Minicraft.Game.Worlds;
+using Minicraft.Utils;
 
-namespace Game.Scenes
+namespace Minicraft.Scenes
 {
     public sealed class GameScene : IScene
     {
@@ -112,7 +113,7 @@ namespace Game.Scenes
             if (Input.KeyFirstDown(Keys.Escape))
             {
                 _world.Save();
-                Minicraft.SetScene(new MainMenuScene());
+                MinicraftGame.SetScene(new MainMenuScene());
             }
             // end key will cause program to end in main loop. this is here to detect and save the world before closing
             if (Input.KeyFirstDown(Keys.End))
@@ -147,9 +148,9 @@ namespace Game.Scenes
                 _lastMouseBlockInt.Y >= 0 && _lastMouseBlockInt.Y < _world.Height)
             {
                 if (ctrl ? Input.MouseLeftFirstDown() : Input.MouseLeftHeld())
-                    _world.BlockTypeAt(_lastMouseBlockInt) = BlockType.Air;
+                    _world.SetBlockType(_lastMouseBlockInt, BlockType.Air);
                 if (ctrl ? Input.MouseRightFirstDown() : Input.MouseRightHeld())
-                    _world.BlockTypeAt(_lastMouseBlockInt) = _currentBlock;
+                    _world.SetBlockType(_lastMouseBlockInt, _currentBlock);
                 if (Input.MouseMiddleFirstDown())
                     _npcList.Add(new NPC(_lastMouseBlock));
             }

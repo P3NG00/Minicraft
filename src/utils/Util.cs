@@ -1,8 +1,8 @@
 using System;
 using Microsoft.Xna.Framework;
-using Game.Game;
+using Minicraft.Game.Blocks;
 
-namespace Game.Utils
+namespace Minicraft.Utils
 {
     public static class Util
     {

@@ -1,10 +1,11 @@
 using System;
 using System.Linq;
 using Microsoft.Xna.Framework;
-using Game.Utils;
+using Minicraft.Game.Blocks;
+using Minicraft.Utils;
 using SimplexNoise;
 
-namespace Game.Game
+namespace Minicraft.Game.Worlds
 {
     public static class WorldGen
     {
@@ -63,7 +64,7 @@ namespace Game.Game
             {
                 var heightMax = heightmapSmooth[x] - 1;
                 for (y = 0; y < heightmapSmooth[x]; y++)
-                    world.BlockTypeAt(new Point(x, y)) = y <= heightMax - STONE_OFFSET ? BlockType.Stone : BlockType.Dirt;
+                    world.SetBlockType(x, y, y <= heightMax - STONE_OFFSET ? BlockType.Stone : BlockType.Dirt);
             }
             // generate caves
             Noise.Seed = Util.Random.Next(int.MinValue, int.MaxValue);
@@ -71,13 +72,13 @@ namespace Game.Game
             for (y = 0; y < world.Height; y++)
                 for (x = 0; x < world.Width; x++)
                     if (noiseMap[x, y] < CAVE_NOISE_CUTOFF)
-                        world.BlockTypeAt(new Point(x, y)) = BlockType.Air;
+                        world.SetBlockType(x, y, BlockType.Air);
             // place grass on top-most dirt blocks
             for (x = 0; x < world.Width; x++)
             {
                 var topBlock = world.GetTop(x);
                 if (topBlock.block == BlockType.Dirt)
-                    world.BlockTypeAt(new Point(x, topBlock.y)) = BlockType.Grass;
+                    world.SetBlockType(x, topBlock.y, BlockType.Grass);
             }
             // generate trees on on surface grass
             for (x = TREE_SPACING_MIN; x < world.Width - TREE_SPACING_MIN; x++)
@@ -93,7 +94,7 @@ namespace Game.Game
                     for (y = startY; y < startY + height; y++)
                     {
                         var setPoint = new Point(x, y);
-                        world.BlockTypeAt(setPoint) = BlockType.Wood;
+                        world.SetBlockType(setPoint, BlockType.Wood);
                         // leaves and branches start 2 blocks above ground
                         if (y >= startY + 2)
                         {
@@ -101,9 +102,9 @@ namespace Game.Game
                             foreach (int s in new[] {-1, 1})
                             {
                                 // get reference of side block
-                                ref BlockType sideBlock = ref world.BlockTypeAt(setPoint + new Point(s, 0));
-                                if (sideBlock == BlockType.Air)
-                                    sideBlock = BlockType.Leaves;
+                                var sidePoint = setPoint + new Point(s, 0);
+                                if (world.GetBlockType(sidePoint) == BlockType.Air)
+                                    world.SetBlockType(sidePoint, BlockType.Leaves);
                             }
                             // test branch chance
                             if (Util.Random.TestChance(BRANCH_CHANCE))
@@ -120,31 +121,25 @@ namespace Game.Game
                                     if (branchPoint.X < 0 || branchPoint.X >= world.Width)
                                         break;
                                     // get reference of block at that position
-                                    ref BlockType branchBlock = ref world.BlockTypeAt(branchPoint);
+                                    var branchBlock = world.GetBlockType(branchPoint);
                                     // replace if valid
                                     if (branchBlock == BlockType.Air || branchBlock == BlockType.Leaves)
-                                        branchBlock = BlockType.Wood;
+                                        world.SetBlockType(branchPoint, BlockType.Wood);
                                     // place leaves surrounding branch
                                     foreach (int o in new[] {-1, 1})
                                     {
                                         // get reference of block at new branch point
-                                        ref BlockType leafBlock = ref world.BlockTypeAt(branchPoint + new Point(0, o));
+                                        var sidePoint = branchPoint + new Point(0, o);
                                         // replace if valid
-                                        if (leafBlock == BlockType.Air)
-                                            leafBlock = BlockType.Leaves;
+                                        if (world.GetBlockType(sidePoint) == BlockType.Air)
+                                            world.SetBlockType(sidePoint, BlockType.Leaves);
                                     }
                                 }
                                 // get position of end of branch
                                 var endPoint = branchPoint + new Point(branchDirection, 0);
-                                // test position
-                                if (endPoint.X >= 0 && endPoint.X < world.Width)
-                                {
-                                    // get reference of block at branch endpoint
-                                    ref BlockType endBlock = ref world.BlockTypeAt(endPoint);
-                                    // replace if valid
-                                    if (endBlock == BlockType.Air)
-                                        endBlock = BlockType.Leaves;
-                                }
+                                // place leaves at end of branch if valid
+                                if (endPoint.X >= 0 && endPoint.X < world.Width && world.GetBlockType(endPoint) == BlockType.Air)
+                                        world.SetBlockType(endPoint, BlockType.Leaves);
                             }
                             else
                                 // reset branch direction
@@ -152,7 +147,7 @@ namespace Game.Game
                         }
                     }
                     // place leaves on top of tree
-                    world.BlockTypeAt(new Point(x, startY + height)) = BlockType.Leaves;
+                    world.SetBlockType(x, startY + height, BlockType.Leaves);
                     // space trees by minimum amount
                     x += TREE_SPACING_MIN;
                 }
