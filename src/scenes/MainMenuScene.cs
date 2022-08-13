@@ -7,7 +7,7 @@ using Game.Utils;
 
 namespace Game.Scenes
 {
-    public sealed class MainMenuScene : Scene
+    public sealed class MainMenuScene : IScene
     {
         private readonly Button _buttonWorldNew = new Button(new Vector2(0.5f, 0.6f), new Point(250, 50), "create world", Colors.MainMenu_Button_World, Colors.MainMenu_Text_World);
         private readonly Button _buttonWorldContinue = new Button(new Vector2(0.5f, 0.7f), new Point(250, 50), "continue world", Colors.MainMenu_Button_World, Colors.MainMenu_Text_World);

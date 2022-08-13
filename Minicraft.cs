@@ -12,7 +12,7 @@ namespace Game
         public const string TITLE = "Minicraft";
 
         private static Minicraft _instance;
-        private static Scene _scene = new MainMenuScene();
+        private static IScene _scene = new MainMenuScene();
 
         public Minicraft()
         {
@@ -82,7 +82,7 @@ namespace Game
             base.Draw(gameTime);
         }
 
-        public static void SetScene(Scene scene) => _scene = scene;
+        public static void SetScene(IScene scene) => _scene = scene;
 
         public static void EndProgram() => _instance.Exit();
     }

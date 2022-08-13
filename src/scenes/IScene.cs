@@ -2,7 +2,7 @@ using Microsoft.Xna.Framework;
 
 namespace Game.Scenes
 {
-    public interface Scene
+    public interface IScene
     {
         void Update(GameTime gameTime);
 

@@ -8,7 +8,7 @@ using Game.Utils;
 
 namespace Game.Scenes
 {
-    public sealed class GameScene : Scene
+    public sealed class GameScene : IScene
     {
         private const int UI_SPACER = 5;
 
