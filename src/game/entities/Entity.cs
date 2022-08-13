@@ -23,6 +23,7 @@ namespace Minicraft.Game
 
         private readonly Color _color;
 
+        private bool? _lastWallLeftOrRight;
         private float _lastHeight;
         private float _life;
 
@@ -63,6 +64,35 @@ namespace Minicraft.Game
             var halfWidth = Dimensions.X / 2f;
             var left = (int)(testPosition.X - halfWidth);
             var right = (int)(testPosition.X + halfWidth);
+            // test horizontal collision
+            if (Velocity.X != 0f)
+            {
+                // unset last wall, will be set again if still against
+                _lastWallLeftOrRight = null;
+                bool blocked = false;
+                var isMovingLeft = Velocity.X < 0f;
+                var side = isMovingLeft ? left : right;
+                var sideOffset = isMovingLeft ? left + 1 + halfWidth : right - halfWidth;
+                // check side blocks
+                for (int y = bottom; y <= top && !blocked; y++)
+                    if (!world.GetBlockType(side, y).GetBlock().CanWalkThrough)
+                        blocked = true;
+                if (blocked)
+                {
+                    // fix position
+                    testPosition.X = sideOffset;
+                    // cache last wall
+                    _lastWallLeftOrRight = isMovingLeft;
+                    Velocity.X = 0f;
+                }
+            }
+            // update bound values
+            left = (int)(testPosition.X - halfWidth);
+            var rightF = testPosition.X + halfWidth;
+            right = (int)rightF;
+            // decrement right by one if whole number to avoid extended hitbox
+            if (rightF % 1f == 0f)
+                right--;
             // entity not grounded, vertical velocity is not zero
             if (!IsGrounded)
             {
@@ -79,7 +109,7 @@ namespace Minicraft.Game
                     {
                         testPosition.Y = (float)Math.Ceiling(testPosition.Y);
                         IsGrounded = true;
-                        var fallenDistance = _lastHeight - Position.Y - FALL_DISTANCE_MIN;
+                        var fallenDistance = _lastHeight - testPosition.Y - FALL_DISTANCE_MIN;
                         if (fallenDistance > 0f)
                             Damage(fallenDistance * FALL_DAMAGE_PER_BLOCK);
                     }
@@ -97,27 +127,6 @@ namespace Minicraft.Game
                         onAir = false;
                 if (onAir)
                     IsGrounded = false;
-            }
-            // update bound values
-            top = (int)(testPosition.Y + Dimensions.Y);
-            bottom = (int)(testPosition.Y);
-            left = (int)(testPosition.X - halfWidth);
-            right = (int)(testPosition.X + halfWidth);
-            // test horizontal collision
-            if (Velocity.X != 0f)
-            {
-                bool blocked = false;
-                var isMovingLeft = Velocity.X < 0f;
-                var side = isMovingLeft ? left : right;
-                var sideOffset = isMovingLeft ? left + 1 + halfWidth : right - halfWidth;
-                for (int y = bottom; y <= top && !blocked; y++)
-                    if (!world.GetBlockType(side, y).GetBlock().CanWalkThrough)
-                        blocked = true;
-                if (blocked)
-                {
-                    testPosition.X = sideOffset;
-                    Velocity.X = 0f;
-                }
             }
             // update position
             Position = testPosition;
