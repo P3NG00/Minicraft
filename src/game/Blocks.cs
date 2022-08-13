@@ -1,6 +1,6 @@
 using Microsoft.Xna.Framework;
 
-namespace Minicraft.Game
+namespace Game.Game
 {
     public enum BlockType
     {

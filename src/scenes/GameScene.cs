@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
-using Minicraft.Game;
-using Minicraft.Utils;
+using Game.Game;
+using Game.Utils;
 
-namespace Minicraft.Scenes
+namespace Game.Scenes
 {
     public sealed class GameScene : Scene
     {
@@ -112,7 +112,7 @@ namespace Minicraft.Scenes
             if (Input.KeyFirstDown(Keys.Escape))
             {
                 _world.Save();
-                MinicraftGame.SetScene(new MainMenuScene());
+                Minicraft.SetScene(new MainMenuScene());
             }
             // end key will cause program to end in main loop. this is here to detect and save the world before closing
             if (Input.KeyFirstDown(Keys.End))

@@ -1,13 +1,13 @@
 ﻿using System;
 
-namespace Minicraft
+namespace Game
 {
     public static class Program
     {
         [STAThread]
         static void Main()
         {
-            using (var game = new MinicraftGame())
+            using (var game = new Minicraft())
                 game.Run();
         }
     }

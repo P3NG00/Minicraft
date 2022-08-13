@@ -1,7 +1,7 @@
 using Microsoft.Xna.Framework;
-using Minicraft.Utils;
+using Game.Utils;
 
-namespace Minicraft.Game
+namespace Game.Game
 {
     public partial class Block
     {

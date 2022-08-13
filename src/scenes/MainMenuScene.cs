@@ -1,11 +1,11 @@
 using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
-using Minicraft.Game;
-using Minicraft.UI;
-using Minicraft.Utils;
+using Game.Game;
+using Game.UI;
+using Game.Utils;
 
-namespace Minicraft.Scenes
+namespace Game.Scenes
 {
     public sealed class MainMenuScene : Scene
     {
@@ -22,7 +22,7 @@ namespace Minicraft.Scenes
             _buttonWorldContinue.Action = LoadSavedWorld;
             _buttonWorldContinue.ColorBoxHighlight = Colors.MainMenu_Button_World_Highlight;
             _buttonWorldContinue.ColorTextHighlight = Colors.MainMenu_Text_World_Highlight;
-            _buttonExit.Action = MinicraftGame.EndProgram;
+            _buttonExit.Action = Minicraft.EndProgram;
             _buttonExit.ColorBoxHighlight = Colors.MainMenu_Button_Exit_Highlight;
             _buttonExit.ColorTextHighlight = Colors.MainMenu_Text_Exit_Highlight;
             _savedWorld = File.Exists(WorldGen.SAVE_FILE);
@@ -32,7 +32,7 @@ namespace Minicraft.Scenes
         {
             // handle input
             if (Input.KeyFirstDown(Keys.Escape))
-                MinicraftGame.EndProgram();
+                Minicraft.EndProgram();
             // update buttons
             _buttonWorldNew.Update();
             _buttonExit.Update();
@@ -43,10 +43,10 @@ namespace Minicraft.Scenes
         public void Draw(GameTime gameTime)
         {
             // draw title
-            var textSize = Display.FontTitle.MeasureString(MinicraftGame.TITLE);
+            var textSize = Display.FontTitle.MeasureString(Minicraft.TITLE);
             var x = (Display.WindowSize.X / 2f) - (textSize.X / 2f);
             var y = (Display.WindowSize.Y / 3f) - (textSize.Y / 2f);
-            Display.DrawString(Display.FontTitle, new Vector2(x, y), MinicraftGame.TITLE, Colors.UI_Title);
+            Display.DrawString(Display.FontTitle, new Vector2(x, y), Minicraft.TITLE, Colors.UI_Title);
             // draw buttons
             _buttonWorldNew.Draw();
             _buttonExit.Draw();
@@ -54,7 +54,7 @@ namespace Minicraft.Scenes
                 _buttonWorldContinue.Draw();
         }
 
-        private void CreateNewWorld() => MinicraftGame.SetScene(new GameScene(WorldGen.GenerateWorld()));
+        private void CreateNewWorld() => Minicraft.SetScene(new GameScene(WorldGen.GenerateWorld()));
 
         private void LoadSavedWorld()
         {
@@ -63,7 +63,7 @@ namespace Minicraft.Scenes
                 for (int y = 0; y < WorldGen.WorldSize.Y; y++)
                     for (int x = 0; x < WorldGen.WorldSize.X; x++)
                         blockGrid[y, x] = (BlockType)stream.Read();
-            MinicraftGame.SetScene(new GameScene(new World(blockGrid)));
+            Minicraft.SetScene(new GameScene(new World(blockGrid)));
         }
     }
 }

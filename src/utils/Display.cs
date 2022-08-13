@@ -1,8 +1,8 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Minicraft.Game;
+using Game.Game;
 
-namespace Minicraft.Utils
+namespace Game.Utils
 {
     public static class Display
     {

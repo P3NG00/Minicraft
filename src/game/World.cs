@@ -1,9 +1,9 @@
 using System;
 using System.IO;
 using Microsoft.Xna.Framework;
-using Minicraft.Utils;
+using Game.Utils;
 
-namespace Minicraft.Game
+namespace Game.Game
 {
     public sealed class World
     {

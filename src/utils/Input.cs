@@ -1,7 +1,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
-namespace Minicraft.Utils
+namespace Game.Utils
 {
     public static class Input
     {

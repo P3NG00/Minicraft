@@ -1,6 +1,6 @@
 using Microsoft.Xna.Framework;
 
-namespace Minicraft.Utils
+namespace Game.Utils
 {
     public static class Colors
     {
