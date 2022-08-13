@@ -23,7 +23,6 @@ namespace Minicraft.Game
 
         private readonly Color _color;
 
-        private bool? _lastWallLeftOrRight;
         private float _lastHeight;
         private float _life;
 
@@ -67,8 +66,6 @@ namespace Minicraft.Game
             // test horizontal collision
             if (Velocity.X != 0f)
             {
-                // unset last wall, will be set again if still against
-                _lastWallLeftOrRight = null;
                 bool blocked = false;
                 var isMovingLeft = Velocity.X < 0f;
                 var side = isMovingLeft ? left : right;
@@ -81,8 +78,6 @@ namespace Minicraft.Game
                 {
                     // fix position
                     testPosition.X = sideOffset;
-                    // cache last wall
-                    _lastWallLeftOrRight = isMovingLeft;
                     Velocity.X = 0f;
                 }
             }
@@ -90,7 +85,7 @@ namespace Minicraft.Game
             left = (int)(testPosition.X - halfWidth);
             var rightF = testPosition.X + halfWidth;
             right = (int)rightF;
-            // decrement right by one if whole number to avoid extended hitbox
+            // decrement right by one if whole number to avoid extended hitbox in walls
             if (rightF % 1f == 0f)
                 right--;
             // entity not grounded, vertical velocity is not zero
