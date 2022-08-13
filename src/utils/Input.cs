@@ -36,7 +36,7 @@ namespace Game.Utils
 
         public static Point MousePosition => _mouseStates[0].Position;
 
-        public static int ScrollWheel
+        public static int ScrollWheelDelta
         {
             get
             {
