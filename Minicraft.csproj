@@ -28,7 +28,4 @@
     <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.0.1641" />
     <PackageReference Include="SimplexNoise" Version="2.0.0" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Nez\Nez.Portable\Nez.csproj" />
-  </ItemGroup>
 </Project>
