@@ -2,8 +2,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
-using Minicraft.Game;
 using Minicraft.Game.Blocks;
+using Minicraft.Game.Entities;
 using Minicraft.Game.Worlds;
 using Minicraft.Utils;
 
@@ -24,8 +24,8 @@ namespace Minicraft.Scenes
         private int[] _lastTickDifferences = new int[10];
         private float[] _lastFps = new float[10];
 
-        private readonly Player _player;
-        private readonly List<NPC> _npcList = new List<NPC>();
+        private readonly PlayerEntity _player;
+        private readonly List<NPCEntity> _npcList = new List<NPCEntity>();
         private readonly World _world;
 
         private BlockType _currentBlock = BlockType.Dirt;
@@ -35,7 +35,7 @@ namespace Minicraft.Scenes
         public GameScene(World world)
         {
             _world = world;
-            _player = new Player(_world);
+            _player = new PlayerEntity(_world);
         }
 
         public void Update(GameTime gameTime)
@@ -152,7 +152,7 @@ namespace Minicraft.Scenes
                 if (ctrl ? Input.MouseRightFirstDown() : Input.MouseRightHeld())
                     _world.SetBlockType(_lastMouseBlockInt, _currentBlock);
                 if (Input.MouseMiddleFirstDown())
-                    _npcList.Add(new NPC(_lastMouseBlock));
+                    _npcList.Add(new NPCEntity(_lastMouseBlock));
             }
         }
 

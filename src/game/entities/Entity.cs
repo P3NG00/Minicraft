@@ -1,6 +1,5 @@
 using System;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input;
 using Minicraft.Game.Worlds;
 using Minicraft.Utils;
 
@@ -9,7 +8,7 @@ namespace Minicraft.Game
     public abstract class Entity
     {
         private const float FALL_DISTANCE_MIN = 4f;
-        private const float FALL_DAMAGE_PER_BLOCK = 1f;
+        private const float FALL_DAMAGE_PER_BLOCK = 0.5f;
 
         public Vector2 Position;
         public bool IsGrounded { get; protected set; } = false;
@@ -27,7 +26,7 @@ namespace Minicraft.Game
         private float _lastHeight;
         private float _life;
 
-        public bool Alive => _life != 0f;
+        public bool Alive => _life > 0f;
 
         public Entity(Vector2 position, float maxLife, Color color, Vector2 dimensions, float moveSpeed, float jumpVelocity)
         {
@@ -141,98 +140,6 @@ namespace Minicraft.Game
             var drawPos = relativePosition - drawOffset - Display.CameraOffset;
             // draw to surface
             Display.Draw(drawPos, currentSize, _color);
-        }
-    }
-
-    public sealed class Player : Entity
-    {
-        private const float PLAYER_SPEED = 5f;
-        private const float PLAYER_JUMP = 3.5f;
-        private const float PLAYER_LIFE = 10f;
-        private static readonly Vector2 PlayerSize = new Vector2(1.8f, 2.8f);
-
-        public Player(World world) : base(Vector2.Zero, PLAYER_LIFE, Colors.Entity_Player, PlayerSize, PLAYER_SPEED, PLAYER_JUMP) => Respawn(world);
-
-        public void Respawn(World world)
-        {
-            var playerX = (int)(world.Width / 2f);
-            Position = new Vector2(playerX, Math.Max(world.GetTop(playerX - 1).y, world.GetTop(playerX).y) + 1);
-        }
-
-        public sealed override void Update(World world)
-        {
-            // set horizontal movement
-            int h = 0;
-            if (Input.KeyHeld(Keys.A))
-                h--;
-            if (Input.KeyHeld(Keys.D))
-                h++;
-            Velocity.X = h;
-            // check jump
-            if (IsGrounded && Input.KeyHeld(Keys.Space))
-                Jump();
-            // base call
-            base.Update(world);
-            // check life
-            if (!Alive)
-            {
-                // TODO display death screen and click button to respawn
-                // reset health
-                ResetHealth();
-                // respawn
-                Respawn(world);
-            }
-        }
-    }
-
-    public sealed class NPC : Entity
-    {
-        private const float NPC_SPEED = 3f;
-        private const float NPC_JUMP = 3f;
-        private const float NPC_LIFE = 2f;
-        private static readonly Vector2 NPCSize = new Vector2(1.5f, 2.2f);
-
-        private const int NPC_AI_UPDATE_TICKS_MIN = World.TICKS_PER_SECOND * 3;
-        private const int NPC_AI_UPDATE_TICKS_MAX = World.TICKS_PER_SECOND * 5;
-        private const float NPC_AI_GOAL_DISTANCE_MIN = 0.5f;
-
-        private int? _goalX = null;
-        private int _aiUpdateTicks;
-
-        public NPC(Vector2 position) : base(position, NPC_LIFE, Colors.Entity_NPC, NPCSize, NPC_SPEED, NPC_JUMP) => ResetAIUpdateTimer();
-
-        private void ResetAIUpdateTimer() => _aiUpdateTicks = Util.Random.Next(NPC_AI_UPDATE_TICKS_MIN, NPC_AI_UPDATE_TICKS_MAX + 1);
-
-        public sealed override void Update(World world)
-        {
-            // decrement update ticks
-            _aiUpdateTicks--;
-            // test update
-            if (_aiUpdateTicks == 0)
-            {
-                _goalX = _goalX.HasValue ? null : (int?)Util.Random.Next(world.Width);
-                ResetAIUpdateTimer();
-            }
-            // test goal
-            if (_goalX.HasValue)
-            {
-                // if goal reached
-                if (Math.Abs(Position.X - _goalX.Value) <= NPC_AI_GOAL_DISTANCE_MIN)
-                {
-                    _goalX = null;
-                    ResetAIUpdateTimer();
-                }
-                else
-                {
-                    // set velocity towards goal
-                    Velocity.X = Position.X < _goalX.Value ? 1f : -1f;
-                    // TODO jump if block in way
-                }
-            }
-            else
-                Velocity.X = 0f;
-            // base call
-            base.Update(world);
         }
     }
 }
