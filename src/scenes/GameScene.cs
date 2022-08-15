@@ -40,7 +40,7 @@ namespace Minicraft.Scenes
 
         public void Update(GameTime gameTime)
         {
-            UpdateTicks((float)gameTime.ElapsedGameTime.TotalSeconds);
+            UpdateTicks((float)gameTime.ElapsedGameTime.TotalSeconds * Debug.TimeScale);
             // handle input
             HandleInput();
             // update for every tick step
@@ -121,8 +121,10 @@ namespace Minicraft.Scenes
             if (Input.KeyFirstDown(Keys.Tab))
                 Display.ShowGrid = !Display.ShowGrid;
             bool ctrl = Input.KeyHeld(Keys.LeftControl) || Input.KeyHeld(Keys.RightControl);
-            if (ctrl && Input.KeyFirstDown(Keys.F1))
-                _world.Save();
+            if (Input.KeyFirstDown(Keys.F1))
+                Debug.TimeScale -= Debug.TIME_SCALE_STEP;
+            if (Input.KeyFirstDown(Keys.F2))
+                Debug.TimeScale += Debug.TIME_SCALE_STEP;
             if (Debug.Enabled && Input.KeyFirstDown(Keys.F11))
                 Debug.TrackUpdated = !Debug.TrackUpdated;
             if (Input.KeyFirstDown(Keys.F12))
@@ -183,6 +185,7 @@ namespace Minicraft.Scenes
                     $"window_size: {Display.WindowSize.X}x{Display.WindowSize.Y}",
                     $"world_size: {World.WIDTH}x{World.HEIGHT}",
                     $"show_grid: {Display.ShowGrid}",
+                    $"time_scale: {Debug.TimeScale:0.0}",
                     $"time: {(Ticks / (float)World.TICKS_PER_SECOND):0.000}",
                     $"ticks: {Ticks} ({World.TICKS_PER_SECOND} ticks/sec)",
                     $"frames_per_second: {AverageFramesPerSecond:0.000}",

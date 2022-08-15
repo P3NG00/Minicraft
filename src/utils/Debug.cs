@@ -5,10 +5,18 @@ namespace Minicraft.Utils
 {
     public static class Debug
     {
-        private static readonly Hashtable _debugUpdates = new Hashtable();
+        public const float TIME_SCALE_STEP = 0.05f;
 
         public static bool Enabled = false;
         public static bool TrackUpdated = false;
+        public static float TimeScale
+        {
+            get => _timeScale;
+            set => _timeScale = value.Clamp(0f, 1f);
+        }
+
+        private static readonly Hashtable _debugUpdates = new Hashtable();
+        private static float _timeScale = 1f;
 
         public static void AddBlockUpdate(Point blockPos)
         {
