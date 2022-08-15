@@ -26,11 +26,8 @@ namespace Minicraft.Utils
         public static Color? CheckDebugColor(Point blockPos)
         {
             Color? color = null;
-            if (_debugUpdates.ContainsKey(blockPos))
-            {
+            if (_debugUpdates.Contains(blockPos))
                 color = (Color)_debugUpdates[blockPos];
-                _debugUpdates.Remove(blockPos);
-            }
             return color;
         }
 
