@@ -185,7 +185,7 @@ namespace Minicraft.Scenes
                     $"window_size: {Display.WindowSize.X}x{Display.WindowSize.Y}",
                     $"world_size: {World.WIDTH}x{World.HEIGHT}",
                     $"show_grid: {Display.ShowGrid}",
-                    $"time_scale: {Debug.TimeScale:0.0}",
+                    $"time_scale: {Debug.TimeScale:0.00}",
                     $"time: {(Ticks / (float)World.TICKS_PER_SECOND):0.000}",
                     $"ticks: {Ticks} ({World.TICKS_PER_SECOND} ticks/sec)",
                     $"frames_per_second: {AverageFramesPerSecond:0.000}",
