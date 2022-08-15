@@ -6,15 +6,15 @@ namespace Minicraft.Utils
 {
     public static class Display
     {
+        public const int FRAMES_PER_SECOND = 60;
+        public const int BLOCK_SCALE_MIN = 5;
+        public const int BLOCK_SCALE_MAX = 25;
+
         public static SpriteBatch SpriteBatch;
         public static Texture2D TextureSquare;
         public static SpriteFont FontUI;
         public static SpriteFont FontTitle;
         public static GraphicsDeviceManager Graphics;
-
-        public const int FRAMES_PER_SECOND = 60;
-        public const int BLOCK_SCALE_MIN = 5;
-        public const int BLOCK_SCALE_MAX = 25;
 
         public static readonly float FrameStep = 1f / FRAMES_PER_SECOND;
         public static Point WindowSize
