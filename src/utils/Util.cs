@@ -16,14 +16,13 @@ namespace Minicraft.Utils
 
         public static Block GetBlock(this BlockType blockType) => (Block)blockType;
 
-        public static bool TestChance(this Random random, float chance)
+        public static bool TestChance(this float chance)
         {
             if (chance >= 1.0f)
                 return true;
-            else if (chance < 0.0f)
+            if (chance < 0.0f)
                 return false;
-            else
-                return random.NextDouble() < chance;
+            return Random.NextDouble() < chance;
         }
 
         public static bool NextBool(this Random random) => random.NextDouble() < 0.5;

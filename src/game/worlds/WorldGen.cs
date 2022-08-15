@@ -24,13 +24,13 @@ namespace Minicraft.Game.Worlds
 
         public static World GenerateWorld()
         {
+            // create world of air blocks for modification
             int x, y;
-            // create grid of air blocks for modification
             var world = new World();
             for (y = 0; y < HEIGHT; y++)
                 for (x = 0; x < WIDTH; x++)
                     world.SetBlockType(x, y, BlockType.Air);
-            // create height map
+            // create random height map
             var relativeWidth = WIDTH / CHUNK_WIDTH;
             var midHeight = HEIGHT / 2;
             var heightmap = new int[WIDTH];
@@ -50,20 +50,27 @@ namespace Minicraft.Game.Worlds
                 for (int scanX = -SMOOTH_SCAN_RADIUS; scanX < SMOOTH_SCAN_RADIUS; scanX++)
                 {
                     var _x = x + scanX;
-                    currentHeights[scanX + SMOOTH_SCAN_RADIUS] = _x < 0 || _x >= WIDTH ? thirdHeight : heightmap[_x];
+                    var inBounds = _x >= 0 && _x < WIDTH;
+                    var height = inBounds ? heightmap[_x] : thirdHeight;
+                    currentHeights[scanX + SMOOTH_SCAN_RADIUS] = height;
                 }
                 heightmapSmooth[x] = (int)Math.Round(currentHeights.Average());
             }
-            // place blocks using smoothed height map
+            // place ground using smoothed height map
             for (x = 0; x < WIDTH; x++)
             {
                 var heightMax = heightmapSmooth[x] - 1;
                 for (y = 0; y < heightmapSmooth[x]; y++)
-                    world.SetBlockType(x, y, y <= heightMax - STONE_OFFSET ? BlockType.Stone : BlockType.Dirt);
+                {
+                    var isStone = y <= heightMax - STONE_OFFSET;
+                    var block = isStone ? BlockType.Stone : BlockType.Dirt;
+                    world.SetBlockType(x, y, block);
+                }
             }
-            // generate caves
+            // create noise map for caves
             Noise.Seed = Util.Random.Next(int.MinValue, int.MaxValue);
             var noiseMap = Noise.Calc2D(WIDTH, HEIGHT, CAVE_NOISE_SCALE);
+            // iterate through noisemap values and remove blocks at cutoff point
             for (y = 0; y < HEIGHT; y++)
                 for (x = 0; x < WIDTH; x++)
                     if (noiseMap[x, y] < CAVE_NOISE_CUTOFF)
@@ -75,12 +82,12 @@ namespace Minicraft.Game.Worlds
                 if (topBlock.block == BlockType.Dirt)
                     world.SetBlockType(x, topBlock.y, BlockType.Grass);
             }
-            // generate trees on on surface grass
+            // generate trees on surface grass
             for (x = TREE_SPACING_MIN; x < WIDTH - TREE_SPACING_MIN; x++)
             {
                 var topBlock = world.GetTop(x);
                 // test tree chance
-                if (topBlock.block == BlockType.Grass && Util.Random.TestChance(TREE_CHANCE))
+                if (topBlock.block == BlockType.Grass && TREE_CHANCE.TestChance())
                 {
                     // generate tree
                     var startY = topBlock.y + 1;
@@ -102,7 +109,7 @@ namespace Minicraft.Game.Worlds
                                     world.SetBlockType(sidePoint, BlockType.Leaves);
                             }
                             // test branch chance
-                            if (Util.Random.TestChance(BRANCH_CHANCE))
+                            if (BRANCH_CHANCE.TestChance())
                             {
                                 // create branch
                                 branchDirection = (branchDirection == 0 ? Util.Random.NextBool() : branchDirection == -1) ? 1 : -1;
