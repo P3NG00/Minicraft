@@ -15,7 +15,7 @@ namespace Minicraft.Scenes
 
         public MainMenuScene()
         {
-            _buttonWorldNew.Action = () => MinicraftGame.SetScene(new GameScene(World.GenerateWorld()));
+            _buttonWorldNew.Action = CreateNewWorld;
             _buttonWorldNew.ColorBoxHighlight = Colors.MainMenu_Button_World_Highlight;
             _buttonWorldNew.ColorTextHighlight = Colors.MainMenu_Text_World_Highlight;
             _buttonExit.Action = MinicraftGame.EndProgram;
@@ -25,7 +25,7 @@ namespace Minicraft.Scenes
             if (File.Exists(World.SAVE_FILE))
             {
                 _buttonWorldContinue = new Button(new Vector2(0.5f, 0.7f), new Point(250, 50), "continue world", Colors.MainMenu_Button_World, Colors.MainMenu_Text_World);
-                _buttonWorldContinue.Action = () => MinicraftGame.SetScene(new GameScene(World.Load()));
+                _buttonWorldContinue.Action = LoadSavedWorld;
                 _buttonWorldContinue.ColorBoxHighlight = Colors.MainMenu_Button_World_Highlight;
                 _buttonWorldContinue.ColorTextHighlight = Colors.MainMenu_Text_World_Highlight;
             }
@@ -54,5 +54,9 @@ namespace Minicraft.Scenes
             _buttonExit.Draw();
             _buttonWorldContinue?.Draw();
         }
+
+        private static void CreateNewWorld() => MinicraftGame.SetScene(new GameScene(World.GenerateWorld()));
+
+        private static void LoadSavedWorld() => MinicraftGame.SetScene(new GameScene(World.Load()));
     }
 }
