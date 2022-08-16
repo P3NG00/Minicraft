@@ -17,7 +17,7 @@ namespace Minicraft
         public MinicraftGame()
         {
             _instance = this;
-            Display.Graphics = new GraphicsDeviceManager(this);
+            Display.Initialize(this);
             Content.RootDirectory = "Content";
             IsFixedTimeStep = false;
             TargetElapsedTime = TimeSpan.FromMilliseconds(1000f / Display.FRAMES_PER_SECOND);
@@ -28,14 +28,7 @@ namespace Minicraft
 
         protected override void LoadContent()
         {
-            // create square for drawing
-            Display.TextureSquare = new Texture2D(GraphicsDevice, 1, 1);
-            Display.TextureSquare.SetData(new[] {Color.White});
-            // load font
-            Display.FontUI = Content.Load<SpriteFont>("type_writer_ui");
-            Display.FontTitle = Content.Load<SpriteFont>("type_writer_title");
-            // create display handler
-            Display.SpriteBatch = new SpriteBatch(GraphicsDevice);
+            Display.LoadContent(GraphicsDevice, Content);
             // base call
             base.LoadContent();
         }

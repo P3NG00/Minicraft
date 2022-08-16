@@ -1,4 +1,5 @@
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Minicraft.Game.Entities;
 
@@ -10,11 +11,10 @@ namespace Minicraft.Utils
         public const int BLOCK_SCALE_MIN = 5;
         public const int BLOCK_SCALE_MAX = 25;
 
-        public static SpriteBatch SpriteBatch;
-        public static Texture2D TextureSquare;
-        public static SpriteFont FontUI;
-        public static SpriteFont FontTitle;
-        public static GraphicsDeviceManager Graphics;
+        public static SpriteBatch SpriteBatch { get; private set; }
+        public static Texture2D TextureSquare { get; private set; }
+        public static SpriteFont FontUI { get; private set; }
+        public static SpriteFont FontTitle { get; private set; }
 
         public static readonly float FrameStep = 1f / FRAMES_PER_SECOND;
         public static Point WindowSize
@@ -32,6 +32,21 @@ namespace Minicraft.Utils
         public static int BlockScale = 20;
 
         private static Point _windowSize = new Point(1280, 720);
+        private static GraphicsDeviceManager _graphics;
+
+        public static void Initialize(Microsoft.Xna.Framework.Game game) => _graphics = new GraphicsDeviceManager(game);
+
+        public static void LoadContent(GraphicsDevice graphicsDevice, ContentManager content)
+        {
+            // create square for drawing
+            TextureSquare = new Texture2D(graphicsDevice, 1, 1);
+            TextureSquare.SetData(new[] {Color.White});
+            // load font
+            FontUI = content.Load<SpriteFont>("type_writer_ui");
+            FontTitle = content.Load<SpriteFont>("type_writer_title");
+            // create display handler
+            SpriteBatch = new SpriteBatch(graphicsDevice);
+        }
 
         public static void UpdateCameraOffset(PlayerEntity player)
         {
@@ -43,9 +58,9 @@ namespace Minicraft.Utils
 
         public static void UpdateWindowSize()
         {
-            Graphics.PreferredBackBufferWidth = Display.WindowSize.X;
-            Graphics.PreferredBackBufferHeight = Display.WindowSize.Y;
-            Graphics.ApplyChanges();
+            _graphics.PreferredBackBufferWidth = Display.WindowSize.X;
+            _graphics.PreferredBackBufferHeight = Display.WindowSize.Y;
+            _graphics.ApplyChanges();
         }
 
         public static void Draw(Vector2 position, Vector2 size, Color color) => SpriteBatch.Draw(TextureSquare, position, null, color, 0f, Vector2.Zero, size, SpriteEffects.None, 0f);
