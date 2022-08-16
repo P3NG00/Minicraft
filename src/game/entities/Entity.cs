@@ -106,7 +106,7 @@ namespace Minicraft.Game
             // if grounded, update last height
             if (IsGrounded)
             {
-                var onAir = CheckOnAir(world, GetSides());
+                var onAir = CheckOnAir(world);
 
                 if (onAir)
                     IsGrounded = false;
@@ -147,15 +147,15 @@ namespace Minicraft.Game
             }
         }
 
-        public Sides GetSides() => GetSides(null);
+        // TODO implement in catching if clicking inside player
+        public Sides GetSides() => GetSides(Position);
 
-        private Sides GetSides(Vector2? position)
+        private Sides GetSides(Vector2 position)
         {
-            var pos = position ?? Position;
-            var top = (int)(pos.Y + Dimensions.Y);
-            var bottom = (int)(pos.Y);
-            var left = (int)(pos.X - HalfWidth);
-            var rightF = pos.X + HalfWidth;
+            var top = (int)(position.Y + Dimensions.Y);
+            var bottom = (int)(position.Y);
+            var left = (int)(position.X - HalfWidth);
+            var rightF = position.X + HalfWidth;
             var right = (int)rightF;
             if (rightF % 1f == 0f)
                 right--;
@@ -164,11 +164,11 @@ namespace Minicraft.Game
 
         private void HandleHorizontalCollision(ref Vector2 testPosition)
         {
-            var sides = GetSides();
+            var sides = GetSides(testPosition);
             if (IsMovingLeft)
-                testPosition.X = sides.Left + HalfWidth;
+                testPosition.X = sides.Left + 1f + HalfWidth;
             else if (IsMovingRight)
-                testPosition.X = sides.Right + 1f - HalfWidth;
+                testPosition.X = sides.Right - HalfWidth;
             else
                 throw new Exception("Collision handled when not moving");
             Velocity.X = 0f;
@@ -176,10 +176,10 @@ namespace Minicraft.Game
 
         private void HandleVerticalCollision(ref Vector2 testPosition)
         {
-            var sides = GetSides();
+            var sides = GetSides(testPosition);
             if (IsMovingDown)
             {
-                testPosition.Y = sides.Bottom;
+                testPosition.Y = sides.Bottom + 1f;
                 IsGrounded = true;
                 var fallenDistance = _lastHeight - testPosition.Y - FALL_DISTANCE_MIN;
                 if (fallenDistance > 0f)
@@ -196,38 +196,32 @@ namespace Minicraft.Game
         {
             var sides = GetSides();
             var subVelocity = velocityThisUpdate / (float)MOVEMENT_SUBCHECKS;
-            var isMovingLeft = IsMovingLeft;
-            var isMovingDown = IsMovingDown;
+            Func<Sides, bool> crossHorizontal;
+            Func<Sides, bool> crossVertical;
+
+            if (IsMovingLeft)
+                crossHorizontal = subSides => sides.Left != subSides.Left;
+            else
+                crossHorizontal = subSides => sides.Right != subSides.Right;
+
+            if (IsMovingDown)
+                crossVertical = subSides => sides.Bottom != subSides.Bottom;
+            else
+                crossVertical = subSides => sides.Top != subSides.Top;
 
             for (int i = 0; i < MOVEMENT_SUBCHECKS; i++)
             {
                 var subPos = Position + (subVelocity * i);
                 var subSides = GetSides(subPos);
 
-                if (isMovingLeft)
-                {
-                    if (sides.Left != subSides.Left)
-                        return true;
-                }
-                else
-                {
-                    if (sides.Right != subSides.Right)
-                        return true;
-                }
-
-                if (isMovingDown)
-                {
-                    if (sides.Bottom != subSides.Bottom)
-                        return false;
-                }
-                else
-                {
-                    if (sides.Top != subSides.Top)
-                        return false;
-                }
+                if (crossHorizontal(subSides))
+                    return true;
+                if (crossVertical(subSides))
+                    return false;
             }
 
-            throw new Exception("No collision detected");
+            // return true by default if reached
+            return true;
         }
 
         // returns true if a collision happened while moving horizontally
@@ -281,8 +275,9 @@ namespace Minicraft.Game
         }
 
         // returns true if sides are above air
-        private bool CheckOnAir(World world, Sides sides)
+        private bool CheckOnAir(World world)
         {
+            var sides = GetSides();
             for (int x = sides.Left; x <= sides.Right; x++)
             {
                 var blockPoint = new Point(x, sides.Bottom - 1);
