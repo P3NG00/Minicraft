@@ -17,6 +17,7 @@ namespace Minicraft.Utils
         // debug
         public static readonly Color DebugReason_BlockUpdate = new Color(255, 0, 255);
         public static readonly Color DebugReason_CollisionCheck = new Color(0, 0, 255);
+        public static readonly Color DebugReason_AirCheck = new Color(255, 128, 0);
 
         // main menu buttons
         public static readonly Color MainMenu_Button_World = new Color(0, 0, 0);

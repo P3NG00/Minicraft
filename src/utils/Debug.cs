@@ -20,15 +20,21 @@ namespace Minicraft.Utils
 
         public static void AddBlockUpdate(Point blockPos)
         {
-            if (!_debugUpdates.Contains(blockPos))
-                _debugUpdates.Add(blockPos, Colors.DebugReason_BlockUpdate);
+            if (_debugUpdates.Contains(blockPos))
+                _debugUpdates.Remove(blockPos);
+            _debugUpdates.Add(blockPos, Colors.DebugReason_BlockUpdate);
         }
 
         public static void AddCollisionCheck(Point blockPos)
         {
-            if (_debugUpdates.Contains(blockPos))
-                _debugUpdates.Remove(blockPos);
-            _debugUpdates.Add(blockPos, Colors.DebugReason_CollisionCheck);
+            if (!_debugUpdates.Contains(blockPos))
+                _debugUpdates.Add(blockPos, Colors.DebugReason_CollisionCheck);
+        }
+
+        public static void AddAirCheck(Point blockPos)
+        {
+            if (!_debugUpdates.Contains(blockPos))
+                _debugUpdates.Add(blockPos, Colors.DebugReason_AirCheck);
         }
 
         public static Color? CheckDebugColor(Point blockPos)
