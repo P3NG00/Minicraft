@@ -25,8 +25,10 @@ namespace Minicraft.Utils
             return Random.NextDouble() < chance;
         }
 
-        public static bool NextBool(this Random random) => random.NextDouble() < 0.5;
+        public static bool NextBool(this Random random) => (0.5f).TestChance();
 
         public static Point NextPoint(this Random random, Point max) => new Point(random.Next(max.X), random.Next(max.Y));
+
+        public delegate void ActionRef<T>(ref T t);
     }
 }

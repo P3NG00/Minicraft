@@ -2,6 +2,7 @@ using System;
 using Microsoft.Xna.Framework;
 using Minicraft.Game.Worlds;
 using Minicraft.Utils;
+using static Minicraft.Utils.Util;
 
 namespace Minicraft.Game
 {
@@ -81,24 +82,27 @@ namespace Minicraft.Game
             if (verticalCollision && horizontalCollision)
             {
                 var horizontalHappenedFirst = WhichCollisionFirstHorizontalElseVertical(velocityThisUpdate);
+                ActionRef<Vector2> firstCollision;
+                ActionRef<Vector2> secondCollision;
+                Func<World, Sides, bool> secondCheck;
                 if (horizontalHappenedFirst)
                 {
-                    // handle horizontal collision first
-                    HandleHorizontalCollision(ref testPosition);
-                    // re-check vertical collision with new position
-                    if (CheckVerticalCollision(world, GetSides(testPosition)))
-                        // handle vertical collision
-                        HandleVerticalCollision(ref testPosition);
+                    firstCollision = HandleHorizontalCollision;
+                    secondCheck = CheckVerticalCollision;
+                    secondCollision = HandleVerticalCollision;
                 }
                 else
                 {
-                    // handle vertical collision first
-                    HandleVerticalCollision(ref testPosition);
-                    // re-check horizontal collision with new position
-                    if (CheckHorizontalCollision(world, GetSides(testPosition)))
-                        // handle horizontal collision
-                        HandleHorizontalCollision(ref testPosition);
+                    firstCollision = HandleVerticalCollision;
+                    secondCheck = CheckHorizontalCollision;
+                    secondCollision = HandleHorizontalCollision;
                 }
+                // handle first collision
+                firstCollision(ref testPosition);
+                // re-check second collision with new position
+                if (secondCheck(world, GetSides(testPosition)))
+                    // handle second collision
+                    secondCollision(ref testPosition);
             }
             else if (horizontalCollision)
                 HandleHorizontalCollision(ref testPosition);
