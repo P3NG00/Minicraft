@@ -152,7 +152,6 @@ namespace Minicraft.Game
             public bool Contains(Point p) => p.X >= Left && p.X <= Right && p.Y <= Top && p.Y >= Bottom;
         }
 
-        // TODO implement in catching if clicking inside player
         public Sides GetSides() => GetSides(Position);
 
         private Sides GetSides(Vector2 position)
