@@ -140,13 +140,12 @@ namespace Minicraft.Scenes
             _lastMouseBlock = ((mousePos - (Display.WindowSize.ToVector2() / 2f)) / Display.BlockScale) + (_player.Position + new Vector2(0, _player.Dimensions.Y / 2f));
             _lastMouseBlockInt = _lastMouseBlock.ToPoint();
             // catch out of bounds
-            // TODO disable being able to place blocks inside of entities
             if (_lastMouseBlockInt.X >= 0 && _lastMouseBlockInt.X < World.WIDTH &&
                 _lastMouseBlockInt.Y >= 0 && _lastMouseBlockInt.Y < World.HEIGHT)
             {
                 if (ctrl ? Input.MouseLeftFirstDown() : Input.MouseLeftHeld())
                     _world.SetBlockType(_lastMouseBlockInt, BlockType.Air);
-                if (ctrl ? Input.MouseRightFirstDown() : Input.MouseRightHeld())
+                if ((ctrl ? Input.MouseRightFirstDown() : Input.MouseRightHeld()) && !_player.GetSides().Contains(_lastMouseBlockInt))
                     _world.SetBlockType(_lastMouseBlockInt, _currentBlock);
                 if (Input.MouseMiddleFirstDown())
                     _npcList.Add(new NPCEntity(_lastMouseBlock));
