@@ -9,10 +9,13 @@ namespace Minicraft.Game
     {
         private const float FALL_DISTANCE_MIN = 4f;
         private const float FALL_DAMAGE_PER_BLOCK = 0.5f;
+        private const int MOVEMENT_SUBCHECKS = 16;
+
+        public readonly Vector2 Dimensions;
+        public readonly float HalfWidth;
 
         public Vector2 Position;
         public bool IsGrounded { get; protected set; } = false;
-        public Vector2 Dimensions { get; private set; }
         public Vector2 Velocity;
         public float MaxLife;
 
@@ -27,6 +30,10 @@ namespace Minicraft.Game
         private float _life;
 
         public bool Alive => _life > 0f;
+        public bool IsMovingUp => Velocity.Y > 0f;
+        public bool IsMovingDown => Velocity.Y < 0f;
+        public bool IsMovingLeft => Velocity.X < 0f;
+        public bool IsMovingRight => Velocity.X > 0f;
 
         public Entity(Vector2 position, float maxLife, Color color, Vector2 dimensions, float moveSpeed, float jumpVelocity)
         {
@@ -36,6 +43,7 @@ namespace Minicraft.Game
             _life = maxLife;
             _color = color;
             Dimensions = dimensions;
+            HalfWidth = Dimensions.X / 2f;
             MoveSpeed = moveSpeed;
             JumpVelocity = jumpVelocity;
         }
@@ -54,92 +62,57 @@ namespace Minicraft.Game
         {
             // add velocity if falling // TODO add max velocity
             if (!IsGrounded)
-                Velocity.Y -= World.GRAVITY * World.TickStep;
+                Velocity.Y -= World.GRAVITY * World.TICK_STEP;
             // find projected new position
-            var testPosition = Position + ((Velocity * World.TickStep) * MoveSpeed);
+            var velocityThisUpdate = Velocity * MoveSpeed * World.TICK_STEP;
+            var testPosition = Position + velocityThisUpdate;
             // find collision points
-            var top = (int)(testPosition.Y + Dimensions.Y);
-            var bottom = (int)(testPosition.Y);
-            var halfWidth = Dimensions.X / 2f;
-            var left = (int)(testPosition.X - halfWidth);
-            var right = (int)(testPosition.X + halfWidth);
+            var testSides = GetSides(testPosition);
             // test horizontal collision
-            if (Velocity.X != 0f)
-            {
-                bool blocked = false;
-                var isMovingLeft = Velocity.X < 0f;
-                var side = isMovingLeft ? left : right;
-                var sideOffset = isMovingLeft ? left + 1 + halfWidth : right - halfWidth;
-                // check side blocks
-                for (int y = bottom; y <= top && !blocked; y++)
-                {
-                    var sidePoint = new Point(side, y);
-                    Debug.AddCollisionCheck(sidePoint);
-                    if (!world.GetBlockType(sidePoint).GetBlock().CanWalkThrough)
-                        blocked = true;
-                }
-                if (blocked)
-                {
-                    // fix position
-                    testPosition.X = sideOffset;
-                    Velocity.X = 0f;
-                }
-            }
-            // update bound values
-            left = (int)(testPosition.X - halfWidth);
-            var rightF = testPosition.X + halfWidth;
-            right = (int)rightF;
-            // decrement right by one if whole number to avoid extended hitbox in walls
-            if (rightF % 1f == 0f)
-                right--;
-            // entity not grounded, vertical velocity is not zero
+            var horizontalCollision = CheckHorizontalCollision(world, testSides);
+            // test vertical collision
+            var verticalCollision = false;
             if (!IsGrounded)
+                verticalCollision = CheckVerticalCollision(world, testSides);
+            // figure out which collision happened first
+            if (verticalCollision && horizontalCollision)
             {
-                var blocked = false;
-                var isMovingDown = Velocity.Y < 0f;
-                var side = isMovingDown ? bottom : top;
-                for (int x = left; x <= right && !blocked; x++)
+                var horizontalHappenedFirst = WhichCollisionFirstHorizontalElseVertical(velocityThisUpdate);
+                if (horizontalHappenedFirst)
                 {
-                    var sidePoint = new Point(x, side);
-                    Debug.AddCollisionCheck(sidePoint);
-                    if (!world.GetBlockType(sidePoint).GetBlock().CanWalkThrough)
-                        blocked = true;
+                    // handle horizontal collision first
+                    HandleHorizontalCollision(ref testPosition);
+                    // re-check vertical collision with new position
+                    if (CheckVerticalCollision(world, GetSides(testPosition)))
+                        // handle vertical collision
+                        HandleVerticalCollision(ref testPosition);
                 }
-                if (blocked)
+                else
                 {
-                    Velocity.Y = 0f;
-                    if (isMovingDown)
-                    {
-                        testPosition.Y = (float)Math.Ceiling(testPosition.Y);
-                        IsGrounded = true;
-                        var fallenDistance = _lastHeight - testPosition.Y - FALL_DISTANCE_MIN;
-                        if (fallenDistance > 0f)
-                            Damage(fallenDistance * FALL_DAMAGE_PER_BLOCK);
-                    }
-                    else
-                        testPosition.Y = top - Dimensions.Y;
+                    // handle vertical collision first
+                    HandleVerticalCollision(ref testPosition);
+                    // re-check horizontal collision with new position
+                    if (CheckHorizontalCollision(world, GetSides(testPosition)))
+                        // handle horizontal collision
+                        HandleHorizontalCollision(ref testPosition);
                 }
             }
-            // entity grounded
-            else
-            {
-                // test walking on air
-                bool onAir = true;
-                for (int x = left; x <= right && onAir; x++)
-                {
-                    var blockPoint = new Point(x, bottom - 1);
-                    Debug.AddCollisionCheck(blockPoint);
-                    if (!world.GetBlockType(blockPoint).GetBlock().CanWalkThrough)
-                        onAir = false;
-                }
-                if (onAir)
-                    IsGrounded = false;
-            }
+            else if (horizontalCollision)
+                HandleHorizontalCollision(ref testPosition);
+            else if (verticalCollision)
+                HandleVerticalCollision(ref testPosition);
             // update position
             Position = testPosition;
             // if grounded, update last height
             if (IsGrounded)
-                _lastHeight = Position.Y;
+            {
+                var onAir = CheckOnAir(world, GetSides());
+
+                if (onAir)
+                    IsGrounded = false;
+                else
+                    _lastHeight = Position.Y;
+            }
         }
 
         public void Draw()
@@ -156,6 +129,171 @@ namespace Minicraft.Game
             var drawPos = relativePosition - drawOffset - Display.CameraOffset;
             // draw to surface
             Display.Draw(drawPos, currentSize, _color);
+        }
+
+        public struct Sides
+        {
+            public int Top;
+            public int Bottom;
+            public int Left;
+            public int Right;
+
+            public Sides(int top, int bottom, int left, int right)
+            {
+                Top = top;
+                Bottom = bottom;
+                Left = left;
+                Right = right;
+            }
+        }
+
+        public Sides GetSides() => GetSides(null);
+
+        private Sides GetSides(Vector2? position)
+        {
+            var pos = position ?? Position;
+            var top = (int)(pos.Y + Dimensions.Y);
+            var bottom = (int)(pos.Y);
+            var left = (int)(pos.X - HalfWidth);
+            var rightF = pos.X + HalfWidth;
+            var right = (int)rightF;
+            if (rightF % 1f == 0f)
+                right--;
+            return new Sides(top, bottom, left, right);
+        }
+
+        private void HandleHorizontalCollision(ref Vector2 testPosition)
+        {
+            var sides = GetSides();
+            if (IsMovingLeft)
+                testPosition.X = sides.Left + HalfWidth;
+            else if (IsMovingRight)
+                testPosition.X = sides.Right + 1f - HalfWidth;
+            else
+                throw new Exception("Collision handled when not moving");
+            Velocity.X = 0f;
+        }
+
+        private void HandleVerticalCollision(ref Vector2 testPosition)
+        {
+            var sides = GetSides();
+            if (IsMovingDown)
+            {
+                testPosition.Y = sides.Bottom;
+                IsGrounded = true;
+                var fallenDistance = _lastHeight - testPosition.Y - FALL_DISTANCE_MIN;
+                if (fallenDistance > 0f)
+                    Damage(fallenDistance * FALL_DAMAGE_PER_BLOCK);
+            }
+            else if (IsMovingUp)
+                testPosition.Y = sides.Top - Dimensions.Y;
+            else
+                throw new Exception("Collision handled when not moving");
+            Velocity.Y = 0f;
+        }
+
+        private bool WhichCollisionFirstHorizontalElseVertical(Vector2 velocityThisUpdate)
+        {
+            var sides = GetSides();
+            var subVelocity = velocityThisUpdate / (float)MOVEMENT_SUBCHECKS;
+            var isMovingLeft = IsMovingLeft;
+            var isMovingDown = IsMovingDown;
+
+            for (int i = 0; i < MOVEMENT_SUBCHECKS; i++)
+            {
+                var subPos = Position + (subVelocity * i);
+                var subSides = GetSides(subPos);
+
+                if (isMovingLeft)
+                {
+                    if (sides.Left != subSides.Left)
+                        return true;
+                }
+                else
+                {
+                    if (sides.Right != subSides.Right)
+                        return true;
+                }
+
+                if (isMovingDown)
+                {
+                    if (sides.Bottom != subSides.Bottom)
+                        return false;
+                }
+                else
+                {
+                    if (sides.Top != subSides.Top)
+                        return false;
+                }
+            }
+
+            throw new Exception("No collision detected");
+        }
+
+        // returns true if a collision happened while moving horizontally
+        private bool CheckHorizontalCollision(World world, Sides sides)
+        {
+            int side;
+            if (IsMovingLeft)
+                side = sides.Left;
+            else if (IsMovingRight)
+                side = sides.Right;
+            else
+                // not moving, return no collision
+                return false;
+
+            for (int y = sides.Bottom; y <= sides.Top; y++)
+            {
+                var sidePoint = new Point(side, y);
+                Debug.AddCollisionCheck(sidePoint);
+                if (!world.GetBlockType(sidePoint).GetBlock().CanWalkThrough)
+                    // found collision
+                    return true;
+            }
+
+            // no collision found
+            return false;
+        }
+
+        // returns true if a collision happened while moving vertically
+        private bool CheckVerticalCollision(World world, Sides sides)
+        {
+            int side;
+            if (IsMovingUp)
+                side = sides.Top;
+            else if (IsMovingDown)
+                side = sides.Bottom;
+            else
+                // not moving, return no collision
+                return false;
+
+            for (int x = sides.Left; x <= sides.Right; x++)
+            {
+                var sidePoint = new Point(x, side);
+                Debug.AddCollisionCheck(sidePoint);
+                if (!world.GetBlockType(sidePoint).GetBlock().CanWalkThrough)
+                    // found collision
+                    return true;
+            }
+
+            // no collision found
+            return false;
+        }
+
+        // returns true if sides are above air
+        private bool CheckOnAir(World world, Sides sides)
+        {
+            for (int x = sides.Left; x <= sides.Right; x++)
+            {
+                var blockPoint = new Point(x, sides.Bottom - 1);
+                // TODO add seperate debug color for 'on_air' checking
+                Debug.AddCollisionCheck(blockPoint);
+                if (!world.GetBlockType(blockPoint).GetBlock().CanWalkThrough)
+                    // collision found, not on air
+                    return false;
+            }
+            // no collision found
+            return true;
         }
     }
 }

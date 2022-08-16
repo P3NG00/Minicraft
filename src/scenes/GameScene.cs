@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
@@ -74,10 +75,10 @@ namespace Minicraft.Scenes
 
         private bool Tick()
         {
-            if (_tickDelta >= World.TickStep)
+            if (_tickDelta >= World.TICK_STEP)
             {
                 // decrement delta time by tick step
-                _tickDelta -= World.TickStep;
+                _tickDelta -= World.TICK_STEP;
                 // increment tick counter
                 _ticks[0]++;
                 // return success
@@ -129,16 +130,9 @@ namespace Minicraft.Scenes
                 Debug.TrackUpdated = !Debug.TrackUpdated;
             if (Input.KeyFirstDown(Keys.F12))
                 Debug.Enabled = !Debug.Enabled;
-            if (Input.KeyFirstDown(Keys.D1))
-                _currentBlock = BlockType.Dirt;
-            if (Input.KeyFirstDown(Keys.D2))
-                _currentBlock = BlockType.Grass;
-            if (Input.KeyFirstDown(Keys.D3))
-                _currentBlock = BlockType.Stone;
-            if (Input.KeyFirstDown(Keys.D4))
-                _currentBlock = BlockType.Wood;
-            if (Input.KeyFirstDown(Keys.D5))
-                _currentBlock = BlockType.Leaves;
+            for (int i = 1; i < Enum.GetValues(typeof(BlockType)).Length; i++)
+                if (Input.KeyFirstDown(Keys.D0 + i))
+                    _currentBlock = (BlockType)i;
             Display.BlockScale = (Display.BlockScale + Input.ScrollWheelDelta).Clamp(Display.BLOCK_SCALE_MIN, Display.BLOCK_SCALE_MAX);
             // get block position from mouse
             var mousePos = Input.MousePosition.ToVector2();
@@ -146,6 +140,7 @@ namespace Minicraft.Scenes
             _lastMouseBlock = ((mousePos - (Display.WindowSize.ToVector2() / 2f)) / Display.BlockScale) + (_player.Position + new Vector2(0, _player.Dimensions.Y / 2f));
             _lastMouseBlockInt = _lastMouseBlock.ToPoint();
             // catch out of bounds
+            // TODO disable being able to place blocks inside of entities
             if (_lastMouseBlockInt.X >= 0 && _lastMouseBlockInt.X < World.WIDTH &&
                 _lastMouseBlockInt.Y >= 0 && _lastMouseBlockInt.Y < World.HEIGHT)
             {

@@ -13,7 +13,7 @@ namespace Minicraft.Game.Worlds
         public const string SAVE_FILE = "save";
         public const int WIDTH = 1024;
         public const int HEIGHT = 512;
-        public const float TickStep = 1f / TICKS_PER_SECOND;
+        public const float TICK_STEP = 1f / TICKS_PER_SECOND;
 
         private const int BLOCK_UPDATES_PER_TICK = (int)(((WIDTH * HEIGHT) * WORLD_UPDATED_PER_SECOND) / World.TICKS_PER_SECOND);
 
