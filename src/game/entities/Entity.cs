@@ -286,7 +286,6 @@ namespace Minicraft.Game
             for (int x = sides.Left; x <= sides.Right; x++)
             {
                 var blockPoint = new Point(x, sides.Bottom - 1);
-                // TODO add seperate debug color for 'on_air' checking
                 Debug.AddAirCheck(blockPoint);
                 if (!world.GetBlockType(blockPoint).GetBlock().CanWalkThrough)
                     // collision found, not on air
