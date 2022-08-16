@@ -54,8 +54,11 @@ namespace Minicraft.Game
 
         public void Jump()
         {
-            Velocity.Y = JumpVelocity;
-            IsGrounded = false;
+            if (IsGrounded)
+            {
+                Velocity.Y = JumpVelocity;
+                IsGrounded = false;
+            }
         }
 
         public virtual void Update(World world)

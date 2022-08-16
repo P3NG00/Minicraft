@@ -31,7 +31,7 @@ namespace Minicraft.Game.Entities
             if (Input.KeyHeld(Keys.D))
                 Velocity.X++;
             // check jump
-            if (IsGrounded && Input.KeyHeld(Keys.Space))
+            if (Input.KeyHeld(Keys.Space))
                 Jump();
             // base call
             base.Update(world);
