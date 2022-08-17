@@ -12,6 +12,8 @@ namespace Minicraft.Utils
 
         public static float Clamp(this float f, float min, float max) => Math.Max(Math.Min(f, max), min);
 
+        public static bool IsInteger(this float f) => f % 1f == 0f;
+
         public static T GetRandom<T>(this T[] t) => t[Random.Next(t.Length)];
 
         public static Block GetBlock(this BlockType blockType) => (Block)blockType;

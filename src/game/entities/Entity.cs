@@ -162,13 +162,13 @@ namespace Minicraft.Game
         {
             var topF = position.Y + Dimensions.Y;
             var top = (int)topF;
-            if (topF % 1f == 0f)
+            if (topF.IsInteger())
                 top--;
             var bottom = (int)(position.Y);
             var left = (int)(position.X - HalfWidth);
             var rightF = position.X + HalfWidth;
             var right = (int)rightF;
-            if (rightF % 1f == 0f)
+            if (rightF.IsInteger())
                 right--;
             return new Sides(top, bottom, left, right);
         }
