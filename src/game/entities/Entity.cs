@@ -160,7 +160,10 @@ namespace Minicraft.Game
 
         private Sides GetSides(Vector2 position)
         {
-            var top = (int)(position.Y + Dimensions.Y);
+            var topF = position.Y + Dimensions.Y;
+            var top = (int)topF;
+            if (topF % 1f == 0f)
+                top--;
             var bottom = (int)(position.Y);
             var left = (int)(position.X - HalfWidth);
             var rightF = position.X + HalfWidth;
