@@ -88,23 +88,23 @@ namespace Minicraft.Game
                 var horizontalHappenedFirst = WhichCollisionFirstHorizontalElseVertical(velocityThisUpdate);
                 ActionRef<Vector2> firstCollision;
                 ActionRef<Vector2> secondCollision;
-                Func<World, Sides, bool> secondCheck;
+                Func<World, Sides, bool> secondCollisionRecheck;
                 if (horizontalHappenedFirst)
                 {
                     firstCollision = HandleHorizontalCollision;
-                    secondCheck = CheckVerticalCollision;
+                    secondCollisionRecheck = CheckVerticalCollision;
                     secondCollision = HandleVerticalCollision;
                 }
                 else
                 {
                     firstCollision = HandleVerticalCollision;
-                    secondCheck = CheckHorizontalCollision;
+                    secondCollisionRecheck = CheckHorizontalCollision;
                     secondCollision = HandleHorizontalCollision;
                 }
                 // handle first collision
                 firstCollision(ref testPosition);
                 // re-check second collision with new position
-                if (secondCheck(world, GetSides(testPosition)))
+                if (secondCollisionRecheck(world, GetSides(testPosition)))
                     // handle second collision
                     secondCollision(ref testPosition);
             }
@@ -117,9 +117,7 @@ namespace Minicraft.Game
             // if grounded, update last height
             if (IsGrounded)
             {
-                var onAir = CheckOnAir(world);
-
-                if (onAir)
+                if (CheckOnAir(world))
                     IsGrounded = false;
                 else
                     _lastHeight = Position.Y;
