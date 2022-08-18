@@ -41,7 +41,7 @@ namespace Minicraft.Utils
         {
             // create square for drawing
             TextureSquare = new Texture2D(graphicsDevice, 1, 1);
-            TextureSquare.SetData(new[] {Color.White});
+            TextureSquare.SetData(new[] {new Color(255, 255, 255)});
             // load font
             _typeWriterFont = ImmutableArray.Create(
                 content.Load<SpriteFont>("type_writer_12"),
