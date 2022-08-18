@@ -45,10 +45,10 @@ namespace Minicraft.Scenes
         public void Draw(GameTime gameTime)
         {
             // draw title
-            var textSize = Display.FontTitle.MeasureString(MinicraftGame.TITLE);
+            var textSize = Display.TypeWriter_36.MeasureString(MinicraftGame.TITLE);
             var x = (Display.WindowSize.X / 2f) - (textSize.X / 2f);
             var y = (Display.WindowSize.Y / 3f) - (textSize.Y / 2f);
-            Display.DrawString(Display.FontTitle, new Vector2(x, y), MinicraftGame.TITLE, Colors.UI_Title);
+            Display.DrawString(Display.TypeWriter_36, new Vector2(x, y), MinicraftGame.TITLE, Colors.UI_Title);
             // draw buttons
             _buttonWorldNew.Draw();
             _buttonExit.Draw();

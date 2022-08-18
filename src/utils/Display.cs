@@ -13,8 +13,9 @@ namespace Minicraft.Utils
 
         public static SpriteBatch SpriteBatch { get; private set; }
         public static Texture2D TextureSquare { get; private set; }
-        public static SpriteFont FontUI { get; private set; }
-        public static SpriteFont FontTitle { get; private set; }
+        public static SpriteFont TypeWriter_12 { get; private set; }
+        public static SpriteFont TypeWriter_24 { get; private set; }
+        public static SpriteFont TypeWriter_36 { get; private set; }
 
         public static readonly float FrameStep = 1f / FRAMES_PER_SECOND;
         public static Point WindowSize
@@ -42,8 +43,9 @@ namespace Minicraft.Utils
             TextureSquare = new Texture2D(graphicsDevice, 1, 1);
             TextureSquare.SetData(new[] {Color.White});
             // load font
-            FontUI = content.Load<SpriteFont>("type_writer_ui");
-            FontTitle = content.Load<SpriteFont>("type_writer_title");
+            TypeWriter_12 = content.Load<SpriteFont>("type_writer_12");
+            TypeWriter_24 = content.Load<SpriteFont>("type_writer_24");
+            TypeWriter_36 = content.Load<SpriteFont>("type_writer_36");
             // create display handler
             SpriteBatch = new SpriteBatch(graphicsDevice);
         }

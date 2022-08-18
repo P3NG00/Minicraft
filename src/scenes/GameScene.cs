@@ -14,6 +14,7 @@ namespace Minicraft.Scenes
     public sealed class GameScene : IScene
     {
         private const int UI_SPACER = 5;
+        private const string DEATH_TEXT = "You died!";
 
         private static readonly Vector2 BarSize = new Vector2(150, 30);
 
@@ -28,8 +29,8 @@ namespace Minicraft.Scenes
 
         private readonly Button _buttonRespawn = new Button(new Vector2(0.5f, 0.6f), new Point(250, 50), "respawn", Colors.Game_Button_Respawn, Colors.Game_Text_Respawn);
         private readonly Button _buttonMainMenu = new Button(new Vector2(0.5f, 0.7f), new Point(250, 50), "main menu", Colors.Game_Button_MainMenu, Colors.Game_Text_MainMenu);
-        private readonly PlayerEntity _player;
         private readonly List<NPCEntity> _npcList = new List<NPCEntity>();
+        private readonly PlayerEntity _player;
         private readonly World _world;
 
         private BlockType _currentBlock = BlockType.Dirt;
@@ -198,22 +199,24 @@ namespace Minicraft.Scenes
             Display.Draw(drawPos, healthSize, Colors.UI_Life);
             // draw health numbers on top of bar
             var healthString = $"{_player.Life:0.#}/{_player.MaxLife:0.#}";
-            var textSize = Display.FontUI.MeasureString(healthString);
+            var textSize = Display.TypeWriter_12.MeasureString(healthString);
             drawPos = new Vector2((Display.WindowSize.X / 2f) - (textSize.X / 2f), Display.WindowSize.Y - 22);
-            Display.DrawString(Display.FontUI, drawPos, healthString, Colors.UI_TextLife);
+            Display.DrawString(Display.TypeWriter_12, drawPos, healthString, Colors.UI_TextLife);
             // draw death screen overlay
             if (!_player.Alive)
             {
                 Display.DrawOverlay();
                 // draw text
-                // TODO
+                textSize = Display.TypeWriter_24.MeasureString(DEATH_TEXT);
+                drawPos = (Display.WindowSize.ToVector2() * new Vector2(0.5f, 0.35f)) - (textSize / 2f);
+                Display.DrawString(Display.TypeWriter_24, drawPos, DEATH_TEXT, Colors.UI_YouDied);
                 // draw buttons to restart game
                 _buttonRespawn.Draw();
                 _buttonMainMenu.Draw();
             }
             // draw currently selected block
-            drawPos = new Vector2(UI_SPACER, Display.WindowSize.Y - Display.FontUI.LineSpacing - UI_SPACER);
-            Display.DrawString(Display.FontUI, drawPos, $"current block: {_currentBlock.GetBlock().Name}", Colors.UI_TextBlock);
+            drawPos = new Vector2(UI_SPACER, Display.WindowSize.Y - Display.TypeWriter_12.LineSpacing - UI_SPACER);
+            Display.DrawString(Display.TypeWriter_12, drawPos, $"current block: {_currentBlock.GetBlock().Name}", Colors.UI_TextBlock);
             // draw debug
             if (Debug.Enabled)
             {
@@ -236,8 +239,8 @@ namespace Minicraft.Scenes
                     $"player_velocity: {_player.Velocity.Length() * _player.MoveSpeed:0.000}",
                     $"player_grounded: {_player.IsGrounded}"})
                 {
-                    Display.DrawString(Display.FontUI, drawPos, debugInfo, Colors.UI_TextDebug);
-                    drawPos.Y += UI_SPACER + Display.FontUI.LineSpacing;
+                    Display.DrawString(Display.TypeWriter_12, drawPos, debugInfo, Colors.UI_TextDebug);
+                    drawPos.Y += UI_SPACER + Display.TypeWriter_12.LineSpacing;
                 }
             }
         }

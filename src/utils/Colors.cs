@@ -18,6 +18,7 @@ namespace Minicraft.Utils
         public static readonly Color UI_TextDebug = new Color(0, 0, 0);
         public static readonly Color UI_TextBlock = new Color(0, 0, 0);
         public static readonly Color UI_TextLife = new Color(255, 255, 255);
+        public static readonly Color UI_YouDied = new Color(255, 0, 0);
 
         // debug
         public static readonly Color DebugReason_BlockUpdate = new Color(255, 0, 255, 64);

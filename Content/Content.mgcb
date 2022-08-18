@@ -13,17 +13,24 @@
 
 #---------------------------------- Content ---------------------------------#
 
-#begin type_writer_title.spritefont
+#begin type_writer_12.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
 /processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=Compressed
-/build:type_writer_title.spritefont
+/build:type_writer_12.spritefont
 
-#begin type_writer_ui.spritefont
+#begin type_writer_24.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
 /processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=Compressed
-/build:type_writer_ui.spritefont
+/build:type_writer_24.spritefont
+
+#begin type_writer_36.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:type_writer_36.spritefont
 
