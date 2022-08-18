@@ -49,12 +49,12 @@ namespace Minicraft.Game.Entities
                     Velocity.X = goalDirection;
                     // jump if block in way
                     var sides = GetSides();
-                    Point? checkPos = null;
+                    int checkSide;
                     if (goalDirectionLeftElseRight)
-                        checkPos = new Point(sides.Left - 1, sides.Bottom);
+                        checkSide = sides.Left - 1;
                     else
-                        checkPos = new Point(sides.Right + 1, sides.Bottom);
-                    if (checkPos.HasValue && !world.GetBlockType(checkPos.Value).GetBlock().CanWalkThrough)
+                        checkSide = sides.Right + 1;
+                    if (!world.GetBlockType(new Point(checkSide, sides.Bottom)).GetBlock().CanWalkThrough)
                         Jump();
                 }
             }
