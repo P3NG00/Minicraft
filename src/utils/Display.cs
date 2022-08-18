@@ -74,7 +74,17 @@ namespace Minicraft.Utils
 
         public static void Draw(Rectangle rectangle, Color color) => SpriteBatch.Draw(TextureSquare, rectangle, null, color, 0f, Vector2.Zero, SpriteEffects.None, 0f);
 
+        // draws faded overlay over entire window
         public static void DrawOverlay() => Display.Draw(Vector2.Zero, WindowSize.ToVector2(), Colors.Overlay);
+
+        public static void DrawStringWithBackground(FontSize fontSize, Vector2 position, string text, Color color)
+        {
+            // draw text background
+            var textSize = GetFont(fontSize).MeasureString(text);
+            Draw(position - (Util.UISpacerVec / 2f), textSize + Util.UISpacerVec, Colors.TextBackground);
+            // draw text
+            DrawString(fontSize, position, text, color);
+        }
 
         public static void DrawShadowedString(FontSize fontSize, Vector2 position, string text, Color color)
         {

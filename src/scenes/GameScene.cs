@@ -13,7 +13,6 @@ namespace Minicraft.Scenes
 {
     public sealed class GameScene : IScene
     {
-        private const int UI_SPACER = 5;
         private const string DEATH_TEXT = "You died!";
 
         private static readonly Vector2 BarSize = new Vector2(150, 30);
@@ -192,8 +191,8 @@ namespace Minicraft.Scenes
             var drawPos = new Vector2((Display.WindowSize.X / 2f) - (BarSize.X / 2f), Display.WindowSize.Y - BarSize.Y);
             Display.Draw(drawPos, BarSize, Colors.UI_Bar);
             // adjust size to fit within bar
-            drawPos += new Vector2(UI_SPACER);
-            var healthSize = BarSize - (new Vector2(UI_SPACER) * 2);
+            drawPos += new Vector2(Util.UI_SPACER);
+            var healthSize = BarSize - (new Vector2(Util.UI_SPACER) * 2);
             // readjust size to display real health
             healthSize.X *= _player.Life / _player.MaxLife;
             Display.Draw(drawPos, healthSize, Colors.UI_Life);
@@ -201,7 +200,7 @@ namespace Minicraft.Scenes
             var healthString = $"{_player.Life:0.#}/{_player.MaxLife:0.#}";
             var textSize = Display.GetFont(FontSize._12).MeasureString(healthString);
             drawPos = new Vector2((Display.WindowSize.X / 2f) - (textSize.X / 2f), Display.WindowSize.Y - 22);
-            Display.DrawString(FontSize._12, drawPos, healthString, Colors.UI_TextLife);
+            Display.DrawShadowedString(FontSize._12, drawPos, healthString, Colors.UI_TextLife);
             // draw death screen overlay
             if (!_player.Alive)
             {
@@ -215,12 +214,12 @@ namespace Minicraft.Scenes
                 _buttonMainMenu.Draw();
             }
             // draw currently selected block
-            drawPos = new Vector2(UI_SPACER, Display.WindowSize.Y - Display.GetFont(FontSize._12).LineSpacing - UI_SPACER);
-            Display.DrawShadowedString(FontSize._12, drawPos, $"current block: {_currentBlock.GetBlock().Name}", Colors.UI_TextBlock);
+            drawPos = new Vector2(Util.UI_SPACER, Display.WindowSize.Y - Display.GetFont(FontSize._12).LineSpacing - Util.UI_SPACER);
+            Display.DrawStringWithBackground(FontSize._12, drawPos, $"current block: {_currentBlock.GetBlock().Name}", Colors.UI_TextBlock);
             // draw debug
             if (Debug.Enabled)
             {
-                drawPos = new Vector2(UI_SPACER);
+                drawPos = new Vector2(Util.UI_SPACER);
                 foreach (var debugInfo in new[] {
                     $"window_size: {Display.WindowSize.X}x{Display.WindowSize.Y}",
                     $"world_size: {World.WIDTH}x{World.HEIGHT}",
@@ -239,8 +238,8 @@ namespace Minicraft.Scenes
                     $"player_velocity: {_player.Velocity.Length() * _player.MoveSpeed:0.000}",
                     $"player_grounded: {_player.IsGrounded}"})
                 {
-                    Display.DrawShadowedString(FontSize._12, drawPos, debugInfo, Colors.UI_TextDebug);
-                    drawPos.Y += UI_SPACER + Display.GetFont(FontSize._12).LineSpacing;
+                    Display.DrawStringWithBackground(FontSize._12, drawPos, debugInfo, Colors.UI_TextDebug);
+                    drawPos.Y += Util.UI_SPACER + Display.GetFont(FontSize._12).LineSpacing;
                 }
             }
         }

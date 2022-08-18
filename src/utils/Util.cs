@@ -6,6 +6,9 @@ namespace Minicraft.Utils
 {
     public static class Util
     {
+        public const int UI_SPACER = 5;
+
+        public static readonly Vector2 UISpacerVec = new Vector2(UI_SPACER);
         public static readonly Random Random = new Random();
 
         public static int Clamp(this int i, int min, int max) => Math.Max(Math.Min(i, max), min);
