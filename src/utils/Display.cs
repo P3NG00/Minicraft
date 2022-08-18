@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -11,11 +12,10 @@ namespace Minicraft.Utils
         public const int BLOCK_SCALE_MIN = 5;
         public const int BLOCK_SCALE_MAX = 25;
 
+        private static ImmutableArray<SpriteFont> _typeWriterFont;
+
         public static SpriteBatch SpriteBatch { get; private set; }
         public static Texture2D TextureSquare { get; private set; }
-        public static SpriteFont TypeWriter_12 { get; private set; }
-        public static SpriteFont TypeWriter_24 { get; private set; }
-        public static SpriteFont TypeWriter_36 { get; private set; }
 
         public static readonly float FrameStep = 1f / FRAMES_PER_SECOND;
         public static Point WindowSize
@@ -43,9 +43,10 @@ namespace Minicraft.Utils
             TextureSquare = new Texture2D(graphicsDevice, 1, 1);
             TextureSquare.SetData(new[] {Color.White});
             // load font
-            TypeWriter_12 = content.Load<SpriteFont>("type_writer_12");
-            TypeWriter_24 = content.Load<SpriteFont>("type_writer_24");
-            TypeWriter_36 = content.Load<SpriteFont>("type_writer_36");
+            _typeWriterFont = ImmutableArray.Create(
+                content.Load<SpriteFont>("type_writer_12"),
+                content.Load<SpriteFont>("type_writer_24"),
+                content.Load<SpriteFont>("type_writer_36"));
             // create display handler
             SpriteBatch = new SpriteBatch(graphicsDevice);
         }
@@ -65,6 +66,8 @@ namespace Minicraft.Utils
             _graphics.ApplyChanges();
         }
 
+        public static SpriteFont GetFont(FontSize fontSize) => _typeWriterFont[(int)fontSize];
+
         public static void Draw(Vector2 position, Vector2 size, Color color) => SpriteBatch.Draw(TextureSquare, position, null, color, 0f, Vector2.Zero, size, SpriteEffects.None, 0f);
 
         public static void DrawOffset(Vector2 position, Vector2 size, Color color) => Draw(position - CameraOffset, size, color);
@@ -73,6 +76,14 @@ namespace Minicraft.Utils
 
         public static void DrawOverlay() => Display.Draw(Vector2.Zero, WindowSize.ToVector2(), Colors.Overlay);
 
-        public static void DrawString(SpriteFont font, Vector2 position, string text, Color color) => SpriteBatch.DrawString(font, text, position, color);
+        public static void DrawShadowedString(FontSize fontSize, Vector2 position, string text, Color color)
+        {
+            // draw shadowed text
+            DrawString(fontSize, position + new Vector2(2 * ((int)fontSize + 1)), text, Colors.TextShadow);
+            // draw regular text
+            DrawString(fontSize, position, text, color);
+        }
+
+        public static void DrawString(FontSize fontSize, Vector2 position, string text, Color color) => SpriteBatch.DrawString(GetFont(fontSize), text, position, color);
     }
 }

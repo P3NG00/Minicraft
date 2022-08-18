@@ -199,24 +199,24 @@ namespace Minicraft.Scenes
             Display.Draw(drawPos, healthSize, Colors.UI_Life);
             // draw health numbers on top of bar
             var healthString = $"{_player.Life:0.#}/{_player.MaxLife:0.#}";
-            var textSize = Display.TypeWriter_12.MeasureString(healthString);
+            var textSize = Display.GetFont(FontSize._12).MeasureString(healthString);
             drawPos = new Vector2((Display.WindowSize.X / 2f) - (textSize.X / 2f), Display.WindowSize.Y - 22);
-            Display.DrawString(Display.TypeWriter_12, drawPos, healthString, Colors.UI_TextLife);
+            Display.DrawString(FontSize._12, drawPos, healthString, Colors.UI_TextLife);
             // draw death screen overlay
             if (!_player.Alive)
             {
                 Display.DrawOverlay();
                 // draw text
-                textSize = Display.TypeWriter_24.MeasureString(DEATH_TEXT);
+                textSize = Display.GetFont(FontSize._24).MeasureString(DEATH_TEXT);
                 drawPos = (Display.WindowSize.ToVector2() * new Vector2(0.5f, 0.35f)) - (textSize / 2f);
-                Display.DrawString(Display.TypeWriter_24, drawPos, DEATH_TEXT, Colors.UI_YouDied);
+                Display.DrawShadowedString(FontSize._24, drawPos, DEATH_TEXT, Colors.UI_YouDied);
                 // draw buttons to restart game
                 _buttonRespawn.Draw();
                 _buttonMainMenu.Draw();
             }
             // draw currently selected block
-            drawPos = new Vector2(UI_SPACER, Display.WindowSize.Y - Display.TypeWriter_12.LineSpacing - UI_SPACER);
-            Display.DrawString(Display.TypeWriter_12, drawPos, $"current block: {_currentBlock.GetBlock().Name}", Colors.UI_TextBlock);
+            drawPos = new Vector2(UI_SPACER, Display.WindowSize.Y - Display.GetFont(FontSize._12).LineSpacing - UI_SPACER);
+            Display.DrawShadowedString(FontSize._12, drawPos, $"current block: {_currentBlock.GetBlock().Name}", Colors.UI_TextBlock);
             // draw debug
             if (Debug.Enabled)
             {
@@ -239,8 +239,8 @@ namespace Minicraft.Scenes
                     $"player_velocity: {_player.Velocity.Length() * _player.MoveSpeed:0.000}",
                     $"player_grounded: {_player.IsGrounded}"})
                 {
-                    Display.DrawString(Display.TypeWriter_12, drawPos, debugInfo, Colors.UI_TextDebug);
-                    drawPos.Y += UI_SPACER + Display.TypeWriter_12.LineSpacing;
+                    Display.DrawShadowedString(FontSize._12, drawPos, debugInfo, Colors.UI_TextDebug);
+                    drawPos.Y += UI_SPACER + Display.GetFont(FontSize._12).LineSpacing;
                 }
             }
         }
