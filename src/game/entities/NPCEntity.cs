@@ -10,11 +10,10 @@ namespace Minicraft.Game.Entities
         private const float NPC_SPEED = 3f;
         private const float NPC_JUMP = 3f;
         private const float NPC_LIFE = 2f;
-        private static readonly Vector2 NPCSize = new Vector2(1.5f, 2.2f);
-
+        private const float NPC_AI_GOAL_DISTANCE_MIN = 0.5f;
         private const int NPC_AI_UPDATE_TICKS_MIN = World.TICKS_PER_SECOND * 3;
         private const int NPC_AI_UPDATE_TICKS_MAX = World.TICKS_PER_SECOND * 5;
-        private const float NPC_AI_GOAL_DISTANCE_MIN = 0.5f;
+        private static readonly Vector2 NPCSize = new Vector2(1.5f, 2.2f);
 
         private int? _goalX = null;
         private int _aiUpdateTicks;
