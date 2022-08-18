@@ -20,7 +20,7 @@ namespace Minicraft.Game.Blocks
         public virtual void Update(Point position, World world)
         {
             // add position to updated list
-            if (Debug.Enabled && Debug.TrackUpdated)
+            if (Debug.Enabled && Debug.DisplayBlockChecks)
                 Debug.AddBlockUpdate(position);
         }
 

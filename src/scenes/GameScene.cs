@@ -63,8 +63,8 @@ namespace Minicraft.Scenes
             // update for every tick step
             while (Tick())
             {
-                // clear previously updated positions
-                Debug.ClearDebugUpdates();
+                // update debug
+                Debug.Update();
                 // update world
                 _world.Update();
                 // update player
@@ -159,7 +159,7 @@ namespace Minicraft.Scenes
             if (Input.KeyFirstDown(Keys.F2))
                 Debug.TimeScale += Debug.TIME_SCALE_STEP;
             if (Debug.Enabled && Input.KeyFirstDown(Keys.F11))
-                Debug.TrackUpdated = !Debug.TrackUpdated;
+                Debug.DisplayBlockChecks = !Debug.DisplayBlockChecks;
             if (Input.KeyFirstDown(Keys.F12))
                 Debug.Enabled = !Debug.Enabled;
             for (int i = 1; i < Enum.GetValues(typeof(BlockType)).Length; i++)
@@ -223,6 +223,7 @@ namespace Minicraft.Scenes
                 foreach (var debugInfo in new[] {
                     $"window_size: {Display.WindowSize.X}x{Display.WindowSize.Y}",
                     $"world_size: {World.WIDTH}x{World.HEIGHT}",
+                    $"debug_blocks: {Debug.DisplayBlockChecks}",
                     $"show_grid: {Display.ShowGrid}",
                     $"time_scale: {Debug.TimeScale:0.00}",
                     $"time: {(Ticks / (float)World.TICKS_PER_SECOND):0.000}",
