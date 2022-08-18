@@ -10,6 +10,7 @@ namespace Minicraft.Game
     {
         private const float FALL_DISTANCE_MIN = 6f;
         private const float FALL_DAMAGE_PER_BLOCK = 0.4f;
+        private const float VELOCITY_MAX = 50f;
         private const int MOVEMENT_SUBCHECKS = 16;
 
         public readonly Vector2 Dimensions;
@@ -64,9 +65,12 @@ namespace Minicraft.Game
 
         public virtual void Update(World world)
         {
-            // add velocity if falling // TODO add max velocity
+            // add velocity if falling
             if (!IsGrounded)
                 Velocity.Y -= World.GRAVITY * World.TICK_STEP;
+            // fix max velocity
+            if (Velocity.Length() > VELOCITY_MAX / MoveSpeed)
+                Velocity = Vector2.Normalize(Velocity) * VELOCITY_MAX / MoveSpeed;
             // find projected new position
             var velocityThisUpdate = Velocity * MoveSpeed * World.TICK_STEP;
             var testPosition = Position + velocityThisUpdate;
