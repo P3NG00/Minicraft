@@ -193,7 +193,7 @@ namespace Minicraft.Game
             else if (IsMovingRight)
                 testPosition.X = sides.Right - HalfWidth;
             else
-                throw new Exception("Collision handled when not moving");
+                throw new Exception("Vertical collision handled when entity's horizontal velocity is 0");
             Velocity.X = 0f;
         }
 
@@ -211,7 +211,7 @@ namespace Minicraft.Game
             else if (IsMovingUp)
                 testPosition.Y = sides.Top - Dimensions.Y;
             else
-                throw new Exception("Collision handled when not moving");
+                throw new Exception("Vertical collision handled when entity's vertical velocity is 0");
             Velocity.Y = 0f;
         }
 
