@@ -127,15 +127,15 @@ namespace Minicraft.Game
             // get current screen size of entity
             var currentSize = Dimensions * Display.BlockScale;
             // find offset to reach top-left corner for draw pos
-            var drawOffset = new Vector2(currentSize.X / 2, currentSize.Y);
+            var drawStartOffset = new Vector2(currentSize.X / 2, currentSize.Y);
             // get relative screen position
             var relativePosition = Position * Display.BlockScale;
             // flip screen y position
             relativePosition.Y *= -1;
             // find final screen draw position
-            var drawPos = relativePosition - drawOffset - Display.CameraOffset;
+            var drawPos = relativePosition - drawStartOffset;
             // draw to surface
-            Display.Draw(drawPos, currentSize, _color);
+            Display.DrawOffset(drawPos, currentSize, _color);
         }
 
         public struct Sides

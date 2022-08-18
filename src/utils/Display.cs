@@ -65,6 +65,8 @@ namespace Minicraft.Utils
 
         public static void Draw(Vector2 position, Vector2 size, Color color) => SpriteBatch.Draw(TextureSquare, position, null, color, 0f, Vector2.Zero, size, SpriteEffects.None, 0f);
 
+        public static void DrawOffset(Vector2 position, Vector2 size, Color color) => Draw(position - CameraOffset, size, color);
+
         public static void Draw(Rectangle rectangle, Color color) => SpriteBatch.Draw(TextureSquare, rectangle, null, color, 0f, Vector2.Zero, SpriteEffects.None, 0f);
 
         public static void DrawString(SpriteFont font, Vector2 position, string text, Color color) => SpriteBatch.DrawString(font, text, position, color);

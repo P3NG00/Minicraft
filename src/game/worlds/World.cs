@@ -82,16 +82,20 @@ namespace Minicraft.Game.Worlds
                 for (int x = 0; x < visualWidth; x++)
                 {
                     var blockX = x + visualStartX;
-                    var drawPos = new Vector2(blockX * Display.BlockScale, drawY) - Display.CameraOffset;
+                    var drawPos = new Vector2(blockX * Display.BlockScale, drawY);
                     var blockPos = new Point(blockX, blockY);
-                    Color color = GetBlockType(blockPos).GetBlock().Color;
+                    var blockColor = GetBlockType(blockPos).GetBlock().Color;
+                    Display.DrawOffset(drawPos, drawScale, blockColor);
+                    // check if block was updated
                     if (Debug.Enabled && Debug.TrackUpdated)
                     {
                         var debugColor = Debug.CheckDebugColor(blockPos);
                         if (debugColor.HasValue)
-                            color = debugColor.Value;
+                        {
+                            // draw faded debug color over block
+                            Display.DrawOffset(drawPos, drawScale, debugColor.Value);
+                        }
                     }
-                    Display.Draw(drawPos, drawScale, color);
                 }
             }
         }
