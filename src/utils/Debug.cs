@@ -40,10 +40,7 @@ namespace Minicraft.Utils
             if (!_debugUpdates.Contains(blockPos))
                 _debugUpdates.Add(blockPos, new List<Color>(new[] {color}));
             else
-            {
-                var colors = (List<Color>)_debugUpdates[blockPos];
-                colors.Add(color);
-            }
+                ((List<Color>)_debugUpdates[blockPos]).Add(color);
         }
     }
 }

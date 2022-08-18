@@ -19,7 +19,7 @@ namespace Minicraft.Game.Blocks
 
         static Block()
         {
-            s_blockArray = ImmutableArray.Create<Block>(new Block[] {
+            s_blockArray = ImmutableArray.Create(new Block[] {
                 new Block("Air", new Color(240, 255, 255), true),
                 new Block("Dirt Block", new Color(96, 48, 0)),
                 new GrassBlock("Grass Block", new Color(48, 160, 32)),

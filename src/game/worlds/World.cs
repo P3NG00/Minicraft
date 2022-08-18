@@ -89,13 +89,9 @@ namespace Minicraft.Game.Worlds
                     // check if block was updated
                     if (Debug.Enabled && Debug.DisplayBlockChecks)
                     {
+                        // draw faded debug colors over block
                         var debugColors = Debug.CheckDebugColor(blockPos);
-                        if (debugColors != null)
-                        {
-                            // draw faded debug color over block
-                            foreach (var debugColor in debugColors)
-                                Display.DrawOffset(drawPos, drawScale, debugColor);
-                        }
+                        debugColors?.ForEach(debugColor => Display.DrawOffset(drawPos, drawScale, debugColor));
                     }
                 }
             }
