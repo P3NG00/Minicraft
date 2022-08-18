@@ -191,6 +191,7 @@ namespace Minicraft.Scenes
                     $"block_scale: {Display.BlockScale}",
                     $"mouse_x: {_lastMouseBlock.X:0.000} ({_lastMouseBlockInt.X})",
                     $"mouse_y: {_lastMouseBlock.Y:0.000} ({_lastMouseBlockInt.Y})",
+                    $"npc_count: {_npcList.Count}",
                     $"player_velocity: {_player.Velocity.Length() * _player.MoveSpeed:0.000}",
                     $"player_grounded: {_player.IsGrounded}"})
                 {
