@@ -71,9 +71,9 @@ namespace Minicraft.Game.Worlds
                 visualStartY = 0;
             }
             if (visualWidth >= WIDTH - visualStartX)
-                visualWidth = WIDTH - visualStartX - 1;
+                visualWidth = WIDTH - visualStartX;
             if (visualHeight >= HEIGHT - visualStartY)
-                visualHeight = HEIGHT - visualStartY - 1;
+                visualHeight = HEIGHT - visualStartY;
             // draw visible blocks
             for (int y = 0; y < visualHeight; y++)
             {
