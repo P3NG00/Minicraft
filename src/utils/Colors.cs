@@ -5,8 +5,13 @@ namespace Minicraft.Utils
     public static class Colors
     {
         public static readonly Color Background = new Color(96, 96, 96);
+        public static readonly Color Overlay = new Color(0, 0, 0, 128);
+
+        // entity
         public static readonly Color Entity_Player = new Color(255, 0, 0);
         public static readonly Color Entity_NPC = new Color(255, 128, 0);
+
+        // ui
         public static readonly Color UI_Bar = new Color(0, 0, 0);
         public static readonly Color UI_Life = new Color(255, 0, 0);
         public static readonly Color UI_Title = new Color(32, 192, 255);
@@ -28,5 +33,15 @@ namespace Minicraft.Utils
         public static readonly Color MainMenu_Text_Exit = new Color(255, 0, 0);
         public static readonly Color MainMenu_Button_Exit_Highlight = new Color(225, 0, 0);
         public static readonly Color MainMenu_Text_Exit_Highlight = new Color(0, 0, 0);
+
+        // game buttons
+        public static readonly Color Game_Button_Respawn = new Color(0, 0, 0);
+        public static readonly Color Game_Text_Respawn = new Color(255, 255, 255);
+        public static readonly Color Game_Button_Respawn_Highlight = new Color(255, 255, 255);
+        public static readonly Color Game_Text_Respawn_Highlight = new Color(0, 0, 0);
+        public static readonly Color Game_Button_MainMenu = new Color(64, 0, 0);
+        public static readonly Color Game_Text_MainMenu = new Color(255, 0, 0);
+        public static readonly Color Game_Button_MainMenu_Highlight = new Color(225, 0, 0);
+        public static readonly Color Game_Text_MainMenu_Highlight = new Color(0, 0, 0);
     }
 }

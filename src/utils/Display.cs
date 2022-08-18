@@ -69,6 +69,8 @@ namespace Minicraft.Utils
 
         public static void Draw(Rectangle rectangle, Color color) => SpriteBatch.Draw(TextureSquare, rectangle, null, color, 0f, Vector2.Zero, SpriteEffects.None, 0f);
 
+        public static void DrawOverlay() => Display.Draw(Vector2.Zero, WindowSize.ToVector2(), Colors.Overlay);
+
         public static void DrawString(SpriteFont font, Vector2 position, string text, Color color) => SpriteBatch.DrawString(font, text, position, color);
     }
 }

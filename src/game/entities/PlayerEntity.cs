@@ -35,15 +35,6 @@ namespace Minicraft.Game.Entities
                 Jump();
             // base call
             base.Update(world);
-            // check life
-            if (!Alive)
-            {
-                // TODO display death screen and click button to respawn
-                // reset health
-                ResetHealth();
-                // respawn
-                Respawn(world);
-            }
         }
     }
 }

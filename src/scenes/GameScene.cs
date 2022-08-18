@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Input;
 using Minicraft.Game.Blocks;
 using Minicraft.Game.Entities;
 using Minicraft.Game.Worlds;
+using Minicraft.UI;
 using Minicraft.Utils;
 
 namespace Minicraft.Scenes
@@ -25,6 +26,8 @@ namespace Minicraft.Scenes
         private int[] _lastTickDifferences = new int[10];
         private float[] _lastFps = new float[10];
 
+        private readonly Button _buttonRespawn = new Button(new Vector2(0.5f, 0.6f), new Point(250, 50), "respawn", Colors.Game_Button_Respawn, Colors.Game_Text_Respawn);
+        private readonly Button _buttonMainMenu = new Button(new Vector2(0.5f, 0.7f), new Point(250, 50), "main menu", Colors.Game_Button_MainMenu, Colors.Game_Text_MainMenu);
         private readonly PlayerEntity _player;
         private readonly List<NPCEntity> _npcList = new List<NPCEntity>();
         private readonly World _world;
@@ -35,6 +38,12 @@ namespace Minicraft.Scenes
 
         public GameScene(World world)
         {
+            _buttonRespawn.Action = RespawnPlayer;
+            _buttonRespawn.ColorBoxHighlight = Colors.Game_Button_Respawn_Highlight;
+            _buttonRespawn.ColorTextHighlight = Colors.Game_Text_Respawn_Highlight;
+            _buttonMainMenu.Action = SaveAndMainMenu;
+            _buttonMainMenu.ColorBoxHighlight = Colors.Game_Button_MainMenu_Highlight;
+            _buttonMainMenu.ColorTextHighlight = Colors.Game_Text_MainMenu_Highlight;
             _world = world;
             _player = new PlayerEntity(_world);
         }
@@ -44,6 +53,13 @@ namespace Minicraft.Scenes
             UpdateTicks((float)gameTime.ElapsedGameTime.TotalSeconds * Debug.TimeScale);
             // handle input
             HandleInput();
+            // update ui buttons
+            if (!_player.Alive)
+            {
+                // update buttons
+                _buttonRespawn.Update();
+                _buttonMainMenu.Update();
+            }
             // update for every tick step
             while (Tick())
             {
@@ -52,7 +68,8 @@ namespace Minicraft.Scenes
                 // update world
                 _world.Update();
                 // update player
-                _player.Update(_world);
+                if (_player.Alive)
+                    _player.Update(_world);
                 // update npc's
                 _npcList.ForEach(npc => npc.Update(_world));
                 // remove dead npc's
@@ -68,11 +85,26 @@ namespace Minicraft.Scenes
             // draw world
             _world.Draw(_player);
             // draw player
-            _player.Draw();
+            if (_player.Alive)
+                _player.Draw();
             // draw npc's
             _npcList.ForEach(npc => npc.Draw());
             // draw ui
             DrawUI();
+        }
+
+        private void SaveAndMainMenu()
+        {
+            _world.Save();
+            MinicraftGame.SetScene(new MainMenuScene());
+        }
+
+        private void RespawnPlayer()
+        {
+            // reset health
+            _player.ResetHealth();
+            // respawn
+            _player.Respawn(_world);
         }
 
         private bool Tick()
@@ -113,11 +145,9 @@ namespace Minicraft.Scenes
 
         private void HandleInput()
         {
+            // TODO escape key should bring up 'pause' menu with buttons and pause game ticks
             if (Input.KeyFirstDown(Keys.Escape))
-            {
-                _world.Save();
-                MinicraftGame.SetScene(new MainMenuScene());
-            }
+                SaveAndMainMenu();
             // end key will cause program to end in main loop. this is here to detect and save the world before closing
             if (Input.KeyFirstDown(Keys.End))
                 _world.Save();
@@ -142,7 +172,8 @@ namespace Minicraft.Scenes
             _lastMouseBlock = ((mousePos - (Display.WindowSize.ToVector2() / 2f)) / Display.BlockScale) + (_player.Position + new Vector2(0, _player.Dimensions.Y / 2f));
             _lastMouseBlockInt = _lastMouseBlock.ToPoint();
             // catch out of bounds
-            if (_lastMouseBlockInt.X >= 0 && _lastMouseBlockInt.X < World.WIDTH &&
+            if (_player.Alive &&
+                _lastMouseBlockInt.X >= 0 && _lastMouseBlockInt.X < World.WIDTH &&
                 _lastMouseBlockInt.Y >= 0 && _lastMouseBlockInt.Y < World.HEIGHT)
             {
                 if (ctrl ? Input.MouseLeftFirstDown() : Input.MouseLeftHeld())
@@ -170,6 +201,16 @@ namespace Minicraft.Scenes
             var textSize = Display.FontUI.MeasureString(healthString);
             drawPos = new Vector2((Display.WindowSize.X / 2f) - (textSize.X / 2f), Display.WindowSize.Y - 22);
             Display.DrawString(Display.FontUI, drawPos, healthString, Colors.UI_TextLife);
+            // draw death screen overlay
+            if (!_player.Alive)
+            {
+                Display.DrawOverlay();
+                // draw text
+                // TODO
+                // draw buttons to restart game
+                _buttonRespawn.Draw();
+                _buttonMainMenu.Draw();
+            }
             // draw currently selected block
             drawPos = new Vector2(UI_SPACER, Display.WindowSize.Y - Display.FontUI.LineSpacing - UI_SPACER);
             Display.DrawString(Display.FontUI, drawPos, $"current block: {_currentBlock.GetBlock().Name}", Colors.UI_TextBlock);
