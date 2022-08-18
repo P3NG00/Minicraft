@@ -14,6 +14,8 @@ namespace Minicraft.Utils
 
         public static bool IsInteger(this float f) => f % 1f == 0f;
 
+        public static int Floor(this float f) => (int)Math.Floor((double)f);
+
         public static T GetRandom<T>(this T[] t) => t[Random.Next(t.Length)];
 
         public static Block GetBlock(this BlockType blockType) => (Block)blockType;

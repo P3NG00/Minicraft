@@ -8,8 +8,8 @@ namespace Minicraft.Game
 {
     public abstract class Entity
     {
-        private const float FALL_DISTANCE_MIN = 4f;
-        private const float FALL_DAMAGE_PER_BLOCK = 0.5f;
+        private const float FALL_DISTANCE_MIN = 6f;
+        private const float FALL_DAMAGE_PER_BLOCK = 0.4f;
         private const int MOVEMENT_SUBCHECKS = 16;
 
         public readonly Vector2 Dimensions;
@@ -140,10 +140,10 @@ namespace Minicraft.Game
 
         public struct Sides
         {
-            public int Top;
-            public int Bottom;
-            public int Left;
-            public int Right;
+            public readonly int Top;
+            public readonly int Bottom;
+            public readonly int Left;
+            public readonly int Right;
 
             public Sides(int top, int bottom, int left, int right)
             {
@@ -160,16 +160,24 @@ namespace Minicraft.Game
 
         private Sides GetSides(Vector2 position)
         {
+            // get side values as floating numbers
             var topF = position.Y + Dimensions.Y;
-            var top = (int)topF;
+            var botF = position.Y;
+            var leftF = position.X - HalfWidth;
+            var rightF = position.X + HalfWidth;
+
+            // floor each value to get block value
+            var top = topF.Floor();
+            var bottom = botF.Floor();
+            var left = leftF.Floor();
+            var right = rightF.Floor();
+
+            // fix extended edge values
             if (topF.IsInteger())
                 top--;
-            var bottom = (int)(position.Y);
-            var left = (int)(position.X - HalfWidth);
-            var rightF = position.X + HalfWidth;
-            var right = (int)rightF;
             if (rightF.IsInteger())
                 right--;
+
             return new Sides(top, bottom, left, right);
         }
 
@@ -247,7 +255,13 @@ namespace Minicraft.Game
                 // not moving, return no collision
                 return false;
 
-            for (int y = sides.Bottom; y <= sides.Top; y++)
+            // catch edges of world
+            if (side < 0 || side >= World.WIDTH)
+                return true;
+
+            var bottom = Math.Max(0, sides.Bottom);
+            var top = Math.Min(World.HEIGHT - 1, sides.Top);
+            for (int y = bottom; y <= top; y++)
             {
                 var sidePoint = new Point(side, y);
                 Debug.AddCollisionCheck(sidePoint);
@@ -272,7 +286,13 @@ namespace Minicraft.Game
                 // not moving, return no collision
                 return false;
 
-            for (int x = sides.Left; x <= sides.Right; x++)
+            // catch edges of world
+            if (side < 0 || side >= World.HEIGHT)
+                return true;
+
+            var left = Math.Max(0, sides.Left);
+            var right = Math.Min(World.WIDTH - 1, sides.Right);
+            for (int x = left; x <= right; x++)
             {
                 var sidePoint = new Point(x, side);
                 Debug.AddCollisionCheck(sidePoint);
@@ -289,6 +309,13 @@ namespace Minicraft.Game
         private bool CheckOnAir(World world)
         {
             var sides = GetSides();
+
+            // catch edge of world
+            if (sides.Bottom <= 0)
+                return false;
+            if (sides.Bottom >= World.HEIGHT)
+                return true;
+
             for (int x = sides.Left; x <= sides.Right; x++)
             {
                 var blockPoint = new Point(x, sides.Bottom - 1);
