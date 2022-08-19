@@ -51,7 +51,7 @@ namespace Minicraft.Game.Worlds
             }
         }
 
-        public void Draw(Entity player)
+        public void Draw(Entity player, Point mouseBlock)
         {
             var drawScale = Display.ShowGrid ? new Vector2(Display.BlockScale - 1) : new Vector2(Display.BlockScale);
             // find edge to start drawing
@@ -86,6 +86,8 @@ namespace Minicraft.Game.Worlds
                     var blockPos = new Point(blockX, blockY);
                     var blockColor = GetBlockType(blockPos).GetBlock().Color;
                     Display.DrawOffset(drawPos, drawScale, blockColor);
+                    if (blockPos == mouseBlock)
+                        Display.DrawOffset(drawPos, drawScale, Colors.BlockHighlight);
                     // check if block was updated
                     if (Debug.Enabled && Debug.DisplayBlockChecks)
                     {

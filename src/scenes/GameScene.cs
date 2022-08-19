@@ -96,7 +96,7 @@ namespace Minicraft.Scenes
             // update display handler
             Display.UpdateCameraOffset(_player);
             // draw world
-            _world.Draw(_player);
+            _world.Draw(_player, _lastMouseBlockInt);
             // draw player
             if (_player.Alive)
                 _player.Draw();
@@ -189,7 +189,6 @@ namespace Minicraft.Scenes
                 mousePos.Y = Display.WindowSize.Y - mousePos.Y - 1;
                 _lastMouseBlock = ((mousePos - (Display.WindowSize.ToVector2() / 2f)) / Display.BlockScale) + (_player.Position + new Vector2(0, _player.Dimensions.Y / 2f));
                 _lastMouseBlockInt = _lastMouseBlock.ToPoint();
-                // TODO highlight block under mouse
                 // catch out of bounds
                 if (_player.Alive &&
                     _lastMouseBlockInt.X >= 0 && _lastMouseBlockInt.X < World.WIDTH &&
