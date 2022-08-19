@@ -62,9 +62,15 @@ namespace Minicraft.Scenes
             // handle input
             HandleInput();
             // check pause
-                UpdateTicks((float)gameTime.ElapsedGameTime.TotalSeconds * Debug.TimeScale);
-            if (!_paused)
+            if (_paused)
             {
+                // update pause menu
+                _buttonResume.Update();
+                _buttonMainMenu.Update();
+            }
+            else
+            {
+                UpdateTicks((float)gameTime.ElapsedGameTime.TotalSeconds * Debug.TimeScale);
                 // update ui buttons
                 if (!_player.Alive)
                 {
@@ -203,12 +209,6 @@ namespace Minicraft.Scenes
                     if (Input.MouseMiddleFirstDown())
                         _npcList.Add(new NPCEntity(_lastMouseBlock));
                 }
-            }
-            else
-            {
-                // update pause menu
-                _buttonResume.Update();
-                _buttonMainMenu.Update();
             }
         }
 
