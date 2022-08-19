@@ -155,13 +155,8 @@ namespace Minicraft.Scenes
 
         private void HandleInput()
         {
-            // TODO escape key should bring up 'pause' menu with buttons and pause game ticks
-            // TODO implement 'paused' variable
             if (Input.KeyFirstDown(Keys.Escape) && _player.Alive)
                 _paused = !_paused;
-            // end key will cause program to end in main loop. this is here to detect and save the world before closing
-            if (Input.KeyFirstDown(Keys.End))
-                _world.Save();
             if (Input.KeyFirstDown(Keys.Tab))
                 Display.ShowGrid = !Display.ShowGrid;
             // increase/decrease time scale
