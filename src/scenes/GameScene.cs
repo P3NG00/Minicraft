@@ -173,7 +173,7 @@ namespace Minicraft.Scenes
             if (Input.KeyFirstDown(Keys.F3))
                 _tickDelta += World.TICK_STEP;
             // debug
-            if (Debug.Enabled && Input.KeyFirstDown(Keys.F11))
+            if (Debug.Enabled && Input.KeyFirstDown(Keys.F9))
                 Debug.DisplayBlockChecks = !Debug.DisplayBlockChecks;
             if (Input.KeyFirstDown(Keys.F12))
                 Debug.Enabled = !Debug.Enabled;

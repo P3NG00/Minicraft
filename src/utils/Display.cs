@@ -17,26 +17,18 @@ namespace Minicraft.Utils
 
         public static SpriteBatch SpriteBatch { get; private set; }
         public static Texture2D TextureSquare { get; private set; }
+        public static Point WindowSize => new Point(_graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight);
 
         public static readonly float FrameStep = 1f / FRAMES_PER_SECOND;
-        public static Point WindowSize
-        {
-            get => _windowSize;
-            set
-            {
-                _windowSize = value;
-                UpdateWindowSize();
-            }
-        }
 
         public static Vector2 CameraOffset;
         public static bool ShowGrid = false;
         public static int BlockScale = 20;
 
-        private static Point _windowSize = new Point(1280, 720);
         private static GraphicsDeviceManager _graphics;
+        private static Point _lastWindowSize;
 
-        public static void Initialize(Microsoft.Xna.Framework.Game game) => _graphics = new GraphicsDeviceManager(game);
+        public static void Constructor(Microsoft.Xna.Framework.Game game) => _graphics = new GraphicsDeviceManager(game);
 
         public static void LoadContent(GraphicsDevice graphicsDevice, ContentManager content)
         {
@@ -52,6 +44,8 @@ namespace Minicraft.Utils
             SpriteBatch = new SpriteBatch(graphicsDevice);
         }
 
+        public static void Initialize() => SetSize(1280, 720);
+
         public static void UpdateCameraOffset(PlayerEntity player)
         {
             var cameraOffset = -(WindowSize.ToVector2() / 2f);
@@ -60,11 +54,28 @@ namespace Minicraft.Utils
             CameraOffset = cameraOffset;
         }
 
-        public static void UpdateWindowSize()
+        public static void ToggleFullscreen()
         {
-            _graphics.PreferredBackBufferWidth = Display.WindowSize.X;
-            _graphics.PreferredBackBufferHeight = Display.WindowSize.Y;
+            if (_graphics.IsFullScreen)
+                SetSize(_lastWindowSize.X, _lastWindowSize.Y);
+            else
+            {
+                _lastWindowSize = new Point(_graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight);
+                SetSize(GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height, true);
+            }
+        }
+
+        public static void SetSize(int width, int height, bool fullscreen = false)
+        {
+            _graphics.IsFullScreen = fullscreen;
+            UpdateSize(width, height);
             _graphics.ApplyChanges();
+        }
+
+        public static void UpdateSize(int width, int height)
+        {
+            _graphics.PreferredBackBufferWidth = width;
+            _graphics.PreferredBackBufferHeight = height;
         }
 
         public static SpriteFont GetFont(FontSize fontSize) => _typeWriterFont[(int)fontSize];

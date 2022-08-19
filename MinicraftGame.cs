@@ -17,13 +17,13 @@ namespace Minicraft
         public MinicraftGame()
         {
             _instance = this;
-            Display.Initialize(this);
+            Display.Constructor(this);
             Content.RootDirectory = "Content";
             IsFixedTimeStep = false;
             TargetElapsedTime = TimeSpan.FromMilliseconds(1000f / Display.FRAMES_PER_SECOND);
             IsMouseVisible = true;
             Window.AllowUserResizing = true;
-            Window.ClientSizeChanged += new EventHandler<EventArgs>((sender, eventArgs) => Display.WindowSize = new Point(Window.ClientBounds.Width, Window.ClientBounds.Height));
+            Window.ClientSizeChanged += new EventHandler<EventArgs>((sender, eventArgs) => Display.UpdateSize(Window.ClientBounds.Width, Window.ClientBounds.Height));
         }
 
         protected override void LoadContent()
@@ -40,8 +40,8 @@ namespace Minicraft
             // set window properties
             GraphicsDevice.SamplerStates[0] = SamplerState.PointClamp;
             Window.AllowAltF4 = false;
-            // fix initial window size
-            Display.UpdateWindowSize();
+            // initialize display
+            Display.Initialize();
             // base call
             base.Initialize();
         }
@@ -50,9 +50,9 @@ namespace Minicraft
         {
             // update input
             Input.Update();
-            // TODO replace with fullscreen keybind
-            if (Input.KeyFirstDown(Keys.F10))
-                Window.IsBorderless = !Window.IsBorderless;
+            // togglable fullscreen
+            if (Input.KeyFirstDown(Keys.F11))
+                Display.ToggleFullscreen();
             // update scene
             _scene.Update(gameTime);
             // base call

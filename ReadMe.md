@@ -18,6 +18,8 @@
 
 [Tab] - Toggle Grid
 
+[F11] - Toggle Fullscreen
+
 [Escape] - Pause
 
 
@@ -36,4 +38,4 @@
 
 [F12] - Toggle Debug Overlay
 
-[F11] - Toggle Display Block Checks
+[F9] - Toggle Display Block Checks
