@@ -6,7 +6,6 @@ namespace Minicraft.UI
 {
     public sealed class Button
     {
-        // (0f, 0f) = top-left of window. (0.5f, 0.5f) = center of window. (1f, 1f) = bottom-right of window.
         private readonly Vector2 _relativeCenter;
         private readonly Point _size;
         private readonly string _text;
@@ -20,9 +19,12 @@ namespace Minicraft.UI
         private Rectangle _lastRect;
         private bool _highlighted = false;
 
+        // (-1f, -1f) = top-left of window.
+        // ( 0f,  0f) = center of window.
+        // ( 1f,  1f) = bottom-right of window.
         public Button(Vector2 relativeCenter, Point size, string text, Color colorBox, Color colorText)
         {
-            _relativeCenter = relativeCenter;
+            _relativeCenter = (relativeCenter / 2f) + new Vector2(0.5f);
             _size = size;
             _text = text;
             ColorBox = colorBox;

@@ -30,9 +30,9 @@ namespace Minicraft.Scenes
         private int[] _lastTickDifferences = new int[10];
         private float[] _lastFps = new float[10];
 
-        private readonly Button _buttonRespawn = new Button(new Vector2(0.5f, 0.6f), new Point(250, 50), TEXT_RESPAWN, Colors.Game_Button_Respawn, Colors.Game_Text_Respawn);
-        private readonly Button _buttonResume = new Button(new Vector2(0.5f, 0.6f), new Point(250, 50), TEXT_RESUME, Colors.Game_Button_Resume, Colors.Game_Text_Resume);
-        private readonly Button _buttonMainMenu = new Button(new Vector2(0.5f, 0.7f), new Point(250, 50), TEXT_MAIN_MENU, Colors.Game_Button_MainMenu, Colors.Game_Text_MainMenu);
+        private readonly Button _buttonRespawn = new Button(new Vector2(0f, 0.2f), new Point(250, 50), TEXT_RESPAWN, Colors.Game_Button_Respawn, Colors.Game_Text_Respawn);
+        private readonly Button _buttonResume = new Button(new Vector2(0f, 0.2f), new Point(250, 50), TEXT_RESUME, Colors.Game_Button_Resume, Colors.Game_Text_Resume);
+        private readonly Button _buttonMainMenu = new Button(new Vector2(0f, 0.4f), new Point(250, 50), TEXT_MAIN_MENU, Colors.Game_Button_MainMenu, Colors.Game_Text_MainMenu);
         private readonly List<NPCEntity> _npcList = new List<NPCEntity>();
         private readonly PlayerEntity _player;
         private readonly World _world;
@@ -229,15 +229,15 @@ namespace Minicraft.Scenes
             var textSize = Display.GetFont(FontSize._12).MeasureString(healthString);
             drawPos = new Vector2((Display.WindowSize.X / 2f) - (textSize.X / 2f), Display.WindowSize.Y - 22);
             Display.DrawShadowedString(FontSize._12, drawPos, healthString, Colors.UI_TextLife);
+            // draw currently selected block
+            drawPos = new Vector2(Util.UI_SPACER, Display.WindowSize.Y - Display.GetFont(FontSize._12).LineSpacing - Util.UI_SPACER);
+            Display.DrawStringWithBackground(FontSize._12, drawPos, $"current block: {_currentBlock.GetBlock().Name}", Colors.UI_TextBlock);
             // draw death screen overlay
             if (!_player.Alive)
             {
                 Display.DrawOverlay();
                 // draw text
-                // TODO below 3 lines into a function in Display.Draw_
-                textSize = Display.GetFont(FontSize._24).MeasureString(TEXT_DEATH);
-                drawPos = (Display.WindowSize.ToVector2() * new Vector2(0.5f, 0.35f)) - (textSize / 2f);
-                Display.DrawShadowedString(FontSize._24, drawPos, TEXT_DEATH, Colors.UI_YouDied);
+                Display.DrawCenteredText(FontSize._24, new Vector2(0f, -0.3f), TEXT_DEATH, Colors.UI_YouDied, Display.DrawShadowedString);
                 // draw buttons to restart game
                 _buttonRespawn.Draw();
                 _buttonMainMenu.Draw();
@@ -246,16 +246,11 @@ namespace Minicraft.Scenes
             {
                 Display.DrawOverlay();
                 // draw text
-                textSize = Display.GetFont(FontSize._12).MeasureString(TEXT_PAUSE);
-                drawPos = (Display.WindowSize.ToVector2() * new Vector2(0.5f, 0.35f)) - (textSize / 2f);
-                Display.DrawShadowedString(FontSize._12, drawPos, TEXT_PAUSE, Colors.UI_Pause);
+                Display.DrawCenteredText(FontSize._12, new Vector2(0f, -0.3f), TEXT_PAUSE, Colors.UI_Pause, Display.DrawShadowedString);
                 // draw buttons
                 _buttonResume.Draw();
                 _buttonMainMenu.Draw();
             }
-            // draw currently selected block
-            drawPos = new Vector2(Util.UI_SPACER, Display.WindowSize.Y - Display.GetFont(FontSize._12).LineSpacing - Util.UI_SPACER);
-            Display.DrawStringWithBackground(FontSize._12, drawPos, $"current block: {_currentBlock.GetBlock().Name}", Colors.UI_TextBlock);
             // draw debug
             if (Debug.Enabled)
             {

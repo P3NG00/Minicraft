@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Immutable;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -76,6 +77,17 @@ namespace Minicraft.Utils
 
         // draws faded overlay over entire window
         public static void DrawOverlay() => Display.Draw(Vector2.Zero, WindowSize.ToVector2(), Colors.Overlay);
+
+        // (-1f, -1f) = top-left of window.
+        // ( 0f,  0f) = center of window.
+        // ( 1f,  1f) = bottom-right of window.
+        public static void DrawCenteredText(FontSize fontSize, Vector2 relativeScreenPosition, string text, Color color, Action<FontSize, Vector2, string, Color> drawStringFunc)
+        {
+            var textSize = GetFont(fontSize).MeasureString(text);
+            var screenPosition = ((relativeScreenPosition / 2f) + new Vector2(0.5f)) * WindowSize.ToVector2();
+            var drawPos = screenPosition - (textSize / 2f);
+            drawStringFunc(fontSize, drawPos, text, color);
+        }
 
         public static void DrawStringWithBackground(FontSize fontSize, Vector2 position, string text, Color color)
         {
