@@ -13,8 +13,11 @@ namespace Minicraft.Scenes
 {
     public sealed class GameScene : IScene
     {
-        private const string TEXT_DEATH = "You died!";
-        private const string TEXT_PAUSE = "Paused...";
+        private const string TEXT_DEATH = "you died!";
+        private const string TEXT_MAIN_MENU = "main menu";
+        private const string TEXT_PAUSE = "paused...";
+        private const string TEXT_RESPAWN = "respawn";
+        private const string TEXT_RESUME = "resume";
 
         private static readonly Vector2 BarSize = new Vector2(150, 30);
 
@@ -27,8 +30,9 @@ namespace Minicraft.Scenes
         private int[] _lastTickDifferences = new int[10];
         private float[] _lastFps = new float[10];
 
-        private readonly Button _buttonRespawn = new Button(new Vector2(0.5f, 0.6f), new Point(250, 50), "respawn", Colors.Game_Button_Respawn, Colors.Game_Text_Respawn);
-        private readonly Button _buttonMainMenu = new Button(new Vector2(0.5f, 0.7f), new Point(250, 50), "main menu", Colors.Game_Button_MainMenu, Colors.Game_Text_MainMenu);
+        private readonly Button _buttonRespawn = new Button(new Vector2(0.5f, 0.6f), new Point(250, 50), TEXT_RESPAWN, Colors.Game_Button_Respawn, Colors.Game_Text_Respawn);
+        private readonly Button _buttonResume = new Button(new Vector2(0.5f, 0.6f), new Point(250, 50), TEXT_RESUME, Colors.Game_Button_Resume, Colors.Game_Text_Resume);
+        private readonly Button _buttonMainMenu = new Button(new Vector2(0.5f, 0.7f), new Point(250, 50), TEXT_MAIN_MENU, Colors.Game_Button_MainMenu, Colors.Game_Text_MainMenu);
         private readonly List<NPCEntity> _npcList = new List<NPCEntity>();
         private readonly PlayerEntity _player;
         private readonly World _world;
@@ -43,6 +47,9 @@ namespace Minicraft.Scenes
             _buttonRespawn.Action = RespawnPlayer;
             _buttonRespawn.ColorBoxHighlight = Colors.Game_Button_Respawn_Highlight;
             _buttonRespawn.ColorTextHighlight = Colors.Game_Text_Respawn_Highlight;
+            _buttonResume.Action = ResumeGame;
+            _buttonResume.ColorBoxHighlight = Colors.Game_Button_Resume_Highlight;
+            _buttonResume.ColorTextHighlight = Colors.Game_Text_Resume_Highlight;
             _buttonMainMenu.Action = SaveAndMainMenu;
             _buttonMainMenu.ColorBoxHighlight = Colors.Game_Button_MainMenu_Highlight;
             _buttonMainMenu.ColorTextHighlight = Colors.Game_Text_MainMenu_Highlight;
@@ -52,15 +59,11 @@ namespace Minicraft.Scenes
 
         public void Update(GameTime gameTime)
         {
-            UpdateTicks((float)gameTime.ElapsedGameTime.TotalSeconds * Debug.TimeScale);
             // handle input
             HandleInput();
             // check pause
-            if (_paused)
-            {
-                // TODO update pause menu buttons & draw overlay
-            }
-            else
+                UpdateTicks((float)gameTime.ElapsedGameTime.TotalSeconds * Debug.TimeScale);
+            if (!_paused)
             {
                 // update ui buttons
                 if (!_player.Alive)
@@ -102,6 +105,8 @@ namespace Minicraft.Scenes
             // draw ui
             DrawUI();
         }
+
+        private void ResumeGame() => _paused = false;
 
         private void SaveAndMainMenu()
         {
@@ -203,6 +208,7 @@ namespace Minicraft.Scenes
             else
             {
                 // update pause menu
+                _buttonResume.Update();
                 _buttonMainMenu.Update();
             }
         }
@@ -244,6 +250,7 @@ namespace Minicraft.Scenes
                 drawPos = (Display.WindowSize.ToVector2() * new Vector2(0.5f, 0.35f)) - (textSize / 2f);
                 Display.DrawShadowedString(FontSize._12, drawPos, TEXT_PAUSE, Colors.UI_Pause);
                 // draw buttons
+                _buttonResume.Draw();
                 _buttonMainMenu.Draw();
             }
             // draw currently selected block

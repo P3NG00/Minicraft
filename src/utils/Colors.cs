@@ -43,6 +43,10 @@ namespace Minicraft.Utils
         public static readonly Color Game_Text_Respawn = new Color(255, 255, 255);
         public static readonly Color Game_Button_Respawn_Highlight = new Color(255, 255, 255);
         public static readonly Color Game_Text_Respawn_Highlight = new Color(0, 0, 0);
+        public static readonly Color Game_Button_Resume = new Color(0, 0, 0);
+        public static readonly Color Game_Text_Resume = new Color(255, 255, 255);
+        public static readonly Color Game_Button_Resume_Highlight = new Color(255, 255, 255);
+        public static readonly Color Game_Text_Resume_Highlight = new Color(0, 0, 0);
         public static readonly Color Game_Button_MainMenu = new Color(64, 0, 0);
         public static readonly Color Game_Text_MainMenu = new Color(255, 0, 0);
         public static readonly Color Game_Button_MainMenu_Highlight = new Color(225, 0, 0);
