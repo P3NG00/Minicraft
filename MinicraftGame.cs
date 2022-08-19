@@ -50,9 +50,7 @@ namespace Minicraft
         {
             // update input
             Input.Update();
-            // handle input
-            if (Input.KeyFirstDown(Keys.End))
-                EndProgram();
+            // TODO replace with fullscreen keybind
             if (Input.KeyFirstDown(Keys.F10))
                 Window.IsBorderless = !Window.IsBorderless;
             // update scene

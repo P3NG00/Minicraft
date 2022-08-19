@@ -1,6 +1,5 @@
 using System.IO;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input;
 using Minicraft.Game.Worlds;
 using Minicraft.UI;
 using Minicraft.Utils;
@@ -11,7 +10,7 @@ namespace Minicraft.Scenes
     {
         private readonly Button _buttonWorldNew = new Button(new Vector2(0.5f, 0.6f), new Point(250, 50), "create world", Colors.MainMenu_Button_World, Colors.MainMenu_Text_World);
         private readonly Button _buttonExit = new Button(new Vector2(0.5f, 0.8f), new Point(120, 30), "exit", Colors.MainMenu_Button_Exit, Colors.MainMenu_Text_Exit);
-        private Button _buttonWorldContinue = null;
+        private readonly Button _buttonWorldContinue = null;
 
         public MainMenuScene()
         {
@@ -33,9 +32,6 @@ namespace Minicraft.Scenes
 
         public void Update(GameTime gameTime)
         {
-            // handle input
-            if (Input.KeyFirstDown(Keys.Escape))
-                MinicraftGame.EndProgram();
             // update buttons
             _buttonWorldNew.Update();
             _buttonExit.Update();
