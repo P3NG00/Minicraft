@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using Minicraft.Game.Blocks;
 using Minicraft.Game.Entities;
+using Minicraft.Game.Inventories;
 using Minicraft.Game.Worlds;
 using Minicraft.UI;
 using Minicraft.Utils;
@@ -36,14 +37,15 @@ namespace Minicraft.Scenes
         private readonly List<NPCEntity> _npcList = new List<NPCEntity>();
         private readonly PlayerEntity _player;
         private readonly World _world;
+        private readonly Inventory _inventory = new Inventory();
 
-        private BlockType _currentBlock = BlockType.Dirt;
         private Vector2 _lastMouseBlock;
         private Point _lastMouseBlockInt;
         private bool _paused = false;
 
         public GameScene(World world)
         {
+            // initialize buttons
             _buttonRespawn.Action = RespawnPlayer;
             _buttonRespawn.ColorBoxHighlight = Colors.Game_Button_Respawn_Highlight;
             _buttonRespawn.ColorTextHighlight = Colors.Game_Text_Respawn_Highlight;
@@ -53,7 +55,9 @@ namespace Minicraft.Scenes
             _buttonMainMenu.Action = SaveAndMainMenu;
             _buttonMainMenu.ColorBoxHighlight = Colors.Game_Button_MainMenu_Highlight;
             _buttonMainMenu.ColorTextHighlight = Colors.Game_Text_MainMenu_Highlight;
+            // cache world
             _world = world;
+            // create player
             _player = new PlayerEntity(_world);
         }
 
@@ -186,9 +190,9 @@ namespace Minicraft.Scenes
             // update if not paused
             if (!_paused)
             {
-                for (int i = 1; i < Enum.GetValues(typeof(BlockType)).Length; i++)
-                    if (Input.KeyFirstDown(Keys.D0 + i))
-                        _currentBlock = (BlockType)i;
+                for (int i = 0; i < Enum.GetValues(typeof(BlockType)).Length; i++)
+                    if (Input.KeyFirstDown(Keys.D1 + i))
+                        _inventory.SetSlot(i);
                 Display.BlockScale = (Display.BlockScale + Input.ScrollWheelDelta).Clamp(Display.BLOCK_SCALE_MIN, Display.BLOCK_SCALE_MAX);
                 // get block position from mouse
                 var mousePos = Input.MousePosition.ToVector2();
@@ -200,12 +204,18 @@ namespace Minicraft.Scenes
                     _lastMouseBlockInt.X >= 0 && _lastMouseBlockInt.X < World.WIDTH &&
                     _lastMouseBlockInt.Y >= 0 && _lastMouseBlockInt.Y < World.HEIGHT)
                 {
+                    // TODO limit distance youre able to interact with blocks from player
                     // TODO implement block hit breaking system instead of instantly breaking
                     bool ctrl = Input.KeyHeld(Keys.LeftControl) || Input.KeyHeld(Keys.RightControl);
                     if (ctrl ? Input.MouseLeftFirstDown() : Input.MouseLeftHeld())
+                    {
+                        // TODO stop breaking air
+                        _inventory.Add(_world.GetBlockType(_lastMouseBlockInt));
                         _world.SetBlockType(_lastMouseBlockInt, BlockType.Air);
-                    if ((ctrl ? Input.MouseRightFirstDown() : Input.MouseRightHeld()) && !_player.GetSides().Contains(_lastMouseBlockInt))
-                        _world.SetBlockType(_lastMouseBlockInt, _currentBlock);
+                    }
+                    // TODO implement placing from inventory
+                    // if ((ctrl ? Input.MouseRightFirstDown() : Input.MouseRightHeld()) && !_player.GetSides().Contains(_lastMouseBlockInt))
+                    //     _world.SetBlockType(_lastMouseBlockInt, _currentBlock);
                     if (Input.MouseMiddleFirstDown())
                         _npcList.Add(new NPCEntity(_lastMouseBlock));
                 }
@@ -214,8 +224,14 @@ namespace Minicraft.Scenes
 
         private void DrawUI()
         {
+            // TODO create a ui system for easier management and placement
+            // TODO allow player to edit position of ui elements
+
+            // draw inventory hotbar
+            _inventory.Draw();
+            // TODO lower position of health bar because the thick black border between both looks ugly
             // draw health bar
-            var drawPos = new Vector2((Display.WindowSize.X / 2f) - (BarSize.X / 2f), Display.WindowSize.Y - BarSize.Y);
+            var drawPos = new Vector2((Display.WindowSize.X / 2f) - (BarSize.X / 2f), Display.WindowSize.Y - Inventory.HotbarSize.Y - BarSize.Y);
             Display.Draw(drawPos, BarSize, Colors.UI_Bar);
             // adjust size to fit within bar
             drawPos += new Vector2(Util.UI_SPACER);
@@ -226,11 +242,9 @@ namespace Minicraft.Scenes
             // draw health numbers on top of bar
             var healthString = $"{_player.Life:0.#}/{_player.MaxLife:0.#}";
             var textSize = Display.GetFont(FontSize._12).MeasureString(healthString);
-            drawPos = new Vector2((Display.WindowSize.X / 2f) - (textSize.X / 2f), Display.WindowSize.Y - 22);
+            drawPos = new Vector2((Display.WindowSize.X / 2f) - (textSize.X / 2f), Display.WindowSize.Y - Inventory.HotbarSize.Y - 22);
             Display.DrawShadowedString(FontSize._12, drawPos, healthString, Colors.UI_TextLife);
             // draw currently selected block
-            drawPos = new Vector2(Util.UI_SPACER, Display.WindowSize.Y - Display.GetFont(FontSize._12).LineSpacing - Util.UI_SPACER);
-            Display.DrawStringWithBackground(FontSize._12, drawPos, $"current block: {_currentBlock.GetBlock().Name}", Colors.UI_TextBlock);
             // draw death screen overlay
             if (!_player.Alive)
             {

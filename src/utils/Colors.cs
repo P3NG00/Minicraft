@@ -24,6 +24,11 @@ namespace Minicraft.Utils
         public static readonly Color UI_TextLife = new Color(255, 255, 255);
         public static readonly Color UI_YouDied = new Color(255, 0, 0);
 
+        // inventory
+        public static readonly Color HotbarBackground = new Color(0, 0, 0);
+        public static readonly Color HotbarSlotBackground = new Color(64, 64, 64);
+        public static readonly Color HotbarSlotText = new Color(255, 255, 255);
+
         // debug
         public static readonly Color DebugReason_BlockUpdate = new Color(255, 0, 255, 64);
         public static readonly Color DebugReason_CollisionCheck = new Color(0, 0, 255, 64);

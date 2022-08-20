@@ -104,7 +104,8 @@ namespace Minicraft.Utils
         {
             // draw text background
             var textSize = GetFont(fontSize).MeasureString(text);
-            Draw(position - (Util.UISpacerVec / 2f), textSize + Util.UISpacerVec, Colors.TextBackground);
+            var uiSpacerVec = new Vector2(Util.UI_SPACER);
+            Draw(position - (uiSpacerVec / 2f), textSize + uiSpacerVec, Colors.TextBackground);
             // draw text
             DrawString(fontSize, position, text, color);
         }

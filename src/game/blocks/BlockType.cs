@@ -11,6 +11,7 @@ namespace Minicraft.Game.Blocks
         Stone = 3,
         Wood = 4,
         Leaves = 5,
+        // TODO TNT
     }
 
     public partial class Block
