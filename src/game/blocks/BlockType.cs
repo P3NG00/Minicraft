@@ -23,10 +23,10 @@ namespace Minicraft.Game.Blocks
             s_blockArray = ImmutableArray.Create(new Block[] {
                 new Block("Air", new Color(240, 255, 255), true),
                 new Block("Dirt Block", new Color(96, 48, 0)),
-                new GrassBlock("Grass Block", new Color(48, 160, 32)),
+                new GrassBlock("Grass Block", new Color(32, 128, 16)),
                 new Block("Stone Block", new Color(192, 192, 192)),
                 new Block("Wood Block", new Color(128, 92, 32), true),
-                new LeavesBlock("Leaves Block", new Color(64, 224, 48), true),
+                new LeavesBlock("Leaves Block", new Color(48, 128, 32), true),
             });
         }
     }

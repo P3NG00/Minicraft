@@ -10,11 +10,9 @@
 
 [Right Mouse] - Place Block
 
-(Hold Control with Left/Right mouse to only break/place once per click)
-
 [Middle Mouse] - Spawn NPC
 
-[1 - 5] - Change Blocks
+[1 - 9] - Change Hotbar Slot
 
 [Tab] - Toggle Grid
 

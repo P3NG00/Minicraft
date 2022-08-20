@@ -26,6 +26,7 @@ namespace Minicraft.Utils
 
         // inventory
         public static readonly Color HotbarBackground = new Color(0, 0, 0);
+        public static readonly Color HotbarSelected = new Color(255, 255, 255);
         public static readonly Color HotbarSlotBackground = new Color(64, 64, 64);
         public static readonly Color HotbarSlotText = new Color(255, 255, 255);
 

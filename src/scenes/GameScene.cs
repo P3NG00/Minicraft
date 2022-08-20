@@ -190,9 +190,9 @@ namespace Minicraft.Scenes
             // update if not paused
             if (!_paused)
             {
-                for (int i = 0; i < Enum.GetValues(typeof(BlockType)).Length; i++)
+                for (int i = 0; i < Inventory.SLOTS; i++)
                     if (Input.KeyFirstDown(Keys.D1 + i))
-                        _inventory.SetSlot(i);
+                        _inventory.SetActiveSlot(i);
                 Display.BlockScale = (Display.BlockScale + Input.ScrollWheelDelta).Clamp(Display.BLOCK_SCALE_MIN, Display.BLOCK_SCALE_MAX);
                 // get block position from mouse
                 var mousePos = Input.MousePosition.ToVector2();
@@ -206,16 +206,16 @@ namespace Minicraft.Scenes
                 {
                     // TODO limit distance youre able to interact with blocks from player
                     // TODO implement block hit breaking system instead of instantly breaking
-                    bool ctrl = Input.KeyHeld(Keys.LeftControl) || Input.KeyHeld(Keys.RightControl);
-                    if (ctrl ? Input.MouseLeftFirstDown() : Input.MouseLeftHeld())
+                    var blockType = _world.GetBlockType(_lastMouseBlockInt);
+                    // handle block breaking
+                    if (Input.MouseLeftFirstDown() && blockType != BlockType.Air)
                     {
-                        // TODO stop breaking air
-                        _inventory.Add(_world.GetBlockType(_lastMouseBlockInt));
+                        _inventory.Add(blockType);
                         _world.SetBlockType(_lastMouseBlockInt, BlockType.Air);
                     }
-                    // TODO implement placing from inventory
-                    // if ((ctrl ? Input.MouseRightFirstDown() : Input.MouseRightHeld()) && !_player.GetSides().Contains(_lastMouseBlockInt))
-                    //     _world.SetBlockType(_lastMouseBlockInt, _currentBlock);
+                    // handle block placing
+                    if (Input.MouseRightFirstDown() && !_player.GetSides().Contains(_lastMouseBlockInt))
+                        _inventory.Place(_world, _lastMouseBlockInt);
                     if (Input.MouseMiddleFirstDown())
                         _npcList.Add(new NPCEntity(_lastMouseBlock));
                 }
