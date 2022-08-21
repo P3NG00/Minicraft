@@ -1,4 +1,5 @@
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Minicraft.Game.Worlds;
 using Minicraft.Utils;
 
@@ -13,7 +14,7 @@ namespace Minicraft.Game.Blocks
             new Point(-1, -1), new Point(1, -1),
         };
 
-        public GrassBlock(string name, Color color, bool canWalkThrough = false) : base(name, color, canWalkThrough) {}
+        public GrassBlock(string name, Color color, bool canWalkThrough = false, Texture2D texture = null) : base(name, color, canWalkThrough, texture) {}
 
         public sealed override void Update(Point position, World world)
         {

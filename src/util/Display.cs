@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Minicraft.Game.Entities;
+using Minicraft.Texture;
 
 namespace Minicraft.Utils
 {
@@ -16,7 +17,6 @@ namespace Minicraft.Utils
         private static ImmutableArray<SpriteFont> _typeWriterFont;
 
         public static SpriteBatch SpriteBatch { get; private set; }
-        public static Texture2D TextureSquare { get; private set; }
         public static Point WindowSize => new Point(_graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight);
 
         public static readonly float FrameStep = 1f / FRAMES_PER_SECOND;
@@ -32,11 +32,7 @@ namespace Minicraft.Utils
 
         public static void LoadContent(GraphicsDevice graphicsDevice, ContentManager content)
         {
-            // create square for drawing
-            TextureSquare = new Texture2D(graphicsDevice, 2, 2);
-            TextureSquare.SetData(new[] {
-                new Color(255, 255, 255), new Color(192, 192, 192),
-                new Color(192, 192, 192), new Color(128, 128, 128)});
+            // TODO move fonts to seperate static class
             // load font
             _typeWriterFont = ImmutableArray.Create(
                 content.Load<SpriteFont>("type_writer_12"),
@@ -82,11 +78,14 @@ namespace Minicraft.Utils
 
         public static SpriteFont GetFont(FontSize fontSize) => _typeWriterFont[(int)fontSize];
 
-        public static void Draw(Vector2 position, Vector2 size, Color color) => SpriteBatch.Draw(TextureSquare, position, null, color, 0f, Vector2.Zero, size / TextureSquare.Bounds.Size.ToVector2(), SpriteEffects.None, 0f);
+        public static void Draw(Vector2 position, Vector2 size, Color color, Texture2D texture = null)
+        {
+            var t = texture ?? Textures.Blank_1x;
+            var scale = size / t.Bounds.Size.ToVector2();
+            SpriteBatch.Draw(t, position, null, color, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
+        }
 
-        public static void DrawOffset(Vector2 position, Vector2 size, Color color) => Draw(position - CameraOffset, size, color);
-
-        public static void Draw(Rectangle rectangle, Color color) => SpriteBatch.Draw(TextureSquare, rectangle, null, color, 0f, Vector2.Zero, SpriteEffects.None, 0f);
+        public static void DrawOffset(Vector2 position, Vector2 size, Color color, Texture2D texture = null) => Draw(position - CameraOffset, size, color, texture);
 
         // draws faded overlay over entire window
         public static void DrawOverlay() => Display.Draw(Vector2.Zero, WindowSize.ToVector2(), Colors.Overlay);
@@ -94,7 +93,7 @@ namespace Minicraft.Utils
         // (-1f, -1f) = top-left of window.
         // ( 0f,  0f) = center of window.
         // ( 1f,  1f) = bottom-right of window.
-        public static void DrawCenteredText(FontSize fontSize, Vector2 relativeScreenPosition, string text, Color color, Action<FontSize, Vector2, string, Color> drawStringFunc)
+        public static void DrawCenteredText(FontSize fontSize, Vector2 relativeScreenPosition, string text, Color color, DrawStringFunc drawStringFunc)
         {
             var textSize = GetFont(fontSize).MeasureString(text);
             var screenPosition = ((relativeScreenPosition / 2f) + new Vector2(0.5f)) * WindowSize.ToVector2();
@@ -121,5 +120,7 @@ namespace Minicraft.Utils
         }
 
         public static void DrawString(FontSize fontSize, Vector2 position, string text, Color color) => SpriteBatch.DrawString(GetFont(fontSize), text, position, color);
+
+        public delegate void DrawStringFunc(FontSize fontSize, Vector2 position, string text, Color color);
     }
 }

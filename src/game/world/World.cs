@@ -85,8 +85,8 @@ namespace Minicraft.Game.Worlds
                     var blockX = x + visualStartX;
                     var drawPos = new Vector2(blockX * Display.BlockScale, drawY);
                     var blockPos = new Point(blockX, blockY);
-                    var blockColor = GetBlockType(blockPos).GetBlock().Color;
-                    Display.DrawOffset(drawPos, drawScale, blockColor);
+                    var block = GetBlockType(blockPos).GetBlock();
+                    Display.DrawOffset(drawPos, drawScale, block.Color, block.Texture);
                     if (blockPos == mouseBlock)
                         Display.DrawOffset(drawPos, drawScale, Colors.BlockHighlight);
                     // check if block was updated

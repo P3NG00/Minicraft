@@ -44,7 +44,7 @@ namespace Minicraft.UI
         public void Draw()
         {
             // draw box
-            Display.Draw(_lastRect, _highlighted && ColorBoxHighlight.HasValue ? ColorBoxHighlight.Value : ColorBox);
+            Display.Draw(_lastRect.Location.ToVector2(), _lastRect.Size.ToVector2(), _highlighted && ColorBoxHighlight.HasValue ? ColorBoxHighlight.Value : ColorBox);
             // draw text centered in box
             var drawPos = _lastRect.Center.ToVector2() - (Display.GetFont(FontSize._12).MeasureString(_text) / 2f);
             Display.DrawShadowedString(FontSize._12, drawPos, _text, _highlighted && ColorTextHighlight.HasValue ? ColorTextHighlight.Value : ColorText);
