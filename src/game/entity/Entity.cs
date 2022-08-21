@@ -4,7 +4,7 @@ using Minicraft.Game.Worlds;
 using Minicraft.Utils;
 using static Minicraft.Utils.Util;
 
-namespace Minicraft.Game
+namespace Minicraft.Game.Entities
 {
     public abstract class Entity
     {

@@ -1,6 +1,7 @@
 using System;
 using Microsoft.Xna.Framework;
 using Minicraft.Game.Blocks;
+using Minicraft.Game.Entities;
 using Minicraft.Utils;
 
 namespace Minicraft.Game.Worlds
