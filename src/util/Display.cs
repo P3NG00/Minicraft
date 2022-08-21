@@ -33,8 +33,10 @@ namespace Minicraft.Utils
         public static void LoadContent(GraphicsDevice graphicsDevice, ContentManager content)
         {
             // create square for drawing
-            TextureSquare = new Texture2D(graphicsDevice, 1, 1);
-            TextureSquare.SetData(new[] {new Color(255, 255, 255)});
+            TextureSquare = new Texture2D(graphicsDevice, 2, 2);
+            TextureSquare.SetData(new[] {
+                new Color(255, 255, 255), new Color(192, 192, 192),
+                new Color(192, 192, 192), new Color(128, 128, 128)});
             // load font
             _typeWriterFont = ImmutableArray.Create(
                 content.Load<SpriteFont>("type_writer_12"),
@@ -80,7 +82,7 @@ namespace Minicraft.Utils
 
         public static SpriteFont GetFont(FontSize fontSize) => _typeWriterFont[(int)fontSize];
 
-        public static void Draw(Vector2 position, Vector2 size, Color color) => SpriteBatch.Draw(TextureSquare, position, null, color, 0f, Vector2.Zero, size, SpriteEffects.None, 0f);
+        public static void Draw(Vector2 position, Vector2 size, Color color) => SpriteBatch.Draw(TextureSquare, position, null, color, 0f, Vector2.Zero, size / TextureSquare.Bounds.Size.ToVector2(), SpriteEffects.None, 0f);
 
         public static void DrawOffset(Vector2 position, Vector2 size, Color color) => Draw(position - CameraOffset, size, color);
 
