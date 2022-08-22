@@ -2,7 +2,6 @@ using System;
 using Microsoft.Xna.Framework;
 using Minicraft.Game.Worlds;
 using Minicraft.Utils;
-using static Minicraft.Utils.Util;
 
 namespace Minicraft.Game.Entities
 {
@@ -86,8 +85,8 @@ namespace Minicraft.Game.Entities
             if (verticalCollision && horizontalCollision)
             {
                 var horizontalHappenedFirst = WhichCollisionFirstHorizontalElseVertical(velocityThisUpdate);
-                ActionRef<Vector2> firstCollision;
-                ActionRef<Vector2> secondCollision;
+                Util.ActionRef<Vector2> firstCollision;
+                Util.ActionRef<Vector2> secondCollision;
                 Func<World, Sides, bool> secondCollisionRecheck;
                 if (horizontalHappenedFirst)
                 {
