@@ -31,9 +31,9 @@ namespace Minicraft.Scenes
         private int[] _lastTickDifferences = new int[World.TICKS_PER_SECOND];
         private float[] _lastFps = new float[Display.FRAMES_PER_SECOND];
 
-        private readonly Button _buttonRespawn = new Button(new Vector2(0f, 0.2f), new Point(250, 50), TEXT_RESPAWN, Colors.Game_Button_Respawn, Colors.Game_Text_Respawn);
-        private readonly Button _buttonResume = new Button(new Vector2(0f, 0.2f), new Point(250, 50), TEXT_RESUME, Colors.Game_Button_Resume, Colors.Game_Text_Resume);
-        private readonly Button _buttonMainMenu = new Button(new Vector2(0f, 0.4f), new Point(250, 50), TEXT_MAIN_MENU, Colors.Game_Button_MainMenu, Colors.Game_Text_MainMenu);
+        private readonly Button _buttonRespawn = new Button(new Vector2(0.5f, 0.6f), new Point(250, 50), TEXT_RESPAWN, Colors.Game_Button_Respawn, Colors.Game_Text_Respawn);
+        private readonly Button _buttonResume = new Button(new Vector2(0.5f, 0.6f), new Point(250, 50), TEXT_RESUME, Colors.Game_Button_Resume, Colors.Game_Text_Resume);
+        private readonly Button _buttonMainMenu = new Button(new Vector2(0.5f, 0.7f), new Point(250, 50), TEXT_MAIN_MENU, Colors.Game_Button_MainMenu, Colors.Game_Text_MainMenu);
         private readonly List<NPCEntity> _npcList = new List<NPCEntity>();
         private readonly PlayerEntity _player;
         private readonly World _world;
@@ -250,7 +250,7 @@ namespace Minicraft.Scenes
             {
                 Display.DrawOverlay();
                 // draw text
-                Display.DrawCenteredText(FontSize._24, new Vector2(0f, -0.3f), TEXT_DEATH, Colors.UI_YouDied, Display.DrawStringWithShadow);
+                Display.DrawCenteredText(FontSize._24, new Vector2(0.5f, 0.35f), TEXT_DEATH, Colors.UI_YouDied, Display.DrawStringWithShadow);
                 // draw buttons to restart game
                 _buttonRespawn.Draw();
                 _buttonMainMenu.Draw();
@@ -259,7 +259,7 @@ namespace Minicraft.Scenes
             {
                 Display.DrawOverlay();
                 // draw text
-                Display.DrawCenteredText(FontSize._12, new Vector2(0f, -0.3f), TEXT_PAUSE, Colors.UI_Pause, Display.DrawStringWithShadow);
+                Display.DrawCenteredText(FontSize._12, new Vector2(0.5f, 0.35f), TEXT_PAUSE, Colors.UI_Pause, Display.DrawStringWithShadow);
                 // draw buttons
                 _buttonResume.Draw();
                 _buttonMainMenu.Draw();

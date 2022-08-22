@@ -20,12 +20,11 @@ namespace Minicraft.UI
         private Rectangle _lastRect;
         private bool _highlighted = false;
 
-        // (-1f, -1f) = top-left of window.
-        // ( 0f,  0f) = center of window.
+        // ( 0f,  0f) = top-left of window.
         // ( 1f,  1f) = bottom-right of window.
         public Button(Vector2 relativeCenter, Point size, string text, Color colorBox, Color colorText)
         {
-            _relativeCenter = (relativeCenter / 2f) + new Vector2(0.5f);
+            _relativeCenter = relativeCenter;
             _size = size;
             _text = text;
             ColorBox = colorBox;
@@ -35,7 +34,8 @@ namespace Minicraft.UI
         public void Update()
         {
             // find rectangle bounds
-            _lastRect = new Rectangle(((Display.WindowSize.ToVector2() * _relativeCenter) - (_size.ToVector2() / 2f)).ToPoint(), _size);
+            var pos = ((Display.WindowSize.ToVector2() * _relativeCenter) - (_size.ToVector2() / 2f)).ToPoint();
+            _lastRect = new Rectangle(pos, _size);
             // test bounds
             _highlighted = _lastRect.Contains(Input.MousePosition);
             if (Input.MouseLeftFirstUp() && _highlighted)
@@ -47,8 +47,8 @@ namespace Minicraft.UI
             // draw box
             Display.Draw(_lastRect.Location.ToVector2(), _lastRect.Size.ToVector2(), _highlighted && ColorBoxHighlight.HasValue ? ColorBoxHighlight.Value : ColorBox);
             // draw text centered in box
-            var drawPos = _lastRect.Center.ToVector2() - (FontSize._12.MeasureString(_text) / 2f);
-            Display.DrawStringWithShadow(FontSize._12, drawPos, _text, _highlighted && ColorTextHighlight.HasValue ? ColorTextHighlight.Value : ColorText);
+            var color = _highlighted && ColorTextHighlight.HasValue ? ColorTextHighlight.Value : ColorText;
+            Display.DrawCenteredText(FontSize._12, _relativeCenter, _text, color, Display.DrawStringWithShadow);
         }
     }
 }

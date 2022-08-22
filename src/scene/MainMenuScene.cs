@@ -9,8 +9,8 @@ namespace Minicraft.Scenes
 {
     public sealed class MainMenuScene : Scene
     {
-        private readonly Button _buttonWorldNew = new Button(new Vector2(0f, 0.2f), new Point(250, 50), "create world", Colors.MainMenu_Button_World, Colors.MainMenu_Text_World);
-        private readonly Button _buttonExit = new Button(new Vector2(0f, 0.6f), new Point(120, 30), "exit", Colors.MainMenu_Button_Exit, Colors.MainMenu_Text_Exit);
+        private readonly Button _buttonWorldNew = new Button(new Vector2(0.5f, 0.6f), new Point(250, 50), "create world", Colors.MainMenu_Button_World, Colors.MainMenu_Text_World);
+        private readonly Button _buttonExit = new Button(new Vector2(0.5f, 0.8f), new Point(120, 30), "exit", Colors.MainMenu_Button_Exit, Colors.MainMenu_Text_Exit);
         private readonly Button _buttonWorldContinue = null;
 
         public MainMenuScene() : base(Colors.Background)
@@ -24,7 +24,7 @@ namespace Minicraft.Scenes
             // check if save exists
             if (File.Exists(World.SAVE_FILE))
             {
-                _buttonWorldContinue = new Button(new Vector2(0f, 0.4f), new Point(250, 50), "continue world", Colors.MainMenu_Button_World, Colors.MainMenu_Text_World);
+                _buttonWorldContinue = new Button(new Vector2(0.5f, 0.7f), new Point(250, 50), "continue world", Colors.MainMenu_Button_World, Colors.MainMenu_Text_World);
                 _buttonWorldContinue.Action = LoadSavedWorld;
                 _buttonWorldContinue.ColorBoxHighlight = Colors.MainMenu_Button_World_Highlight;
                 _buttonWorldContinue.ColorTextHighlight = Colors.MainMenu_Text_World_Highlight;
@@ -42,7 +42,7 @@ namespace Minicraft.Scenes
         public sealed override void Draw(GameTime gameTime)
         {
             // draw title
-            Display.DrawCenteredText(FontSize._36, new Vector2(0f, -0.2f), MinicraftGame.TITLE, Colors.UI_Title, Display.DrawStringWithShadow);
+            Display.DrawCenteredText(FontSize._36, new Vector2(0.5f, 0.4f), MinicraftGame.TITLE, Colors.UI_Title, Display.DrawStringWithShadow);
             // draw buttons
             _buttonWorldNew.Draw();
             _buttonExit.Draw();
