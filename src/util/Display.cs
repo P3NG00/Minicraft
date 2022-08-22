@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Immutable;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -111,7 +110,7 @@ namespace Minicraft.Utils
             DrawString(fontSize, position, text, color);
         }
 
-        public static void DrawShadowedString(FontSize fontSize, Vector2 position, string text, Color color)
+        public static void DrawStringWithShadow(FontSize fontSize, Vector2 position, string text, Color color)
         {
             // draw shadowed text
             DrawString(fontSize, position + new Vector2(2 * ((int)fontSize + 1)), text, Colors.TextShadow);

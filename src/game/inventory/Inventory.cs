@@ -107,7 +107,7 @@ namespace Minicraft.Game.Inventories
                 Display.Draw(drawPos, drawSize, color);
                 // draw string of amount of block in slot
                 if (!slot.IsEmpty)
-                    Display.DrawShadowedString(FontSize._12, drawPos + new Vector2(Util.UI_SPACER, Util.UI_SPACER), slot.Amount.ToString(), Colors.HotbarSlotText);
+                    Display.DrawStringWithShadow(FontSize._12, drawPos + new Vector2(Util.UI_SPACER, Util.UI_SPACER), slot.Amount.ToString(), Colors.HotbarSlotText);
                 drawPos += slotOffset;
             }
         }

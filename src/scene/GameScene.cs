@@ -242,14 +242,14 @@ namespace Minicraft.Scenes
             var healthString = $"{_player.Life:0.#}/{_player.MaxLife:0.#}";
             var textSize = Display.GetFont(FontSize._12).MeasureString(healthString);
             drawPos = new Vector2((Display.WindowSize.X / 2f) - (textSize.X / 2f), Display.WindowSize.Y - Inventory.HotbarSize.Y - 22);
-            Display.DrawShadowedString(FontSize._12, drawPos, healthString, Colors.UI_TextLife);
+            Display.DrawStringWithShadow(FontSize._12, drawPos, healthString, Colors.UI_TextLife);
             // draw currently selected block
             // draw death screen overlay
             if (!_player.Alive)
             {
                 Display.DrawOverlay();
                 // draw text
-                Display.DrawCenteredText(FontSize._24, new Vector2(0f, -0.3f), TEXT_DEATH, Colors.UI_YouDied, Display.DrawShadowedString);
+                Display.DrawCenteredText(FontSize._24, new Vector2(0f, -0.3f), TEXT_DEATH, Colors.UI_YouDied, Display.DrawStringWithShadow);
                 // draw buttons to restart game
                 _buttonRespawn.Draw();
                 _buttonMainMenu.Draw();
@@ -258,7 +258,7 @@ namespace Minicraft.Scenes
             {
                 Display.DrawOverlay();
                 // draw text
-                Display.DrawCenteredText(FontSize._12, new Vector2(0f, -0.3f), TEXT_PAUSE, Colors.UI_Pause, Display.DrawShadowedString);
+                Display.DrawCenteredText(FontSize._12, new Vector2(0f, -0.3f), TEXT_PAUSE, Colors.UI_Pause, Display.DrawStringWithShadow);
                 // draw buttons
                 _buttonResume.Draw();
                 _buttonMainMenu.Draw();
