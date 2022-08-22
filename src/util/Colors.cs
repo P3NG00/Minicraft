@@ -6,6 +6,7 @@ namespace Minicraft.Utils
     {
         public static readonly Color Background = new Color(96, 96, 96);
         public static readonly Color BlockHighlight = new Color(128, 128, 128, 128);
+        public static readonly Color BlockHighlightAir = new Color(0, 0, 0, 64);
         public static readonly Color Overlay = new Color(0, 0, 0, 128);
         public static readonly Color TextBackground = new Color(0, 0, 0, 128);
         public static readonly Color TextShadow = new Color(0, 0, 0, 64);
