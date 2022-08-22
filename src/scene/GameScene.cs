@@ -11,7 +11,7 @@ using Minicraft.Utils;
 
 namespace Minicraft.Scenes
 {
-    public sealed class GameScene : IScene
+    public sealed class GameScene : Scene
     {
         private const string TEXT_DEATH = "you died!";
         private const string TEXT_MAIN_MENU = "main menu";
@@ -42,7 +42,7 @@ namespace Minicraft.Scenes
         private Point _lastMouseBlockInt;
         private bool _paused = false;
 
-        public GameScene(World world)
+        public GameScene(World world) : base(BlockType.Air.GetBlock().Color)
         {
             // initialize buttons
             _buttonRespawn.Action = RespawnPlayer;
@@ -60,7 +60,7 @@ namespace Minicraft.Scenes
             _player = new PlayerEntity(_world);
         }
 
-        public void Update(GameTime gameTime)
+        public sealed override void Update(GameTime gameTime)
         {
             // handle input
             HandleInput();
@@ -99,7 +99,7 @@ namespace Minicraft.Scenes
             }
         }
 
-        public void Draw(GameTime gameTime)
+        public sealed override void Draw(GameTime gameTime)
         {
             UpdateFramesPerSecond((float)gameTime.ElapsedGameTime.TotalMilliseconds);
             // update display handler

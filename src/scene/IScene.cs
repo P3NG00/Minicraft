@@ -2,10 +2,14 @@ using Microsoft.Xna.Framework;
 
 namespace Minicraft.Scenes
 {
-    public interface IScene
+    public abstract class Scene
     {
-        void Update(GameTime gameTime);
+        public readonly Color BackgroundColor;
 
-        void Draw(GameTime gameTime);
+        public Scene(Color backgroundColor) => BackgroundColor = backgroundColor;
+
+        public abstract void Update(GameTime gameTime);
+
+        public abstract void Draw(GameTime gameTime);
     }
 }

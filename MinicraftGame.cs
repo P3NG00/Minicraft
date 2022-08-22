@@ -13,7 +13,7 @@ namespace Minicraft
         public const string TITLE = "Minicraft";
 
         private static MinicraftGame _instance;
-        private static IScene _scene = new MainMenuScene();
+        private static Scene _scene = new MainMenuScene();
 
         public MinicraftGame()
         {
@@ -63,7 +63,7 @@ namespace Minicraft
         protected override void Draw(GameTime gameTime)
         {
             // fill background
-            GraphicsDevice.Clear(Colors.Background);
+            GraphicsDevice.Clear(_scene.BackgroundColor);
             // begin drawing
             Display.SpriteBatch.Begin(samplerState: SamplerState.PointClamp);
             // draw scene
@@ -74,7 +74,7 @@ namespace Minicraft
             base.Draw(gameTime);
         }
 
-        public static void SetScene(IScene scene) => _scene = scene;
+        public static void SetScene(Scene scene) => _scene = scene;
 
         public static void EndProgram() => _instance.Exit();
     }
