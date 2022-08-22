@@ -22,15 +22,6 @@ namespace Minicraft.Scenes
 
         private static readonly Vector2 BarSize = new Vector2(150, 30);
 
-        private int Ticks => _ticks[0];
-        private float AverageFramesPerSecond => _lastFps.Average();
-        private float AverageTicksPerFrame => (float)_lastTickDifferences.Average();
-
-        private float _tickDelta = 0f;
-        private int[] _ticks = new [] {0, 0};
-        private int[] _lastTickDifferences = new int[World.TICKS_PER_SECOND];
-        private float[] _lastFps = new float[Display.FRAMES_PER_SECOND];
-
         private readonly Button _buttonRespawn = new Button(new Vector2(0.5f, 0.6f), new Point(250, 50), TEXT_RESPAWN, Colors.Game_Button_Respawn, Colors.Game_Text_Respawn);
         private readonly Button _buttonResume = new Button(new Vector2(0.5f, 0.6f), new Point(250, 50), TEXT_RESUME, Colors.Game_Button_Resume, Colors.Game_Text_Resume);
         private readonly Button _buttonMainMenu = new Button(new Vector2(0.5f, 0.7f), new Point(250, 50), TEXT_MAIN_MENU, Colors.Game_Button_MainMenu, Colors.Game_Text_MainMenu);
@@ -39,9 +30,20 @@ namespace Minicraft.Scenes
         private readonly World _world;
         private readonly Inventory _inventory = new Inventory();
 
+        // tick & frame handling variables
+        private int Ticks => _ticks[0];
+        private float AverageFramesPerSecond => _lastFps.Average();
+        private float AverageTicksPerFrame => (float)_lastTickDifferences.Average();
+
+        private float _tickDelta = 0f;
+        private int[] _ticks = new [] {0, 0};
+        private int[] _lastTickDifferences = new int[World.TICKS_PER_SECOND];
+        private float[] _lastFps = new float[Display.FRAMES_PER_SECOND];
+        private bool _paused = false;
+
+        // mouse position relative to game world
         private Vector2 _lastMouseBlock;
         private Point _lastMouseBlockInt;
-        private bool _paused = false;
 
         public GameScene(World world) : base(BlockType.Air.GetBlock().Color)
         {
