@@ -1,5 +1,6 @@
 using System.IO;
 using Microsoft.Xna.Framework;
+using Minicraft.Font;
 using Minicraft.Game.Worlds;
 using Minicraft.UI;
 using Minicraft.Utils;

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
+using Minicraft.Font;
 using Minicraft.Game.Blocks;
 using Minicraft.Game.Worlds;
 using Minicraft.Utils;

@@ -1,4 +1,4 @@
-namespace Minicraft.Utils
+namespace Minicraft.Font
 {
     public enum FontSize
     {

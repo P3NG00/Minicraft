@@ -1,7 +1,6 @@
-using System.Collections.Immutable;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Minicraft.Font;
 using Minicraft.Game.Entities;
 using Minicraft.Texture;
 
@@ -13,8 +12,6 @@ namespace Minicraft.Utils
         public const float FRAME_STEP = 1f / FRAMES_PER_SECOND;
         public const int BLOCK_SCALE_MIN = 5;
         public const int BLOCK_SCALE_MAX = 25;
-
-        private static ImmutableArray<SpriteFont> _typeWriterFont;
 
         public static SpriteBatch SpriteBatch { get; private set; }
         public static Point WindowSize => new Point(_graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight);
@@ -28,14 +25,8 @@ namespace Minicraft.Utils
 
         public static void Constructor(Microsoft.Xna.Framework.Game game) => _graphics = new GraphicsDeviceManager(game);
 
-        public static void LoadContent(GraphicsDevice graphicsDevice, ContentManager content)
+        public static void LoadContent(GraphicsDevice graphicsDevice)
         {
-            // TODO move fonts to seperate static class
-            // load font
-            _typeWriterFont = ImmutableArray.Create(
-                content.Load<SpriteFont>("type_writer_12"),
-                content.Load<SpriteFont>("type_writer_24"),
-                content.Load<SpriteFont>("type_writer_36"));
             // create display handler
             SpriteBatch = new SpriteBatch(graphicsDevice);
         }
@@ -74,8 +65,6 @@ namespace Minicraft.Utils
             _graphics.PreferredBackBufferHeight = height;
         }
 
-        public static SpriteFont GetFont(FontSize fontSize) => _typeWriterFont[(int)fontSize];
-
         public static void Draw(Vector2 position, Vector2 size, Color color, Texture2D texture = null)
         {
             var t = texture ?? Textures.Blank;
@@ -93,7 +82,7 @@ namespace Minicraft.Utils
         // ( 1f,  1f) = bottom-right of window.
         public static void DrawCenteredText(FontSize fontSize, Vector2 relativeScreenPosition, string text, Color color, DrawStringFunc drawStringFunc)
         {
-            var textSize = GetFont(fontSize).MeasureString(text);
+            var textSize = fontSize.MeasureString(text);
             var screenPosition = ((relativeScreenPosition / 2f) + new Vector2(0.5f)) * WindowSize.ToVector2();
             var drawPos = screenPosition - (textSize / 2f);
             drawStringFunc(fontSize, drawPos, text, color);
@@ -102,7 +91,7 @@ namespace Minicraft.Utils
         public static void DrawStringWithBackground(FontSize fontSize, Vector2 position, string text, Color color)
         {
             // draw text background
-            var textSize = GetFont(fontSize).MeasureString(text);
+            var textSize = fontSize.MeasureString(text);
             var uiSpacerVec = new Vector2(Util.UI_SPACER);
             Draw(position - (uiSpacerVec / 2f), textSize + uiSpacerVec, Colors.TextBackground);
             // draw text
@@ -117,7 +106,7 @@ namespace Minicraft.Utils
             DrawString(fontSize, position, text, color);
         }
 
-        public static void DrawString(FontSize fontSize, Vector2 position, string text, Color color) => SpriteBatch.DrawString(GetFont(fontSize), text, position, color);
+        public static void DrawString(FontSize fontSize, Vector2 position, string text, Color color) => SpriteBatch.DrawString(fontSize.GetFont(), text, position, color);
 
         public delegate void DrawStringFunc(FontSize fontSize, Vector2 position, string text, Color color);
     }

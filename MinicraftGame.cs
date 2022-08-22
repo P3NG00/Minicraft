@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Minicraft.Font;
 using Minicraft.Scenes;
 using Minicraft.Texture;
 using Minicraft.Utils;
@@ -30,7 +31,8 @@ namespace Minicraft
         protected override void LoadContent()
         {
             Textures.Initialize(GraphicsDevice);
-            Display.LoadContent(GraphicsDevice, Content);
+            Fonts.Initialize(Content);
+            Display.LoadContent(GraphicsDevice);
             // base call
             base.LoadContent();
         }

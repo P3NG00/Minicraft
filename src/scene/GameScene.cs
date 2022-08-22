@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+using Minicraft.Font;
 using Minicraft.Game.Blocks;
 using Minicraft.Game.Entities;
 using Minicraft.Game.Inventories;
@@ -240,7 +241,7 @@ namespace Minicraft.Scenes
             Display.Draw(drawPos, healthSize, Colors.UI_Life);
             // draw health numbers on top of bar
             var healthString = $"{_player.Life:0.#}/{_player.MaxLife:0.#}";
-            var textSize = Display.GetFont(FontSize._12).MeasureString(healthString);
+            var textSize = FontSize._12.MeasureString(healthString);
             drawPos = new Vector2((Display.WindowSize.X / 2f) - (textSize.X / 2f), Display.WindowSize.Y - Inventory.HotbarSize.Y - 22);
             Display.DrawStringWithShadow(FontSize._12, drawPos, healthString, Colors.UI_TextLife);
             // draw currently selected block
@@ -288,7 +289,7 @@ namespace Minicraft.Scenes
                     $"player_grounded: {_player.IsGrounded}"})
                 {
                     Display.DrawStringWithBackground(FontSize._12, drawPos, debugInfo, Colors.UI_TextDebug);
-                    drawPos.Y += Util.UI_SPACER + Display.GetFont(FontSize._12).LineSpacing;
+                    drawPos.Y += Util.UI_SPACER + FontSize._12.GetFont().LineSpacing;
                 }
             }
         }
