@@ -40,7 +40,6 @@ namespace Minicraft
             // set window title
             Window.Title = TITLE;
             // set window properties
-            GraphicsDevice.SamplerStates[0] = SamplerState.PointClamp;
             Window.AllowAltF4 = false;
             // initialize display
             Display.Initialize();
@@ -66,7 +65,7 @@ namespace Minicraft
             // fill background
             GraphicsDevice.Clear(Colors.Background);
             // begin drawing
-            Display.SpriteBatch.Begin();
+            Display.SpriteBatch.Begin(samplerState: SamplerState.PointClamp);
             // draw scene
             _scene.Draw(gameTime);
             // end drawing

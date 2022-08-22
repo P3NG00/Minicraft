@@ -10,7 +10,9 @@
 
 [Right Mouse] - Place Block
 
-[Middle Mouse] - Spawn NPC
+[Middle Mouse (Click)] - Spawn NPC
+
+[Middle Mouse (Scroll)] - Zoom In/Out
 
 [1 - 9] - Change Hotbar Slot
 

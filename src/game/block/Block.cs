@@ -18,7 +18,7 @@ namespace Minicraft.Game.Blocks
             Name = name;
             Color = color;
             CanWalkThrough = canWalkThrough;
-            Texture = texture ?? Textures.Blank_1x;
+            Texture = texture ?? Textures.Blank;
         }
 
         public virtual void Update(Point position, World world)

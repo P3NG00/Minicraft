@@ -5,20 +5,34 @@ namespace Minicraft.Texture
 {
     public static class Textures
     {
-        public static Texture2D Blank_1x { get; private set; }
-        public static Texture2D Shaded_2x { get; private set; }
+        public const int SIZE = 8;
+
+        public static Texture2D Blank { get; private set; }
+        public static Texture2D Shaded_BottomRight { get; private set; }
 
         public static void Initialize(GraphicsDevice graphicsDevice)
         {
-            Texture2D CreateTexture(int size) => new Texture2D(graphicsDevice, size, size);
+            Texture2D CreateTexture(int size = SIZE) => new Texture2D(graphicsDevice, size, size);
 
-            Blank_1x = CreateTexture(1);
-            Blank_1x.SetData(new[] {new Color(255, 255, 255)});
+            Blank = CreateTexture(1);
+            Blank.SetData(new[] {new Color(255, 255, 255)});
 
-            Shaded_2x = CreateTexture(2);
-            Shaded_2x.SetData(new[] {
-                new Color(255, 255, 255), new Color(192, 192, 192),
-                new Color(192, 192, 192), new Color(128, 128, 128)});
+            Shaded_BottomRight = CreateTexture();
+            var data = new Color[SIZE * SIZE];
+            var unshaded = new Color(255, 255, 255);
+            var shaded = new Color(192, 192, 192);
+            for (var y = 0; y < SIZE; y++)
+            {
+                for (var x = 0; x < SIZE; x++)
+                {
+                    bool edgeX = x == SIZE - 1;
+                    bool edgeY = y == SIZE - 1;
+                    Color color = edgeX || edgeY ? shaded : unshaded;
+                    var index = (y * SIZE) + x;
+                    data[index] = color;
+                }
+            }
+            Shaded_BottomRight.SetData(data);
         }
     }
 }

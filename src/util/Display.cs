@@ -23,7 +23,7 @@ namespace Minicraft.Utils
 
         public static Vector2 CameraOffset;
         public static bool ShowGrid = false;
-        public static int BlockScale = 20;
+        public static int BlockScale = 16;
 
         private static GraphicsDeviceManager _graphics;
         private static Point _lastWindowSize;
@@ -80,7 +80,7 @@ namespace Minicraft.Utils
 
         public static void Draw(Vector2 position, Vector2 size, Color color, Texture2D texture = null)
         {
-            var t = texture ?? Textures.Blank_1x;
+            var t = texture ?? Textures.Blank;
             var scale = size / t.Bounds.Size.ToVector2();
             SpriteBatch.Draw(t, position, null, color, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
         }
