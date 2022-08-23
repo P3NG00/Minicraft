@@ -13,7 +13,7 @@ namespace Minicraft.Utils
         public static float TimeScale
         {
             get => _timeScale;
-            set => _timeScale = value.Clamp(0f, 1f);
+            set => _timeScale = MathHelper.Clamp(value, 0f, 1f);
         }
 
         private static readonly Hashtable _debugUpdates = new Hashtable();

@@ -10,10 +10,6 @@ namespace Minicraft.Utils
 
         public static readonly Random Random = new Random();
 
-        public static int Clamp(this int i, int min, int max) => Math.Max(Math.Min(i, max), min);
-
-        public static float Clamp(this float f, float min, float max) => Math.Max(Math.Min(f, max), min);
-
         public static bool IsInteger(this float f) => f % 1f == 0f;
 
         public static int Floor(this float f) => (int)Math.Floor((double)f);

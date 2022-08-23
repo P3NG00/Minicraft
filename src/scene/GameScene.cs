@@ -199,7 +199,7 @@ namespace Minicraft.Scenes
                 for (int i = 0; i < Inventory.SLOTS; i++)
                     if (Input.KeyFirstDown(Keys.D1 + i))
                         _inventory.SetActiveSlot(i);
-                Display.BlockScale = (Display.BlockScale + Input.ScrollWheelDelta).Clamp(Display.BLOCK_SCALE_MIN, Display.BLOCK_SCALE_MAX);
+                Display.BlockScale = MathHelper.Clamp(Display.BlockScale + Input.ScrollWheelDelta, Display.BLOCK_SCALE_MIN, Display.BLOCK_SCALE_MAX);
                 // get block position from mouse
                 var mousePos = Input.MousePosition.ToVector2();
                 mousePos.Y = Display.WindowSize.Y - mousePos.Y - 1;
