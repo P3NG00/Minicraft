@@ -98,7 +98,8 @@ namespace Minicraft.Scenes
                     if (_player.Alive)
                         _player.Update(_world);
                     // update npc's
-                    _npcList.ForEach(npc => npc.Update(_world));
+                    foreach (var npc in _npcList)
+                        npc.Update(_world);
                     // remove dead npc's
                     _npcList.RemoveAll(npc => !npc.Alive);
                 }
@@ -116,7 +117,8 @@ namespace Minicraft.Scenes
             if (_player.Alive)
                 _player.Draw();
             // draw npc's
-            _npcList.ForEach(npc => npc.Draw());
+            foreach (var npc in _npcList)
+                npc.Draw();
             // draw ui
             DrawUI();
         }
