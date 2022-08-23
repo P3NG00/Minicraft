@@ -10,13 +10,15 @@ namespace Minicraft.Game.Blocks
     {
         public readonly string Name;
         public readonly Color Color;
+        public readonly int HitsToBreak;
         public readonly bool CanWalkThrough;
         public readonly Texture2D Texture;
 
-        public Block(string name, Color color, bool canWalkThrough = false, Texture2D texture = null)
+        public Block(string name, Color color, int hitsToBreak, bool canWalkThrough = false, Texture2D texture = null)
         {
             Name = name;
             Color = color;
+            HitsToBreak = hitsToBreak;
             CanWalkThrough = canWalkThrough;
             Texture = texture ?? Textures.Blank;
         }

@@ -14,7 +14,7 @@ namespace Minicraft.Game.Blocks
             new Point(-1, -1), new Point(1, -1),
         };
 
-        public GrassBlock(string name, Color color, bool canWalkThrough = false, Texture2D texture = null) : base(name, color, canWalkThrough, texture) {}
+        public GrassBlock(string name, Color color, int hitsToBreak, bool canWalkThrough = false, Texture2D texture = null) : base(name, color, hitsToBreak, canWalkThrough, texture) {}
 
         public sealed override void Update(Point position, World world)
         {

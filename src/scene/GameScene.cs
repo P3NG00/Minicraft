@@ -45,6 +45,9 @@ namespace Minicraft.Scenes
         private Vector2 _lastMouseBlock;
         private Point _lastMouseBlockInt;
 
+        // block hit information
+        private BlockHit _blockHit = new BlockHit(Point.Zero, 0);
+
         public GameScene(World world) : base(BlockType.Air.GetBlock().Color)
         {
             // initialize buttons
@@ -123,6 +126,7 @@ namespace Minicraft.Scenes
         private void SaveAndMainMenu()
         {
             _world.Save();
+            // TODO save inventory, player position, & player health
             MinicraftGame.SetScene(new MainMenuScene());
         }
 
@@ -212,8 +216,8 @@ namespace Minicraft.Scenes
                     // handle block breaking
                     if (Input.MouseLeftFirstDown() && blockType != BlockType.Air)
                     {
-                        _inventory.Add(blockType);
-                        _world.SetBlockType(_lastMouseBlockInt, BlockType.Air);
+                        _blockHit.Update(_world, _inventory, _lastMouseBlockInt);
+                        // TODO show hits on block by having two colors, green & red, and tween between them based on percentage broken
                     }
                     // handle block placing
                     if (Input.MouseRightFirstDown() && !_player.GetSides().Contains(_lastMouseBlockInt))
