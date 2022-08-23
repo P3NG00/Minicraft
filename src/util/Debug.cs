@@ -29,13 +29,7 @@ namespace Minicraft.Utils
 
         public static bool HasDebugUpdate(Point blockPos) => _debugUpdates.Contains(blockPos);
 
-        public static List<Color> CheckDebugColor(Point blockPos)
-        {
-            List<Color> colors = null;
-            if (HasDebugUpdate(blockPos))
-                colors = (List<Color>)_debugUpdates[blockPos];
-            return colors;
-        }
+        public static Color[] GetDebugColors(Point blockPos) => ((List<Color>)_debugUpdates[blockPos]).ToArray();
 
         private static void Add(Point blockPos, Color color)
         {
