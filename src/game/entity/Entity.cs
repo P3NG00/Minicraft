@@ -7,34 +7,39 @@ namespace Minicraft.Game.Entities
 {
     public abstract class Entity
     {
+        // constants
         private const float FALL_DISTANCE_MIN = 6f;
         private const float FALL_DAMAGE_PER_BLOCK = 0.4f;
         private const float VELOCITY_MAX = 50f;
         private const int MOVEMENT_SUBCHECKS = 16;
 
-        public readonly Vector2 Dimensions;
-        public readonly float HalfWidth;
-
-        public Vector2 Position;
-        public bool IsGrounded { get; protected set; } = false;
-        public Vector2 Velocity;
-        public float MaxLife;
-
+        // getters
         public float Life => _life;
-
-        public readonly float MoveSpeed;
-        public readonly float JumpVelocity;
-
-        private readonly Color _color;
-
-        private float _lastHeight;
-        private float _life;
 
         public bool Alive => _life > 0f;
         public bool IsMovingUp => Velocity.Y > 0f;
         public bool IsMovingDown => Velocity.Y < 0f;
         public bool IsMovingLeft => Velocity.X < 0f;
         public bool IsMovingRight => Velocity.X > 0f;
+
+        // readonly data
+        public readonly Vector2 Dimensions;
+        public readonly float HalfWidth;
+
+        public readonly float MoveSpeed;
+        public readonly float JumpVelocity;
+
+        private readonly Color _color;
+
+        // public data
+        public bool IsGrounded { get; protected set; } = false;
+        public Vector2 Position;
+        public Vector2 Velocity;
+        public float MaxLife;
+
+        // private data
+        private float _lastHeight;
+        private float _life;
 
         public Entity(Vector2 position, float maxLife, Color color, Vector2 dimensions, float moveSpeed, float jumpVelocity)
         {
