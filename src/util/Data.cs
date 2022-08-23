@@ -1,24 +1,30 @@
 using System.IO;
 using Minicraft.Game.Blocks;
+using Minicraft.Game.Worlds;
 
-namespace Minicraft.Game.Worlds
+namespace Minicraft.Utils
 {
-    public sealed partial class World
+    public static class Data
     {
-        public void Save()
+        public const string SAVE_FILE = "save";
+        // TODO handle saving and loading all game data (inventory, player position, player health)
+
+        public static bool SaveExists => File.Exists(SAVE_FILE);
+
+        public static void SaveWorld(World world)
         {
-            using (var stream = new StreamWriter(File.OpenWrite(World.SAVE_FILE)))
+            using (var stream = new StreamWriter(File.OpenWrite(SAVE_FILE)))
             {
                 // write each block
-                foreach (var v in _blockGrid)
+                foreach (var v in world.RawBlockGrid)
                     stream.Write((char)v);
             }
         }
 
-        public static World Load()
+        public static World LoadWorld()
         {
             var world = new World();
-            using (var stream = File.OpenText(World.SAVE_FILE))
+            using (var stream = File.OpenText(SAVE_FILE))
             {
                 // read each block
                 for (int y = 0; y < World.HEIGHT; y++)

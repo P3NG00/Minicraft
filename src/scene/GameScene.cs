@@ -127,8 +127,7 @@ namespace Minicraft.Scenes
 
         private void SaveAndMainMenu()
         {
-            _world.Save();
-            // TODO save inventory, player position, & player health
+            Data.SaveWorld(_world);
             MinicraftGame.SetScene(new MainMenuScene());
         }
 

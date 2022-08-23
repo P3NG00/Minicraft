@@ -1,4 +1,3 @@
-using System.IO;
 using Microsoft.Xna.Framework;
 using Minicraft.Font;
 using Minicraft.Game.Worlds;
@@ -22,7 +21,7 @@ namespace Minicraft.Scenes
             _buttonExit.ColorBoxHighlight = Colors.MainMenu_Button_Exit_Highlight;
             _buttonExit.ColorTextHighlight = Colors.MainMenu_Text_Exit_Highlight;
             // check if save exists
-            if (File.Exists(World.SAVE_FILE))
+            if (Data.SaveExists)
             {
                 _buttonWorldContinue = new Button(new Vector2(0.5f, 0.7f), new Point(250, 50), "continue world", Colors.MainMenu_Button_World, Colors.MainMenu_Text_World);
                 _buttonWorldContinue.Action = LoadSavedWorld;
@@ -51,6 +50,6 @@ namespace Minicraft.Scenes
 
         private static void CreateNewWorld() => MinicraftGame.SetScene(new GameScene(World.GenerateWorld()));
 
-        private static void LoadSavedWorld() => MinicraftGame.SetScene(new GameScene(World.Load()));
+        private static void LoadSavedWorld() => MinicraftGame.SetScene(new GameScene(Data.LoadWorld()));
     }
 }

@@ -11,7 +11,6 @@ namespace Minicraft.Game.Worlds
         public const float WORLD_UPDATED_PER_SECOND = 1f / 32f;
         public const int TICKS_PER_SECOND = 32;
         public const float GRAVITY = 10f;
-        public const string SAVE_FILE = "save";
         public const int WIDTH = 1024;
         public const int HEIGHT = 512;
         public const float TICK_STEP = 1f / TICKS_PER_SECOND;
@@ -21,6 +20,8 @@ namespace Minicraft.Game.Worlds
         private BlockType[,] _blockGrid = new BlockType[HEIGHT, WIDTH];
 
         private ref BlockType BlockTypeAt(int x, int y) => ref _blockGrid[y, x];
+
+        public BlockType[,] RawBlockGrid => _blockGrid;
 
         public BlockType GetBlockType(Point point) => GetBlockType(point.X, point.Y);
 
