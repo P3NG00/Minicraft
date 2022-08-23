@@ -9,6 +9,7 @@ namespace Minicraft.Game.Entities
     {
         private const float NPC_SPEED = 3f;
         private const float NPC_JUMP = 3f;
+        private const float NPC_RUN_MULT = 1.25f;
         private const float NPC_LIFE = 2f;
         private const float NPC_AI_GOAL_DISTANCE_MIN = 0.5f;
         private const int NPC_AI_UPDATE_TICKS_MIN = World.TICKS_PER_SECOND * 3;
@@ -18,7 +19,7 @@ namespace Minicraft.Game.Entities
         private int? _goalX = null;
         private int _aiUpdateTicks;
 
-        public NPCEntity(Vector2 position) : base(position, NPC_LIFE, Colors.Entity_NPC, NPCSize, NPC_SPEED, NPC_JUMP) => ResetAIUpdateTimer();
+        public NPCEntity(Vector2 position) : base(position, NPC_LIFE, Colors.Entity_NPC, NPCSize, NPC_SPEED, NPC_RUN_MULT, NPC_JUMP) => ResetAIUpdateTimer();
 
         private void ResetAIUpdateTimer() => _aiUpdateTicks = Util.Random.Next(NPC_AI_UPDATE_TICKS_MIN, NPC_AI_UPDATE_TICKS_MAX + 1);
 

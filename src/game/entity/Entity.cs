@@ -1,5 +1,6 @@
 using System;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
 using Minicraft.Game.Worlds;
 using Minicraft.Utils;
 
@@ -27,12 +28,14 @@ namespace Minicraft.Game.Entities
         public readonly float HalfWidth;
 
         public readonly float MoveSpeed;
+        public readonly float RunMultiplier;
         public readonly float JumpVelocity;
 
         private readonly Color _color;
 
         // public data
         public bool IsGrounded { get; protected set; } = false;
+        public bool Running { get; protected set; } = false;
         public Vector2 Position;
         public Vector2 Velocity;
         public float MaxLife;
@@ -41,7 +44,7 @@ namespace Minicraft.Game.Entities
         private float _lastHeight;
         private float _life;
 
-        public Entity(Vector2 position, float maxLife, Color color, Vector2 dimensions, float moveSpeed, float jumpVelocity)
+        public Entity(Vector2 position, float maxLife, Color color, Vector2 dimensions, float moveSpeed, float runMultiplier, float jumpVelocity)
         {
             Position = position;
             _lastHeight = position.Y;
@@ -51,6 +54,7 @@ namespace Minicraft.Game.Entities
             Dimensions = dimensions;
             HalfWidth = Dimensions.X / 2f;
             MoveSpeed = moveSpeed;
+            RunMultiplier = runMultiplier;
             JumpVelocity = jumpVelocity;
         }
 
@@ -76,7 +80,10 @@ namespace Minicraft.Game.Entities
             if (Velocity.Length() > VELOCITY_MAX / MoveSpeed)
                 Velocity = Vector2.Normalize(Velocity) * VELOCITY_MAX / MoveSpeed;
             // find projected new position
-            var velocityThisUpdate = Velocity * MoveSpeed * World.TICK_STEP;
+            var speedThisUpdate = MoveSpeed;
+            if (Running)
+                speedThisUpdate *= RunMultiplier;
+            var velocityThisUpdate = Velocity * speedThisUpdate * World.TICK_STEP;
             var testPosition = Position + velocityThisUpdate;
             // find collision points
             var testSides = GetSides(testPosition);

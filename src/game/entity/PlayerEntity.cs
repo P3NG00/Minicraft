@@ -10,10 +10,11 @@ namespace Minicraft.Game.Entities
     {
         private const float PLAYER_SPEED = 5f;
         private const float PLAYER_JUMP = 3.5f;
+        private const float PLAYER_RUN_MULT = 1.5f;
         private const float PLAYER_LIFE = 10f;
         private static readonly Vector2 PlayerSize = new Vector2(1.8f, 2.8f);
 
-        public PlayerEntity(World world) : base(Vector2.Zero, PLAYER_LIFE, Colors.Entity_Player, PlayerSize, PLAYER_SPEED, PLAYER_JUMP) => Respawn(world);
+        public PlayerEntity(World world) : base(Vector2.Zero, PLAYER_LIFE, Colors.Entity_Player, PlayerSize, PLAYER_SPEED, PLAYER_RUN_MULT, PLAYER_JUMP) => Respawn(world);
 
         public void Respawn(World world)
         {
@@ -30,6 +31,8 @@ namespace Minicraft.Game.Entities
                 Velocity.X--;
             if (Input.KeyHeld(Keys.D))
                 Velocity.X++;
+            // check running
+            Running = Input.KeyHeld(Keys.LeftShift);
             // check jump
             if (Input.KeyHeld(Keys.Space))
                 Jump();

@@ -6,6 +6,8 @@
 
 [Space] - Jump
 
+[Left Shift (Hold while moving)] - Run
+
 [Left Mouse] - Break Block
 
 [Right Mouse] - Place Block
