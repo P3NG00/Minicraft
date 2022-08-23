@@ -39,7 +39,7 @@ namespace Minicraft.Utils
 
         private static void Add(Point blockPos, Color color)
         {
-            if (!_debugUpdates.Contains(blockPos))
+            if (!HasDebugUpdate(blockPos))
                 _debugUpdates.Add(blockPos, new List<Color>(new[] {color}));
             else
                 ((List<Color>)_debugUpdates[blockPos]).Add(color);
