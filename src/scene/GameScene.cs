@@ -235,20 +235,19 @@ namespace Minicraft.Scenes
 
             // draw inventory hotbar
             _inventory.Draw();
-            // TODO lower position of health bar because the thick black border between both looks ugly
             // draw health bar
             var drawPos = new Vector2((Display.WindowSize.X / 2f) - (BarSize.X / 2f), Display.WindowSize.Y - Inventory.HotbarSize.Y - BarSize.Y);
             Display.Draw(drawPos, BarSize, Colors.UI_Bar);
             // adjust size to fit within bar
             drawPos += new Vector2(Util.UI_SPACER);
-            var healthSize = BarSize - (new Vector2(Util.UI_SPACER) * 2);
+            var healthSize = BarSize - new Vector2(Util.UI_SPACER * 2, Util.UI_SPACER);
             // readjust size to display real health
             healthSize.X *= _player.Life / _player.MaxLife;
             Display.Draw(drawPos, healthSize, Colors.UI_Life);
             // draw health numbers on top of bar
             var healthString = $"{_player.Life:0.#}/{_player.MaxLife:0.#}";
             var textSize = FontSize._12.MeasureString(healthString);
-            drawPos = new Vector2((Display.WindowSize.X / 2f) - (textSize.X / 2f), Display.WindowSize.Y - Inventory.HotbarSize.Y - 22);
+            drawPos = new Vector2((Display.WindowSize.X / 2f) - (textSize.X / 2f), Display.WindowSize.Y - Inventory.HotbarSize.Y - 20);
             Display.DrawStringWithShadow(FontSize._12, drawPos, healthString, Colors.UI_TextLife);
             // draw currently selected block
             // draw death screen overlay
