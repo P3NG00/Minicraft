@@ -1,6 +1,5 @@
 using System;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input;
 using Minicraft.Game.Worlds;
 using Minicraft.Utils;
 
@@ -16,7 +15,6 @@ namespace Minicraft.Game.Entities
 
         // getters
         public float Life => _life;
-
         public bool Alive => _life > 0f;
         public bool IsMovingUp => Velocity.Y > 0f;
         public bool IsMovingDown => Velocity.Y < 0f;
