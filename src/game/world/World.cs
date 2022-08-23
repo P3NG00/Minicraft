@@ -86,7 +86,7 @@ namespace Minicraft.Game.Worlds
                     var blockPos = new Point(blockX, blockY);
                     var blockType = GetBlockType(blockPos);
                     var drawPos = new Vector2(blockX * Display.BlockScale, drawY);
-                    if (blockType == BlockType.Air)
+                    if (blockType == BlockType.Air && !Debug.HasDebugUpdate(blockPos))
                     {
                         if (blockPos == mouseBlock)
                             Display.DrawOffset(drawPos, drawScale, Colors.BlockHighlightAir);

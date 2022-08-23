@@ -27,10 +27,12 @@ namespace Minicraft.Utils
 
         public static void AddAirCheck(Point blockPos) => Add(blockPos, Colors.DebugReason_AirCheck);
 
+        public static bool HasDebugUpdate(Point blockPos) => _debugUpdates.Contains(blockPos);
+
         public static List<Color> CheckDebugColor(Point blockPos)
         {
             List<Color> colors = null;
-            if (_debugUpdates.Contains(blockPos))
+            if (HasDebugUpdate(blockPos))
                 colors = (List<Color>)_debugUpdates[blockPos];
             return colors;
         }
