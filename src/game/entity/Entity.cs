@@ -168,22 +168,17 @@ namespace Minicraft.Game.Entities
         {
             // get side values as floating numbers
             var topF = position.Y + Dimensions.Y;
-            var botF = position.Y;
-            var leftF = position.X - HalfWidth;
             var rightF = position.X + HalfWidth;
-
             // floor each value to get block value
             var top = topF.Floor();
-            var bottom = botF.Floor();
-            var left = leftF.Floor();
             var right = rightF.Floor();
-
+            var bottom = position.Y.Floor();
+            var left = (position.X - HalfWidth).Floor();
             // fix extended edge values
             if (topF.IsInteger())
                 top--;
             if (rightF.IsInteger())
                 right--;
-
             return new Sides(top, bottom, left, right);
         }
 
