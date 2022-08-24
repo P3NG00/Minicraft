@@ -2,6 +2,7 @@ using System;
 using Microsoft.Xna.Framework;
 using Minicraft.Game.Blocks;
 using Minicraft.Game.Entities;
+using Minicraft.Texture;
 using Minicraft.Utils;
 
 namespace Minicraft.Game.Worlds
@@ -53,7 +54,7 @@ namespace Minicraft.Game.Worlds
             }
         }
 
-        public void Draw(Entity player, Point mouseBlock)
+        public void Draw(Entity player, BlockHit blockHit, Point mouseBlock)
         {
             var drawScale = Display.ShowGrid ? new Vector2(Display.BlockScale - 1) : new Vector2(Display.BlockScale);
             // find edge to start drawing
@@ -89,14 +90,21 @@ namespace Minicraft.Game.Worlds
                     var drawPos = new Vector2(blockX * Display.BlockScale, drawY);
                     if (blockType == BlockType.Air && !Debug.HasDebugUpdate(blockPos))
                     {
+                        // draw highlight over block mouse is hovering over
                         if (blockPos == mouseBlock)
                             Display.DrawOffset(drawPos, drawScale, Colors.BlockHighlightAir);
                         continue;
                     }
                     var block = blockType.GetBlock();
                     Display.DrawOffset(drawPos, drawScale, block.Color, block.Texture);
+                    // draw block hit
+                    if (blockHit.Position == blockPos)
+                    {
+                        // TODO show how many hits left on the block as a number on the block itself
+                    }
+                    // draw ring over block mouse is hovering over
                     if (blockPos == mouseBlock)
-                        Display.DrawOffset(drawPos, drawScale, Colors.BlockHighlight);
+                        Display.DrawOffset(drawPos, drawScale, Colors.BlockHighlight, Textures.HighlightRing);
                     // check if block was updated
                     if (Debug.Enabled && Debug.DisplayBlockChecks)
                         // draw faded debug colors over block

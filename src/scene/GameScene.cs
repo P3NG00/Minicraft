@@ -112,7 +112,7 @@ namespace Minicraft.Scenes
             // update display handler
             Display.UpdateCameraOffset(_player);
             // draw world
-            _world.Draw(_player, _lastMouseBlockInt);
+            _world.Draw(_player, _blockHit, _lastMouseBlockInt);
             // draw player
             if (_player.Alive)
                 _player.Draw();
