@@ -20,8 +20,8 @@ namespace Minicraft.UI
         private Rectangle _lastRect;
         private bool _highlighted = false;
 
-        // ( 0f,  0f) = top-left of window.
-        // ( 1f,  1f) = bottom-right of window.
+        // (0f, 0f) = top-left of window.
+        // (1f, 1f) = bottom-right of window.
         public Button(Vector2 relativeCenter, Point size, string text, Color colorBox, Color colorText)
         {
             _relativeCenter = relativeCenter;
