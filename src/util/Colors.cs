@@ -36,28 +36,9 @@ namespace Minicraft.Utils
         public static readonly Color DebugReason_CollisionCheck = new Color(0, 0, 255, 64);
         public static readonly Color DebugReason_AirCheck = new Color(255, 128, 0, 64);
 
-        // main menu buttons
-        public static readonly Color MainMenu_Button_World = new Color(0, 0, 0);
-        public static readonly Color MainMenu_Text_World = new Color(255, 255, 255);
-        public static readonly Color MainMenu_Button_World_Highlight = new Color(255, 255, 255);
-        public static readonly Color MainMenu_Text_World_Highlight = new Color(0, 92, 128);
-        public static readonly Color MainMenu_Button_Exit = new Color(64, 0, 0);
-        public static readonly Color MainMenu_Text_Exit = new Color(255, 0, 0);
-        public static readonly Color MainMenu_Button_Exit_Highlight = new Color(225, 0, 0);
-        public static readonly Color MainMenu_Text_Exit_Highlight = new Color(0, 0, 0);
-
-        // game buttons
-        public static readonly Color Game_Button_Respawn = new Color(0, 0, 0);
-        public static readonly Color Game_Text_Respawn = new Color(255, 255, 255);
-        public static readonly Color Game_Button_Respawn_Highlight = new Color(255, 255, 255);
-        public static readonly Color Game_Text_Respawn_Highlight = new Color(0, 0, 0);
-        public static readonly Color Game_Button_Resume = new Color(0, 0, 0);
-        public static readonly Color Game_Text_Resume = new Color(255, 255, 255);
-        public static readonly Color Game_Button_Resume_Highlight = new Color(255, 255, 255);
-        public static readonly Color Game_Text_Resume_Highlight = new Color(0, 0, 0);
-        public static readonly Color Game_Button_MainMenu = new Color(64, 0, 0);
-        public static readonly Color Game_Text_MainMenu = new Color(255, 0, 0);
-        public static readonly Color Game_Button_MainMenu_Highlight = new Color(225, 0, 0);
-        public static readonly Color Game_Text_MainMenu_Highlight = new Color(0, 0, 0);
+        // color themes
+        public static readonly ColorTheme ThemeDefault = new ColorTheme(new Color(0, 0, 0), new Color(255, 255, 255), new Color(255, 255, 255), new Color(0, 0, 0));
+        public static readonly ColorTheme ThemeExit = new ColorTheme(new Color(64, 0, 0), new Color(255, 0, 0), new Color(224, 0, 0), new Color(0, 0, 0));
+        public static readonly ColorTheme ThemeBlue = new ColorTheme(new Color(0, 0, 0), new Color(255, 255, 255), new Color(255, 255, 255), new Color(0, 96, 128));
     }
 }

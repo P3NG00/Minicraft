@@ -22,9 +22,9 @@ namespace Minicraft.Scenes
 
         private static readonly Vector2 BarSize = new Vector2(150, 30);
 
-        private readonly Button _buttonRespawn = new Button(new Vector2(0.5f, 0.6f), new Point(250, 50), TEXT_RESPAWN, Colors.Game_Button_Respawn, Colors.Game_Text_Respawn);
-        private readonly Button _buttonResume = new Button(new Vector2(0.5f, 0.6f), new Point(250, 50), TEXT_RESUME, Colors.Game_Button_Resume, Colors.Game_Text_Resume);
-        private readonly Button _buttonMainMenu = new Button(new Vector2(0.5f, 0.7f), new Point(250, 50), TEXT_MAIN_MENU, Colors.Game_Button_MainMenu, Colors.Game_Text_MainMenu);
+        private readonly Button _buttonRespawn = new Button(new Vector2(0.5f, 0.6f), new Point(250, 50), TEXT_RESPAWN, Colors.ThemeDefault);
+        private readonly Button _buttonResume = new Button(new Vector2(0.5f, 0.6f), new Point(250, 50), TEXT_RESUME, Colors.ThemeDefault);
+        private readonly Button _buttonMainMenu = new Button(new Vector2(0.5f, 0.7f), new Point(250, 50), TEXT_MAIN_MENU, Colors.ThemeExit);
         private readonly List<NPCEntity> _npcList = new List<NPCEntity>();
         private readonly PlayerEntity _player;
         private readonly World _world;
@@ -51,15 +51,9 @@ namespace Minicraft.Scenes
         public GameScene(World world) : base(BlockType.Air.GetBlock().Color)
         {
             // initialize buttons
-            _buttonRespawn.Action = RespawnPlayer;
-            _buttonRespawn.ColorBoxHighlight = Colors.Game_Button_Respawn_Highlight;
-            _buttonRespawn.ColorTextHighlight = Colors.Game_Text_Respawn_Highlight;
-            _buttonResume.Action = ResumeGame;
-            _buttonResume.ColorBoxHighlight = Colors.Game_Button_Resume_Highlight;
-            _buttonResume.ColorTextHighlight = Colors.Game_Text_Resume_Highlight;
-            _buttonMainMenu.Action = SaveAndMainMenu;
-            _buttonMainMenu.ColorBoxHighlight = Colors.Game_Button_MainMenu_Highlight;
-            _buttonMainMenu.ColorTextHighlight = Colors.Game_Text_MainMenu_Highlight;
+            _buttonRespawn.SetAction(RespawnPlayer);
+            _buttonResume.SetAction(ResumeGame);
+            _buttonMainMenu.SetAction(SaveAndMainMenu);
             // cache world
             _world = world;
             // create player

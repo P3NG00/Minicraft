@@ -8,28 +8,26 @@ namespace Minicraft.UI
     public sealed class Button
     {
         private readonly Vector2 _relativeCenter;
+        private readonly ColorTheme _colorTheme;
         private readonly Point _size;
         private readonly string _text;
-
-        public Action Action;
-        public Color ColorBox;
-        public Color ColorText;
-        public Color? ColorBoxHighlight = null;
-        public Color? ColorTextHighlight = null;
+        private Action _action;
 
         private Rectangle _lastRect;
         private bool _highlighted = false;
 
         // (0f, 0f) = top-left of window.
         // (1f, 1f) = bottom-right of window.
-        public Button(Vector2 relativeCenter, Point size, string text, Color colorBox, Color colorText)
+        public Button(Vector2 relativeCenter, Point size, string text, ColorTheme colorTheme, Action action = null)
         {
             _relativeCenter = relativeCenter;
             _size = size;
             _text = text;
-            ColorBox = colorBox;
-            ColorText = colorText;
+            _colorTheme = colorTheme;
+            _action = action;
         }
+
+        public void SetAction(Action action) => _action = action;
 
         public void Update()
         {
@@ -39,15 +37,15 @@ namespace Minicraft.UI
             // test bounds
             _highlighted = _lastRect.Contains(Input.MousePosition);
             if (Input.MouseLeftFirstUp() && _highlighted)
-                Action();
+                _action();
         }
 
         public void Draw()
         {
             // draw box
-            Display.Draw(_lastRect.Location.ToVector2(), _lastRect.Size.ToVector2(), _highlighted && ColorBoxHighlight.HasValue ? ColorBoxHighlight.Value : ColorBox);
+            Display.Draw(_lastRect.Location.ToVector2(), _lastRect.Size.ToVector2(), _highlighted ? _colorTheme.MainHighlight : _colorTheme.Main);
             // draw text centered in box
-            var color = _highlighted && ColorTextHighlight.HasValue ? ColorTextHighlight.Value : ColorText;
+            var color = _highlighted ? _colorTheme.TextHighlight : _colorTheme.Text;
             Display.DrawCenteredText(FontSize._12, _relativeCenter, _text, color, Display.DrawStringWithShadow);
         }
     }
