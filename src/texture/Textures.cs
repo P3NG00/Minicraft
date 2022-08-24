@@ -6,7 +6,7 @@ namespace Minicraft.Texture
     public static class Textures
     {
         public const int SIZE = 8;
-        private const int RIGHT_EDGE = SIZE - 1;
+        private const int SIZE_EDGE = SIZE - 1;
 
         public static Texture2D Blank { get; private set; }
         public static Texture2D HighlightRing { get; private set; }
@@ -34,15 +34,15 @@ namespace Minicraft.Texture
 
         private static Color CreateShadedTexture(int x, int y)
         {
-            var isRightEdgeX = x == RIGHT_EDGE;
-            var isEdgeY = y == RIGHT_EDGE;
-            return isRightEdgeX || isEdgeY ? new Color(192, 192, 192) : new Color(255, 255, 255);
+            var isRightEdge = x == SIZE_EDGE;
+            var isBottomEdge = y == SIZE_EDGE;
+            return isRightEdge || isBottomEdge ? new Color(192, 192, 192) : new Color(255, 255, 255);
         }
 
         private static Color CreateRingHighlightTexture(int x, int y)
         {
-            var isEdge = x == 0 || x == RIGHT_EDGE ||
-                         y == 0 || y == RIGHT_EDGE;
+            var isEdge = x == 0 || x == SIZE_EDGE ||
+                         y == 0 || y == SIZE_EDGE;
             return isEdge ? new Color(255, 255, 255) : new Color(0, 0, 0, 0);
         }
 
