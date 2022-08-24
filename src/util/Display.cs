@@ -107,6 +107,12 @@ namespace Minicraft.Utils
 
         public static void DrawString(FontSize fontSize, Vector2 position, string text, Color color) => SpriteBatch.DrawString(fontSize.GetFont(), text, position, color);
 
+        public static void DrawStringOffset(FontSize fontSize, Vector2 position, string text, Color color) => DrawString(fontSize, position - CameraOffset, text, color);
+
+        public static void DrawStringOffsetWithBackground(FontSize fontSize, Vector2 position, string text, Color color) => DrawStringWithBackground(fontSize, position - CameraOffset, text, color);
+
+        public static void DrawStringOffsetWithShadow(FontSize fontSize, Vector2 position, string text, Color color) => DrawStringWithShadow(fontSize, position - CameraOffset, text, color);
+
         public delegate void DrawStringFunc(FontSize fontSize, Vector2 position, string text, Color color);
     }
 }

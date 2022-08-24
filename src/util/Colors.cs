@@ -17,11 +17,11 @@ namespace Minicraft.Utils
 
         // ui
         public static readonly Color UI_Bar = new Color(0, 0, 0);
+        public static readonly Color UI_BlockHit = new Color(255, 255, 255);
         public static readonly Color UI_Life = new Color(255, 0, 0);
         public static readonly Color UI_Pause = new Color(255, 255, 255);
         public static readonly Color UI_Title = new Color(32, 192, 255);
         public static readonly Color UI_TextDebug = new Color(255, 255, 255);
-        public static readonly Color UI_TextBlock = new Color(255, 255, 255);
         public static readonly Color UI_TextLife = new Color(255, 255, 255);
         public static readonly Color UI_YouDied = new Color(255, 0, 0);
 
