@@ -1,5 +1,7 @@
 using Microsoft.Xna.Framework;
 using Minicraft.Font;
+using Minicraft.Game.Entities;
+using Minicraft.Game.Inventories;
 using Minicraft.Game.Worlds;
 using Minicraft.UI;
 using Minicraft.Utils;
@@ -37,8 +39,13 @@ namespace Minicraft.Scenes
             _buttonWorldContinue?.Draw();
         }
 
-        private static void CreateNewWorld() => MinicraftGame.SetScene(new GameScene(World.GenerateWorld()));
+        private static void CreateNewWorld()
+        {
+            var world = World.GenerateWorld();
+            var gameData = new GameData(world, new Inventory(), new PlayerEntity(world));
+            MinicraftGame.SetScene(new GameScene(gameData));
+        }
 
-        private static void LoadSavedWorld() => MinicraftGame.SetScene(new GameScene(Data.LoadWorld()));
+        private static void LoadSavedWorld() => MinicraftGame.SetScene(new GameScene(Data.Load()));
     }
 }

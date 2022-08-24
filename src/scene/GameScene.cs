@@ -27,8 +27,8 @@ namespace Minicraft.Scenes
         private readonly Button _buttonMainMenu = new Button(new Vector2(0.5f, 0.7f), new Point(250, 50), TEXT_MAIN_MENU, Colors.ThemeExit);
         private readonly List<NPCEntity> _npcList = new List<NPCEntity>();
         private readonly PlayerEntity _player;
+        private readonly Inventory _inventory;
         private readonly World _world;
-        private readonly Inventory _inventory = new Inventory();
 
         // tick & frame handling variables
         private int Ticks => _ticks[0];
@@ -48,16 +48,16 @@ namespace Minicraft.Scenes
         // block hit information
         private BlockHit _blockHit = new BlockHit(Point.Zero, 0);
 
-        public GameScene(World world) : base(BlockType.Air.GetBlock().Color)
+        public GameScene(GameData gameData) : base(BlockType.Air.GetBlock().Color)
         {
             // initialize buttons
             _buttonRespawn.SetAction(RespawnPlayer);
             _buttonResume.SetAction(ResumeGame);
             _buttonMainMenu.SetAction(SaveAndMainMenu);
-            // cache world
-            _world = world;
-            // create player
-            _player = new PlayerEntity(_world);
+            // cache game data
+            _world = gameData.World;
+            _inventory = gameData.Inventory;
+            _player = gameData.Player;
         }
 
         public sealed override void Update(GameTime gameTime)
@@ -121,7 +121,7 @@ namespace Minicraft.Scenes
 
         private void SaveAndMainMenu()
         {
-            Data.SaveWorld(_world);
+            Data.Save(_world, _inventory, _player);
             MinicraftGame.SetScene(new MainMenuScene());
         }
 
