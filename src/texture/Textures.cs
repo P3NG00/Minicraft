@@ -14,14 +14,12 @@ namespace Minicraft.Texture
 
         public static void Initialize(GraphicsDevice graphicsDevice)
         {
-            Blank = CreateTexture2ElectricBoogaloo(graphicsDevice, CreateFilledTexture);
-            Shaded = CreateTexture2ElectricBoogaloo(graphicsDevice, CreateShadedTexture);
-            HighlightRing = CreateTexture2ElectricBoogaloo(graphicsDevice, CreateRingHighlightTexture);
+            Blank = CreateTexture(graphicsDevice, CreateFilledTexture);
+            Shaded = CreateTexture(graphicsDevice, CreateShadedTexture);
+            HighlightRing = CreateTexture(graphicsDevice, CreateRingHighlightTexture);
         }
 
-        // ( ͡° ͜ʖ ͡°)
-        // TODO change funny function name
-        private static Texture2D CreateTexture2ElectricBoogaloo(GraphicsDevice graphicsDevice, ColorFunc colorFunc)
+        private static Texture2D CreateTexture(GraphicsDevice graphicsDevice, ColorFunc colorFunc)
         {
             var data = new Color[SIZE * SIZE];
             for (int y = 0; y < SIZE; y++)
