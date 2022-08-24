@@ -46,7 +46,7 @@ namespace Minicraft.UI
             Display.Draw(_lastRect.Location.ToVector2(), _lastRect.Size.ToVector2(), _highlighted ? _colorTheme.MainHighlight : _colorTheme.Main);
             // draw text centered in box
             var color = _highlighted ? _colorTheme.TextHighlight : _colorTheme.Text;
-            Display.DrawCenteredText(FontSize._12, _relativeCenter, _text, color, Display.DrawStringWithShadow);
+            Display.DrawCenteredString(FontSize._12, _relativeCenter, _text, color, Display.DrawStringWithShadow);
         }
     }
 }

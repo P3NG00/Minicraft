@@ -102,7 +102,7 @@ namespace Minicraft.Game.Worlds
                     if (blockHit.Position == blockPos)
                     {
                         var hitsLeft = block.HitsToBreak - blockHit.Hits;
-                        Display.DrawStringOffsetWithShadow(FontSize._12, drawPos, hitsLeft.ToString(), Colors.UI_BlockHit);
+                        Display.DrawOffsetString(FontSize._12, drawPos, hitsLeft.ToString(), Colors.UI_BlockHit, Display.DrawStringWithShadow);
                     }
                     // draw ring over block mouse is hovering over
                     if (blockPos == mouseBlock)

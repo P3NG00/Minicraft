@@ -30,7 +30,7 @@ namespace Minicraft.Scenes
         public sealed override void Draw(GameTime gameTime)
         {
             // draw title
-            Display.DrawCenteredText(FontSize._36, new Vector2(0.5f, 0.4f), MinicraftGame.TITLE, Colors.UI_Title, Display.DrawStringWithShadow);
+            Display.DrawCenteredString(FontSize._36, new Vector2(0.5f, 0.4f), MinicraftGame.TITLE, Colors.UI_Title, Display.DrawStringWithShadow);
             // draw buttons
             _buttonWorldNew.Draw();
             _buttonExit.Draw();

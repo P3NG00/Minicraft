@@ -25,11 +25,7 @@ namespace Minicraft.Utils
 
         public static void Constructor(Microsoft.Xna.Framework.Game game) => _graphics = new GraphicsDeviceManager(game);
 
-        public static void LoadContent(GraphicsDevice graphicsDevice)
-        {
-            // create display handler
-            SpriteBatch = new SpriteBatch(graphicsDevice);
-        }
+        public static void LoadContent(GraphicsDevice graphicsDevice) => SpriteBatch = new SpriteBatch(graphicsDevice);
 
         public static void Initialize() => SetSize(1280, 720);
 
@@ -77,15 +73,7 @@ namespace Minicraft.Utils
         // draws faded overlay over entire window
         public static void DrawOverlay() => Display.Draw(Vector2.Zero, WindowSize.ToVector2(), Colors.Overlay);
 
-        // (0f, 0f) = top-left of window.
-        // (1f, 1f) = bottom-right of window.
-        public static void DrawCenteredText(FontSize fontSize, Vector2 relativeScreenPosition, string text, Color color, DrawStringFunc drawStringFunc)
-        {
-            var textSize = fontSize.MeasureString(text);
-            var screenPosition = relativeScreenPosition * WindowSize.ToVector2();
-            var drawPos = screenPosition - (textSize / 2f);
-            drawStringFunc(fontSize, drawPos, text, color);
-        }
+        public static void DrawString(FontSize fontSize, Vector2 position, string text, Color color) => SpriteBatch.DrawString(fontSize.GetFont(), text, position, color);
 
         public static void DrawStringWithBackground(FontSize fontSize, Vector2 position, string text, Color color)
         {
@@ -105,13 +93,24 @@ namespace Minicraft.Utils
             DrawString(fontSize, position, text, color);
         }
 
-        public static void DrawString(FontSize fontSize, Vector2 position, string text, Color color) => SpriteBatch.DrawString(fontSize.GetFont(), text, position, color);
+        // (0f, 0f) = top-left of window.
+        // (1f, 1f) = bottom-right of window.
+        public static void DrawCenteredString(FontSize fontSize, Vector2 relativeScreenPosition, string text, Color color, DrawStringFunc drawStringFunc = null)
+        {
+            if (drawStringFunc == null)
+                drawStringFunc = DrawString;
+            var textSize = fontSize.MeasureString(text);
+            var screenPosition = relativeScreenPosition * WindowSize.ToVector2();
+            var drawPos = screenPosition - (textSize / 2f);
+            drawStringFunc(fontSize, drawPos, text, color);
+        }
 
-        public static void DrawStringOffset(FontSize fontSize, Vector2 position, string text, Color color) => DrawString(fontSize, position - CameraOffset, text, color);
-
-        public static void DrawStringOffsetWithBackground(FontSize fontSize, Vector2 position, string text, Color color) => DrawStringWithBackground(fontSize, position - CameraOffset, text, color);
-
-        public static void DrawStringOffsetWithShadow(FontSize fontSize, Vector2 position, string text, Color color) => DrawStringWithShadow(fontSize, position - CameraOffset, text, color);
+        public static void DrawOffsetString(FontSize fontSize, Vector2 position, string text, Color color, DrawStringFunc drawStringFunc = null)
+        {
+            if (drawStringFunc == null)
+                drawStringFunc = DrawString;
+            drawStringFunc(fontSize, position - CameraOffset, text, color);
+        }
 
         public delegate void DrawStringFunc(FontSize fontSize, Vector2 position, string text, Color color);
     }
