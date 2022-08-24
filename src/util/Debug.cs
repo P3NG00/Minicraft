@@ -29,14 +29,34 @@ namespace Minicraft.Utils
 
         public static bool HasDebugUpdate(Point blockPos) => _debugUpdates.Contains(blockPos);
 
-        public static Color[] GetDebugColors(Point blockPos) => ((List<Color>)_debugUpdates[blockPos]).ToArray();
+        public static Color[] GetDebugColors(Point blockPos)
+        {
+            // get entry list
+            var entryList = (List<Color>)_debugUpdates[blockPos];
+            // return as array
+            return entryList.ToArray();
+        }
 
         private static void Add(Point blockPos, Color color)
         {
+            // if entry does not exist for point
             if (!HasDebugUpdate(blockPos))
-                _debugUpdates.Add(blockPos, new List<Color>(new[] {color}));
+            {
+                // create new list for point
+                var entries = new List<Color>();
+                // add color to list
+                entries.Add(color);
+                // add list to hash table
+                _debugUpdates.Add(blockPos, entries);
+            }
+            // entry already exists for point
             else
-                ((List<Color>)_debugUpdates[blockPos]).Add(color);
+            {
+                // get list for point
+                var entries = (List<Color>)_debugUpdates[blockPos];
+                // add color to list
+                entries.Add(color);
+            }
         }
     }
 }
