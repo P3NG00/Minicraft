@@ -7,7 +7,7 @@ using SimplexNoise;
 
 namespace Minicraft.Game.Worlds
 {
-    public sealed partial class World
+    public static class WorldGen
     {
         private const int CHUNK_WIDTH = 16;
         private const int CHUNK_HEIGHT_VARIATION_RADIUS = 32;
@@ -27,13 +27,13 @@ namespace Minicraft.Game.Worlds
             // create world of air blocks for modification
             int x, y;
             var world = new World();
-            for (y = 0; y < HEIGHT; y++)
-                for (x = 0; x < WIDTH; x++)
+            for (y = 0; y < World.HEIGHT; y++)
+                for (x = 0; x < World.WIDTH; x++)
                     world.SetBlockType(x, y, BlockType.Air);
             // create random height map
-            var relativeWidth = WIDTH / CHUNK_WIDTH;
-            var midHeight = HEIGHT / 2;
-            var heightmap = new int[WIDTH];
+            var relativeWidth = World.WIDTH / CHUNK_WIDTH;
+            var midHeight = World.HEIGHT / 2;
+            var heightmap = new int[World.WIDTH];
             for (int w = 0; w < relativeWidth; w++)
             {
                 var height = midHeight + Util.Random.Next(-CHUNK_HEIGHT_VARIATION_RADIUS, CHUNK_HEIGHT_VARIATION_RADIUS);
@@ -41,23 +41,23 @@ namespace Minicraft.Game.Worlds
                     heightmap[(w * CHUNK_WIDTH) + h] = height;
             }
             // smooth height map
-            var heightmapSmooth = new int[WIDTH];
+            var heightmapSmooth = new int[World.WIDTH];
             var currentHeights = new int[SMOOTH_SCAN_RADIUS * 2];
-            var thirdHeight = (int)(HEIGHT / 3f);
-            for (x = 0; x < WIDTH; x++)
+            var thirdHeight = (int)(World.HEIGHT / 3f);
+            for (x = 0; x < World.WIDTH; x++)
             {
                 // get average height of surrounding area
                 for (int scanX = -SMOOTH_SCAN_RADIUS; scanX < SMOOTH_SCAN_RADIUS; scanX++)
                 {
                     var _x = x + scanX;
-                    var inBounds = _x >= 0 && _x < WIDTH;
+                    var inBounds = _x >= 0 && _x < World.WIDTH;
                     var height = inBounds ? heightmap[_x] : thirdHeight;
                     currentHeights[scanX + SMOOTH_SCAN_RADIUS] = height;
                 }
                 heightmapSmooth[x] = (int)Math.Round(currentHeights.Average());
             }
             // place ground using smoothed height map
-            for (x = 0; x < WIDTH; x++)
+            for (x = 0; x < World.WIDTH; x++)
             {
                 var heightMax = heightmapSmooth[x] - 1;
                 for (y = 0; y < heightmapSmooth[x]; y++)
@@ -69,21 +69,21 @@ namespace Minicraft.Game.Worlds
             }
             // create noise map for caves
             Noise.Seed = Util.Random.Next(int.MinValue, int.MaxValue);
-            var noiseMap = Noise.Calc2D(WIDTH, HEIGHT, CAVE_NOISE_SCALE);
+            var noiseMap = Noise.Calc2D(World.WIDTH, World.HEIGHT, CAVE_NOISE_SCALE);
             // iterate through noisemap values and remove blocks at cutoff point
-            for (y = 0; y < HEIGHT; y++)
-                for (x = 0; x < WIDTH; x++)
+            for (y = 0; y < World.HEIGHT; y++)
+                for (x = 0; x < World.WIDTH; x++)
                     if (noiseMap[x, y] < CAVE_NOISE_CUTOFF)
                         world.SetBlockType(x, y, BlockType.Air);
             // place grass on top-most dirt blocks
-            for (x = 0; x < WIDTH; x++)
+            for (x = 0; x < World.WIDTH; x++)
             {
                 var topBlock = world.GetTop(x);
                 if (topBlock.block == BlockType.Dirt)
                     world.SetBlockType(x, topBlock.y, BlockType.Grass);
             }
             // generate trees on surface grass
-            for (x = TREE_SPACING_MIN; x < WIDTH - TREE_SPACING_MIN; x++)
+            for (x = TREE_SPACING_MIN; x < World.WIDTH - TREE_SPACING_MIN; x++)
             {
                 var topBlock = world.GetTop(x);
                 // test tree chance
@@ -120,7 +120,7 @@ namespace Minicraft.Game.Worlds
                                     // find new branch point
                                     branchPoint = setPoint + new Point(branchDirection * (i + 1), 0);
                                     // break placement if invalid position
-                                    if (branchPoint.X < 0 || branchPoint.X >= WIDTH)
+                                    if (branchPoint.X < 0 || branchPoint.X >= World.WIDTH)
                                         break;
                                     // get reference of block at that position
                                     var branchBlock = world.GetBlockType(branchPoint);
@@ -140,7 +140,7 @@ namespace Minicraft.Game.Worlds
                                 // get position of end of branch
                                 var endPoint = branchPoint + new Point(branchDirection, 0);
                                 // place leaves at end of branch if valid
-                                if (endPoint.X >= 0 && endPoint.X < WIDTH && world.GetBlockType(endPoint) == BlockType.Air)
+                                if (endPoint.X >= 0 && endPoint.X < World.WIDTH && world.GetBlockType(endPoint) == BlockType.Air)
                                         world.SetBlockType(endPoint, BlockType.Leaves);
                             }
                             else

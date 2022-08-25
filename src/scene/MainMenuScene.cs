@@ -41,7 +41,7 @@ namespace Minicraft.Scenes
 
         private static void CreateNewWorld()
         {
-            var world = World.GenerateWorld();
+            var world = WorldGen.GenerateWorld();
             var gameData = new GameData(world, new Inventory(), new PlayerEntity(world));
             MinicraftGame.SetScene(new GameScene(gameData));
         }
