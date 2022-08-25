@@ -78,16 +78,16 @@ namespace Minicraft.Game.Worlds
             // place grass on top-most dirt blocks
             for (x = 0; x < World.WIDTH; x++)
             {
-                var topBlock = world.GetTop(x);
-                if (topBlock.block == BlockType.Dirt)
+                var topBlock = world.GetTopBlock(x);
+                if (topBlock.blockType == BlockType.Dirt)
                     world.SetBlockType(x, topBlock.y, BlockType.Grass);
             }
             // generate trees on surface grass
             for (x = TREE_SPACING_MIN; x < World.WIDTH - TREE_SPACING_MIN; x++)
             {
-                var topBlock = world.GetTop(x);
+                var topBlock = world.GetTopBlock(x);
                 // test tree chance
-                if (topBlock.block == BlockType.Grass && TREE_CHANCE.TestChance())
+                if (topBlock.blockType == BlockType.Grass && TREE_CHANCE.TestChance())
                 {
                     // generate tree
                     var startY = topBlock.y + 1;

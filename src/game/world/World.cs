@@ -1,6 +1,5 @@
 using System;
 using Microsoft.Xna.Framework;
-using Minicraft.Font;
 using Minicraft.Game.Blocks;
 using Minicraft.Game.Entities;
 using Minicraft.Texture;
@@ -8,7 +7,7 @@ using Minicraft.Utils;
 
 namespace Minicraft.Game.Worlds
 {
-    public sealed class World
+    public sealed partial class World
     {
         public const float WORLD_UPDATED_PER_SECOND = 1f / 32f;
         public const int TICKS_PER_SECOND = 32;
@@ -33,13 +32,24 @@ namespace Minicraft.Game.Worlds
 
         public void SetBlockType(int x, int y, BlockType blockType) => BlockTypeAt(x, y) = blockType;
 
-        public (BlockType block, int y) GetTop(int x)
+        public int GetTopPosition(int x)
         {
             for (int y = HEIGHT - 1; y >= 0; y--)
             {
-                var _block = GetBlockType(x, y);
-                if (!_block.GetBlock().CanWalkThrough)
-                    return (_block, y);
+                var blockType = GetBlockType(x, y);
+                if (!blockType.GetBlock().CanWalkThrough)
+                    return y + 1;
+            }
+            return 0;
+        }
+
+        public (BlockType blockType, int y) GetTopBlock(int x)
+        {
+            for (int y = HEIGHT - 1; y >= 0; y--)
+            {
+                var blockType = GetBlockType(x, y);
+                if (!blockType.GetBlock().CanWalkThrough)
+                    return (blockType, y);
             }
             return (BlockType.Air, 0);
         }
@@ -101,9 +111,7 @@ namespace Minicraft.Game.Worlds
                     // draw block hit
                     if (blockHit.Position == blockPos)
                     {
-                        var hitsLeft = block.HitsToBreak - blockHit.Hits;
-                        if (hitsLeft > 0)
-                            Display.DrawOffsetString(FontSize._12, drawPos, hitsLeft.ToString(), Colors.UI_BlockHit, Display.DrawStringWithShadow);
+                        // TODO show how many hits left on the block as a number on the block itself
                     }
                     // draw ring over block mouse is hovering over
                     if (blockPos == mouseBlock)

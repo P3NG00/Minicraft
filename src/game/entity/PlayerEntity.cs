@@ -16,12 +16,12 @@ namespace Minicraft.Game.Entities
 
         public PlayerEntity(Vector2 position) : base(position, PLAYER_LIFE, Colors.Entity_Player, PlayerSize, PLAYER_SPEED, PLAYER_RUN_MULT, PLAYER_JUMP) {}
 
-        public PlayerEntity(World world) : this(Vector2.Zero) => Respawn(world);
+        public PlayerEntity(World world) : this(Vector2.Zero) => SpawnIntoWorld(world);
 
-        public void Respawn(World world)
+        public void SpawnIntoWorld(World world)
         {
             var x = (int)(World.WIDTH / 2f);
-            var y = Math.Max(world.GetTop(x - 1).y, world.GetTop(x).y) + 1;
+            var y = Math.Max(world.GetTopPosition(x - 1), world.GetTopPosition(x));
             Position = new Vector2(x, y);
         }
 

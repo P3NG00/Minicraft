@@ -130,7 +130,7 @@ namespace Minicraft.Scenes
             // reset health
             _player.ResetLife();
             // respawn
-            _player.Respawn(_world);
+            _player.SpawnIntoWorld(_world);
         }
 
         private bool Tick()
