@@ -14,7 +14,9 @@ namespace Minicraft.Game.Entities
         private const float PLAYER_LIFE = 10f;
         private static readonly Vector2 PlayerSize = new Vector2(1.8f, 2.8f);
 
-        public PlayerEntity(World world) : base(Vector2.Zero, PLAYER_LIFE, Colors.Entity_Player, PlayerSize, PLAYER_SPEED, PLAYER_RUN_MULT, PLAYER_JUMP) => Respawn(world);
+        public PlayerEntity(Vector2 position) : base(position, PLAYER_LIFE, Colors.Entity_Player, PlayerSize, PLAYER_SPEED, PLAYER_RUN_MULT, PLAYER_JUMP) {}
+
+        public PlayerEntity(World world) : this(Vector2.Zero) => Respawn(world);
 
         public void Respawn(World world)
         {

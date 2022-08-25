@@ -1,4 +1,5 @@
 using System.IO;
+using Microsoft.Xna.Framework;
 using Minicraft.Game.Blocks;
 using Minicraft.Game.Entities;
 using Minicraft.Game.Inventories;
@@ -14,39 +15,62 @@ namespace Minicraft.Utils
 
         public static void Save(World world, Inventory inventory, PlayerEntity player)
         {
-            using (var stream = new StreamWriter(File.Open(SAVE_FILE, FileMode.Truncate)))
+            using (var stream = new BinaryWriter(File.Open(SAVE_FILE, FileMode.Truncate)))
             {
                 // write each block
-                foreach (var v in world.RawBlockGrid)
-                    stream.Write((char)v);
-                // TODO write inventory
-                // TODO write player position
-                // TODO write player health
+                foreach (var blockType in world.RawBlockGrid)
+                    stream.WriteBlockType(blockType);
+                // write inventory
+                for (int i = 0; i < Inventory.SLOTS; i++)
+                {
+                    var slot = inventory[i];
+                    stream.WriteBlockType(slot.BlockType);
+                    stream.Write((char)slot.Amount);
+                }
+                // write player position
+                stream.Write(player.Position.X);
+                stream.Write(player.Position.Y);
+                // write player health
+                stream.Write(player.Life);
             }
         }
 
         public static GameData Load()
         {
             var world = new World();
-            using (var stream = new StreamReader(File.Open(SAVE_FILE, FileMode.Open)))
+            var inventory = new Inventory();
+            PlayerEntity player;
+            using (var stream = new BinaryReader(File.Open(SAVE_FILE, FileMode.Open)))
             {
                 // read each block
                 for (int y = 0; y < World.HEIGHT; y++)
                 {
                     for (int x = 0; x < World.WIDTH; x++)
                     {
-                        var blockType = (BlockType)stream.Read();
+                        var blockType = stream.ReadBlockType();
                         world.SetBlockType(x, y, blockType);
                     }
                 }
-                // TODO read inventory
-                // TODO read player position
-                // TODO read player health
+                // read inventory
+                for (int i = 0; i < Inventory.SLOTS; i++)
+                {
+                    var blockType = stream.ReadBlockType();
+                    var amount = stream.Read();
+                    inventory[i].Set(blockType, amount);
+                }
+                // read player position
+                var posX = stream.ReadSingle();
+                var posY = stream.ReadSingle();
+                player = new PlayerEntity(new Vector2(posX, posY));
+                // read player health
+                var life = stream.ReadSingle();
+                player.SetLife(life);
             }
-            // TODO return read information instead of new instances
-            var inventory = new Inventory();
-            var player = new PlayerEntity(world);
             return new GameData(world, inventory, player);
         }
+
+        private static BlockType ReadBlockType(this BinaryReader stream) => (BlockType)stream.Read();
+
+        private static void WriteBlockType(this BinaryWriter stream, BlockType blockType) => stream.Write((char)blockType);
     }
 }

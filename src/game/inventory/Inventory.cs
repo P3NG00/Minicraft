@@ -112,5 +112,7 @@ namespace Minicraft.Game.Inventories
                 drawPos += slotOffset;
             }
         }
+
+        public Slot this[int i] => _inventory[i];
     }
 }

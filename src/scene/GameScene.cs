@@ -128,7 +128,7 @@ namespace Minicraft.Scenes
         private void RespawnPlayer()
         {
             // reset health
-            _player.ResetHealth();
+            _player.ResetLife();
             // respawn
             _player.Respawn(_world);
         }
