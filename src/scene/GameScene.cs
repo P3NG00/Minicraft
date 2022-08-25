@@ -206,14 +206,10 @@ namespace Minicraft.Scenes
                     _lastMouseBlockInt.Y >= 0 && _lastMouseBlockInt.Y < World.HEIGHT)
                 {
                     // TODO limit distance youre able to interact with blocks from player
-                    // TODO implement block hit breaking system instead of instantly breaking
                     var blockType = _world.GetBlockType(_lastMouseBlockInt);
                     // handle block breaking
                     if (Input.MouseLeftFirstDown() && blockType != BlockType.Air)
-                    {
                         _blockHit.Update(_world, _inventory, _lastMouseBlockInt);
-                        // TODO show hits on block by having two colors, green & red, and tween between them based on percentage broken
-                    }
                     // handle block placing
                     if (Input.MouseRightFirstDown() && !_player.GetSides().Contains(_lastMouseBlockInt))
                         _inventory.Place(_world, _lastMouseBlockInt);
@@ -225,9 +221,6 @@ namespace Minicraft.Scenes
 
         private void DrawUI()
         {
-            // TODO create a ui system for easier management and placement
-            // TODO allow player to edit position of ui elements
-
             // draw inventory hotbar
             _inventory.Draw();
             // draw health bar
