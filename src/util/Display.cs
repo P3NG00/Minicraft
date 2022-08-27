@@ -27,7 +27,7 @@ namespace Minicraft.Utils
 
         public static void LoadContent(GraphicsDevice graphicsDevice) => SpriteBatch = new SpriteBatch(graphicsDevice);
 
-        public static void Initialize() => SetSize(1280, 720);
+        public static void Initialize() => SetSize(1280, 720, false);
 
         public static void UpdateCameraOffset(PlayerEntity player)
         {
@@ -40,7 +40,7 @@ namespace Minicraft.Utils
         public static void ToggleFullscreen()
         {
             if (_graphics.IsFullScreen)
-                SetSize(_lastWindowSize.X, _lastWindowSize.Y);
+                SetSize(_lastWindowSize.X, _lastWindowSize.Y, false);
             else
             {
                 _lastWindowSize = new Point(_graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight);
@@ -48,7 +48,7 @@ namespace Minicraft.Utils
             }
         }
 
-        public static void SetSize(int width, int height, bool fullscreen = false)
+        public static void SetSize(int width, int height, bool fullscreen)
         {
             _graphics.IsFullScreen = fullscreen;
             UpdateSize(width, height);
@@ -88,7 +88,8 @@ namespace Minicraft.Utils
         public static void DrawStringWithShadow(FontSize fontSize, Vector2 position, string text, Color color)
         {
             // draw shadowed text
-            DrawString(fontSize, position + new Vector2(2 * ((int)fontSize + 1)), text, Colors.TextShadow);
+            var shadowOffset = new Vector2(2 * ((int)fontSize + 1));
+            DrawString(fontSize, position + shadowOffset, text, Colors.TextShadow);
             // draw regular text
             DrawString(fontSize, position, text, color);
         }
