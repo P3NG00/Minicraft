@@ -1,5 +1,6 @@
 using System;
 using Microsoft.Xna.Framework;
+using Minicraft.Font;
 using Minicraft.Game.Blocks;
 using Minicraft.Game.Entities;
 using Minicraft.Texture;
@@ -111,7 +112,10 @@ namespace Minicraft.Game.Worlds
                     // draw block hit
                     if (blockHit.Position == blockPos)
                     {
-                        // TODO show how many hits left on the block as a number on the block itself
+                        // TODO draw scaled string
+                        var hitsLeft = block.HitsToBreak - blockHit.Hits;
+                        if (hitsLeft > 0)
+                            Display.DrawOffsetString(FontSize._12, drawPos, hitsLeft.ToString(), Colors.UI_BlockHit, Display.DrawStringWithShadow);
                     }
                     // draw ring over block mouse is hovering over
                     if (blockPos == mouseBlock)
