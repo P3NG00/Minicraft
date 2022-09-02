@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using Microsoft.Xna.Framework;
 
 namespace Minicraft.Utils
@@ -29,13 +30,15 @@ namespace Minicraft.Utils
 
         public static bool HasDebugUpdate(Point blockPos) => _debugUpdates.Contains(blockPos);
 
-        public static Color[] GetDebugColors(Point blockPos)
+        public static ImmutableArray<Color> GetDebugColors(Point blockPos)
         {
             // get entry list
-            var entryList = (List<Color>)_debugUpdates[blockPos];
+            var entryList = GetDebugColorEntries(blockPos);
             // return as array
-            return entryList.ToArray();
+            return entryList.ToImmutableArray();
         }
+
+        private static List<Color> GetDebugColorEntries(Point blockPos) => (List<Color>)_debugUpdates[blockPos];
 
         private static void Add(Point blockPos, Color color)
         {
@@ -53,7 +56,7 @@ namespace Minicraft.Utils
             else
             {
                 // get list for point
-                var entries = (List<Color>)_debugUpdates[blockPos];
+                var entries = GetDebugColorEntries(blockPos);
                 // add color to list
                 entries.Add(color);
             }
