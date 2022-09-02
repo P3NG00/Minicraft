@@ -15,7 +15,7 @@ namespace Minicraft.Utils
 
         public static void Save(World world, Inventory inventory, PlayerEntity player)
         {
-            using (var stream = new BinaryWriter(File.Open(SAVE_FILE, FileMode.Truncate)))
+            using (var stream = new BinaryWriter(File.Open(SAVE_FILE, FileMode.Create)))
             {
                 // write each block
                 foreach (var blockType in world.RawBlockGrid)
