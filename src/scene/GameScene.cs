@@ -171,9 +171,6 @@ namespace Minicraft.Scenes
 
         private void HandleInput()
         {
-            // spawn projectile
-            if (Input.KeyFirstDown(Keys.Q))
-                SpawnEntity(new ProjectileEntity(_player.Position));
             // toggle pause
             if (Input.KeyFirstDown(Keys.Escape) && _player.Alive)
                 _paused = !_paused;
@@ -202,21 +199,27 @@ namespace Minicraft.Scenes
                 mousePos.Y = Display.WindowSize.Y - mousePos.Y - 1;
                 _lastMouseBlock = ((mousePos - (Display.WindowSize.ToVector2() / 2f)) / Display.BlockScale) + (_player.Position + new Vector2(0, _player.Dimensions.Y / 2f));
                 _lastMouseBlockInt = _lastMouseBlock.ToPoint();
-                // catch out of bounds
-                if (_player.Alive &&
-                    _lastMouseBlockInt.X >= 0 && _lastMouseBlockInt.X < World.WIDTH &&
-                    _lastMouseBlockInt.Y >= 0 && _lastMouseBlockInt.Y < World.HEIGHT)
+                // if player alive
+                if (_player.Alive)
                 {
-                    // TODO limit distance youre able to interact with blocks from player
-                    var blockType = _world.GetBlockType(_lastMouseBlockInt);
-                    // handle block breaking
-                    if (Input.MouseLeftFirstDown() && blockType != BlockType.Air)
-                        _blockHit.Update(_world, _inventory, _lastMouseBlockInt);
-                    // handle block placing
-                    if (Input.MouseRightFirstDown() && !_player.GetSides().Contains(_lastMouseBlockInt))
-                        _inventory.Place(_world, _lastMouseBlockInt);
-                    if (Input.MouseMiddleFirstDown())
-                        SpawnEntity(new NPCEntity(_lastMouseBlock));
+                    // spawn projectile
+                    if (Input.KeyFirstDown(Keys.Q))
+                        SpawnEntity(new ProjectileEntity(_player.Position));
+                    // catch out of bounds
+                    if (_lastMouseBlockInt.X >= 0 && _lastMouseBlockInt.X < World.WIDTH &&
+                        _lastMouseBlockInt.Y >= 0 && _lastMouseBlockInt.Y < World.HEIGHT)
+                    {
+                        // TODO limit distance youre able to interact with blocks from player
+                        var blockType = _world.GetBlockType(_lastMouseBlockInt);
+                        // handle block breaking
+                        if (Input.MouseLeftFirstDown() && blockType != BlockType.Air)
+                            _blockHit.Update(_world, _inventory, _lastMouseBlockInt);
+                        // handle block placing
+                        if (Input.MouseRightFirstDown() && !_player.GetSides().Contains(_lastMouseBlockInt))
+                            _inventory.Place(_world, _lastMouseBlockInt);
+                        if (Input.MouseMiddleFirstDown())
+                            SpawnEntity(new NPCEntity(_lastMouseBlock));
+                    }
                 }
             }
         }
