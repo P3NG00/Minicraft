@@ -42,7 +42,7 @@ namespace Minicraft.Utils
                 SetSize(_lastWindowSize.X, _lastWindowSize.Y, false);
             else
             {
-                _lastWindowSize = new Point(_graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight);
+                _lastWindowSize = WindowSize;
                 SetSize(GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height, true);
             }
         }
