@@ -4,7 +4,7 @@ using Minicraft.Utils;
 
 namespace Minicraft.Game.Entities.Projectiles
 {
-    public sealed class BouncyProjectileEntity : ProjectileEntity
+    public sealed class BouncyProjectileEntity : AbstractProjectileEntity
     {
         public BouncyProjectileEntity(Vector2 position) : base(position, Colors.Entity_BouncyProjectile) {}
 

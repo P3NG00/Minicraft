@@ -4,13 +4,11 @@ using Minicraft.Utils;
 
 namespace Minicraft.Game.Entities.Projectiles
 {
-    public class ProjectileEntity : AbstractProjectileEntity
+    public sealed class ProjectileEntity : AbstractProjectileEntity
     {
         public ProjectileEntity(Vector2 position) : base (position, Colors.Entity_Projectile) {}
 
-        protected ProjectileEntity(Vector2 position, Color color) : base (position, color) {}
-
-        public override void Update(World world)
+        public sealed override void Update(World world)
         {
             var testPosition = GetNextPosition();
             var testSides = GetSides(testPosition);
