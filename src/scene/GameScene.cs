@@ -21,6 +21,8 @@ namespace Minicraft.Scenes
         private const string TEXT_RESPAWN = "respawn";
         private const string TEXT_RESUME = "resume";
 
+        private const float PLAYER_REACH_RADIUS = 5f;
+
         private static readonly Vector2 BarSize = new Vector2(150, 30);
 
         private readonly Button _buttonRespawn = new Button(new Vector2(0.5f, 0.6f), new Point(250, 50), TEXT_RESPAWN, Colors.ThemeDefault);
@@ -42,12 +44,11 @@ namespace Minicraft.Scenes
         private float[] _lastFps = new float[Display.FRAMES_PER_SECOND];
         private bool _paused = false;
 
-        // mouse position relative to game world
+        // cache
+        private BlockHit _blockHit = new BlockHit(Point.Zero, 0); // TODO fade block hit after no interaction for a few seconds
         private Vector2 _lastMouseBlock;
         private Point _lastMouseBlockInt;
-
-        // block hit information
-        private BlockHit _blockHit = new BlockHit(Point.Zero, 0);
+        private bool _withinReach;
 
         public GameScene(GameData gameData) : base(BlockType.Air.GetBlock().Color)
         {
@@ -107,7 +108,7 @@ namespace Minicraft.Scenes
             // update display handler
             Display.UpdateCameraOffset(_player);
             // draw world
-            _world.Draw(_player, _blockHit, _lastMouseBlockInt);
+            _world.Draw(_player, _blockHit, _lastMouseBlockInt, _withinReach);
             // draw player
             if (_player.Alive)
                 _player.Draw();
@@ -208,11 +209,13 @@ namespace Minicraft.Scenes
                         SpawnEntity(new ProjectileEntity(_player.Position));
                     if (Input.KeyFirstDown(Keys.E))
                         SpawnEntity(new BouncyProjectileEntity(_player.Position));
+                    // test if within reach
+                    _withinReach = Vector2.Distance(_player.Center, _lastMouseBlock) <= PLAYER_REACH_RADIUS;
                     // catch out of bounds
-                    if (_lastMouseBlockInt.X >= 0 && _lastMouseBlockInt.X < World.WIDTH &&
+                    if (_withinReach &&
+                        _lastMouseBlockInt.X >= 0 && _lastMouseBlockInt.X < World.WIDTH &&
                         _lastMouseBlockInt.Y >= 0 && _lastMouseBlockInt.Y < World.HEIGHT)
                     {
-                        // TODO limit distance youre able to interact with blocks from player
                         var blockType = _world.GetBlockType(_lastMouseBlockInt);
                         // handle block breaking
                         if (Input.MouseLeftFirstDown() && blockType != BlockType.Air)
@@ -224,7 +227,11 @@ namespace Minicraft.Scenes
                             SpawnEntity(new NPCEntity(_lastMouseBlock));
                     }
                 }
+                else
+                    _withinReach = false;
             }
+            else
+                _withinReach = false;
         }
 
         private void DrawUI()

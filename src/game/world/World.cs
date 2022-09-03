@@ -65,7 +65,7 @@ namespace Minicraft.Game.Worlds
             }
         }
 
-        public void Draw(AbstractEntity player, BlockHit blockHit, Point mouseBlock)
+        public void Draw(AbstractEntity player, BlockHit blockHit, Point mouseBlock, bool withinReach)
         {
             var drawScale = new Vector2(Display.BlockScale);
             // find edge to start drawing
@@ -99,10 +99,11 @@ namespace Minicraft.Game.Worlds
                     var blockPos = new Point(blockX, blockY);
                     var blockType = GetBlockType(blockPos);
                     var drawPos = new Vector2(blockX * Display.BlockScale, drawY);
+                    var highlighted = blockPos == mouseBlock && withinReach;
                     if (blockType == BlockType.Air && !Debug.HasDebugUpdate(blockPos))
                     {
                         // draw highlight over block mouse is hovering over
-                        if (blockPos == mouseBlock)
+                        if (highlighted)
                             Display.DrawOffset(drawPos, drawScale, Colors.BlockHighlightAir);
                         continue;
                     }
@@ -117,7 +118,7 @@ namespace Minicraft.Game.Worlds
                             Display.DrawOffsetString(FontSize._12, drawPos, hitsLeft.ToString(), Colors.UI_BlockHit, Display.DrawStringWithShadow);
                     }
                     // draw ring over block mouse is hovering over
-                    if (blockPos == mouseBlock)
+                    if (highlighted)
                         Display.DrawOffset(drawPos, drawScale, Colors.BlockHighlight, Textures.HighlightRing);
                     // check if block was updated
                     if (Debug.Enabled && Debug.DisplayBlockChecks)

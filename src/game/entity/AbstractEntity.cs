@@ -30,6 +30,8 @@ namespace Minicraft.Game.Entities
         // private data
         private float _life;
 
+        public Vector2 Center => Position + new Vector2(0, Dimensions.Y / 2f);
+
         public AbstractEntity(Vector2 position, float maxLife, Color color, Vector2 dimensions, float moveSpeed)
         {
             Position = position;
