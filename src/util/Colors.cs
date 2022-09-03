@@ -13,6 +13,7 @@ namespace Minicraft.Utils
 
         // entity
         public static readonly Color Entity_Player = new Color(255, 0, 0);
+        public static readonly Color Entity_Projectile = new Color(255, 0, 128);
         public static readonly Color Entity_NPC = new Color(255, 128, 0);
 
         // ui

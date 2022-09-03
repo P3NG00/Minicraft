@@ -25,7 +25,7 @@ namespace Minicraft.Scenes
         private readonly Button _buttonRespawn = new Button(new Vector2(0.5f, 0.6f), new Point(250, 50), TEXT_RESPAWN, Colors.ThemeDefault);
         private readonly Button _buttonResume = new Button(new Vector2(0.5f, 0.6f), new Point(250, 50), TEXT_RESUME, Colors.ThemeDefault);
         private readonly Button _buttonMainMenu = new Button(new Vector2(0.5f, 0.7f), new Point(250, 50), TEXT_MAIN_MENU, Colors.ThemeExit);
-        private readonly List<NPCEntity> _npcList = new List<NPCEntity>();
+        private readonly List<Entity> _entityList = new List<Entity>();
         private readonly PlayerEntity _player;
         private readonly Inventory _inventory;
         private readonly World _world;
@@ -91,11 +91,11 @@ namespace Minicraft.Scenes
                     // update player
                     if (_player.Alive)
                         _player.Update(_world);
-                    // update npc's
-                    foreach (var npc in _npcList)
-                        npc.Update(_world);
+                    // update entities
+                    foreach (var entity in _entityList)
+                        entity.Update(_world);
                     // remove dead npc's
-                    _npcList.RemoveAll(npc => !npc.Alive);
+                    _entityList.RemoveAll(npc => !npc.Alive);
                 }
             }
         }
@@ -110,9 +110,9 @@ namespace Minicraft.Scenes
             // draw player
             if (_player.Alive)
                 _player.Draw();
-            // draw npc's
-            foreach (var npc in _npcList)
-                npc.Draw();
+            // draw entities
+            foreach (var entity in _entityList)
+                entity.Draw();
             // draw ui
             DrawUI();
         }
@@ -171,8 +171,14 @@ namespace Minicraft.Scenes
 
         private void HandleInput()
         {
+            // spawn projectile
+            if (Input.KeyFirstDown(Keys.Q))
+                SpawnEntity(new ProjectileEntity(_player.Position));
+            // toggle pause
             if (Input.KeyFirstDown(Keys.Escape) && _player.Alive)
                 _paused = !_paused;
+            // TODO remove grid mode
+            // toggle grid
             if (Input.KeyFirstDown(Keys.Tab))
                 Display.ShowGrid = !Display.ShowGrid;
             // increase/decrease time scale
@@ -214,7 +220,7 @@ namespace Minicraft.Scenes
                     if (Input.MouseRightFirstDown() && !_player.GetSides().Contains(_lastMouseBlockInt))
                         _inventory.Place(_world, _lastMouseBlockInt);
                     if (Input.MouseMiddleFirstDown())
-                        _npcList.Add(new NPCEntity(_lastMouseBlock));
+                        SpawnEntity(new NPCEntity(_lastMouseBlock));
                 }
             }
         }
@@ -277,7 +283,7 @@ namespace Minicraft.Scenes
                     $"block_scale: {Display.BlockScale}",
                     $"mouse_x: {_lastMouseBlock.X:0.000} ({_lastMouseBlockInt.X})",
                     $"mouse_y: {_lastMouseBlock.Y:0.000} ({_lastMouseBlockInt.Y})",
-                    $"npc_count: {_npcList.Count}",
+                    $"entity_count: {_entityList.Count}",
                     $"player_velocity: {_player.Velocity.Length() * _player.MoveSpeed:0.000}",
                     $"player_grounded: {_player.IsGrounded}"})
                 {
@@ -286,5 +292,7 @@ namespace Minicraft.Scenes
                 }
             }
         }
+
+        private void SpawnEntity(Entity entity) => _entityList.Add(entity);
     }
 }

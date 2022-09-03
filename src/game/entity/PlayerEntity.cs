@@ -6,7 +6,7 @@ using Minicraft.Utils;
 
 namespace Minicraft.Game.Entities
 {
-    public sealed class PlayerEntity : Entity
+    public sealed class PlayerEntity : LivingEntity
     {
         private const float PLAYER_SPEED = 5f;
         private const float PLAYER_JUMP = 3.5f;

@@ -31,6 +31,12 @@ namespace Minicraft.Utils
 
         public static Point NextPoint(this Random random, Point max) => new Point(random.Next(max.X), random.Next(max.Y));
 
+        public static Vector2 NextUnitVector(this Random random)
+        {
+            float angle = (float)random.NextDouble() * MathHelper.TwoPi;
+            return new Vector2((float)Math.Cos(angle), (float)Math.Sin(angle));
+        }
+
         public delegate void ActionRef<T>(ref T t);
     }
 }
