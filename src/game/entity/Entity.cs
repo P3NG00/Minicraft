@@ -41,6 +41,8 @@ namespace Minicraft.Game.Entities
             MoveSpeed = moveSpeed;
         }
 
+        public void Kill() => SetLife(0);
+
         public void ResetLife() => SetLife(MaxLife);
 
         public void SetLife(float value)

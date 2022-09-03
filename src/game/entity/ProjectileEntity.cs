@@ -14,8 +14,12 @@ namespace Minicraft.Game.Entities
 
         public override void Update(World world)
         {
-            // TODO kill upon collision
-            Position = GetNextPosition();
+            var testPosition = GetNextPosition();
+            var testSides = GetSides(testPosition);
+            if (CheckHorizontalCollision(world, testSides) || CheckVerticalCollision(world, testSides))
+                Kill();
+            else
+                Position = testPosition;
         }
     }
 }
