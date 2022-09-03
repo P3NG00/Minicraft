@@ -3,7 +3,7 @@ using Minicraft.Utils;
 
 namespace Minicraft.Game.Entities.Projectiles
 {
-    public class AbstractProjectileEntity : Entity
+    public class AbstractProjectileEntity : AbstractEntity
     {
         protected const float PROJECTILE_LIFE = 1f;
         protected const float PROJECTILE_SPEED = 5f;

@@ -5,7 +5,7 @@ using Minicraft.Utils;
 
 namespace Minicraft.Game.Entities
 {
-    public sealed class NPCEntity : LivingEntity
+    public sealed class NPCEntity : AbstractLivingEntity
     {
         private const float NPC_SPEED = 3f;
         private const float NPC_JUMP = 3f;

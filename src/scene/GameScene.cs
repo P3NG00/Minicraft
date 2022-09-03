@@ -26,7 +26,7 @@ namespace Minicraft.Scenes
         private readonly Button _buttonRespawn = new Button(new Vector2(0.5f, 0.6f), new Point(250, 50), TEXT_RESPAWN, Colors.ThemeDefault);
         private readonly Button _buttonResume = new Button(new Vector2(0.5f, 0.6f), new Point(250, 50), TEXT_RESUME, Colors.ThemeDefault);
         private readonly Button _buttonMainMenu = new Button(new Vector2(0.5f, 0.7f), new Point(250, 50), TEXT_MAIN_MENU, Colors.ThemeExit);
-        private readonly List<Entity> _entityList = new List<Entity>();
+        private readonly List<AbstractEntity> _entityList = new List<AbstractEntity>();
         private readonly PlayerEntity _player;
         private readonly Inventory _inventory;
         private readonly World _world;
@@ -294,6 +294,6 @@ namespace Minicraft.Scenes
             }
         }
 
-        private void SpawnEntity(Entity entity) => _entityList.Add(entity);
+        private void SpawnEntity(AbstractEntity entity) => _entityList.Add(entity);
     }
 }

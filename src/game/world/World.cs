@@ -65,7 +65,7 @@ namespace Minicraft.Game.Worlds
             }
         }
 
-        public void Draw(Entity player, BlockHit blockHit, Point mouseBlock)
+        public void Draw(AbstractEntity player, BlockHit blockHit, Point mouseBlock)
         {
             var drawScale = new Vector2(Display.BlockScale);
             // find edge to start drawing

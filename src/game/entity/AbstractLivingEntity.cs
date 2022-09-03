@@ -5,7 +5,7 @@ using Minicraft.Utils;
 
 namespace Minicraft.Game.Entities
 {
-    public abstract class LivingEntity : Entity
+    public abstract class AbstractLivingEntity : AbstractEntity
     {
         // constants
         private const float FALL_DISTANCE_MIN = 6f;
@@ -21,7 +21,7 @@ namespace Minicraft.Game.Entities
 
         private float _lastHeight;
 
-        public LivingEntity(Vector2 position, float maxLife, Color color, Vector2 dimensions, float moveSpeed, float runMultiplier, float jumpVelocity) : base(position, maxLife, color, dimensions, moveSpeed)
+        public AbstractLivingEntity(Vector2 position, float maxLife, Color color, Vector2 dimensions, float moveSpeed, float runMultiplier, float jumpVelocity) : base(position, maxLife, color, dimensions, moveSpeed)
         {
             _lastHeight = position.Y;
             RunMultiplier = runMultiplier;

@@ -5,7 +5,7 @@ using Minicraft.Utils;
 
 namespace Minicraft.Game.Entities
 {
-    public abstract class Entity
+    public abstract class AbstractEntity
     {
         // getters
         public float Life => _life;
@@ -30,7 +30,7 @@ namespace Minicraft.Game.Entities
         // private data
         private float _life;
 
-        public Entity(Vector2 position, float maxLife, Color color, Vector2 dimensions, float moveSpeed)
+        public AbstractEntity(Vector2 position, float maxLife, Color color, Vector2 dimensions, float moveSpeed)
         {
             Position = position;
             MaxLife = maxLife;
