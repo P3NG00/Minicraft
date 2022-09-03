@@ -2,15 +2,13 @@ using Microsoft.Xna.Framework;
 using Minicraft.Game.Worlds;
 using Minicraft.Utils;
 
-namespace Minicraft.Game.Entities
+namespace Minicraft.Game.Entities.Projectiles
 {
-    public sealed class ProjectileEntity : Entity
+    public class ProjectileEntity : AbstractProjectileEntity
     {
-        private const float PROJECTILE_LIFE = 1f;
-        private const float PROJECTILE_SPEED = 5f;
-        private static readonly Vector2 ProjectileSize = new Vector2(0.5f);
+        public ProjectileEntity(Vector2 position) : base (position, Colors.Entity_Projectile) {}
 
-        public ProjectileEntity(Vector2 position) : base(position, PROJECTILE_LIFE, Colors.Entity_Projectile, ProjectileSize, PROJECTILE_SPEED) => Velocity = Util.Random.NextUnitVector();
+        protected ProjectileEntity(Vector2 position, Color color) : base (position, color) {}
 
         public override void Update(World world)
         {

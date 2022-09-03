@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Input;
 using Minicraft.Font;
 using Minicraft.Game.Blocks;
 using Minicraft.Game.Entities;
+using Minicraft.Game.Entities.Projectiles;
 using Minicraft.Game.Inventories;
 using Minicraft.Game.Worlds;
 using Minicraft.UI;
@@ -202,9 +203,11 @@ namespace Minicraft.Scenes
                 // if player alive
                 if (_player.Alive)
                 {
-                    // spawn projectile
+                    // spawn projectiles
                     if (Input.KeyFirstDown(Keys.Q))
                         SpawnEntity(new ProjectileEntity(_player.Position));
+                    if (Input.KeyFirstDown(Keys.E))
+                        SpawnEntity(new BouncyProjectileEntity(_player.Position));
                     // catch out of bounds
                     if (_lastMouseBlockInt.X >= 0 && _lastMouseBlockInt.X < World.WIDTH &&
                         _lastMouseBlockInt.Y >= 0 && _lastMouseBlockInt.Y < World.HEIGHT)
