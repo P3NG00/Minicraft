@@ -67,7 +67,7 @@ namespace Minicraft.Game.Worlds
 
         public void Draw(Entity player, BlockHit blockHit, Point mouseBlock)
         {
-            var drawScale = Display.ShowGrid ? new Vector2(Display.BlockScale - 1) : new Vector2(Display.BlockScale);
+            var drawScale = new Vector2(Display.BlockScale);
             // find edge to start drawing
             var visualWidth = (int)Math.Ceiling((double)Display.WindowSize.X / (double)Display.BlockScale) + 4;
             var visualHeight = (int)Math.Ceiling((double)Display.WindowSize.Y / (double)Display.BlockScale) + 4;

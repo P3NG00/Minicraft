@@ -17,7 +17,6 @@ namespace Minicraft.Utils
         public static Point WindowSize => new Point(_graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight);
 
         public static Vector2 CameraOffset;
-        public static bool ShowGrid = false;
         public static int BlockScale = Textures.SIZE * 2;
 
         private static GraphicsDeviceManager _graphics;

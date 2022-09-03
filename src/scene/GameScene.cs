@@ -177,10 +177,6 @@ namespace Minicraft.Scenes
             // toggle pause
             if (Input.KeyFirstDown(Keys.Escape) && _player.Alive)
                 _paused = !_paused;
-            // TODO remove grid mode
-            // toggle grid
-            if (Input.KeyFirstDown(Keys.Tab))
-                Display.ShowGrid = !Display.ShowGrid;
             // increase/decrease time scale
             if (Input.KeyFirstDown(Keys.F1))
                 Debug.TimeScale -= Debug.TIME_SCALE_STEP;
@@ -271,7 +267,6 @@ namespace Minicraft.Scenes
                     $"window_size: {Display.WindowSize.X}x{Display.WindowSize.Y}",
                     $"world_size: {World.WIDTH}x{World.HEIGHT}",
                     $"debug_blocks: {Debug.DisplayBlockChecks}",
-                    $"show_grid: {Display.ShowGrid}",
                     $"paused: {_paused}",
                     $"time_scale: {Debug.TimeScale:0.00}",
                     $"time: {(Ticks / (float)World.TICKS_PER_SECOND):0.000}",
