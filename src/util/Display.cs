@@ -18,7 +18,7 @@ namespace Minicraft.Utils
 
         public static Vector2 CameraOffset;
         public static bool ShowGrid = false;
-        public static int BlockScale = 16;
+        public static int BlockScale = Textures.SIZE * 2;
 
         private static GraphicsDeviceManager _graphics;
         private static Point _lastWindowSize;
