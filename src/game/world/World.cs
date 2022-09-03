@@ -16,14 +16,13 @@ namespace Minicraft.Game.Worlds
         public const int WIDTH = 1024;
         public const int HEIGHT = 512;
         public const float TICK_STEP = 1f / TICKS_PER_SECOND;
-
         private const int BLOCK_UPDATES_PER_TICK = (int)(((WIDTH * HEIGHT) * WORLD_UPDATED_PER_SECOND) / World.TICKS_PER_SECOND);
 
-        private BlockType[,] _blockGrid = new BlockType[HEIGHT, WIDTH];
-
-        private ref BlockType BlockTypeAt(int x, int y) => ref _blockGrid[y, x];
+        private readonly BlockType[,] _blockGrid = new BlockType[HEIGHT, WIDTH];
 
         public BlockType[,] RawBlockGrid => _blockGrid;
+
+        private ref BlockType BlockTypeAt(int x, int y) => ref _blockGrid[y, x];
 
         public BlockType GetBlockType(Point point) => GetBlockType(point.X, point.Y);
 
