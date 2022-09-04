@@ -12,6 +12,7 @@ namespace Minicraft.Texture
         public static Texture2D Shaded { get; private set; }
         public static Texture2D Striped { get; private set; }
         public static Texture2D HighlightRing { get; private set; }
+        public static Texture2D P3NG00Face { get; private set; }
 
         public static void Initialize(GraphicsDevice graphicsDevice)
         {
@@ -19,6 +20,7 @@ namespace Minicraft.Texture
             Shaded = CreateTexture(graphicsDevice, CreateShadedTexture);
             Striped = CreateTexture(graphicsDevice, CreateStripedTexture);
             HighlightRing = CreateTexture(graphicsDevice, CreateRingHighlightTexture);
+            P3NG00Face = CreateTexture(graphicsDevice, CreateP3NG00FaceTexture);
         }
 
         private static Texture2D CreateTexture(GraphicsDevice graphicsDevice, ColorFunc colorFunc)
@@ -53,6 +55,34 @@ namespace Minicraft.Texture
             var isEdgeX = x == 0 || x == SIZE_EDGE;
             var isEdgeY = y == 0 || y == SIZE_EDGE;
             return isEdgeX || isEdgeY ? new Color(255, 255, 255) : new Color(0, 0, 0, 0);
+        }
+
+        private static Color CreateP3NG00FaceTexture(int x, int y)
+        {
+            var colorIDs = new[,] {
+                { 0, 1, 1, 1, 1, 1, 1, 0 },
+                { 0, 0, 2, 2, 2, 3, 0, 0 },
+                { 0, 2, 2, 3, 3, 3, 3, 0 },
+                { 4, 4, 3, 3, 4, 4, 4, 4 },
+                { 5, 6, 4, 4, 4, 4, 6, 5 },
+                { 5, 6, 5, 7, 8, 5, 6, 5 },
+                { 9, 9, 5, 10, 7, 5, 5, 9 },
+                { 9, 9, 9, 9, 9, 9, 9, 9},
+            };
+            var colorArray = new[] {
+                new Color(132, 171, 185),
+                new Color(163, 203, 210),
+                new Color(246, 237, 203),
+                new Color(220, 208, 188),
+                new Color(195, 184, 173),
+                new Color(168, 159, 156),
+                new Color(0, 0, 0),
+                new Color(195, 170, 51),
+                new Color(224, 209, 84),
+                new Color(144, 137, 136),
+                new Color(163, 130, 27),
+            };
+            return colorArray[colorIDs[y, x]];
         }
 
         private delegate Color ColorFunc(int x, int y);

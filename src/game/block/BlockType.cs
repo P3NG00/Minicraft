@@ -13,6 +13,7 @@ namespace Minicraft.Game.Blocks
         Wood = 4,
         Leaves = 5,
         TNT = 6,
+        P3NG00Face = 7,
     }
 
     public partial class Block
@@ -31,6 +32,7 @@ namespace Minicraft.Game.Blocks
                 new Block("Wood Block", new Color(128, 92, 32), 4, true, Textures.Shaded),
                 new LeavesBlock("Leaves Block", new Color(48, 128, 32), 2, true, Textures.Shaded),
                 new TNTBlock("TNT", new Color(255, 0, 0), 1, true, Textures.Striped),
+                new P3NG00FaceBlock("P3NG00's Face as a Block", new Color(255, 255, 255), 1, false, Textures.P3NG00Face),
             });
         }
     }
