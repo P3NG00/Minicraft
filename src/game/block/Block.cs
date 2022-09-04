@@ -1,7 +1,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Minicraft.Game.Worlds;
-using Minicraft.Texture;
 using Minicraft.Utils;
 
 namespace Minicraft.Game.Blocks
@@ -14,13 +13,13 @@ namespace Minicraft.Game.Blocks
         public readonly bool CanWalkThrough;
         public readonly Texture2D Texture;
 
-        public Block(string name, Color color, int hitsToBreak, bool canWalkThrough = false, Texture2D texture = null)
+        public Block(string name, Color color, int hitsToBreak, bool canWalkThrough, Texture2D texture)
         {
             Name = name;
             Color = color;
             HitsToBreak = hitsToBreak;
             CanWalkThrough = canWalkThrough;
-            Texture = texture ?? Textures.Blank;
+            Texture = texture;
         }
 
         public virtual void Update(Point position, World world)

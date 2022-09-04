@@ -204,6 +204,11 @@ namespace Minicraft.Scenes
                 // if player alive
                 if (_player.Alive)
                 {
+                    // give items if holding debug button
+                    if (Input.KeyHeld(Keys.F12))
+                        for (int i = 0; i < Block.Amount; i++)
+                            if (Input.KeyFirstDown(Keys.D1 + i))
+                                _inventory.Add((BlockType)i);
                     // spawn projectiles
                     if (Input.KeyFirstDown(Keys.Q))
                         SpawnEntity(new ProjectileEntity(_player.Position));

@@ -12,12 +12,14 @@ namespace Minicraft.Game.Blocks
         Stone = 3,
         Wood = 4,
         Leaves = 5,
-        // TODO TNT
+        TNT = 6,
     }
 
     public partial class Block
     {
         private static readonly ImmutableArray<Block> s_blockArray;
+
+        public static int Amount => s_blockArray.Length;
 
         static Block()
         {
@@ -28,6 +30,7 @@ namespace Minicraft.Game.Blocks
                 new Block("Stone Block", new Color(192, 192, 192), 7, false, Textures.Shaded),
                 new Block("Wood Block", new Color(128, 92, 32), 4, true, Textures.Shaded),
                 new LeavesBlock("Leaves Block", new Color(48, 128, 32), 2, true, Textures.Shaded),
+                new TNTBlock("TNT", new Color(255, 0, 0), 1, true, Textures.Striped),
             });
         }
     }

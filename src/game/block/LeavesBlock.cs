@@ -13,7 +13,7 @@ namespace Minicraft.Game.Blocks
             new Point(-1, -1), new Point(0, -1), new Point(1, -1),
         };
 
-        public LeavesBlock(string name, Color color, int hitsToBreak, bool canWalkThrough = false, Texture2D texture = null) : base(name, color, hitsToBreak, canWalkThrough, texture) {}
+        public LeavesBlock(string name, Color color, int hitsToBreak, bool canWalkThrough, Texture2D texture) : base(name, color, hitsToBreak, canWalkThrough, texture) {}
 
         public sealed override void Update(Point position, World world)
         {
