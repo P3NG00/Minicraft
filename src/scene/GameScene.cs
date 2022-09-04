@@ -257,7 +257,6 @@ namespace Minicraft.Scenes
             var textSize = FontSize._12.MeasureString(healthString);
             drawPos = new Vector2((Display.WindowSize.X / 2f) - (textSize.X / 2f), Display.WindowSize.Y - Inventory.HotbarSize.Y - 20);
             Display.DrawStringWithShadow(FontSize._12, drawPos, healthString, Colors.UI_TextLife);
-            // draw currently selected block
             // draw death screen overlay
             if (!_player.Alive)
             {
