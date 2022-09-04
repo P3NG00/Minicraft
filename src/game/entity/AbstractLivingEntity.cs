@@ -18,6 +18,16 @@ namespace Minicraft.Game.Entities
 
         public bool IsGrounded { get; protected set; } = false;
         public bool Running { get; protected set; } = false;
+        public override Vector2 Velocity
+        {
+            get
+            {
+                var velocity = base.Velocity;
+                if (Running)
+                    velocity *= RunMultiplier;
+                return velocity;
+            }
+        }
 
         private float _lastHeight;
 
@@ -32,7 +42,7 @@ namespace Minicraft.Game.Entities
         {
             if (IsGrounded)
             {
-                Velocity.Y = JumpVelocity;
+                RawVelocity.Y = JumpVelocity;
                 IsGrounded = false;
             }
         }
@@ -41,10 +51,10 @@ namespace Minicraft.Game.Entities
         {
             // add velocity if falling
             if (!IsGrounded)
-                Velocity.Y -= World.GRAVITY * World.TICK_STEP;
+                RawVelocity.Y -= World.GRAVITY * World.TICK_STEP;
             // fix max velocity
-            if (Velocity.Length() > VELOCITY_MAX / MoveSpeed)
-                Velocity = Vector2.Normalize(Velocity) * VELOCITY_MAX / MoveSpeed;
+            if (Velocity.Length() > VELOCITY_MAX)
+                RawVelocity = Vector2.Normalize(RawVelocity) * (VELOCITY_MAX / MoveSpeed);
             // find projected new position
             var testPosition = GetNextPosition();
             // find collision points
@@ -97,14 +107,6 @@ namespace Minicraft.Game.Entities
             }
         }
 
-        protected override Vector2 GetVelocityThisUpdate()
-        {
-            var velocity = base.GetVelocityThisUpdate();
-            if (Running)
-                velocity *= RunMultiplier;
-            return velocity;
-        }
-
         private void HandleHorizontalCollision(ref Vector2 testPosition)
         {
             var sides = GetSides(testPosition);
@@ -114,7 +116,7 @@ namespace Minicraft.Game.Entities
                 testPosition.X = sides.Right - HalfWidth;
             else
                 throw new Exception("Vertical collision handled when entity's horizontal velocity is 0");
-            Velocity.X = 0f;
+            RawVelocity.X = 0f;
         }
 
         private void HandleVerticalCollision(ref Vector2 testPosition)
@@ -132,13 +134,13 @@ namespace Minicraft.Game.Entities
                 testPosition.Y = sides.Top - Dimensions.Y;
             else
                 throw new Exception("Vertical collision handled when entity's vertical velocity is 0");
-            Velocity.Y = 0f;
+            RawVelocity.Y = 0f;
         }
 
         private bool WhichCollisionFirstHorizontalElseVertical()
         {
             var sides = GetSides();
-            var subVelocity = GetVelocityThisUpdate() / (float)MOVEMENT_SUBCHECKS;
+            var subVelocity = (Velocity * World.TICK_STEP) / (float)MOVEMENT_SUBCHECKS;
             Func<Sides, bool> crossHorizontal;
             Func<Sides, bool> crossVertical;
 

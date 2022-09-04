@@ -174,20 +174,20 @@ namespace Minicraft.Scenes
         private void HandleInput()
         {
             // toggle pause
-            if (Input.KeyFirstDown(Keys.Escape) && _player.Alive)
+            if (Input.KeyFirstDown(Keybinds.Pause) && _player.Alive)
                 _paused = !_paused;
             // increase/decrease time scale
-            if (Input.KeyFirstDown(Keys.F1))
-                Debug.TimeScale -= Debug.TIME_SCALE_STEP;
-            if (Input.KeyFirstDown(Keys.F2))
-                Debug.TimeScale += Debug.TIME_SCALE_STEP;
+            // if (Input.KeyFirstDown(Keys.F1))
+            //     Debug.TimeScale -= Debug.TIME_SCALE_STEP;
+            // if (Input.KeyFirstDown(Keys.F2))
+            //     Debug.TimeScale += Debug.TIME_SCALE_STEP;
             // manually step time
-            if (Input.KeyFirstDown(Keys.F3))
-                _tickDelta += World.TICK_STEP;
+            // if (Input.KeyFirstDown(Keys.F3))
+            //     _tickDelta += World.TICK_STEP;
             // debug
-            if (Debug.Enabled && Input.KeyFirstDown(Keys.F9))
+            if (Debug.Enabled && Input.KeyFirstDown(Keybinds.DebugCheckUpdates))
                 Debug.DisplayBlockChecks = !Debug.DisplayBlockChecks;
-            if (Input.KeyFirstDown(Keys.F12))
+            if (Input.KeyFirstDown(Keybinds.Debug))
                 Debug.Enabled = !Debug.Enabled;
             // update if not paused
             if (!_paused)
@@ -205,14 +205,14 @@ namespace Minicraft.Scenes
                 if (_player.Alive)
                 {
                     // give items if holding debug button
-                    if (Input.KeyHeld(Keys.F12))
+                    if (Input.KeyHeld(Keybinds.Debug))
                         for (int i = 1; i < Block.Amount; i++)
                             if (Input.KeyFirstDown(Keys.D0 + i))
                                 _inventory.Add((BlockType)i);
                     // spawn projectiles
-                    if (Input.KeyFirstDown(Keys.Q))
+                    if (Input.KeyFirstDown(Keybinds.SpawnProjectile))
                         SpawnEntity(new ProjectileEntity(_player.Position));
-                    if (Input.KeyFirstDown(Keys.E))
+                    if (Input.KeyFirstDown(Keybinds.SpawnBouncyProjectile))
                         SpawnEntity(new BouncyProjectileEntity(_player.Position));
                     // test if within reach
                     _withinReach = Vector2.Distance(_player.Center, _lastMouseBlock) <= PLAYER_REACH_RADIUS;
@@ -307,8 +307,9 @@ namespace Minicraft.Scenes
                     $"mouse_x: {_lastMouseBlock.X:0.000} ({_lastMouseBlockInt.X})",
                     $"mouse_y: {_lastMouseBlock.Y:0.000} ({_lastMouseBlockInt.Y})",
                     $"entity_count: {_entityList.Count}",
-                    $"player_velocity: {_player.Velocity.Length() * _player.MoveSpeed:0.000}",
-                    $"player_grounded: {_player.IsGrounded}"})
+                    $"player_velocity: {_player.Velocity.Length():0.000}",
+                    $"player_grounded: {_player.IsGrounded}",
+                    $"player_running: {_player.Running}"})
                 {
                     Display.DrawStringWithBackground(FontSize._12, drawPos, debugInfo, Colors.UI_TextDebug);
                     drawPos.Y += Util.UI_SPACER + FontSize._12.GetFont().LineSpacing;

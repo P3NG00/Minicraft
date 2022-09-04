@@ -1,6 +1,5 @@
 using System;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input;
 using Minicraft.Game.Worlds;
 using Minicraft.Utils;
 
@@ -28,15 +27,15 @@ namespace Minicraft.Game.Entities
         public sealed override void Update(World world)
         {
             // set horizontal movement
-            Velocity.X = 0;
-            if (Input.KeyHeld(Keys.A))
-                Velocity.X--;
-            if (Input.KeyHeld(Keys.D))
-                Velocity.X++;
+            RawVelocity.X = 0;
+            if (Input.KeyHeld(Keybinds.MoveLeft))
+                RawVelocity.X--;
+            if (Input.KeyHeld(Keybinds.MoveRight))
+                RawVelocity.X++;
             // check running
-            Running = Input.KeyHeld(Keys.LeftShift);
+            Running = Input.KeyHeld(Keybinds.Run);
             // check jump
-            if (Input.KeyHeld(Keys.Space))
+            if (Input.KeyHeld(Keybinds.Jump))
                 Jump();
             // base call
             base.Update(world);

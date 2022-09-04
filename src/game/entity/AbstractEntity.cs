@@ -14,6 +14,7 @@ namespace Minicraft.Game.Entities
         public bool IsMovingDown => Velocity.Y < 0f;
         public bool IsMovingLeft => Velocity.X < 0f;
         public bool IsMovingRight => Velocity.X > 0f;
+        public virtual Vector2 Velocity => RawVelocity * MoveSpeed;
 
         // readonly data
         public readonly Vector2 Dimensions;
@@ -24,7 +25,7 @@ namespace Minicraft.Game.Entities
 
         // public data
         public Vector2 Position;
-        public Vector2 Velocity;
+        public Vector2 RawVelocity;
         public float MaxLife;
 
         // private data
@@ -112,9 +113,7 @@ namespace Minicraft.Game.Entities
             return new Sides(top, bottom, left, right);
         }
 
-        protected virtual Vector2 GetVelocityThisUpdate() => Velocity * MoveSpeed * World.TICK_STEP;
-
-        protected Vector2 GetNextPosition() => Position + GetVelocityThisUpdate();
+        protected Vector2 GetNextPosition() => Position + (Velocity * World.TICK_STEP);
 
         // returns true if a collision happened while moving horizontally
         protected bool CheckHorizontalCollision(World world, Sides sides)

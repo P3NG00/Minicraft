@@ -47,7 +47,7 @@ namespace Minicraft.Game.Entities
                     var goalDirectionLeftElseRight = Position.X > _goalX.Value;
                     var goalDirection = goalDirectionLeftElseRight ? -1f : 1f;
                     // set velocity towards goal
-                    Velocity.X = goalDirection;
+                    RawVelocity.X = goalDirection;
                     // jump if block in way
                     var sides = GetSides();
                     int checkSide;
@@ -60,7 +60,7 @@ namespace Minicraft.Game.Entities
                 }
             }
             else
-                Velocity.X = 0f;
+                RawVelocity.X = 0f;
             // base call
             base.Update(world);
         }

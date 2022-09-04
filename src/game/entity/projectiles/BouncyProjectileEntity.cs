@@ -15,9 +15,9 @@ namespace Minicraft.Game.Entities.Projectiles
             var testSides = GetSides(testPosition);
             // TODO prevent getting stuck in walls
             if (CheckHorizontalCollision(world, testSides))
-                Velocity.Y *= -1f;
+                RawVelocity.Y *= -1f;
             if (CheckVerticalCollision(world, testSides))
-                Velocity.X *= -1f;
+                RawVelocity.X *= -1f;
             Position = testPosition;
         }
     }
