@@ -206,8 +206,8 @@ namespace Minicraft.Scenes
                 {
                     // give items if holding debug button
                     if (Input.KeyHeld(Keys.F12))
-                        for (int i = 0; i < Block.Amount; i++)
-                            if (Input.KeyFirstDown(Keys.D1 + i))
+                        for (int i = 1; i < Block.Amount; i++)
+                            if (Input.KeyFirstDown(Keys.D0 + i))
                                 _inventory.Add((BlockType)i);
                     // spawn projectiles
                     if (Input.KeyFirstDown(Keys.Q))

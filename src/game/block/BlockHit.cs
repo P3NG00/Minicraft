@@ -20,27 +20,25 @@ namespace Minicraft.Game.Blocks
         {
             // if hit same block
             if (Position == hitPosition)
-            {
                 // increase hits
                 Hits++;
-                // get blocktype
-                var blockType = world.GetBlockType(hitPosition);
-                // break block
-                if (Hits >= blockType.GetBlock().HitsToBreak)
-                {
-                    // add to players inventory
-                    inventory.Add(blockType);
-                    // remove block from world
-                    world.SetBlockType(Position, BlockType.Air);
-                    // reset hits
-                    Hits = 0;
-                }
-            }
             // if not same block hit start counting at new position
             else
             {
                 Position = hitPosition;
                 Hits = 1;
+            }
+            // get blocktype
+            var blockType = world.GetBlockType(hitPosition);
+            // break block
+            if (Hits >= blockType.GetBlock().HitsToBreak)
+            {
+                // add to players inventory
+                inventory.Add(blockType);
+                // remove block from world
+                world.SetBlockType(Position, BlockType.Air);
+                // reset hits
+                Hits = 0;
             }
         }
     }
