@@ -34,6 +34,7 @@ namespace Minicraft.Utils
         public static readonly Color HotbarSlotText = new Color(255, 255, 255);
 
         // debug
+        public static readonly Color DebugReadon_BlockInteract = new Color(255, 0, 0);
         public static readonly Color DebugReason_BlockUpdate = new Color(255, 0, 255, 64);
         public static readonly Color DebugReason_CollisionCheck = new Color(0, 0, 255, 64);
         public static readonly Color DebugReason_AirCheck = new Color(255, 128, 0, 64);

@@ -15,7 +15,7 @@ namespace Minicraft.Game.Blocks
 
         public LeavesBlock(string name, Color color, int hitsToBreak, bool canWalkThrough, Texture2D texture) : base(name, color, hitsToBreak, canWalkThrough, texture) {}
 
-        public sealed override void Update(Point position, World world)
+        public sealed override void Update(World world, Point position)
         {
             // check surrounding blocks for logs
             bool log = false;
@@ -40,7 +40,7 @@ namespace Minicraft.Game.Blocks
             if (!log)
                 world.SetBlockType(position, BlockType.Air);
             // base call
-            base.Update(position, world);
+            base.Update(world, position);
         }
     }
 }

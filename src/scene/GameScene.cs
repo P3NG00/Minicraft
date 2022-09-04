@@ -222,12 +222,23 @@ namespace Minicraft.Scenes
                         _lastMouseBlockInt.Y >= 0 && _lastMouseBlockInt.Y < World.HEIGHT)
                     {
                         var blockType = _world.GetBlockType(_lastMouseBlockInt);
-                        // handle block breaking
+                        // handle left click (block breaking)
                         if (Input.MouseLeftFirstDown() && blockType != BlockType.Air)
                             _blockHit.Update(_world, _inventory, _lastMouseBlockInt);
-                        // handle block placing
-                        if (Input.MouseRightFirstDown() && !_player.GetSides().Contains(_lastMouseBlockInt))
-                            _inventory.Place(_world, _lastMouseBlockInt);
+                        // handle right click (block placing & interaction)
+                        if (Input.MouseRightFirstDown())
+                        {
+                            // if right click on air, place block
+                            if (blockType == BlockType.Air)
+                            {
+                                var inPlayer = _player.GetSides().Contains(_lastMouseBlockInt);
+                                if (!inPlayer)
+                                    _inventory.Place(_world, _lastMouseBlockInt);
+                            }
+                            // otherwise, interact with block
+                            else
+                                blockType.GetBlock().Interact(_world, _lastMouseBlockInt);
+                        }
                         if (Input.MouseMiddleFirstDown())
                             SpawnEntity(new NPCEntity(_lastMouseBlock));
                     }

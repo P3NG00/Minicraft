@@ -32,6 +32,7 @@ namespace Minicraft
         {
             Textures.Initialize(GraphicsDevice);
             Fonts.Initialize(Content);
+            Audio.Initialize(Content);
             Display.LoadContent(GraphicsDevice);
             // base call
             base.LoadContent();

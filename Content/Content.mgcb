@@ -13,6 +13,12 @@
 
 #---------------------------------- Content ---------------------------------#
 
+#begin single_sound_isolated.ogg
+/importer:OggImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:single_sound_isolated.ogg
+
 #begin type_writer_12.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor

@@ -61,7 +61,7 @@ namespace Minicraft.Game.Worlds
                 // get random point
                 var pos = Util.Random.NextPoint(new Point(WIDTH, HEIGHT));
                 // update block at that point
-                GetBlockType(pos).GetBlock().Update(pos, this);
+                GetBlockType(pos).GetBlock().Update(this, pos);
             }
         }
 

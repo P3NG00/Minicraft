@@ -22,12 +22,9 @@ namespace Minicraft.Game.Blocks
             Texture = texture;
         }
 
-        public virtual void Update(Point position, World world)
-        {
-            // add position to updated list
-            if (Debug.Enabled && Debug.DisplayBlockChecks)
-                Debug.AddBlockUpdate(position);
-        }
+        public virtual void Update(World world, Point position) => Debug.AddBlockUpdate(position);
+
+        public virtual void Interact(World world, Point position) => Debug.AddBlockInteract(position);
 
         public override bool Equals(object obj)
         {

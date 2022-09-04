@@ -16,7 +16,7 @@ namespace Minicraft.Game.Blocks
 
         public GrassBlock(string name, Color color, int hitsToBreak, bool canWalkThrough, Texture2D texture) : base(name, color, hitsToBreak, canWalkThrough, texture) {}
 
-        public sealed override void Update(Point position, World world)
+        public sealed override void Update(World world, Point position)
         {
             // if able to spread
             if (position.Y + 1 == World.HEIGHT || world.GetBlockType(position + new Point(0, 1)).GetBlock().CanWalkThrough)
@@ -36,7 +36,7 @@ namespace Minicraft.Game.Blocks
             else
                 world.SetBlockType(position, BlockType.Dirt);
             // base call
-            base.Update(position, world);
+            base.Update(world, position);
         }
     }
 }

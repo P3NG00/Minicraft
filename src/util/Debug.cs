@@ -22,6 +22,8 @@ namespace Minicraft.Utils
 
         public static void Update() => _debugUpdates.Clear();
 
+        public static void AddBlockInteract(Point blockPos) => Add(blockPos, Colors.DebugReadon_BlockInteract);
+
         public static void AddBlockUpdate(Point blockPos) => Add(blockPos, Colors.DebugReason_BlockUpdate);
 
         public static void AddCollisionCheck(Point blockPos) => Add(blockPos, Colors.DebugReason_CollisionCheck);
@@ -42,6 +44,8 @@ namespace Minicraft.Utils
 
         private static void Add(Point blockPos, Color color)
         {
+            if (!Enabled || !DisplayBlockChecks)
+                return;
             // if entry does not exist for point
             if (!HasDebugUpdate(blockPos))
             {
