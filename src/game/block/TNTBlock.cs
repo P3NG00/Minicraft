@@ -1,6 +1,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Minicraft.Game.Worlds;
+using Minicraft.Utils;
 
 namespace Minicraft.Game.Blocks
 {
@@ -10,6 +11,8 @@ namespace Minicraft.Game.Blocks
 
         public sealed override void Interact(World world, Point position)
         {
+            // play explosion sound
+            Audio.Explosion.Play();
             // break blocks in a 5x5 area except for corners
             for (int x = position.X - 2; x <= position.X + 2; x++)
             {

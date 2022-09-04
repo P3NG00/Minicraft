@@ -13,9 +13,12 @@ namespace Minicraft.Font
         {
             // load font
             s_typeWriterFont = ImmutableArray.Create(
-                content.Load<SpriteFont>("type_writer_12"),
-                content.Load<SpriteFont>("type_writer_24"),
-                content.Load<SpriteFont>("type_writer_36"));
+                Load("type_writer_12"),
+                Load("type_writer_24"),
+                Load("type_writer_36"));
+
+            // local func
+            SpriteFont Load(string name) => content.Load<SpriteFont>(name);
         }
 
         public static SpriteFont GetFont(this FontSize fontSize) => s_typeWriterFont[(int)fontSize];

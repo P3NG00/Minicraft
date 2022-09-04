@@ -11,8 +11,8 @@ namespace Minicraft.Game.Blocks
 
         public sealed override void Interact(World world, Point position)
         {
-            var sound = Audio.SingleSoundIsolated.CreateInstance();
-            sound.Play();
+            // play sound
+            Audio.SingleSoundIsolated.Play();
             // base call
             base.Interact(world, position);
         }
