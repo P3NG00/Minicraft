@@ -59,6 +59,7 @@ namespace Minicraft.Texture
 
         private static Color CreateP3NG00FaceTexture(int x, int y)
         {
+            // 8x8 p3 face texture by color id
             var colorIDs = new[,] {
                 { 0, 1, 1, 1, 1, 1, 1, 0 },
                 { 0, 0, 2, 2, 2, 3, 0, 0 },
@@ -67,8 +68,8 @@ namespace Minicraft.Texture
                 { 5, 6, 4, 4, 4, 4, 6, 5 },
                 { 5, 6, 5, 7, 8, 5, 6, 5 },
                 { 9, 9, 5, 10, 7, 5, 5, 9 },
-                { 9, 9, 9, 9, 9, 9, 9, 9},
-            };
+                { 9, 9, 9, 9, 9, 9, 9, 9}};
+            // color ids for p3 face texture
             var colorArray = new[] {
                 new Color(132, 171, 185),
                 new Color(163, 203, 210),
@@ -80,8 +81,8 @@ namespace Minicraft.Texture
                 new Color(195, 170, 51),
                 new Color(224, 209, 84),
                 new Color(144, 137, 136),
-                new Color(163, 130, 27),
-            };
+                new Color(163, 130, 27)};
+            // return color of face pixel position
             return colorArray[colorIDs[y, x]];
         }
 
