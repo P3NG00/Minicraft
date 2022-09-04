@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Minicraft.Font;
 using Minicraft.Game.Blocks;
 using Minicraft.Game.Worlds;
@@ -101,11 +102,16 @@ namespace Minicraft.Game.Inventories
                 // if active slot, draw selected border 1 px thick around slot
                 if (i == _activeSlot)
                     Display.Draw(drawPos - new Vector2(2), drawSize + new Vector2(4), Colors.HotbarSelected);
-                // slot color
+                // slot draw info
                 color = Colors.HotbarSlotBackground;
+                Texture2D texture = null;
                 if (!slot.IsEmpty)
-                    color = slot.BlockType.GetBlock().Color;
-                Display.Draw(drawPos, drawSize, color);
+                {
+                    var block = slot.BlockType.GetBlock();
+                    color = block.Color;
+                    texture = block.Texture;
+                }
+                Display.Draw(drawPos, drawSize, color, texture);
                 // draw string of amount of block in slot
                 if (!slot.IsEmpty)
                     Display.DrawStringWithShadow(FontSize._12, drawPos + new Vector2(Util.UI_SPACER, Util.UI_SPACER), slot.Amount.ToString(), Colors.HotbarSlotText);
