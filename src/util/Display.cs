@@ -11,7 +11,7 @@ namespace Minicraft.Utils
         public const int FRAMES_PER_SECOND = 60;
         public const float FRAME_STEP = 1f / FRAMES_PER_SECOND;
         public const int BLOCK_SCALE_MIN = Textures.SIZE;
-        public const int BLOCK_SCALE_MAX = Textures.SIZE * 3;
+        public const int BLOCK_SCALE_MAX = Textures.SIZE * 5;
 
         public static SpriteBatch SpriteBatch { get; private set; }
         public static Point WindowSize => new Point(_graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight);
