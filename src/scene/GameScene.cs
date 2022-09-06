@@ -177,13 +177,13 @@ namespace Minicraft.Scenes
             if (Input.KeyFirstDown(Keybinds.Pause) && _player.Alive)
                 _paused = !_paused;
             // increase/decrease time scale
-            // if (Input.KeyFirstDown(Keys.F1))
-            //     Debug.TimeScale -= Debug.TIME_SCALE_STEP;
-            // if (Input.KeyFirstDown(Keys.F2))
-            //     Debug.TimeScale += Debug.TIME_SCALE_STEP;
+            if (Input.KeyFirstDown(Keys.F1))
+                Debug.TimeScale -= Debug.TIME_SCALE_STEP;
+            if (Input.KeyFirstDown(Keys.F2))
+                Debug.TimeScale += Debug.TIME_SCALE_STEP;
             // manually step time
-            // if (Input.KeyFirstDown(Keys.F3))
-            //     _tickDelta += World.TICK_STEP;
+            if (Input.KeyFirstDown(Keys.F3))
+                _tickDelta += World.TICK_STEP;
             // debug
             if (Debug.Enabled && Input.KeyFirstDown(Keybinds.DebugCheckUpdates))
                 Debug.DisplayBlockChecks = !Debug.DisplayBlockChecks;
