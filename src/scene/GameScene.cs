@@ -45,7 +45,7 @@ namespace Minicraft.Scenes
         private bool _paused = false;
 
         // cache
-        private BlockHit _blockHit = new BlockHit(Point.Zero, 0); // TODO fade block hit after no interaction for a few seconds
+        private BlockHit _blockHit = new BlockHit(Point.Zero, 0); // TODO get rid of block hit after no interaction for a few seconds
         private Vector2 _lastMouseBlock;
         private Point _lastMouseBlockInt;
         private bool _withinReach;
@@ -223,6 +223,7 @@ namespace Minicraft.Scenes
                     {
                         var blockType = _world.GetBlockType(_lastMouseBlockInt);
                         // handle left click (block breaking)
+                        // TODO instead of clicking to break blocks, hold left click for certain amount of ticks to break block
                         if (Input.MouseLeftFirstDown() && blockType != BlockType.Air)
                             _blockHit.Update(_world, _inventory, _lastMouseBlockInt);
                         // handle right click (block placing & interaction)

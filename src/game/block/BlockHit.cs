@@ -7,6 +7,7 @@ namespace Minicraft.Game.Blocks
 {
     public struct BlockHit
     {
+        // TODO store tick count the time the hit happened. once certain amount of seconds/ticks have passed, nullify blockhit
         public Point Position;
         public int Hits;
 
