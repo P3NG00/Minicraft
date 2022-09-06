@@ -109,7 +109,8 @@ namespace Minicraft.Utils
         {
             if (drawStringFunc == null)
                 drawStringFunc = DrawString;
-            drawStringFunc(fontSize, position - CameraOffset, text, color);
+            var drawPos = position - CameraOffset;
+            drawStringFunc(fontSize, drawPos, text, color);
         }
 
         public delegate void DrawStringFunc(FontSize fontSize, Vector2 position, string text, Color color);
