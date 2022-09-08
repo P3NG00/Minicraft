@@ -68,7 +68,7 @@ namespace Minicraft.Texture
                     { 5, 6, 4, 4, 4, 4, 6, 5 },
                     { 5, 6, 5, 7, 8, 5, 6, 5 },
                     { 9, 9, 5, 10, 7, 5, 5, 9 },
-                    { 9, 9, 9, 9, 9, 9, 9, 9}};
+                    { 9, 9, 9, 9, 9, 9, 9, 9 }};
                 // color ids for p3 face texture
                 var colorArray = new[] {
                     new Color(132, 171, 185),
