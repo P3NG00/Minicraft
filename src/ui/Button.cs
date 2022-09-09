@@ -27,8 +27,6 @@ namespace Minicraft.UI
             _action = action;
         }
 
-        public void SetAction(Action action) => _action = action;
-
         public void Update()
         {
             // find rectangle bounds

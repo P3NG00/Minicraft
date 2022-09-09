@@ -25,9 +25,9 @@ namespace Minicraft.Scenes
 
         private static readonly Vector2 BarSize = new Vector2(150, 30);
 
-        private readonly Button _buttonRespawn = new Button(new Vector2(0.5f, 0.6f), new Point(250, 50), TEXT_RESPAWN, Colors.ThemeDefault);
-        private readonly Button _buttonResume = new Button(new Vector2(0.5f, 0.6f), new Point(250, 50), TEXT_RESUME, Colors.ThemeDefault);
-        private readonly Button _buttonMainMenu = new Button(new Vector2(0.5f, 0.7f), new Point(250, 50), TEXT_MAIN_MENU, Colors.ThemeExit);
+        private readonly Button _buttonRespawn;
+        private readonly Button _buttonResume;
+        private readonly Button _buttonMainMenu;
         private readonly List<AbstractEntity> _entityList = new List<AbstractEntity>();
         private readonly PlayerEntity _player;
         private readonly Inventory _inventory;
@@ -53,9 +53,9 @@ namespace Minicraft.Scenes
         public GameScene(GameData gameData) : base(BlockType.Air.GetBlock().Color)
         {
             // initialize buttons
-            _buttonRespawn.SetAction(RespawnPlayer);
-            _buttonResume.SetAction(ResumeGame);
-            _buttonMainMenu.SetAction(SaveAndMainMenu);
+            _buttonRespawn = new Button(new Vector2(0.5f, 0.6f), new Point(250, 50), TEXT_RESPAWN, Colors.ThemeDefault, RespawnPlayer);
+            _buttonResume = new Button(new Vector2(0.5f, 0.6f), new Point(250, 50), TEXT_RESUME, Colors.ThemeDefault, ResumeGame);
+            _buttonMainMenu = new Button(new Vector2(0.5f, 0.7f), new Point(250, 50), TEXT_MAIN_MENU, Colors.ThemeExit, SaveAndMainMenu);
             // cache game data
             _world = gameData.World;
             _inventory = gameData.Inventory;
