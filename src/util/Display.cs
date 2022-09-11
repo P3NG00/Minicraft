@@ -30,10 +30,10 @@ namespace Minicraft.Utils
 
         public static void UpdateCameraOffset(PlayerEntity player)
         {
-            var cameraOffset = -(WindowSize.ToVector2() / 2f);
-            cameraOffset.X = cameraOffset.X + (player.Center.X * BlockScale);
-            cameraOffset.Y = cameraOffset.Y - (player.Center.Y * BlockScale);
-            CameraOffset = cameraOffset;
+            var centeredScreen = -(WindowSize.ToVector2() / 2f);
+            var relativePlayerPosition = player.Center * BlockScale;
+            CameraOffset = new Vector2(centeredScreen.X + relativePlayerPosition.X,
+                                       centeredScreen.Y - relativePlayerPosition.Y);
         }
 
         public static void ToggleFullscreen()
