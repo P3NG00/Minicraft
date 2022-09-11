@@ -70,10 +70,10 @@ namespace Minicraft.Game.Worlds
         {
             var drawScale = new Vector2(Display.BlockScale);
             // find edge to start drawing
-            var visualWidth = (int)Math.Ceiling((double)Display.WindowSize.X / (double)Display.BlockScale) + 4;
-            var visualHeight = (int)Math.Ceiling((double)Display.WindowSize.Y / (double)Display.BlockScale) + 4;
-            var visualStartX = (int)Math.Floor(player.Position.X - (visualWidth / 2f));
-            var visualStartY = (int)Math.Ceiling(player.Position.Y - (visualHeight / 2f)) + 2;
+            var visualWidth = (int)Math.Ceiling((double)Display.WindowSize.X / (double)Display.BlockScale) + 2;
+            var visualHeight = (int)Math.Ceiling((double)Display.WindowSize.Y / (double)Display.BlockScale) + 2;
+            var visualStartX = (int)Math.Floor(player.Center.X - (visualWidth / 2f));
+            var visualStartY = (int)Math.Ceiling(player.Center.Y - (visualHeight / 2f));
             // fix variables if out of bounds
             if (visualStartX < 0)
             {
