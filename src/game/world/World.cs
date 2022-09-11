@@ -1,5 +1,6 @@
 using System;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Minicraft.Font;
 using Minicraft.Game.Blocks;
 using Minicraft.Game.Entities;
@@ -97,20 +98,34 @@ namespace Minicraft.Game.Worlds
                 for (int x = 0; x < visualWidth; x++)
                 {
                     var blockX = x + visualStartX;
+                    var drawX = blockX * Display.BlockScale;
                     var blockPos = new Point(blockX, blockY);
                     var blockType = GetBlockType(blockPos);
-                    var drawPos = new Vector2(blockX * Display.BlockScale, drawY);
-                    var highlighted = blockPos == mouseBlock && withinReach;
-                    if (blockType == BlockType.Air && !Debug.HasDebugUpdate(blockPos))
-                    {
-                        // draw highlight over block mouse is hovering over
-                        if (highlighted)
-                            Display.DrawOffset(drawPos, drawScale, Colors.BlockHighlightAir);
-                        continue;
-                    }
                     var block = blockType.GetBlock();
-                    Display.DrawOffset(drawPos, drawScale, block.Color, block.Texture);
-                    // draw block hit
+                    var drawPos = new Vector2(drawX, drawY);
+                    // draw block
+                    if (blockType != BlockType.Air)
+                        Display.DrawOffset(drawPos, drawScale, block.Color, block.Texture);
+                    // draw highlight
+                    var highlighted = blockPos == mouseBlock && withinReach;
+                    if (highlighted)
+                    {
+                        Color highlightColor;
+                        Texture2D highlightTexture;
+                        var isAir = blockType == BlockType.Air;
+                        if (isAir)
+                        {
+                            highlightColor = Colors.BlockHighlightAir;
+                            highlightTexture = Textures.Blank;
+                        }
+                        else
+                        {
+                            highlightColor = Colors.BlockHighlight;
+                            highlightTexture = Textures.HighlightRing;
+                        }
+                        Display.DrawOffset(drawPos, drawScale, highlightColor, highlightTexture);
+                    }
+                    // draw blockhit string
                     if (blockHit.Position == blockPos)
                     {
                         // TODO draw scaled string
@@ -118,15 +133,10 @@ namespace Minicraft.Game.Worlds
                         if (hitsLeft > 0)
                             Display.DrawOffsetString(FontSize._12, drawPos, hitsLeft.ToString(), Colors.UI_BlockHit, Display.DrawStringWithShadow);
                     }
-                    // draw ring over block mouse is hovering over
-                    if (highlighted)
-                        Display.DrawOffset(drawPos, drawScale, Colors.BlockHighlight, Textures.HighlightRing);
-                    // check if block was updated
-                    if (Debug.Enabled && Debug.DisplayBlockChecks)
-                        // draw faded debug colors over block
-                        if (Debug.HasDebugUpdate(blockPos))
-                            foreach (var color in Debug.GetDebugColors(blockPos))
-                                Display.DrawOffset(drawPos, drawScale, color);
+                    // draw debug updates
+                    if (Debug.Enabled && Debug.DisplayBlockChecks && Debug.HasDebugUpdate(blockPos))
+                        foreach (var color in Debug.GetDebugColors(blockPos))
+                            Display.DrawOffset(drawPos, drawScale, color);
                 }
             }
         }
