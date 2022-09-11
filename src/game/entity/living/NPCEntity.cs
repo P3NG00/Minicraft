@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework;
 using Minicraft.Game.Worlds;
 using Minicraft.Utils;
 
-namespace Minicraft.Game.Entities
+namespace Minicraft.Game.Entities.Living
 {
     public sealed class NPCEntity : AbstractLivingEntity
     {

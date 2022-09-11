@@ -1,4 +1,4 @@
-using Minicraft.Game.Entities;
+using Minicraft.Game.Entities.Living;
 using Minicraft.Game.Inventories;
 using Minicraft.Game.Worlds;
 

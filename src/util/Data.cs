@@ -1,7 +1,7 @@
 using System.IO;
 using Microsoft.Xna.Framework;
 using Minicraft.Game.Blocks;
-using Minicraft.Game.Entities;
+using Minicraft.Game.Entities.Living;
 using Minicraft.Game.Inventories;
 using Minicraft.Game.Worlds;
 

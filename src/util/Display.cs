@@ -1,7 +1,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Minicraft.Font;
-using Minicraft.Game.Entities;
+using Minicraft.Game.Entities.Living;
 using Minicraft.Texture;
 
 namespace Minicraft.Utils

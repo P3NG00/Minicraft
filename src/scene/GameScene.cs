@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Input;
 using Minicraft.Font;
 using Minicraft.Game.Blocks;
 using Minicraft.Game.Entities;
+using Minicraft.Game.Entities.Living;
 using Minicraft.Game.Entities.Projectiles;
 using Minicraft.Game.Inventories;
 using Minicraft.Game.Worlds;

@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework;
 using Minicraft.Game.Worlds;
 using Minicraft.Utils;
 
-namespace Minicraft.Game.Entities
+namespace Minicraft.Game.Entities.Living
 {
     public abstract class AbstractLivingEntity : AbstractEntity
     {
@@ -18,6 +18,7 @@ namespace Minicraft.Game.Entities
 
         public bool IsGrounded { get; protected set; } = false;
         public bool Running { get; protected set; } = false;
+        // TODO stop running from affecting jump velocity
         public override Vector2 Velocity
         {
             get
