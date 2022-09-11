@@ -45,7 +45,7 @@ namespace Minicraft.Scenes
         private bool _paused = false;
 
         // cache
-        private BlockHit _blockHit = new BlockHit(Point.Zero, 0); // TODO get rid of block hit after no interaction for a few seconds
+        private BlockHit _blockHit = new BlockHit(Point.Zero, 0);
         private Vector2 _lastMouseBlock;
         private Point _lastMouseBlockInt;
         private bool _withinReach;

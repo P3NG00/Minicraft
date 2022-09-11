@@ -5,11 +5,11 @@ using Minicraft.Utils;
 
 namespace Minicraft.Game.Blocks
 {
-    public struct BlockHit
+    public sealed class BlockHit
     {
         // TODO store tick count the time the hit happened. once certain amount of seconds/ticks have passed, nullify blockhit
-        public Point Position;
-        public int Hits;
+        public Point Position { get; private set; }
+        public int Hits { get; private set; }
 
         public BlockHit(Point position, int hits)
         {
@@ -38,7 +38,8 @@ namespace Minicraft.Game.Blocks
                 inventory.Add(blockType);
                 // remove block from world
                 world.SetBlockType(Position, BlockType.Air);
-                // reset hits
+                // reset info
+                Position = new Point(-1);
                 Hits = 0;
             }
         }

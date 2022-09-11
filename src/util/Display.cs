@@ -43,7 +43,8 @@ namespace Minicraft.Utils
             else
             {
                 _lastWindowSize = WindowSize;
-                SetSize(GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height, true);
+                SetSize(GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width,
+                        GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height, true);
             }
         }
 
@@ -62,9 +63,10 @@ namespace Minicraft.Utils
 
         public static void Draw(Vector2 position, Vector2 size, Color color, Texture2D texture = null)
         {
-            var t = texture ?? Textures.Blank;
-            var scale = size / t.Bounds.Size.ToVector2();
-            SpriteBatch.Draw(t, position, null, color, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
+            if (texture == null)
+                texture = Textures.Blank;
+            var scale = size / texture.Bounds.Size.ToVector2();
+            SpriteBatch.Draw(texture, position, null, color, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
         }
 
         public static void DrawOffset(Vector2 position, Vector2 size, Color color, Texture2D texture = null) => Draw(position - CameraOffset, size, color, texture);
