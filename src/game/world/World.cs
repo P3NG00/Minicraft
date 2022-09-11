@@ -19,6 +19,7 @@ namespace Minicraft.Game.Worlds
         private const int BLOCK_UPDATES_PER_TICK = (int)(((WIDTH * HEIGHT) * WORLD_UPDATED_PER_SECOND) / World.TICKS_PER_SECOND);
 
         private readonly BlockType[,] _blockGrid = new BlockType[HEIGHT, WIDTH];
+        // TODO add 2nd layer for 'background' tiles. make dirt, stone, and wood backgrounds. dirt and stone will generate on its respective block and the back layer will stay when caves are removed from the foreground
 
         public BlockType[,] RawBlockGrid => _blockGrid;
 

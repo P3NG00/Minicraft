@@ -39,6 +39,7 @@ namespace Minicraft.Scenes
             _buttonWorldContinue?.Draw();
         }
 
+        // TODO create a 'world creator' scene with adjustable settings and an 'update changes' button to generate a world to preview your changes
         private static void CreateNewWorld()
         {
             var world = WorldGen.GenerateWorld();
