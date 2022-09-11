@@ -74,7 +74,7 @@ namespace Minicraft.Game.Worlds
             var visualWidth = (int)Math.Ceiling((double)Display.WindowSize.X / (double)Display.BlockScale) + 2;
             var visualHeight = (int)Math.Ceiling((double)Display.WindowSize.Y / (double)Display.BlockScale) + 2;
             var visualStartX = (int)Math.Floor(player.Center.X - (visualWidth / 2f));
-            var visualStartY = (int)Math.Ceiling(player.Center.Y - (visualHeight / 2f));
+            var visualStartY = (int)Math.Floor(player.Center.Y - (visualHeight / 2f));
             // fix variables if out of bounds
             if (visualStartX < 0)
             {
