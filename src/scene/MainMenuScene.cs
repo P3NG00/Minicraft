@@ -8,7 +8,7 @@ using Minicraft.Utils;
 
 namespace Minicraft.Scenes
 {
-    public sealed class MainMenuScene : Scene
+    public sealed class MainMenuScene : AbstractScene
     {
         private readonly Button _buttonWorldNew = new Button(new Vector2(0.5f, 0.6f), new Point(250, 50), "create world", Colors.ThemeBlue, CreateNewWorld);
         private readonly Button _buttonExit = new Button(new Vector2(0.5f, 0.8f), new Point(120, 30), "exit", Colors.ThemeExit, MinicraftGame.EndProgram);

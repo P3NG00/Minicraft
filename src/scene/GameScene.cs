@@ -13,7 +13,7 @@ using Minicraft.Utils;
 
 namespace Minicraft.Scenes
 {
-    public sealed class GameScene : Scene
+    public sealed class GameScene : AbstractScene
     {
         private const string TEXT_DEATH = "you died!";
         private const string TEXT_MAIN_MENU = "main menu";
