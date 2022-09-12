@@ -273,7 +273,7 @@ namespace Minicraft.Scenes
             // draw death screen overlay
             if (!_player.Alive)
             {
-                Display.DrawOverlay();
+                Display.DrawFadedOverlay();
                 // draw text
                 Display.DrawCenteredString(FontSize._24, new Vector2(0.5f, 0.35f), TEXT_DEATH, Colors.UI_YouDied, Display.DrawStringWithShadow);
                 // draw buttons to restart game
@@ -282,7 +282,7 @@ namespace Minicraft.Scenes
             }
             else if (_paused)
             {
-                Display.DrawOverlay();
+                Display.DrawFadedOverlay();
                 // draw text
                 Display.DrawCenteredString(FontSize._12, new Vector2(0.5f, 0.35f), TEXT_PAUSE, Colors.UI_Pause, Display.DrawStringWithShadow);
                 // draw buttons

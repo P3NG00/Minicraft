@@ -72,7 +72,7 @@ namespace Minicraft.Utils
         public static void DrawOffset(Vector2 position, Vector2 size, Color color, Texture2D texture = null) => Draw(position - CameraOffset, size, color, texture);
 
         // draws faded overlay over entire window
-        public static void DrawOverlay() => Display.Draw(Vector2.Zero, WindowSize.ToVector2(), Colors.Overlay);
+        public static void DrawFadedOverlay() => Display.Draw(Vector2.Zero, WindowSize.ToVector2(), Colors.Overlay);
 
         public static void DrawString(FontSize fontSize, Vector2 position, string text, Color color) => SpriteBatch.DrawString(fontSize.GetFont(), text, position, color);
 
