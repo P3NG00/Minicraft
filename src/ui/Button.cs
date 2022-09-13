@@ -11,14 +11,14 @@ namespace Minicraft.UI
         private readonly ColorTheme _colorTheme;
         private readonly Point _size;
         private readonly string _text;
-        private Action _action;
+        private readonly Action _action;
 
         private Rectangle _lastRect;
         private bool _highlighted = false;
 
         // (0f, 0f) = top-left of window.
         // (1f, 1f) = bottom-right of window.
-        public Button(Vector2 relativeCenter, Point size, string text, ColorTheme colorTheme, Action action = null)
+        public Button(Vector2 relativeCenter, Point size, string text, ColorTheme colorTheme, Action action)
         {
             _relativeCenter = relativeCenter;
             _size = size;
