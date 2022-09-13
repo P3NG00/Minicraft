@@ -27,6 +27,15 @@ namespace Minicraft.Utils
             return Random.NextDouble() < chance;
         }
 
+        public static bool TestChance(this decimal chance)
+        {
+            if (chance >= 1.0m)
+                return true;
+            if (chance < 0.0m)
+                return false;
+            return (decimal)Random.NextDouble() < chance;
+        }
+
         public static bool NextBool(this Random random) => (0.5f).TestChance();
 
         public static Point NextPoint(this Random random, Point max) => new Point(random.Next(max.X), random.Next(max.Y));

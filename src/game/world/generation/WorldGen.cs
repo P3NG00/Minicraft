@@ -12,18 +12,18 @@ namespace Minicraft.Game.Worlds.Generation
         public sealed class Settings
         {
             // settings
-            public readonly WorldGenSettingInt ChunkWidth = new(new(0.25f, 1f / 7f), "Chunk Width", 16, 0, World.WIDTH, 1);
-            public readonly WorldGenSettingInt ChunkHeightVariationRadius = new(new(0.25f, 2f / 7f), "Chunk Height Variation Radius", 32, 0, World.HEIGHT / 2, 1);
-            public readonly WorldGenSettingInt StoneOffset = new(new(0.25f, 3f / 7f), "Stone Offset", 32, 0, World.HEIGHT, 1);
-            public readonly WorldGenSettingInt SmoothScanRadius = new(new(0.25f, 4f / 7f), "Smooth Scan Radius", 32, 0, World.WIDTH, 1);
-            public readonly WorldGenSettingInt TreeSpacingMin = new(new(0.25f, 5f / 7f), "Tree Spacing Min", 5, 0, World.WIDTH, 1);
-            public readonly WorldGenSettingInt TreeHeightMin = new(new(0.25f, 6f / 7f), "Tree Height Min", 8, 0, World.HEIGHT, 1);
-            public readonly WorldGenSettingInt TreeHeightMax = new(new(0.75f, 1f / 7f), "Tree Height Max", 24, 0, World.HEIGHT, 1);
-            public readonly WorldGenSettingInt BranchLengthMax = new(new(0.75f, 2f / 7f), "Branch Length Max", 5, 0, World.WIDTH, 1);
-            public readonly WorldGenSettingFloat TreeChance = new(new(0.75f, 3f / 7f), "Tree Chance", 0.2f, 0f, 1f, 0.01f);
-            public readonly WorldGenSettingFloat BranchChance = new(new(0.75f, 4f / 7f), "Branch Chance", 0.15f, 0f, 1f, 0.01f);
-            public readonly WorldGenSettingFloat CaveNoiseScale = new(new(0.75f, 5f / 7f), "Cave Noise Scale", 0.02f, 0f, 1f, 0.01f);
-            public readonly WorldGenSettingFloat CaveNoiseCutoff = new(new(0.75f, 6f / 7f), "Cave Noise Cutoff", 64f, 0f, 100f, 1f);
+            public readonly WorldGenSettingIntMult ChunkWidth = new(new(0.25f, 1f / 7f), "Chunk Width", 16, 1, World.WIDTH, 1, 2);
+            public readonly WorldGenSettingInt ChunkHeightVariationRadius = new(new(0.25f, 2f / 7f), "Chunk Height Variation Radius", 32, 0, World.HEIGHT / 2, 1, 10);
+            public readonly WorldGenSettingInt StoneOffset = new(new(0.25f, 3f / 7f), "Stone Offset", 32, 0, World.HEIGHT, 1, 10);
+            public readonly WorldGenSettingInt SmoothScanRadius = new(new(0.25f, 4f / 7f), "Smooth Scan Radius", 32, 0, World.WIDTH, 1, 10);
+            public readonly WorldGenSettingInt TreeSpacingMin = new(new(0.25f, 5f / 7f), "Tree Spacing Min", 5, 0, World.WIDTH, 1, 10);
+            public readonly WorldGenSettingInt TreeHeightMin = new(new(0.25f, 6f / 7f), "Tree Height Min", 8, 0, World.HEIGHT, 1, 10);
+            public readonly WorldGenSettingInt TreeHeightMax = new(new(0.75f, 1f / 7f), "Tree Height Max", 24, 0, World.HEIGHT, 1, 10);
+            public readonly WorldGenSettingInt BranchLengthMax = new(new(0.75f, 2f / 7f), "Branch Length Max", 5, 0, World.WIDTH, 1, 10);
+            public readonly WorldGenSettingDecimal TreeChance = new(new(0.75f, 3f / 7f), "Tree Chance", 0.2m, 0, 1, 0.01m, 0.1m);
+            public readonly WorldGenSettingDecimal BranchChance = new(new(0.75f, 4f / 7f), "Branch Chance", 0.15m, 0, 1, 0.01m, 0.1m);
+            public readonly WorldGenSettingDecimal CaveNoiseScale = new(new(0.75f, 5f / 7f), "Cave Noise Scale", 0.02m, 0, 1, 0.01m, 0.1m);
+            public readonly WorldGenSettingDecimal CaveNoiseCutoff = new(new(0.75f, 6f / 7f), "Cave Noise Cutoff", 64, 0, 256, 1, 10);
 
             // settings array
             private readonly IWorldGenSetting[] _settings;
@@ -108,11 +108,11 @@ namespace Minicraft.Game.Worlds.Generation
             }
             // create noise map for caves
             Noise.Seed = Util.Random.Next(int.MinValue, int.MaxValue);
-            var noiseMap = Noise.Calc2D(World.WIDTH, World.HEIGHT, settings.CaveNoiseScale);
+            var noiseMap = Noise.Calc2D(World.WIDTH, World.HEIGHT, (float)settings.CaveNoiseScale);
             // iterate through noisemap values and remove blocks at cutoff point
             for (y = 0; y < World.HEIGHT; y++)
                 for (x = 0; x < World.WIDTH; x++)
-                    if (noiseMap[x, y] < settings.CaveNoiseCutoff)
+                    if ((decimal)noiseMap[x, y] < settings.CaveNoiseCutoff)
                         world.SetBlockType(x, y, BlockType.Air);
             // place grass on top-most dirt blocks
             for (x = 0; x < World.WIDTH; x++)
@@ -132,7 +132,7 @@ namespace Minicraft.Game.Worlds.Generation
                     var startY = topBlock.y + 1;
                     var height = Util.Random.Next(settings.TreeHeightMin, settings.TreeHeightMax + 1);
                     var branchDirection = 0;
-                    for (y = startY; y < startY + height; y++)
+                    for (y = startY; y < startY + height && y < World.HEIGHT; y++)
                     {
                         var setPoint = new Point(x, y);
                         world.SetBlockType(setPoint, BlockType.Wood);
@@ -172,7 +172,7 @@ namespace Minicraft.Game.Worlds.Generation
                                         // get reference of block at new branch point
                                         var sidePoint = branchPoint + new Point(0, o);
                                         // replace if valid
-                                        if (world.GetBlockType(sidePoint) == BlockType.Air)
+                                        if (sidePoint.Y < World.HEIGHT && world.GetBlockType(sidePoint) == BlockType.Air)
                                             world.SetBlockType(sidePoint, BlockType.Leaves);
                                     }
                                 }
@@ -188,7 +188,9 @@ namespace Minicraft.Game.Worlds.Generation
                         }
                     }
                     // place leaves on top of tree
-                    world.SetBlockType(x, startY + height, BlockType.Leaves);
+                    y = startY + height;
+                    if (y < World.HEIGHT)
+                        world.SetBlockType(x, y, BlockType.Leaves);
                     // space trees by minimum amount
                     x += settings.TreeSpacingMin;
                 }

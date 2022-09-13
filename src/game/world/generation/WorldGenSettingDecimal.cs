@@ -2,11 +2,11 @@ using Microsoft.Xna.Framework;
 
 namespace Minicraft.Game.Worlds.Generation
 {
-    public class WorldGenSettingInt : AbstractWorldGenSetting<int>
+    public sealed class WorldGenSettingDecimal : AbstractWorldGenSetting<decimal>
     {
-        public WorldGenSettingInt(Vector2 relativeScreenPosition, string name, int defaultValue, int min, int max, int step, int stepShift) : base(relativeScreenPosition, name, defaultValue, min, max, step, stepShift) {}
+        public WorldGenSettingDecimal(Vector2 relativeScreenPosition, string name, decimal defaultValue, decimal min, decimal max, decimal step, decimal stepShift) : base(relativeScreenPosition, name, defaultValue, min, max, step, stepShift) {}
 
-        public override void Increment()
+        public sealed override void Increment()
         {
             // increment value if below max
             if (Value < Max)
@@ -18,7 +18,7 @@ namespace Minicraft.Game.Worlds.Generation
             }
         }
 
-        public override void Decrement()
+        public sealed override void Decrement()
         {
             // decrement value if above min
             if (Value > Min)
@@ -29,5 +29,7 @@ namespace Minicraft.Game.Worlds.Generation
                     Value = Min;
             }
         }
+
+        public static explicit operator float(WorldGenSettingDecimal setting) => (float)setting.Value;
     }
 }

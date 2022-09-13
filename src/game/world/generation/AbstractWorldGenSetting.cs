@@ -11,6 +11,7 @@ namespace Minicraft.Game.Worlds.Generation
         protected readonly T Min;
         protected readonly T Max;
         protected readonly T Step;
+        protected readonly T StepShift;
 
         private readonly Vector2 _relativeScreenPosition;
         private readonly Button _buttonDecrement;
@@ -18,7 +19,10 @@ namespace Minicraft.Game.Worlds.Generation
 
         public T Value { get; protected set; }
 
-        public AbstractWorldGenSetting(Vector2 relativeScreenPosition, string name, T defaultValue, T min, T max, T step)
+        protected bool IsShiftPressed => Input.KeyHeld(Keybinds.Shift);
+        protected T StepValue => IsShiftPressed ? StepShift : Step;
+
+        public AbstractWorldGenSetting(Vector2 relativeScreenPosition, string name, T defaultValue, T min, T max, T step, T stepShift)
         {
             _relativeScreenPosition = relativeScreenPosition;
             _buttonDecrement = new(relativeScreenPosition - new Vector2(0.15f, 0), new Point(50, 50), "<", Colors.ThemeDefault, Decrement);
@@ -28,6 +32,7 @@ namespace Minicraft.Game.Worlds.Generation
             Min = min;
             Max = max;
             Step = step;
+            StepShift = stepShift;
         }
 
         public abstract void Increment();
@@ -39,6 +44,7 @@ namespace Minicraft.Game.Worlds.Generation
             // update buttons
             _buttonDecrement.Update();
             _buttonIncrement.Update();
+            // TODO add ability to change value with scrollwheel while hovering over area of entire setting (use _lastRect like you did in UI.Button class)
         }
 
         public void Draw()

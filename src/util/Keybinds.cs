@@ -12,6 +12,7 @@ namespace Minicraft.Utils
         public static readonly Keys MoveRight = Keys.D;
         public static readonly Keys Jump = Keys.Space;
         public static readonly Keys Run = Keys.LeftShift;
+        public static readonly Keys Shift = Keys.LeftShift;
         public static readonly Keys SpawnProjectile = Keys.Q;
         public static readonly Keys SpawnBouncyProjectile = Keys.E;
     }
