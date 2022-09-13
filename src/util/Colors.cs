@@ -10,6 +10,7 @@ namespace Minicraft.Utils
         public static readonly Color Overlay = new Color(0, 0, 0, 128);
         public static readonly Color TextBackground = new Color(0, 0, 0, 128);
         public static readonly Color TextShadow = new Color(0, 0, 0, 64);
+        public static readonly Color TextWorldGenSetting = new Color(255, 255, 255);
 
         // entity
         public static readonly Color Entity_Player = new Color(255, 0, 0);

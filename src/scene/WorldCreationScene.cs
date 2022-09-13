@@ -2,6 +2,7 @@ using Microsoft.Xna.Framework;
 using Minicraft.Game.Entities.Living;
 using Minicraft.Game.Inventories;
 using Minicraft.Game.Worlds;
+using Minicraft.Game.Worlds.Generation;
 using Minicraft.UI;
 using Minicraft.Utils;
 
@@ -10,27 +11,33 @@ namespace Minicraft.Scenes
     public sealed class WorldCreationScene : AbstractScene
     {
         private readonly Button _buttonBack;
-        private readonly Button _buttonNew;
+        private readonly Button _buttonRandom;
+        private readonly Button _buttonSettings;
         private readonly Button _buttonStart;
 
         private World _world;
         private WorldPreview _worldPreview;
+        private WorldGen.Settings _settings;
 
-        public WorldCreationScene() : base()
+        public WorldCreationScene(WorldGen.Settings settings = null) : base()
         {
             _buttonBack = new(new Vector2(0.25f, 0.9f), new Point(250, 50), "Back", Colors.ThemeExit, BackToMainMenu);
-            _buttonNew = new(new Vector2(0.5f, 0.9f), new Point(250, 50), "Generate New World", Colors.ThemeDefault, GenerateNewWorld);
+            _buttonRandom = new(new Vector2(0.5f, 0.8f), new Point(250, 50), "Random World", Colors.ThemeDefault, GenerateRandomWorld);
+            _buttonSettings = new(new Vector2(0.5f, 0.9f), new Point(250, 50), "Settings", Colors.ThemeDefault, OpenSettings);
             _buttonStart = new(new Vector2(0.75f, 0.9f), new Point(250, 50), "Start World", Colors.ThemeBlue, StartWorld);
-            GenerateNewWorld();
+            _settings = settings ?? new();
+            GenerateRandomWorld();
         }
 
         private void BackToMainMenu() => MinicraftGame.SetScene(new MainMenuScene());
 
-        private void GenerateNewWorld()
+        private void GenerateRandomWorld()
         {
-            _world = WorldGen.GenerateWorld();
+            _world = WorldGen.GenerateWorld(_settings);
             _worldPreview = new WorldPreview(_world, new Vector2(0.5f, 0.4f));
         }
+
+        private void OpenSettings() => MinicraftGame.SetScene(new WorldCreationSettingsScene(_settings));
 
         private void StartWorld() => MinicraftGame.SetScene(new GameScene(new GameData(_world, new Inventory(), new PlayerEntity(_world))));
 
@@ -38,7 +45,8 @@ namespace Minicraft.Scenes
         {
             // update buttons
             _buttonBack.Update();
-            _buttonNew.Update();
+            _buttonRandom.Update();
+            _buttonSettings.Update();
             _buttonStart.Update();
         }
 
@@ -46,7 +54,8 @@ namespace Minicraft.Scenes
         {
             // draw buttons
             _buttonBack.Draw();
-            _buttonNew.Draw();
+            _buttonRandom.Draw();
+            _buttonSettings.Draw();
             _buttonStart.Draw();
             // draw world preview
             _worldPreview.Draw();

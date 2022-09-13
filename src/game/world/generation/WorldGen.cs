@@ -5,25 +5,64 @@ using Minicraft.Game.Blocks;
 using Minicraft.Utils;
 using SimplexNoise;
 
-namespace Minicraft.Game.Worlds
+namespace Minicraft.Game.Worlds.Generation
 {
     public static class WorldGen
     {
-        private const int CHUNK_WIDTH = 16;
-        private const int CHUNK_HEIGHT_VARIATION_RADIUS = 32;
-        private const int STONE_OFFSET = 32;
-        private const int SMOOTH_SCAN_RADIUS = 32;
-        private const int TREE_SPACING_MIN = 5;
-        private const int TREE_HEIGHT_MIN = 8;
-        private const int TREE_HEIGHT_MAX = 24;
-        private const int BRANCH_LENGTH_MAX = 5;
-        private const float TREE_CHANCE = 0.2f;
-        private const float BRANCH_CHANCE = 0.15f;
-        private const float CAVE_NOISE_SCALE = 0.02f;
-        private const float CAVE_NOISE_CUTOFF = 64f;
-
-        public static World GenerateWorld()
+        public sealed class Settings
         {
+            // settings
+            public readonly WorldGenSettingInt ChunkWidth = new(new(0.25f, 1f / 7f), "Chunk Width", 16, 0, World.WIDTH, 1);
+            public readonly WorldGenSettingInt ChunkHeightVariationRadius = new(new(0.25f, 2f / 7f), "Chunk Height Variation Radius", 32, 0, World.HEIGHT / 2, 1);
+            public readonly WorldGenSettingInt StoneOffset = new(new(0.25f, 3f / 7f), "Stone Offset", 32, 0, World.HEIGHT, 1);
+            public readonly WorldGenSettingInt SmoothScanRadius = new(new(0.25f, 4f / 7f), "Smooth Scan Radius", 32, 0, World.WIDTH, 1);
+            public readonly WorldGenSettingInt TreeSpacingMin = new(new(0.25f, 5f / 7f), "Tree Spacing Min", 5, 0, World.WIDTH, 1);
+            public readonly WorldGenSettingInt TreeHeightMin = new(new(0.25f, 6f / 7f), "Tree Height Min", 8, 0, World.HEIGHT, 1);
+            public readonly WorldGenSettingInt TreeHeightMax = new(new(0.75f, 1f / 7f), "Tree Height Max", 24, 0, World.HEIGHT, 1);
+            public readonly WorldGenSettingInt BranchLengthMax = new(new(0.75f, 2f / 7f), "Branch Length Max", 5, 0, World.WIDTH, 1);
+            public readonly WorldGenSettingFloat TreeChance = new(new(0.75f, 3f / 7f), "Tree Chance", 0.2f, 0f, 1f, 0.01f);
+            public readonly WorldGenSettingFloat BranchChance = new(new(0.75f, 4f / 7f), "Branch Chance", 0.15f, 0f, 1f, 0.01f);
+            public readonly WorldGenSettingFloat CaveNoiseScale = new(new(0.75f, 5f / 7f), "Cave Noise Scale", 0.02f, 0f, 1f, 0.01f);
+            public readonly WorldGenSettingFloat CaveNoiseCutoff = new(new(0.75f, 6f / 7f), "Cave Noise Cutoff", 64f, 0f, 100f, 1f);
+
+            // settings array
+            private readonly IWorldGenSetting[] _settings;
+
+            public Settings()
+            {
+                _settings = new IWorldGenSetting[]
+                {
+                    ChunkWidth,
+                    ChunkHeightVariationRadius,
+                    StoneOffset,
+                    SmoothScanRadius,
+                    TreeSpacingMin,
+                    TreeHeightMin,
+                    TreeHeightMax,
+                    BranchLengthMax,
+                    TreeChance,
+                    BranchChance,
+                    CaveNoiseScale,
+                    CaveNoiseCutoff
+                };
+            }
+
+            public void Update()
+            {
+                foreach (var setting in _settings)
+                    setting.Update();
+            }
+
+            public void Draw()
+            {
+                foreach (var setting in _settings)
+                    setting.Draw();
+            }
+        }
+
+        public static World GenerateWorld(Settings settings = null)
+        {
+            settings ??= new Settings();
             // create world of air blocks for modification
             int x, y;
             var world = new World();
@@ -31,28 +70,28 @@ namespace Minicraft.Game.Worlds
                 for (x = 0; x < World.WIDTH; x++)
                     world.SetBlockType(x, y, BlockType.Air);
             // create random height map
-            var relativeWidth = World.WIDTH / CHUNK_WIDTH;
+            var relativeWidth = World.WIDTH / settings.ChunkWidth;
             var midHeight = World.HEIGHT / 2;
             var heightmap = new int[World.WIDTH];
             for (int w = 0; w < relativeWidth; w++)
             {
-                var height = midHeight + Util.Random.Next(-CHUNK_HEIGHT_VARIATION_RADIUS, CHUNK_HEIGHT_VARIATION_RADIUS);
-                for (int h = 0; h < CHUNK_WIDTH; h++)
-                    heightmap[(w * CHUNK_WIDTH) + h] = height;
+                var height = midHeight + Util.Random.Next(-settings.ChunkHeightVariationRadius, settings.ChunkHeightVariationRadius);
+                for (int h = 0; h < settings.ChunkWidth; h++)
+                    heightmap[(w * settings.ChunkWidth) + h] = height;
             }
             // smooth height map
             var heightmapSmooth = new int[World.WIDTH];
-            var currentHeights = new int[SMOOTH_SCAN_RADIUS * 2];
+            var currentHeights = new int[settings.SmoothScanRadius * 2];
             var thirdHeight = (int)(World.HEIGHT / 3f);
             for (x = 0; x < World.WIDTH; x++)
             {
                 // get average height of surrounding area
-                for (int scanX = -SMOOTH_SCAN_RADIUS; scanX < SMOOTH_SCAN_RADIUS; scanX++)
+                for (int scanX = -settings.SmoothScanRadius; scanX < settings.SmoothScanRadius; scanX++)
                 {
                     var _x = x + scanX;
                     var inBounds = _x >= 0 && _x < World.WIDTH;
                     var height = inBounds ? heightmap[_x] : thirdHeight;
-                    currentHeights[scanX + SMOOTH_SCAN_RADIUS] = height;
+                    currentHeights[scanX + settings.SmoothScanRadius] = height;
                 }
                 heightmapSmooth[x] = (int)Math.Round(currentHeights.Average());
             }
@@ -62,18 +101,18 @@ namespace Minicraft.Game.Worlds
                 var heightMax = heightmapSmooth[x] - 1;
                 for (y = 0; y < heightmapSmooth[x]; y++)
                 {
-                    var isStone = y <= heightMax - STONE_OFFSET;
+                    var isStone = y <= heightMax - settings.StoneOffset;
                     var block = isStone ? BlockType.Stone : BlockType.Dirt;
                     world.SetBlockType(x, y, block);
                 }
             }
             // create noise map for caves
             Noise.Seed = Util.Random.Next(int.MinValue, int.MaxValue);
-            var noiseMap = Noise.Calc2D(World.WIDTH, World.HEIGHT, CAVE_NOISE_SCALE);
+            var noiseMap = Noise.Calc2D(World.WIDTH, World.HEIGHT, settings.CaveNoiseScale);
             // iterate through noisemap values and remove blocks at cutoff point
             for (y = 0; y < World.HEIGHT; y++)
                 for (x = 0; x < World.WIDTH; x++)
-                    if (noiseMap[x, y] < CAVE_NOISE_CUTOFF)
+                    if (noiseMap[x, y] < settings.CaveNoiseCutoff)
                         world.SetBlockType(x, y, BlockType.Air);
             // place grass on top-most dirt blocks
             for (x = 0; x < World.WIDTH; x++)
@@ -83,15 +122,15 @@ namespace Minicraft.Game.Worlds
                     world.SetBlockType(x, topBlock.y, BlockType.Grass);
             }
             // generate trees on surface grass
-            for (x = TREE_SPACING_MIN; x < World.WIDTH - TREE_SPACING_MIN; x++)
+            for (x = settings.TreeSpacingMin; x < World.WIDTH - settings.TreeSpacingMin; x++)
             {
                 var topBlock = world.GetTopBlock(x);
                 // test tree chance
-                if (topBlock.blockType == BlockType.Grass && TREE_CHANCE.TestChance())
+                if (topBlock.blockType == BlockType.Grass && settings.TreeChance.Value.TestChance())
                 {
                     // generate tree
                     var startY = topBlock.y + 1;
-                    var height = Util.Random.Next(TREE_HEIGHT_MIN, TREE_HEIGHT_MAX + 1);
+                    var height = Util.Random.Next(settings.TreeHeightMin, settings.TreeHeightMax + 1);
                     var branchDirection = 0;
                     for (y = startY; y < startY + height; y++)
                     {
@@ -109,11 +148,11 @@ namespace Minicraft.Game.Worlds
                                     world.SetBlockType(sidePoint, BlockType.Leaves);
                             }
                             // test branch chance
-                            if (BRANCH_CHANCE.TestChance())
+                            if (settings.BranchChance.Value.TestChance())
                             {
                                 // create branch
                                 branchDirection = (branchDirection == 0 ? Util.Random.NextBool() : branchDirection == -1) ? 1 : -1;
-                                var branchLength = Util.Random.Next(BRANCH_LENGTH_MAX) + 1;
+                                var branchLength = Util.Random.Next(settings.BranchLengthMax) + 1;
                                 Point branchPoint = default;
                                 for (int i = 0; i < branchLength; i++)
                                 {
@@ -141,7 +180,7 @@ namespace Minicraft.Game.Worlds
                                 var endPoint = branchPoint + new Point(branchDirection, 0);
                                 // place leaves at end of branch if valid
                                 if (endPoint.X >= 0 && endPoint.X < World.WIDTH && world.GetBlockType(endPoint) == BlockType.Air)
-                                        world.SetBlockType(endPoint, BlockType.Leaves);
+                                    world.SetBlockType(endPoint, BlockType.Leaves);
                             }
                             else
                                 // reset branch direction
@@ -151,7 +190,7 @@ namespace Minicraft.Game.Worlds
                     // place leaves on top of tree
                     world.SetBlockType(x, startY + height, BlockType.Leaves);
                     // space trees by minimum amount
-                    x += TREE_SPACING_MIN;
+                    x += settings.TreeSpacingMin;
                 }
             }
             // return generated world
