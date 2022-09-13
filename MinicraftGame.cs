@@ -12,6 +12,8 @@ namespace Minicraft
     {
         public const string TITLE = "Minicraft";
 
+        public static new GraphicsDevice GraphicsDevice { get; private set; }
+
         private static MinicraftGame _instance;
         private static AbstractScene _scene = new MainMenuScene();
 
@@ -27,16 +29,6 @@ namespace Minicraft
             Window.ClientSizeChanged += new EventHandler<EventArgs>((sender, eventArgs) => Display.UpdateSize(Window.ClientBounds.Width, Window.ClientBounds.Height));
         }
 
-        protected override void LoadContent()
-        {
-            Textures.Initialize(GraphicsDevice);
-            Fonts.Initialize(Content);
-            Audio.Initialize(Content);
-            Display.LoadContent(GraphicsDevice);
-            // base call
-            base.LoadContent();
-        }
-
         protected override void Initialize()
         {
             // set window title
@@ -47,6 +39,17 @@ namespace Minicraft
             Display.Initialize();
             // base call
             base.Initialize();
+        }
+
+        protected override void LoadContent()
+        {
+            GraphicsDevice = base.GraphicsDevice;
+            Textures.Initialize();
+            Fonts.Initialize(Content);
+            Audio.Initialize(Content);
+            Display.LoadContent();
+            // base call
+            base.LoadContent();
         }
 
         protected override void Update(GameTime gameTime)

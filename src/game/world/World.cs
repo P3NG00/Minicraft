@@ -34,15 +34,13 @@ namespace Minicraft.Game.Worlds
 
         public void SetBlockType(int x, int y, BlockType blockType) => BlockTypeAt(x, y) = blockType;
 
-        public int GetTopPosition(int x)
+        public Point GetSpawnPosition()
         {
-            for (int y = HEIGHT - 1; y >= 0; y--)
-            {
-                var blockType = GetBlockType(x, y);
-                if (!blockType.GetBlock().CanWalkThrough)
-                    return y + 1;
-            }
-            return 0;
+            var x = (int)(World.WIDTH / 2f);
+            var y0 = GetTopBlock(x - 1).y;
+            var y1 = GetTopBlock(x).y;
+            var y = Math.Max(y0, y1) + 1;
+            return new(x, y);
         }
 
         public (BlockType blockType, int y) GetTopBlock(int x)

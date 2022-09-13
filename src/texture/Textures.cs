@@ -14,7 +14,7 @@ namespace Minicraft.Texture
         public static Texture2D HighlightRing { get; private set; }
         public static Texture2D P3NG00Face { get; private set; }
 
-        public static void Initialize(GraphicsDevice graphicsDevice)
+        public static void Initialize()
         {
             Blank = CreateTexture(FilledTexture);
             Shaded = CreateTexture(ShadedTexture);
@@ -29,7 +29,7 @@ namespace Minicraft.Texture
                 for (int y = 0; y < SIZE; y++)
                     for (int x = 0; x < SIZE; x++)
                         data[(y * SIZE) + x] = colorFunc(x, y);
-                var texture = new Texture2D(graphicsDevice, SIZE, SIZE);
+                var texture = new Texture2D(MinicraftGame.GraphicsDevice, SIZE, SIZE);
                 texture.SetData(data);
                 return texture;
             }

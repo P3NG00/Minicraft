@@ -24,7 +24,7 @@ namespace Minicraft.Utils
 
         public static void Constructor(Microsoft.Xna.Framework.Game game) => _graphics = new GraphicsDeviceManager(game);
 
-        public static void LoadContent(GraphicsDevice graphicsDevice) => SpriteBatch = new SpriteBatch(graphicsDevice);
+        public static void LoadContent() => SpriteBatch = new SpriteBatch(MinicraftGame.GraphicsDevice);
 
         public static void Initialize() => SetSize(1280, 720, false);
 
@@ -67,6 +67,16 @@ namespace Minicraft.Utils
                 texture = Textures.Blank;
             var scale = size / texture.Bounds.Size.ToVector2();
             SpriteBatch.Draw(texture, position, null, color, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
+        }
+
+        public static void DrawCentered(Vector2 relativeScreenPosition, Vector2 size, Color color, Texture2D texture = null)
+        {
+            if (texture == null)
+                texture = Textures.Blank;
+            var textureSize = texture.Bounds.Size.ToVector2();
+            var screenPosition = relativeScreenPosition * WindowSize.ToVector2();
+            var drawPos = screenPosition - (textureSize / 2f);
+            Draw(drawPos, size, color, texture);
         }
 
         public static void DrawOffset(Vector2 position, Vector2 size, Color color, Texture2D texture = null) => Draw(position - CameraOffset, size, color, texture);

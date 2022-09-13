@@ -17,12 +17,7 @@ namespace Minicraft.Game.Entities.Living
 
         public PlayerEntity(World world) : this(Vector2.Zero) => SpawnIntoWorld(world);
 
-        public void SpawnIntoWorld(World world)
-        {
-            var x = (int)(World.WIDTH / 2f);
-            var y = Math.Max(world.GetTopPosition(x - 1), world.GetTopPosition(x));
-            Position = new Vector2(x, y);
-        }
+        public void SpawnIntoWorld(World world) => Position = world.GetSpawnPosition().ToVector2();
 
         public sealed override void Update(World world)
         {

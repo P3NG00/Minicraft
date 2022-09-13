@@ -1,4 +1,5 @@
 using Microsoft.Xna.Framework;
+using Minicraft.Utils;
 
 namespace Minicraft.Scenes
 {
@@ -6,7 +7,7 @@ namespace Minicraft.Scenes
     {
         public readonly Color BackgroundColor;
 
-        public AbstractScene(Color backgroundColor) => BackgroundColor = backgroundColor;
+        public AbstractScene(Color? backgroundColor = null) => BackgroundColor = backgroundColor ?? Colors.Background;
 
         public abstract void Update(GameTime gameTime);
 

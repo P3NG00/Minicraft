@@ -1,4 +1,5 @@
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
 using Minicraft.Font;
 using Minicraft.Game.Entities.Living;
 using Minicraft.Game.Inventories;
@@ -14,7 +15,7 @@ namespace Minicraft.Scenes
         private readonly Button _buttonExit = new Button(new Vector2(0.5f, 0.8f), new Point(120, 30), "exit", Colors.ThemeExit, MinicraftGame.EndProgram);
         private readonly Button _buttonWorldContinue = null;
 
-        public MainMenuScene() : base(Colors.Background)
+        public MainMenuScene() : base()
         {
             // check if save exists
             if (Data.SaveExists)
@@ -39,13 +40,7 @@ namespace Minicraft.Scenes
             _buttonWorldContinue?.Draw();
         }
 
-        // TODO create a 'world creator' scene with adjustable settings and an 'update changes' button to generate a world to preview your changes
-        private static void CreateNewWorld()
-        {
-            var world = WorldGen.GenerateWorld();
-            var gameData = new GameData(world, new Inventory(), new PlayerEntity(world));
-            MinicraftGame.SetScene(new GameScene(gameData));
-        }
+        private static void CreateNewWorld() => MinicraftGame.SetScene(new WorldCreationScene());
 
         private static void LoadSavedWorld() => MinicraftGame.SetScene(new GameScene(Data.Load()));
     }
