@@ -17,7 +17,7 @@ namespace Minicraft.Game.Worlds.Generation
         private readonly Button _buttonDecrement;
         private readonly Button _buttonIncrement;
 
-        public T Value { get; protected set; }
+        public T Value;
 
         protected bool IsShiftPressed => Input.KeyHeld(Keybinds.Shift);
         protected T StepValue => IsShiftPressed ? StepShift : Step;

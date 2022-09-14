@@ -47,6 +47,22 @@ namespace Minicraft.Game.Worlds.Generation
                 };
             }
 
+            public Settings CreateCopy()
+            {
+                var copy = new Settings();
+                for (int i = 0; i < copy._settings.Length; i++)
+                {
+                    var setting = copy._settings[i];
+                    if (setting is WorldGenSettingInt settingInt)
+                        settingInt.Value = ((WorldGenSettingInt) _settings[i]).Value;
+                    else if (setting is WorldGenSettingDecimal settingDecimal)
+                        settingDecimal.Value = ((WorldGenSettingDecimal) _settings[i]).Value;
+                    else if (setting is WorldGenSettingIntMult settingIntMult)
+                        settingIntMult.Value = ((WorldGenSettingIntMult) _settings[i]).Value;
+                }
+                return copy;
+            }
+
             public void Update()
             {
                 foreach (var setting in _settings)
@@ -144,7 +160,7 @@ namespace Minicraft.Game.Worlds.Generation
                             {
                                 // get reference of side block
                                 var sidePoint = setPoint + new Point(s, 0);
-                                if (world.GetBlockType(sidePoint) == BlockType.Air)
+                                if (sidePoint.X >= 0 && sidePoint.X < World.WIDTH && world.GetBlockType(sidePoint) == BlockType.Air)
                                     world.SetBlockType(sidePoint, BlockType.Leaves);
                             }
                             // test branch chance
