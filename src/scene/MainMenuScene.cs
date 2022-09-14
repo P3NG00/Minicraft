@@ -1,9 +1,5 @@
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input;
 using Minicraft.Font;
-using Minicraft.Game.Entities.Living;
-using Minicraft.Game.Inventories;
-using Minicraft.Game.Worlds;
 using Minicraft.UI;
 using Minicraft.Utils;
 
