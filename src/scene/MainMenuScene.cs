@@ -7,12 +7,14 @@ namespace Minicraft.Scenes
 {
     public sealed class MainMenuScene : AbstractScene
     {
-        private readonly Button _buttonWorldNew = new Button(new Vector2(0.5f, 0.6f), new Point(250, 50), "create world", Colors.ThemeBlue, CreateNewWorld);
-        private readonly Button _buttonExit = new Button(new Vector2(0.5f, 0.8f), new Point(120, 30), "exit", Colors.ThemeExit, MinicraftGame.EndProgram);
+        private readonly Button _buttonWorldNew;
+        private readonly Button _buttonExit;
         private readonly Button _buttonWorldContinue = null;
 
         public MainMenuScene() : base()
         {
+            _buttonWorldNew = new Button(new Vector2(0.5f, 0.6f), new Point(250, 50), "create world", Colors.ThemeBlue, CreateNewWorld);
+            _buttonExit = new Button(new Vector2(0.5f, 0.8f), new Point(120, 30), "exit", Colors.ThemeExit, MinicraftGame.EndProgram);
             // check if save exists
             if (Data.SaveExists)
                 _buttonWorldContinue = new Button(new Vector2(0.5f, 0.7f), new Point(250, 50), "continue world", Colors.ThemeBlue, LoadSavedWorld);
@@ -36,8 +38,8 @@ namespace Minicraft.Scenes
             _buttonWorldContinue?.Draw();
         }
 
-        private static void CreateNewWorld() => MinicraftGame.SetScene(new WorldCreationScene());
+        private void CreateNewWorld() => MinicraftGame.SetScene(new WorldCreationScene());
 
-        private static void LoadSavedWorld() => MinicraftGame.SetScene(new GameScene(Data.Load()));
+        private void LoadSavedWorld() => MinicraftGame.SetScene(new GameScene(Data.Load()));
     }
 }
