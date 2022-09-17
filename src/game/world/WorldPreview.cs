@@ -11,6 +11,7 @@ namespace Minicraft.Game.Worlds
 
         public WorldPreview(World world, Vector2 relativeScreenPosition)
         {
+            _relativeScreenPosition = relativeScreenPosition;
             _worldTexture = new Texture2D(MinicraftGame.GraphicsDevice, World.WIDTH, World.HEIGHT);
             var data = new Color[World.WIDTH * World.HEIGHT];
             for (int y = 0; y < World.HEIGHT; y++)
@@ -24,7 +25,6 @@ namespace Minicraft.Game.Worlds
                 }
             }
             _worldTexture.SetData(data);
-            _relativeScreenPosition = relativeScreenPosition;
         }
 
         public void Draw() => Display.DrawCentered(_relativeScreenPosition, new Vector2(World.WIDTH, World.HEIGHT), Color.White, _worldTexture);
