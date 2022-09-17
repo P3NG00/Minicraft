@@ -31,7 +31,8 @@ namespace Minicraft.Scenes
         public sealed override void Draw(GameTime gameTime)
         {
             // draw title
-            Display.DrawCenteredString(FontSize._36, new Vector2(0.5f, 0.4f), MinicraftGame.TITLE, Colors.UI_Title, Display.DrawStringWithShadow);
+            // TODO try using smallest fontsize but scaled up to appropriate amount (fontsize36 would be fontsize12 scaled up by 3)
+            Display.DrawCenteredString(FontSize._36, new Vector2(0.5f, 0.4f), MinicraftGame.TITLE, Colors.UI_Title, drawStringFunc: Display.DrawStringWithShadow);
             // draw buttons
             _buttonWorldNew.Draw();
             _buttonExit.Draw();

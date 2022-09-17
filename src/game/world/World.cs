@@ -126,10 +126,12 @@ namespace Minicraft.Game.Worlds
                     // draw blockhit string
                     if (blockHit.Position == blockPos)
                     {
-                        // TODO draw scaled string
                         var hitsLeft = block.HitsToBreak - blockHit.Hits;
                         if (hitsLeft > 0)
-                            Display.DrawOffsetString(FontSize._12, drawPos, hitsLeft.ToString(), Colors.UI_BlockHit, Display.DrawStringWithShadow);
+                        {
+                            var stringScale = new Vector2((float)Display.BlockScale / (float)(Textures.SIZE * 2));
+                            Display.DrawOffsetString(FontSize._12, drawPos, hitsLeft.ToString(), Colors.UI_BlockHit, stringScale, Display.DrawStringWithShadow);
+                        }
                     }
                     // draw debug updates
                     if (Debug.Enabled && Debug.DisplayBlockChecks && Debug.HasDebugUpdate(blockPos))
