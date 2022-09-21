@@ -54,11 +54,11 @@ namespace Minicraft.Game.Worlds.Generation
                 {
                     var setting = copy._settings[i];
                     if (setting is WorldGenSettingInt settingInt)
-                        settingInt.Value = ((WorldGenSettingInt) _settings[i]).Value;
+                        settingInt.Value = ((WorldGenSettingInt)_settings[i]).Value;
                     else if (setting is WorldGenSettingDecimal settingDecimal)
-                        settingDecimal.Value = ((WorldGenSettingDecimal) _settings[i]).Value;
+                        settingDecimal.Value = ((WorldGenSettingDecimal)_settings[i]).Value;
                     else if (setting is WorldGenSettingIntMult settingIntMult)
-                        settingIntMult.Value = ((WorldGenSettingIntMult) _settings[i]).Value;
+                        settingIntMult.Value = ((WorldGenSettingIntMult)_settings[i]).Value;
                 }
                 return copy;
             }

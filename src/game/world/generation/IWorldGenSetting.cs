@@ -2,12 +2,12 @@ namespace Minicraft.Game.Worlds.Generation
 {
     public interface IWorldGenSetting
     {
-        public void Increment();
+        void Increment();
 
-        public void Decrement();
+        void Decrement();
 
-        public void Update();
+        void Update();
 
-        public void Draw();
+        void Draw();
     }
 }
