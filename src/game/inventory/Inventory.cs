@@ -76,10 +76,9 @@ namespace Minicraft.Game.Inventories
             slots = GetEmptySlots();
             foreach (var slot in slots)
             {
-                amountRemaining = slot.Set(blockType, amount);
+                amountRemaining = slot.Set(blockType, amountRemaining.Value);
                 if (!amountRemaining.HasValue)
                     return null;
-                amount = amountRemaining.Value;
             }
             return amountRemaining;
         }
