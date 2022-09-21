@@ -6,6 +6,10 @@ namespace Minicraft.Game.Worlds.Generation
 {
     public abstract class AbstractWorldGenSetting<T> : IWorldGenSetting
     {
+        private const float RELATIVE_BUTTON_OFFSET = 0.15f;
+        private const float RELATIVE_TEXT_OFFSET = 0.015f;
+        private const int BUTTON_SIZE = 50;
+
         public readonly string Name;
 
         protected readonly T Min;
@@ -24,8 +28,10 @@ namespace Minicraft.Game.Worlds.Generation
         public AbstractWorldGenSetting(Vector2 relativeScreenPosition, string name, T defaultValue, T min, T max, T step, T stepShift)
         {
             _relativeScreenPosition = relativeScreenPosition;
-            _buttonDecrement = new(relativeScreenPosition - new Vector2(0.15f, 0), new Point(50, 50), "<", Colors.ThemeDefault, Decrement);
-            _buttonIncrement = new(relativeScreenPosition + new Vector2(0.15f, 0), new Point(50, 50), ">", Colors.ThemeDefault, Increment);
+            var buttonOffset = new Vector2(RELATIVE_BUTTON_OFFSET, 0);
+            var buttonSize = new Point(BUTTON_SIZE);
+            _buttonDecrement = new(relativeScreenPosition - buttonOffset, buttonSize, "<", Colors.ThemeDefault, Decrement);
+            _buttonIncrement = new(relativeScreenPosition + buttonOffset, buttonSize, ">", Colors.ThemeDefault, Increment);
             Name = name;
             Value = defaultValue;
             Min = min;
@@ -52,9 +58,10 @@ namespace Minicraft.Game.Worlds.Generation
             _buttonDecrement.Draw();
             _buttonIncrement.Draw();
             // draw name label
-            Display.DrawCenteredString(Font.FontSize._12, _relativeScreenPosition - new Vector2(0, 0.015f), Name, Colors.TextWorldGenSetting);
+            var textOffset = new Vector2(0, RELATIVE_TEXT_OFFSET);
+            Display.DrawCenteredString(Font.FontSize._12, _relativeScreenPosition - textOffset, Name, Colors.TextWorldGenSetting);
             // draw value label
-            Display.DrawCenteredString(Font.FontSize._12, _relativeScreenPosition + new Vector2(0, 0.015f), Value.ToString(), Colors.TextWorldGenSetting);
+            Display.DrawCenteredString(Font.FontSize._12, _relativeScreenPosition + textOffset, Value.ToString(), Colors.TextWorldGenSetting);
         }
 
         public static implicit operator T(AbstractWorldGenSetting<T> setting) => setting.Value;
