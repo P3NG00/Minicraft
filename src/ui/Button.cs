@@ -34,7 +34,7 @@ namespace Minicraft.UI
             _lastRect = new Rectangle(pos, _size);
             // test bounds
             _highlighted = _lastRect.Contains(Input.MousePosition);
-            if (Input.MouseLeftFirstUp() && _highlighted)
+            if (Keybinds.MouseLeft.ReleasedThisFrame && _highlighted)
                 _action();
         }
 

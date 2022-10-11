@@ -23,14 +23,14 @@ namespace Minicraft.Game.Entities.Living
         {
             // set horizontal movement
             RawVelocity.X = 0;
-            if (Input.KeyHeld(Keybinds.MoveLeft))
+            if (Keybinds.MoveLeft.Held)
                 RawVelocity.X--;
-            if (Input.KeyHeld(Keybinds.MoveRight))
+            if (Keybinds.MoveRight.Held)
                 RawVelocity.X++;
             // check running
-            Running = Input.KeyHeld(Keybinds.Run);
+            Running = Keybinds.Run.Held;
             // check jump
-            if (Input.KeyHeld(Keybinds.Jump))
+            if (Keybinds.Jump.Held)
                 Jump();
             // base call
             base.Update(world);

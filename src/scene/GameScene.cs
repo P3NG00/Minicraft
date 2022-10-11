@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
@@ -47,6 +48,7 @@ namespace Minicraft.Scenes
 
         // cache
         private BlockHit _blockHit = new BlockHit(Point.Zero, 0);
+        private GridMode _gridMode = (GridMode)0;
         private Vector2 _lastMouseBlock;
         private Point _lastMouseBlockInt;
         private bool _withinReach;
@@ -175,26 +177,27 @@ namespace Minicraft.Scenes
         private void HandleInput()
         {
             // toggle pause
-            if (Input.KeyFirstDown(Keybinds.Pause) && _player.Alive)
+            if (Keybinds.Pause.PressedThisFrame && _player.Alive)
                 _paused = !_paused;
             // increase/decrease time scale
-            if (Input.KeyFirstDown(Keys.F1))
+            if (Keybinds.TimeScaleDecrement.PressedThisFrame)
                 Debug.TimeScale -= Debug.TIME_SCALE_STEP;
-            if (Input.KeyFirstDown(Keys.F2))
+            if (Keybinds.TimeScaleIncrement.PressedThisFrame)
                 Debug.TimeScale += Debug.TIME_SCALE_STEP;
             // manually step time
-            if (Input.KeyFirstDown(Keys.F3))
+            if (Keybinds.TimeTickStep.PressedThisFrame)
                 _tickDelta += World.TICK_STEP;
             // debug
-            if (Debug.Enabled && Input.KeyFirstDown(Keybinds.DebugCheckUpdates))
+            if (Debug.Enabled && Keybinds.DebugCheckUpdates.PressedThisFrame)
                 Debug.DisplayBlockChecks = !Debug.DisplayBlockChecks;
-            if (Input.KeyFirstDown(Keybinds.Debug))
+            if (Keybinds.Debug.PressedThisFrame)
                 Debug.Enabled = !Debug.Enabled;
             // update if not paused
             if (!_paused)
             {
+                // check hotbar num keys
                 for (int i = 0; i < Inventory.SLOTS; i++)
-                    if (Input.KeyFirstDown(Keys.D1 + i))
+                    if (Input.KeyPressedThisFrame(Keys.D1 + i))
                         _inventory.SetActiveSlot(i);
                 Display.BlockScale = MathHelper.Clamp(Display.BlockScale + Input.ScrollWheelDelta, Display.BLOCK_SCALE_MIN, Display.BLOCK_SCALE_MAX);
                 // get block position from mouse
@@ -206,15 +209,23 @@ namespace Minicraft.Scenes
                 if (_player.Alive)
                 {
                     // give items if holding debug button
-                    if (Input.KeyHeld(Keybinds.Debug))
+                    if (Keybinds.Debug.Held)
                         for (int i = 1; i < Block.Amount; i++)
-                            if (Input.KeyFirstDown(Keys.D0 + i))
+                            if (Input.KeyPressedThisFrame(Keys.D0 + i))
                                 _inventory.Add((BlockType)i);
                     // spawn projectiles
-                    if (Input.KeyFirstDown(Keybinds.SpawnProjectile))
+                    if (Keybinds.SpawnProjectile.PressedThisFrame)
                         SpawnEntity(new ProjectileEntity(_player.Position));
-                    if (Input.KeyFirstDown(Keybinds.SpawnBouncyProjectile))
+                    if (Keybinds.SpawnBouncyProjectile.PressedThisFrame)
                         SpawnEntity(new BouncyProjectileEntity(_player.Position));
+                    // toggle grid mode
+                    if (Keybinds.ToggleGridMode.PressedThisFrame)
+                    {
+                        if ((int)_gridMode >= Enum.GetValues<GridMode>().Length - 1)
+                            _gridMode = (GridMode)0;
+                        else
+                            _gridMode++;
+                    }
                     // test if within reach
                     _withinReach = Vector2.Distance(_player.Center, _lastMouseBlock) <= PLAYER_REACH_RADIUS;
                     // catch out of bounds
@@ -225,10 +236,10 @@ namespace Minicraft.Scenes
                         var blockType = _world.GetBlockType(_lastMouseBlockInt);
                         // handle left click (block breaking)
                         // TODO instead of clicking to break blocks, hold left click for certain amount of ticks to break block
-                        if (Input.MouseLeftFirstDown() && blockType != BlockType.Air)
+                        if (Keybinds.MouseLeft.PressedThisFrame && blockType != BlockType.Air)
                             _blockHit.Update(_world, _inventory, _lastMouseBlockInt);
                         // handle right click (block placing & interaction)
-                        if (Input.MouseRightFirstDown())
+                        if (Keybinds.MouseRight.PressedThisFrame)
                         {
                             // if right click on air, place block
                             if (blockType == BlockType.Air)
@@ -241,7 +252,7 @@ namespace Minicraft.Scenes
                             else
                                 blockType.GetBlock().Interact(_world, _lastMouseBlockInt);
                         }
-                        if (Input.MouseMiddleFirstDown())
+                        if (Keybinds.MouseMiddle.PressedThisFrame)
                             SpawnEntity(new NPCEntity(_lastMouseBlock));
                     }
                 }
@@ -320,5 +331,12 @@ namespace Minicraft.Scenes
         }
 
         private void SpawnEntity(AbstractEntity entity) => _entityList.Add(entity);
+
+        private enum GridMode
+        {
+            Default,
+            AllGrid,
+            AllBlank,
+        }
     }
 }

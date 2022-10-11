@@ -5,6 +5,8 @@ using Minicraft.Utils;
 
 namespace Minicraft.Game.Entities
 {
+    // TODO add item entities for player to pickup to add to inventory. blocks will drop items instead of going directly into inventory
+
     public abstract class AbstractEntity
     {
         // getters

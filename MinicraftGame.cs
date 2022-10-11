@@ -57,7 +57,7 @@ namespace Minicraft
             // update input
             Input.Update();
             // togglable fullscreen
-            if (Input.KeyFirstDown(Keybinds.Fullscreen))
+            if (Keybinds.Fullscreen.PressedThisFrame)
                 Display.ToggleFullscreen();
             // update scene
             _scene.Update(gameTime);

@@ -25,7 +25,7 @@ namespace Minicraft.Game.Worlds.Generation
 
         public T Value;
 
-        protected T StepValue => Input.KeyHeld(Keybinds.Shift) ? StepShift : Step;
+        protected T StepValue => Keybinds.Shift.Held ? StepShift : Step;
 
         public AbstractWorldGenSetting(Vector2 relativeScreenPosition, string name, T defaultValue, T min, T max, T step, T stepShift)
         {
