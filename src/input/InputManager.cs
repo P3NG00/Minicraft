@@ -24,34 +24,30 @@ namespace Minicraft.Input
 
         internal static bool MouseKeyPressedThisFrame(MouseKeys mouseKey)
         {
-            switch (mouseKey)
-            {
-                case MouseKeys.Left: return _mouseStates[0].LeftButton == ButtonState.Pressed && _mouseStates[1].LeftButton == ButtonState.Released;
-                case MouseKeys.Middle: return _mouseStates[0].MiddleButton == ButtonState.Pressed && _mouseStates[1].MiddleButton == ButtonState.Released;
-                case MouseKeys.Right: return _mouseStates[0].RightButton == ButtonState.Pressed && _mouseStates[1].RightButton == ButtonState.Released;
-                default: throw new System.NotImplementedException($"{nameof(MouseKeyPressedThisFrame)} not implemented for {mouseKey}");
-            }
+            var states = GetMouseButtonStates(mouseKey);
+            return states.previous == ButtonState.Released && states.current == ButtonState.Pressed;
         }
 
         internal static bool MouseKeyReleasedThisFrame(MouseKeys mouseKey)
         {
-            switch (mouseKey)
-            {
-                case MouseKeys.Left: return _mouseStates[0].LeftButton == ButtonState.Released && _mouseStates[1].LeftButton == ButtonState.Pressed;
-                case MouseKeys.Middle: return _mouseStates[0].MiddleButton == ButtonState.Released && _mouseStates[1].MiddleButton == ButtonState.Pressed;
-                case MouseKeys.Right: return _mouseStates[0].RightButton == ButtonState.Released && _mouseStates[1].RightButton == ButtonState.Pressed;
-                default: throw new System.NotImplementedException($"{nameof(MouseKeyReleasedThisFrame)} not implemented for {mouseKey}");
-            }
+            var states = GetMouseButtonStates(mouseKey);
+            return states.previous == ButtonState.Pressed && states.current == ButtonState.Released;
         }
 
         internal static bool MouseKeyHeld(MouseKeys mouseKey)
         {
+            var states = GetMouseButtonStates(mouseKey);
+            return states.current == ButtonState.Pressed;
+        }
+
+        private static (ButtonState previous, ButtonState current) GetMouseButtonStates(MouseKeys mouseKey)
+        {
             switch (mouseKey)
             {
-                case MouseKeys.Left: return _mouseStates[0].LeftButton == ButtonState.Pressed;
-                case MouseKeys.Middle: return _mouseStates[0].MiddleButton == ButtonState.Pressed;
-                case MouseKeys.Right: return _mouseStates[0].RightButton == ButtonState.Pressed;
-                default: throw new System.NotImplementedException($"{nameof(MouseKeyHeld)} not implemented for {mouseKey}");
+                case MouseKeys.Left: return (_mouseStates[1].LeftButton, _mouseStates[0].LeftButton);
+                case MouseKeys.Middle: return (_mouseStates[1].MiddleButton, _mouseStates[0].MiddleButton);
+                case MouseKeys.Right: return (_mouseStates[1].RightButton, _mouseStates[0].RightButton);
+                default: throw new System.NotImplementedException($"{nameof(GetMouseButtonStates)} not implemented for {mouseKey}");
             }
         }
 
