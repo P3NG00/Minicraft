@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Minicraft.Font;
+using Minicraft.Input;
 using Minicraft.Scenes;
 using Minicraft.Texture;
 using Minicraft.Utils;
@@ -55,7 +56,7 @@ namespace Minicraft
         protected override void Update(GameTime gameTime)
         {
             // update input
-            Input.Update();
+            InputManager.Update();
             // togglable fullscreen
             if (Keybinds.Fullscreen.PressedThisFrame)
                 Display.ToggleFullscreen();

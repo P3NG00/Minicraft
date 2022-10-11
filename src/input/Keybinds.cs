@@ -1,6 +1,6 @@
 using Microsoft.Xna.Framework.Input;
 
-namespace Minicraft.Utils
+namespace Minicraft.Input
 {
     public static class Keybinds
     {

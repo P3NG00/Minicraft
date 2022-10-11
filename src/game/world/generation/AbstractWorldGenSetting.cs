@@ -1,4 +1,5 @@
 using Microsoft.Xna.Framework;
+using Minicraft.Input;
 using Minicraft.UI;
 using Minicraft.Utils;
 

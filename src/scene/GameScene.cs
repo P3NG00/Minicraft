@@ -10,6 +10,7 @@ using Minicraft.Game.Entities.Living;
 using Minicraft.Game.Entities.Projectile;
 using Minicraft.Game.Inventories;
 using Minicraft.Game.Worlds;
+using Minicraft.Input;
 using Minicraft.UI;
 using Minicraft.Utils;
 
@@ -197,11 +198,11 @@ namespace Minicraft.Scenes
             {
                 // check hotbar num keys
                 for (int i = 0; i < Inventory.SLOTS; i++)
-                    if (Input.KeyPressedThisFrame(Keys.D1 + i))
+                    if (InputManager.KeyPressedThisFrame(Keys.D1 + i))
                         _inventory.SetActiveSlot(i);
-                Display.BlockScale = MathHelper.Clamp(Display.BlockScale + Input.ScrollWheelDelta, Display.BLOCK_SCALE_MIN, Display.BLOCK_SCALE_MAX);
+                Display.BlockScale = MathHelper.Clamp(Display.BlockScale + InputManager.ScrollWheelDelta, Display.BLOCK_SCALE_MIN, Display.BLOCK_SCALE_MAX);
                 // get block position from mouse
-                var mousePos = Input.MousePosition.ToVector2();
+                var mousePos = InputManager.MousePosition.ToVector2();
                 mousePos.Y = Display.WindowSize.Y - mousePos.Y - 1;
                 _lastMouseBlock = ((mousePos - (Display.WindowSize.ToVector2() / 2f)) / Display.BlockScale) + (_player.Position + new Vector2(0, _player.Dimensions.Y / 2f));
                 _lastMouseBlockInt = _lastMouseBlock.ToPoint();
@@ -211,7 +212,7 @@ namespace Minicraft.Scenes
                     // give items if holding debug button
                     if (Keybinds.Debug.Held)
                         for (int i = 1; i < Block.Amount; i++)
-                            if (Input.KeyPressedThisFrame(Keys.D0 + i))
+                            if (InputManager.KeyPressedThisFrame(Keys.D0 + i))
                                 _inventory.Add((BlockType)i);
                     // spawn projectiles
                     if (Keybinds.SpawnProjectile.PressedThisFrame)

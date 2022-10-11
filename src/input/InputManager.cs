@@ -1,9 +1,9 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
-namespace Minicraft.Utils
+namespace Minicraft.Input
 {
-    static class Input
+    internal static class InputManager
     {
         private static readonly KeyboardState[] _keyStates = new KeyboardState[2];
         private static readonly MouseState[] _mouseStates = new MouseState[2];

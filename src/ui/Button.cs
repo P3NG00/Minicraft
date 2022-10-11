@@ -1,6 +1,7 @@
 using System;
 using Microsoft.Xna.Framework;
 using Minicraft.Font;
+using Minicraft.Input;
 using Minicraft.Utils;
 
 namespace Minicraft.UI
@@ -33,7 +34,7 @@ namespace Minicraft.UI
             var pos = ((Display.WindowSize.ToVector2() * _relativeCenter) - (_size.ToVector2() / 2f)).ToPoint();
             _lastRect = new Rectangle(pos, _size);
             // test bounds
-            _highlighted = _lastRect.Contains(Input.MousePosition);
+            _highlighted = _lastRect.Contains(InputManager.MousePosition);
             if (Keybinds.MouseLeft.ReleasedThisFrame && _highlighted)
                 _action();
         }
