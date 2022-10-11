@@ -6,6 +6,8 @@ namespace Minicraft.Game.Worlds.Generation
 {
     public abstract class AbstractWorldGenSetting<T> : IWorldGenSetting
     {
+        private const string TEXT_DECREMENT = "<";
+        private const string TEXT_INCREMENT = ">";
         private const float RELATIVE_BUTTON_OFFSET = 0.15f;
         private const float RELATIVE_TEXT_OFFSET = 0.015f;
         private const int BUTTON_SIZE = 50;
@@ -30,8 +32,8 @@ namespace Minicraft.Game.Worlds.Generation
             _relativeScreenPosition = relativeScreenPosition;
             var buttonOffset = new Vector2(RELATIVE_BUTTON_OFFSET, 0);
             var buttonSize = new Point(BUTTON_SIZE);
-            _buttonDecrement = new(relativeScreenPosition - buttonOffset, buttonSize, "<", Colors.ThemeDefault, Decrement);
-            _buttonIncrement = new(relativeScreenPosition + buttonOffset, buttonSize, ">", Colors.ThemeDefault, Increment);
+            _buttonDecrement = new(relativeScreenPosition - buttonOffset, buttonSize, TEXT_DECREMENT, Colors.ThemeDefault, Decrement);
+            _buttonIncrement = new(relativeScreenPosition + buttonOffset, buttonSize, TEXT_INCREMENT, Colors.ThemeDefault, Increment);
             Name = name;
             Value = defaultValue;
             Min = min;
