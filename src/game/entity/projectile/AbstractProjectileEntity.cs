@@ -1,7 +1,7 @@
 using Microsoft.Xna.Framework;
 using Minicraft.Utils;
 
-namespace Minicraft.Game.Entities.Projectile
+namespace Minicraft.Game.Entities.Projectiles
 {
     public class AbstractProjectileEntity : AbstractEntity
     {
