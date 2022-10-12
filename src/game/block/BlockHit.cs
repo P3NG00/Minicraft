@@ -30,12 +30,12 @@ namespace Minicraft.Game.BlockType
                 Hits = 1;
             }
             // get blocktype
-            var blockType = world.GetBlock(hitPosition);
+            var block = world.GetBlock(hitPosition);
             // break block
-            if (Hits >= blockType.GetBlock().HitsToBreak)
+            if (Hits >= block.HitsToBreak)
             {
                 // add to players inventory
-                inventory.Add(blockType);
+                inventory.Add(block);
                 // remove block from world
                 world.SetBlock(Position, Blocks.Air);
                 // reset info

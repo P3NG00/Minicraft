@@ -19,14 +19,14 @@ namespace Minicraft.Game.Worlds
                 var flipY = World.HEIGHT - y - 1;
                 for (int x = 0; x < World.WIDTH; x++)
                 {
-                    var blockType = world.GetBlock(x, y);
+                    var block = world.GetBlock(x, y);
                     var index = (flipY * World.WIDTH) + x;
-                    data[index] = blockType.GetBlock().Color;
+                    data[index] = block.Color;
                 }
             }
             _worldTexture.SetData(data);
         }
 
-        public void Draw() => Display.DrawCentered(_relativeScreenPosition, new Vector2(World.WIDTH, World.HEIGHT), Color.White, _worldTexture);
+        public void Draw() => Display.DrawCentered(_relativeScreenPosition, new Vector2(World.WIDTH, World.HEIGHT), new(_worldTexture));
     }
 }

@@ -132,7 +132,7 @@ namespace Minicraft.Game.Worlds.Generation
             for (x = 0; x < World.WIDTH; x++)
             {
                 var topBlock = world.GetTopBlock(x);
-                if (topBlock.blockType == Blocks.Dirt)
+                if (topBlock.block == Blocks.Dirt)
                     world.SetBlock(x, topBlock.y, Blocks.Grass);
             }
             // generate trees on surface grass
@@ -140,7 +140,7 @@ namespace Minicraft.Game.Worlds.Generation
             {
                 var topBlock = world.GetTopBlock(x);
                 // test tree chance
-                if (topBlock.blockType == Blocks.Grass && settings.TreeChance.Value.TestChance())
+                if (topBlock.block == Blocks.Grass && settings.TreeChance.Value.TestChance())
                 {
                     // generate tree
                     var startY = topBlock.y + 1;

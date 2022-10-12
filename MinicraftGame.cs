@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Minicraft.Font;
+using Minicraft.Game.BlockType;
 using Minicraft.Input;
 using Minicraft.Scenes;
 using Minicraft.Texture;
@@ -49,6 +50,8 @@ namespace Minicraft
             Fonts.Initialize(Content);
             Audio.Initialize(Content);
             Display.LoadContent();
+            // initialize blocks (after textures)
+            Blocks.Initialize();
             // base call
             base.LoadContent();
         }

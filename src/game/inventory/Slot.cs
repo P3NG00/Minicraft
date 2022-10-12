@@ -6,7 +6,7 @@ namespace Minicraft.Game.Inventories
     {
         private const int SLOT_MAX = 255;
 
-        public Blocks Block { get; private set; } // TODO to be changed to Item in future
+        public Block Block { get; private set; } // TODO to be changed to Item in future
         public int Amount { get; private set; }
 
         public bool IsEmpty => Block == Blocks.Air || Amount <= 0;
@@ -33,9 +33,9 @@ namespace Minicraft.Game.Inventories
             return amount - remainingCapacity;
         }
 
-        public int? Set(Blocks blockType, int amount)
+        public int? Set(Block block, int amount)
         {
-            Block = blockType;
+            Block = block;
             Amount = 0;
             return Add(amount);
         }

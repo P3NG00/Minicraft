@@ -25,11 +25,11 @@ namespace Minicraft.Game.Inventories
                 _inventory[i] = new Slot();
         }
 
-        public List<Slot> GetSlotsOf(Blocks blockType)
+        public List<Slot> GetSlotsOf(Block block)
         {
             var slots = new List<Slot>();
             foreach (var slot in _inventory)
-                if (slot.Block == blockType)
+                if (slot.Block == block)
                     slots.Add(slot);
             return slots;
         }
@@ -57,14 +57,14 @@ namespace Minicraft.Game.Inventories
             }
         }
 
-        public int? Add(Blocks blockType, int amount = 1)
+        public int? Add(Block block, int amount = 1)
         {
             if (amount <= 0)
                 throw new System.Exception("Amount must be greater than 0");
-            if (blockType == Blocks.Air)
+            if (block == Blocks.Air)
                 throw new System.Exception("Cannot add air to inventory");
             // add to slots of same type
-            var slots = GetSlotsOf(blockType);
+            var slots = GetSlotsOf(block);
             int? amountRemaining = amount;
             foreach (var slot in slots)
             {
@@ -76,7 +76,7 @@ namespace Minicraft.Game.Inventories
             slots = GetEmptySlots();
             foreach (var slot in slots)
             {
-                amountRemaining = slot.Set(blockType, amountRemaining.Value);
+                amountRemaining = slot.Set(block, amountRemaining.Value);
                 if (!amountRemaining.HasValue)
                     return null;
             }
@@ -87,30 +87,28 @@ namespace Minicraft.Game.Inventories
         {
             // draw bar background
             var drawPos = new Vector2((Display.WindowSize.X / 2f) - (HotbarSize.X / 2f), Display.WindowSize.Y - HotbarSize.Y);
-            Display.Draw(drawPos, HotbarSize.ToVector2(), Colors.HotbarBackground);
+            Display.Draw(drawPos, HotbarSize.ToVector2(), new(color: Colors.HotbarBackground));
             // draw each slot background
             drawPos += new Vector2(Util.UI_SPACER);
             var drawSize = new Vector2(SLOT_SIZE);
             var slotOffset = new Vector2(Util.UI_SPACER + SLOT_SIZE, 0);
             Slot slot;
-            Color color;
             // draw each slot
             for (var i = 0; i < _inventory.Length; i++)
             {
+                // TODO 1) draw slot background
+                // TODO 2) draw slot block (if not empty)
+                // TODO 3) draw slot selected outline (if active slot)
+
                 slot = _inventory[i];
                 // if active slot, draw selected border 1 px thick around slot
                 if (i == _activeSlot)
-                    Display.Draw(drawPos - new Vector2(2), drawSize + new Vector2(4), Colors.HotbarSelected);
+                    Display.Draw(drawPos - new Vector2(2), drawSize + new Vector2(4), new(color: Colors.HotbarSelected));
                 // slot draw info
-                color = Colors.HotbarSlotBackground;
-                Texture2D texture = null;
+                DrawData drawData = new(color: Colors.HotbarSlotBackground);
                 if (!slot.IsEmpty)
-                {
-                    var block = slot.Block.GetBlock();
-                    color = block.Color;
-                    texture = block.Texture;
-                }
-                Display.Draw(drawPos, drawSize, color, texture);
+                    drawData = slot.Block.DrawData;
+                Display.Draw(drawPos, drawSize, drawData);
                 // draw string of amount of block in slot
                 if (!slot.IsEmpty)
                     Display.DrawStringWithShadow(FontSize._12, drawPos + new Vector2(Util.UI_SPACER, Util.UI_SPACER), slot.Amount.ToString(), Colors.HotbarSlotText);

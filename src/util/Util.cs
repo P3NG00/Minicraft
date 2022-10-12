@@ -16,8 +16,6 @@ namespace Minicraft.Utils
 
         public static T GetRandom<T>(this T[] t) => t[Random.Next(t.Length)];
 
-        public static Block GetBlock(this Blocks blockType) => (Block)blockType;
-
         public static bool TestChance(this float chance)
         {
             if (chance >= 1.0f)

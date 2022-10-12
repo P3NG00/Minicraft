@@ -69,7 +69,7 @@ namespace Minicraft.Game.Entities
             // find final screen draw position
             var drawPos = relativePosition - drawStartOffset;
             // draw to surface
-            Display.DrawOffset(drawPos, currentSize, _color);
+            Display.DrawOffset(drawPos, currentSize, new(color: _color));
         }
 
         public struct Sides
@@ -134,7 +134,7 @@ namespace Minicraft.Game.Entities
             {
                 var sidePoint = new Point(side, y);
                 Debug.AddCollisionCheck(sidePoint);
-                if (!world.GetBlock(sidePoint).GetBlock().CanWalkThrough)
+                if (!world.GetBlock(sidePoint).CanWalkThrough)
                     // found collision
                     return true;
             }
@@ -165,7 +165,7 @@ namespace Minicraft.Game.Entities
             {
                 var sidePoint = new Point(x, side);
                 Debug.AddCollisionCheck(sidePoint);
-                if (!world.GetBlock(sidePoint).GetBlock().CanWalkThrough)
+                if (!world.GetBlock(sidePoint).CanWalkThrough)
                     // found collision
                     return true;
             }

@@ -55,7 +55,7 @@ namespace Minicraft.Game.Entities.Living
                         checkSide = sides.Left - 1;
                     else
                         checkSide = sides.Right + 1;
-                    if (!world.GetBlock(new Point(checkSide, sides.Bottom)).GetBlock().CanWalkThrough)
+                    if (!world.GetBlock(new Point(checkSide, sides.Bottom)).CanWalkThrough)
                         Jump();
                 }
             }

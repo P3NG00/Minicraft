@@ -61,26 +61,24 @@ namespace Minicraft.Utils
             _graphics.PreferredBackBufferHeight = height;
         }
 
-        public static void Draw(Vector2 position, Vector2 size, Color color, Texture2D texture = null)
+        public static void Draw(Vector2 position, Vector2 size, DrawData drawData)
         {
-            texture ??= Textures.Blank;
-            var scale = size / texture.Bounds.Size.ToVector2();
-            SpriteBatch.Draw(texture, position, null, color, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
+            var scale = size / drawData.Texture.Bounds.Size.ToVector2();
+            SpriteBatch.Draw(drawData.Texture, position, null, drawData.Color, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
         }
 
-        public static void DrawCentered(Vector2 relativeScreenPosition, Vector2 size, Color color, Texture2D texture = null)
+        public static void DrawCentered(Vector2 relativeScreenPosition, Vector2 size, DrawData drawData)
         {
-            texture ??= Textures.Blank;
-            var textureSize = texture.Bounds.Size.ToVector2();
+            var textureSize = drawData.Texture.Bounds.Size.ToVector2();
             var screenPosition = relativeScreenPosition * WindowSize.ToVector2();
             var drawPos = screenPosition - (textureSize / 2f);
-            Draw(drawPos, size, color, texture);
+            Draw(drawPos, size, drawData);
         }
 
-        public static void DrawOffset(Vector2 position, Vector2 size, Color color, Texture2D texture = null) => Draw(position - CameraOffset, size, color, texture);
+        public static void DrawOffset(Vector2 position, Vector2 size, DrawData drawData) => Draw(position - CameraOffset, size, drawData);
 
         // draws faded overlay over entire window
-        public static void DrawFadedOverlay() => Display.Draw(Vector2.Zero, WindowSize.ToVector2(), Colors.Overlay);
+        public static void DrawFadedOverlay() => Display.Draw(Vector2.Zero, WindowSize.ToVector2(), new(color: Colors.Overlay));
 
         public static void DrawString(FontSize fontSize, Vector2 position, string text, Color color, Vector2? scale = null)
         {
@@ -93,7 +91,7 @@ namespace Minicraft.Utils
             // draw text background
             var textSize = fontSize.MeasureString(text);
             var uiSpacerVec = new Vector2(Util.UI_SPACER);
-            Draw(position - (uiSpacerVec / 2f), textSize + uiSpacerVec, Colors.TextBackground);
+            Draw(position - (uiSpacerVec / 2f), textSize + uiSpacerVec, new(color: Colors.TextBackground));
             // draw text
             DrawString(fontSize, position, text, color, scale);
         }

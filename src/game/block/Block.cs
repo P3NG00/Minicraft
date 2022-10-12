@@ -5,21 +5,22 @@ using Minicraft.Utils;
 
 namespace Minicraft.Game.BlockType
 {
-    public partial class Block
+    public class Block
     {
         public readonly string Name;
-        public readonly Color Color;
         public readonly int HitsToBreak;
         public readonly bool CanWalkThrough;
-        public readonly Texture2D Texture;
+        public readonly DrawData DrawData;
 
-        public Block(string name, Color color, int hitsToBreak, bool canWalkThrough, Texture2D texture)
+        public Texture2D Texture => DrawData.Texture;
+        public Color Color => DrawData.Color;
+
+        public Block(string name, int hitsToBreak, bool canWalkThrough, DrawData drawData)
         {
             Name = name;
-            Color = color;
             HitsToBreak = hitsToBreak;
             CanWalkThrough = canWalkThrough;
-            Texture = texture;
+            DrawData = drawData;
         }
 
         public virtual void Update(World world, Point position) => Debug.AddBlockUpdate(position);
@@ -28,19 +29,11 @@ namespace Minicraft.Game.BlockType
 
         public override bool Equals(object obj)
         {
-            if (obj is Blocks blocks)
-                return this == blocks;
             if (obj is Block block)
                 return this == block;
             return false;
         }
 
-        public override int GetHashCode() => Name.GetHashCode() + Color.GetHashCode() + CanWalkThrough.GetHashCode();
-
-        public static implicit operator Block(Blocks blockType) => s_blockArray[((int)blockType)];
-
-        public static bool operator ==(Block block, Blocks blockType) => block == (Block)blockType;
-
-        public static bool operator !=(Block block, Blocks blockType) => block != (Block)blockType;
+        public override int GetHashCode() => Name.GetHashCode();
     }
 }

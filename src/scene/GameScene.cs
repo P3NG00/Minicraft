@@ -54,7 +54,7 @@ namespace Minicraft.Scenes
         private Point _lastMouseBlockInt;
         private bool _withinReach;
 
-        public GameScene(GameData gameData) : base(Blocks.Air.GetBlock().Color)
+        public GameScene(GameData gameData) : base(Blocks.Air.Color)
         {
             // initialize buttons
             _buttonRespawn = new Button(new Vector2(0.5f, 0.6f), new Point(250, 50), TEXT_RESPAWN, Colors.ThemeDefault, RespawnPlayer);
@@ -211,9 +211,9 @@ namespace Minicraft.Scenes
                 {
                     // give items if holding debug button
                     if (Keybinds.Debug.Held)
-                        for (int i = 1; i < Block.Amount; i++)
+                        for (int i = 1; i < 8; i++) // TODO adjust hardcoded value '8'
                             if (InputManager.KeyPressedThisFrame(Keys.D0 + i))
-                                _inventory.Add((Blocks)i);
+                                _inventory.Add(Blocks.GetByID(i));
                     // spawn projectiles
                     if (Keybinds.SpawnProjectile.PressedThisFrame)
                         SpawnEntity(new ProjectileEntity(_player.Position));
@@ -234,16 +234,16 @@ namespace Minicraft.Scenes
                         _lastMouseBlockInt.X >= 0 && _lastMouseBlockInt.X < World.WIDTH &&
                         _lastMouseBlockInt.Y >= 0 && _lastMouseBlockInt.Y < World.HEIGHT)
                     {
-                        var blockType = _world.GetBlock(_lastMouseBlockInt);
+                        var block = _world.GetBlock(_lastMouseBlockInt);
                         // handle left click (block breaking)
                         // TODO instead of clicking to break blocks, hold left click for certain amount of ticks to break block
-                        if (Keybinds.MouseLeft.PressedThisFrame && blockType != Blocks.Air)
+                        if (Keybinds.MouseLeft.PressedThisFrame && block != Blocks.Air)
                             _blockHit.Update(_world, _inventory, _lastMouseBlockInt);
                         // handle right click (block placing & interaction)
                         if (Keybinds.MouseRight.PressedThisFrame)
                         {
                             // if right click on air, place block
-                            if (blockType == Blocks.Air)
+                            if (block == Blocks.Air)
                             {
                                 var inPlayer = _player.GetSides().Contains(_lastMouseBlockInt);
                                 if (!inPlayer)
@@ -251,7 +251,7 @@ namespace Minicraft.Scenes
                             }
                             // otherwise, interact with block
                             else
-                                blockType.GetBlock().Interact(_world, _lastMouseBlockInt);
+                                block.Interact(_world, _lastMouseBlockInt);
                         }
                         if (Keybinds.MouseMiddle.PressedThisFrame)
                             SpawnEntity(new NPCEntity(_lastMouseBlock));
@@ -270,13 +270,13 @@ namespace Minicraft.Scenes
             _inventory.Draw();
             // draw health bar
             var drawPos = new Vector2((Display.WindowSize.X / 2f) - (BarSize.X / 2f), Display.WindowSize.Y - Inventory.HotbarSize.Y - BarSize.Y);
-            Display.Draw(drawPos, BarSize, Colors.UI_Bar);
+            Display.Draw(drawPos, BarSize, new(color: Colors.UI_Bar));
             // adjust size to fit within bar
             drawPos += new Vector2(Util.UI_SPACER);
             var healthSize = BarSize - new Vector2(Util.UI_SPACER * 2, Util.UI_SPACER);
             // readjust size to display real health
             healthSize.X *= _player.Life / _player.MaxLife;
-            Display.Draw(drawPos, healthSize, Colors.UI_Life);
+            Display.Draw(drawPos, healthSize, new(color: Colors.UI_Life));
             // draw health numbers on top of bar
             var healthString = $"{_player.Life:0.#}/{_player.MaxLife:0.#}";
             var textSize = FontSize._12.MeasureString(healthString);

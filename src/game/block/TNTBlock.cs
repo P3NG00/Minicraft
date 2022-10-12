@@ -1,5 +1,4 @@
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Minicraft.Game.Worlds;
 using Minicraft.Utils;
 
@@ -7,7 +6,7 @@ namespace Minicraft.Game.BlockType
 {
     public sealed class TNTBlock : Block
     {
-        public TNTBlock(string name, Color color, int hitsToBreak, bool canWalkThrough, Texture2D texture) : base(name, color, hitsToBreak, canWalkThrough, texture) {}
+        public TNTBlock(string name, int hitsToBreak, bool canWalkThrough, DrawData drawData) : base(name, hitsToBreak, canWalkThrough, drawData) {}
 
         // TODO summon TNTEntity
 

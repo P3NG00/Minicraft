@@ -1,6 +1,5 @@
 using System;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Minicraft.Font;
 using Minicraft.Game.BlockType;
 using Minicraft.Game.Entities;
@@ -19,20 +18,21 @@ namespace Minicraft.Game.Worlds
         public const float TICK_STEP = 1f / TICKS_PER_SECOND;
         private const int BLOCK_UPDATES_PER_TICK = (int)(((WIDTH * HEIGHT) * WORLD_UPDATED_PER_SECOND) / World.TICKS_PER_SECOND);
 
-        private readonly Blocks[,] _blockGrid = new Blocks[HEIGHT, WIDTH];
+        // TODO make grid hold only id of blocks
+        private readonly Block[,] _blockGrid = new Block[HEIGHT, WIDTH];
         // TODO add 2nd layer for 'background' tiles. make dirt, stone, and wood backgrounds. dirt and stone will generate on its respective block and the back layer will stay when caves are removed from the foreground
 
-        public Blocks[,] RawBlockGrid => _blockGrid;
+        public Block[,] RawBlockGrid => _blockGrid;
 
-        private ref Blocks BlockAt(int x, int y) => ref _blockGrid[y, x];
+        private ref Block BlockAt(int x, int y) => ref _blockGrid[y, x];
 
-        public Blocks GetBlock(Point point) => GetBlock(point.X, point.Y);
+        public Block GetBlock(Point point) => GetBlock(point.X, point.Y);
 
-        public Blocks GetBlock(int x, int y) => BlockAt(x, y);
+        public Block GetBlock(int x, int y) => BlockAt(x, y);
 
-        public void SetBlock(Point point, Blocks blockType) => SetBlock(point.X, point.Y, blockType);
+        public void SetBlock(Point point, Block block) => SetBlock(point.X, point.Y, block);
 
-        public void SetBlock(int x, int y, Blocks blockType) => BlockAt(x, y) = blockType;
+        public void SetBlock(int x, int y, Block block) => BlockAt(x, y) = block;
 
         public Point GetSpawnPosition()
         {
@@ -43,13 +43,13 @@ namespace Minicraft.Game.Worlds
             return new(x, y);
         }
 
-        public (Blocks blockType, int y) GetTopBlock(int x)
+        public (Block block, int y) GetTopBlock(int x)
         {
             for (int y = HEIGHT - 1; y >= 0; y--)
             {
-                var blockType = GetBlock(x, y);
-                if (!blockType.GetBlock().CanWalkThrough)
-                    return (blockType, y);
+                var block = GetBlock(x, y);
+                if (!block.CanWalkThrough)
+                    return (block, y);
             }
             return (Blocks.Air, 0);
         }
@@ -61,7 +61,7 @@ namespace Minicraft.Game.Worlds
                 // get random point
                 var pos = Util.Random.NextPoint(new Point(WIDTH, HEIGHT));
                 // update block at that point
-                GetBlock(pos).GetBlock().Update(this, pos);
+                GetBlock(pos).Update(this, pos);
             }
         }
 
@@ -98,30 +98,22 @@ namespace Minicraft.Game.Worlds
                     var blockX = x + visualStartX;
                     var drawX = blockX * Display.BlockScale;
                     var blockPos = new Point(blockX, blockY);
-                    var blockType = GetBlock(blockPos);
-                    var block = blockType.GetBlock();
+                    var block = GetBlock(blockPos);
                     var drawPos = new Vector2(drawX, drawY);
                     // draw block
-                    if (blockType != Blocks.Air)
-                        Display.DrawOffset(drawPos, drawScale, block.Color, block.Texture);
+                    if (block != Blocks.Air)
+                        Display.DrawOffset(drawPos, drawScale, block.DrawData);
                     // draw highlight
                     var highlighted = blockPos == mouseBlock && withinReach;
                     if (highlighted)
                     {
-                        Color highlightColor;
-                        Texture2D highlightTexture;
-                        var isAir = blockType == Blocks.Air;
+                        DrawData drawData;
+                        var isAir = block == Blocks.Air;
                         if (isAir)
-                        {
-                            highlightColor = Colors.BlockHighlightAir;
-                            highlightTexture = Textures.Blank;
-                        }
+                            drawData = new(color: Colors.BlockHighlightAir);
                         else
-                        {
-                            highlightColor = Colors.BlockHighlight;
-                            highlightTexture = Textures.HighlightRing;
-                        }
-                        Display.DrawOffset(drawPos, drawScale, highlightColor, highlightTexture);
+                            drawData = new(Textures.HighlightRing, Colors.BlockHighlight);
+                        Display.DrawOffset(drawPos, drawScale, drawData);
                     }
                     // draw blockhit string
                     if (blockHit.Position == blockPos)
@@ -136,7 +128,7 @@ namespace Minicraft.Game.Worlds
                     // draw debug updates
                     if (Debug.Enabled && Debug.DisplayBlockChecks && Debug.HasDebugUpdate(blockPos))
                         foreach (var color in Debug.GetDebugColors(blockPos))
-                            Display.DrawOffset(drawPos, drawScale, color);
+                            Display.DrawOffset(drawPos, drawScale, new(color: color));
                 }
             }
         }

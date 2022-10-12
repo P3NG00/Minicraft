@@ -18,13 +18,13 @@ namespace Minicraft.Utils
             using (var stream = new BinaryWriter(File.Open(SAVE_FILE, FileMode.Create)))
             {
                 // write each block
-                foreach (var blockType in world.RawBlockGrid)
-                    stream.WriteBlockType(blockType);
+                foreach (var block in world.RawBlockGrid)
+                    stream.WriteBlock(block);
                 // write inventory
                 for (int i = 0; i < Inventory.SLOTS; i++)
                 {
                     var slot = inventory[i];
-                    stream.WriteBlockType(slot.Block);
+                    stream.WriteBlock(slot.Block);
                     stream.Write((char)slot.Amount);
                 }
                 // write player position
@@ -69,8 +69,8 @@ namespace Minicraft.Utils
             return new GameData(world, inventory, player);
         }
 
-        private static Blocks ReadBlockType(this BinaryReader stream) => (Blocks)stream.Read();
+        private static Block ReadBlockType(this BinaryReader stream) => Blocks.GetByID(stream.Read());
 
-        private static void WriteBlockType(this BinaryWriter stream, Blocks blockType) => stream.Write((char)blockType);
+        private static void WriteBlock(this BinaryWriter stream, Block block) => stream.Write((char)Blocks.GetID(block));
     }
 }

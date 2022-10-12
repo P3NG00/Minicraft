@@ -1,5 +1,4 @@
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Minicraft.Game.Worlds;
 using Minicraft.Utils;
 
@@ -14,12 +13,12 @@ namespace Minicraft.Game.BlockType
             new Point(-1, -1), new Point(1, -1),
         };
 
-        public GrassBlock(string name, Color color, int hitsToBreak, bool canWalkThrough, Texture2D texture) : base(name, color, hitsToBreak, canWalkThrough, texture) {}
+        public GrassBlock(string name, int hitsToBreak, bool canWalkThrough, DrawData drawData) : base(name, hitsToBreak, canWalkThrough, drawData) {}
 
         public sealed override void Update(World world, Point position)
         {
             // if able to spread
-            if (position.Y + 1 == World.HEIGHT || world.GetBlock(position + new Point(0, 1)).GetBlock().CanWalkThrough)
+            if (position.Y + 1 == World.HEIGHT || world.GetBlock(position + new Point(0, 1)).CanWalkThrough)
             {
                 // check random spread position
                 var offset = _spreadOffsets.GetRandom();
@@ -28,7 +27,7 @@ namespace Minicraft.Game.BlockType
                     checkPos.Y >= 0 && checkPos.Y < World.HEIGHT)
                 {
                     var upPos = checkPos + new Point(0, 1);
-                    if (world.GetBlock(checkPos) == Blocks.Dirt && (upPos.Y == World.HEIGHT || world.GetBlock(upPos).GetBlock().CanWalkThrough))
+                    if (world.GetBlock(checkPos) == Blocks.Dirt && (upPos.Y == World.HEIGHT || world.GetBlock(upPos).CanWalkThrough))
                         world.SetBlock(checkPos, Blocks.Grass);
                 }
             }
