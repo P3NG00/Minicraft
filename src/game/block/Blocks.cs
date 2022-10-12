@@ -26,20 +26,22 @@ namespace Minicraft.Game.BlockType
             Wood = new Block("Wood Block", 4, true, new (Textures.Shaded, new Color(128, 92, 32)));
             Leaves = new LeavesBlock("Leaves Block", 2, true, new(Textures.Shaded, new Color(48, 128, 32)));
             TNT = new TNTBlock("TNT", 1, true, new(Textures.Striped, new Color(255, 0, 0)));
-            P3NG00Face = new P3NG00FaceBlock("P3NG00's Face as a Block", 1, false, new(Textures.P3NG00Face, new Color(255, 255, 255)));
+            P3NG00Face = new P3NG00FaceBlock("P3NG00's Face as a Block", 1, false, new(Textures.P3NG00Face));
 
             _blocks = new[]
             {
-                Air,
-                Dirt,
-                Grass,
-                Stone,
-                Wood,
-                Leaves,
-                TNT,
-                P3NG00Face,
+                Air,            // 0
+                Dirt,           // 1
+                Grass,          // 2
+                Stone,          // 3
+                Wood,           // 4
+                Leaves,         // 5
+                TNT,            // 6
+                P3NG00Face,     // 7
             };
         }
+
+        public static int Amount => _blocks.Length;
 
         public static Block GetByID(int i) => _blocks[i];
 

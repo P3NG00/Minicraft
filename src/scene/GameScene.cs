@@ -211,7 +211,7 @@ namespace Minicraft.Scenes
                 {
                     // give items if holding debug button
                     if (Keybinds.Debug.Held)
-                        for (int i = 1; i < 8; i++) // TODO adjust hardcoded value '8'
+                        for (int i = 1; i < Blocks.Amount; i++)
                             if (InputManager.KeyPressedThisFrame(Keys.D0 + i))
                                 _inventory.Add(Blocks.GetByID(i));
                     // spawn projectiles

@@ -13,7 +13,7 @@ namespace Minicraft.Utils
         public DrawData(Texture2D texture = null, Color? color = null)
         {
             Texture = texture ?? Textures.Blank;
-            Color = color ?? Color.White;
+            Color = color ?? Colors.Default;
         }
     }
 }
