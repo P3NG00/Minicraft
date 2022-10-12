@@ -50,12 +50,7 @@ namespace Minicraft.Game.Entities
 
         public void ResetLife() => SetLife(MaxLife);
 
-        public void SetLife(float value)
-        {
-            _life = value;
-            if (_life > MaxLife)
-                _life = MaxLife;
-        }
+        public void SetLife(float value) => _life = Math.Clamp(value, 0f, MaxLife);
 
         public void Damage(float amount) => _life = Math.Max(_life - amount, 0f);
 
