@@ -29,7 +29,7 @@ namespace Minicraft.Game.BlockType
                 Position = hitPosition;
                 Hits = 1;
             }
-            // get blocktype
+            // get block
             var block = world.GetBlock(hitPosition);
             // break block
             if (Hits >= block.HitsToBreak)

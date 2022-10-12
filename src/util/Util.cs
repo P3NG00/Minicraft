@@ -1,6 +1,5 @@
 using System;
 using Microsoft.Xna.Framework;
-using Minicraft.Game.BlockType;
 
 namespace Minicraft.Utils
 {

@@ -6,6 +6,7 @@ namespace Minicraft.Game.BlockType
 {
     public static class Blocks
     {
+        // TODO add to end of blocks "{ get; private set; }"
         public static Block Air;
         public static Block Dirt;
         public static Block Grass;
@@ -19,6 +20,7 @@ namespace Minicraft.Game.BlockType
 
         public static void Initialize()
         {
+            // instantiate blocks
             Air = new Block("Air", 0, true, new(color: new Color(240, 255, 255)));
             Dirt = new Block("Dirt Block", 3, false, new(Textures.Shaded, new Color(96, 48, 0)));
             Grass = new GrassBlock("Grass Block", 3, false, new(Textures.Shaded, new Color(32, 160, 16)));
@@ -27,7 +29,7 @@ namespace Minicraft.Game.BlockType
             Leaves = new LeavesBlock("Leaves Block", 2, true, new(Textures.Shaded, new Color(48, 128, 32)));
             TNT = new TNTBlock("TNT", 1, true, new(Textures.Striped, new Color(255, 0, 0)));
             P3NG00Face = new P3NG00FaceBlock("P3NG00's Face as a Block", 1, false, new(Textures.P3NG00Face));
-
+            // add to array in order of id
             _blocks = new[]
             {
                 Air,            // 0

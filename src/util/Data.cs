@@ -47,16 +47,16 @@ namespace Minicraft.Utils
                 {
                     for (int x = 0; x < World.WIDTH; x++)
                     {
-                        var blockType = stream.ReadBlockType();
-                        world.SetBlock(x, y, blockType);
+                        var block = stream.ReadBlock();
+                        world.SetBlock(x, y, block);
                     }
                 }
                 // read inventory
                 for (int i = 0; i < Inventory.SLOTS; i++)
                 {
-                    var blockType = stream.ReadBlockType();
+                    var block = stream.ReadBlock();
                     var amount = stream.Read();
-                    inventory[i].Set(blockType, amount);
+                    inventory[i].Set(block, amount);
                 }
                 // read player position
                 var posX = stream.ReadSingle();
@@ -69,7 +69,7 @@ namespace Minicraft.Utils
             return new GameData(world, inventory, player);
         }
 
-        private static Block ReadBlockType(this BinaryReader stream) => Blocks.GetByID(stream.Read());
+        private static Block ReadBlock(this BinaryReader stream) => Blocks.GetByID(stream.Read());
 
         private static void WriteBlock(this BinaryWriter stream, Block block) => stream.Write((char)Blocks.GetID(block));
     }
