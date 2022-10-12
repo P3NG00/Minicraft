@@ -6,15 +6,14 @@ namespace Minicraft.Game.BlockType
 {
     public static class Blocks
     {
-        // TODO add to end of blocks "{ get; private set; }"
-        public static Block Air;
-        public static Block Dirt;
-        public static Block Grass;
-        public static Block Stone;
-        public static Block Wood;
-        public static Block Leaves;
-        public static Block TNT;
-        public static Block P3NG00Face;
+        public static Block Air { get; private set; }
+        public static Block Dirt { get; private set; }
+        public static Block Grass { get; private set; }
+        public static Block Stone { get; private set; }
+        public static Block Wood { get; private set; }
+        public static Block Leaves { get; private set; }
+        public static Block TNT { get; private set; }
+        public static Block P3NG00Face { get; private set; }
 
         private static Block[] _blocks;
 
