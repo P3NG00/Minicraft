@@ -1,6 +1,6 @@
 using System.IO;
 using Microsoft.Xna.Framework;
-using Minicraft.Game.Blocks;
+using Minicraft.Game.BlockType;
 using Minicraft.Game.Entities.Living;
 using Minicraft.Game.Inventories;
 using Minicraft.Game.Worlds;
@@ -24,7 +24,7 @@ namespace Minicraft.Utils
                 for (int i = 0; i < Inventory.SLOTS; i++)
                 {
                     var slot = inventory[i];
-                    stream.WriteBlockType(slot.BlockType);
+                    stream.WriteBlockType(slot.Block);
                     stream.Write((char)slot.Amount);
                 }
                 // write player position
@@ -48,7 +48,7 @@ namespace Minicraft.Utils
                     for (int x = 0; x < World.WIDTH; x++)
                     {
                         var blockType = stream.ReadBlockType();
-                        world.SetBlockType(x, y, blockType);
+                        world.SetBlock(x, y, blockType);
                     }
                 }
                 // read inventory
@@ -69,8 +69,8 @@ namespace Minicraft.Utils
             return new GameData(world, inventory, player);
         }
 
-        private static BlockType ReadBlockType(this BinaryReader stream) => (BlockType)stream.Read();
+        private static Blocks ReadBlockType(this BinaryReader stream) => (Blocks)stream.Read();
 
-        private static void WriteBlockType(this BinaryWriter stream, BlockType blockType) => stream.Write((char)blockType);
+        private static void WriteBlockType(this BinaryWriter stream, Blocks blockType) => stream.Write((char)blockType);
     }
 }

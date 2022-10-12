@@ -2,7 +2,7 @@ using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Minicraft.Font;
-using Minicraft.Game.Blocks;
+using Minicraft.Game.BlockType;
 using Minicraft.Game.Entities;
 using Minicraft.Texture;
 using Minicraft.Utils;
@@ -19,20 +19,20 @@ namespace Minicraft.Game.Worlds
         public const float TICK_STEP = 1f / TICKS_PER_SECOND;
         private const int BLOCK_UPDATES_PER_TICK = (int)(((WIDTH * HEIGHT) * WORLD_UPDATED_PER_SECOND) / World.TICKS_PER_SECOND);
 
-        private readonly BlockType[,] _blockGrid = new BlockType[HEIGHT, WIDTH];
+        private readonly Blocks[,] _blockGrid = new Blocks[HEIGHT, WIDTH];
         // TODO add 2nd layer for 'background' tiles. make dirt, stone, and wood backgrounds. dirt and stone will generate on its respective block and the back layer will stay when caves are removed from the foreground
 
-        public BlockType[,] RawBlockGrid => _blockGrid;
+        public Blocks[,] RawBlockGrid => _blockGrid;
 
-        private ref BlockType BlockTypeAt(int x, int y) => ref _blockGrid[y, x];
+        private ref Blocks BlockAt(int x, int y) => ref _blockGrid[y, x];
 
-        public BlockType GetBlockType(Point point) => GetBlockType(point.X, point.Y);
+        public Blocks GetBlock(Point point) => GetBlock(point.X, point.Y);
 
-        public BlockType GetBlockType(int x, int y) => BlockTypeAt(x, y);
+        public Blocks GetBlock(int x, int y) => BlockAt(x, y);
 
-        public void SetBlockType(Point point, BlockType blockType) => SetBlockType(point.X, point.Y, blockType);
+        public void SetBlock(Point point, Blocks blockType) => SetBlock(point.X, point.Y, blockType);
 
-        public void SetBlockType(int x, int y, BlockType blockType) => BlockTypeAt(x, y) = blockType;
+        public void SetBlock(int x, int y, Blocks blockType) => BlockAt(x, y) = blockType;
 
         public Point GetSpawnPosition()
         {
@@ -43,15 +43,15 @@ namespace Minicraft.Game.Worlds
             return new(x, y);
         }
 
-        public (BlockType blockType, int y) GetTopBlock(int x)
+        public (Blocks blockType, int y) GetTopBlock(int x)
         {
             for (int y = HEIGHT - 1; y >= 0; y--)
             {
-                var blockType = GetBlockType(x, y);
+                var blockType = GetBlock(x, y);
                 if (!blockType.GetBlock().CanWalkThrough)
                     return (blockType, y);
             }
-            return (BlockType.Air, 0);
+            return (Blocks.Air, 0);
         }
 
         public void Update()
@@ -61,7 +61,7 @@ namespace Minicraft.Game.Worlds
                 // get random point
                 var pos = Util.Random.NextPoint(new Point(WIDTH, HEIGHT));
                 // update block at that point
-                GetBlockType(pos).GetBlock().Update(this, pos);
+                GetBlock(pos).GetBlock().Update(this, pos);
             }
         }
 
@@ -98,11 +98,11 @@ namespace Minicraft.Game.Worlds
                     var blockX = x + visualStartX;
                     var drawX = blockX * Display.BlockScale;
                     var blockPos = new Point(blockX, blockY);
-                    var blockType = GetBlockType(blockPos);
+                    var blockType = GetBlock(blockPos);
                     var block = blockType.GetBlock();
                     var drawPos = new Vector2(drawX, drawY);
                     // draw block
-                    if (blockType != BlockType.Air)
+                    if (blockType != Blocks.Air)
                         Display.DrawOffset(drawPos, drawScale, block.Color, block.Texture);
                     // draw highlight
                     var highlighted = blockPos == mouseBlock && withinReach;
@@ -110,7 +110,7 @@ namespace Minicraft.Game.Worlds
                     {
                         Color highlightColor;
                         Texture2D highlightTexture;
-                        var isAir = blockType == BlockType.Air;
+                        var isAir = blockType == Blocks.Air;
                         if (isAir)
                         {
                             highlightColor = Colors.BlockHighlightAir;

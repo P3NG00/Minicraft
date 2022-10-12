@@ -3,7 +3,7 @@ using Minicraft.Game.Inventories;
 using Minicraft.Game.Worlds;
 using Minicraft.Utils;
 
-namespace Minicraft.Game.Blocks
+namespace Minicraft.Game.BlockType
 {
     public sealed class BlockHit
     {
@@ -30,14 +30,14 @@ namespace Minicraft.Game.Blocks
                 Hits = 1;
             }
             // get blocktype
-            var blockType = world.GetBlockType(hitPosition);
+            var blockType = world.GetBlock(hitPosition);
             // break block
             if (Hits >= blockType.GetBlock().HitsToBreak)
             {
                 // add to players inventory
                 inventory.Add(blockType);
                 // remove block from world
-                world.SetBlockType(Position, BlockType.Air);
+                world.SetBlock(Position, Blocks.Air);
                 // reset info
                 Position = new Point(-1);
                 Hits = 0;

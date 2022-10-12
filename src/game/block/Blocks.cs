@@ -2,9 +2,9 @@ using System.Collections.Immutable;
 using Microsoft.Xna.Framework;
 using Minicraft.Texture;
 
-namespace Minicraft.Game.Blocks
+namespace Minicraft.Game.BlockType
 {
-    public enum BlockType
+    public enum Blocks
     {
         Air = 0,
         Dirt = 1,

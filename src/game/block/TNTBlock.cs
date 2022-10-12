@@ -3,11 +3,13 @@ using Microsoft.Xna.Framework.Graphics;
 using Minicraft.Game.Worlds;
 using Minicraft.Utils;
 
-namespace Minicraft.Game.Blocks
+namespace Minicraft.Game.BlockType
 {
     public sealed class TNTBlock : Block
     {
         public TNTBlock(string name, Color color, int hitsToBreak, bool canWalkThrough, Texture2D texture) : base(name, color, hitsToBreak, canWalkThrough, texture) {}
+
+        // TODO summon TNTEntity
 
         public sealed override void Interact(World world, Point position)
         {
@@ -21,7 +23,7 @@ namespace Minicraft.Game.Blocks
                     var isEdgeX = x == position.X - 2 || x == position.X + 2;
                     var isEdgeY = y == position.Y - 2 || y == position.Y + 2;
                     if (!isEdgeX || !isEdgeY)
-                        world.SetBlockType(x, y, BlockType.Air);
+                        world.SetBlock(x, y, Blocks.Air);
                 }
             }
             // base call

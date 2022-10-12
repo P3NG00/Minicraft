@@ -2,7 +2,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Minicraft.Game.Worlds;
 
-namespace Minicraft.Game.Blocks
+namespace Minicraft.Game.BlockType
 {
     public sealed class LeavesBlock : Block
     {
@@ -27,7 +27,7 @@ namespace Minicraft.Game.Blocks
                     checkPos.Y >= 0 && checkPos.Y < World.HEIGHT)
                 {
                     // if wood detected
-                    if (world.GetBlockType(checkPos) == BlockType.Wood)
+                    if (world.GetBlock(checkPos) == Blocks.Wood)
                     {
                         // set log flag
                         log = true;
@@ -38,7 +38,7 @@ namespace Minicraft.Game.Blocks
             }
             // if no log, remove leaves
             if (!log)
-                world.SetBlockType(position, BlockType.Air);
+                world.SetBlock(position, Blocks.Air);
             // base call
             base.Update(world, position);
         }

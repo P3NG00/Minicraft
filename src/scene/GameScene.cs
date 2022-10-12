@@ -4,7 +4,7 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using Minicraft.Font;
-using Minicraft.Game.Blocks;
+using Minicraft.Game.BlockType;
 using Minicraft.Game.Entities;
 using Minicraft.Game.Entities.Living;
 using Minicraft.Game.Entities.Projectiles;
@@ -49,12 +49,12 @@ namespace Minicraft.Scenes
 
         // cache
         private BlockHit _blockHit = new BlockHit(Point.Zero, 0);
-        private GridMode _gridMode = (GridMode)0;
+        private GridMode _gridMode = (GridMode)0; // TODO utilize
         private Vector2 _lastMouseBlock;
         private Point _lastMouseBlockInt;
         private bool _withinReach;
 
-        public GameScene(GameData gameData) : base(BlockType.Air.GetBlock().Color)
+        public GameScene(GameData gameData) : base(Blocks.Air.GetBlock().Color)
         {
             // initialize buttons
             _buttonRespawn = new Button(new Vector2(0.5f, 0.6f), new Point(250, 50), TEXT_RESPAWN, Colors.ThemeDefault, RespawnPlayer);
@@ -213,7 +213,7 @@ namespace Minicraft.Scenes
                     if (Keybinds.Debug.Held)
                         for (int i = 1; i < Block.Amount; i++)
                             if (InputManager.KeyPressedThisFrame(Keys.D0 + i))
-                                _inventory.Add((BlockType)i);
+                                _inventory.Add((Blocks)i);
                     // spawn projectiles
                     if (Keybinds.SpawnProjectile.PressedThisFrame)
                         SpawnEntity(new ProjectileEntity(_player.Position));
@@ -234,16 +234,16 @@ namespace Minicraft.Scenes
                         _lastMouseBlockInt.X >= 0 && _lastMouseBlockInt.X < World.WIDTH &&
                         _lastMouseBlockInt.Y >= 0 && _lastMouseBlockInt.Y < World.HEIGHT)
                     {
-                        var blockType = _world.GetBlockType(_lastMouseBlockInt);
+                        var blockType = _world.GetBlock(_lastMouseBlockInt);
                         // handle left click (block breaking)
                         // TODO instead of clicking to break blocks, hold left click for certain amount of ticks to break block
-                        if (Keybinds.MouseLeft.PressedThisFrame && blockType != BlockType.Air)
+                        if (Keybinds.MouseLeft.PressedThisFrame && blockType != Blocks.Air)
                             _blockHit.Update(_world, _inventory, _lastMouseBlockInt);
                         // handle right click (block placing & interaction)
                         if (Keybinds.MouseRight.PressedThisFrame)
                         {
                             // if right click on air, place block
-                            if (blockType == BlockType.Air)
+                            if (blockType == Blocks.Air)
                             {
                                 var inPlayer = _player.GetSides().Contains(_lastMouseBlockInt);
                                 if (!inPlayer)

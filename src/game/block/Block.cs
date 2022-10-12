@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Minicraft.Game.Worlds;
 using Minicraft.Utils;
 
-namespace Minicraft.Game.Blocks
+namespace Minicraft.Game.BlockType
 {
     public partial class Block
     {
@@ -28,7 +28,7 @@ namespace Minicraft.Game.Blocks
 
         public override bool Equals(object obj)
         {
-            if (obj is BlockType blocks)
+            if (obj is Blocks blocks)
                 return this == blocks;
             if (obj is Block block)
                 return this == block;
@@ -37,10 +37,10 @@ namespace Minicraft.Game.Blocks
 
         public override int GetHashCode() => Name.GetHashCode() + Color.GetHashCode() + CanWalkThrough.GetHashCode();
 
-        public static implicit operator Block(BlockType blockType) => s_blockArray[((int)blockType)];
+        public static implicit operator Block(Blocks blockType) => s_blockArray[((int)blockType)];
 
-        public static bool operator ==(Block block, BlockType blockType) => block == (Block)blockType;
+        public static bool operator ==(Block block, Blocks blockType) => block == (Block)blockType;
 
-        public static bool operator !=(Block block, BlockType blockType) => block != (Block)blockType;
+        public static bool operator !=(Block block, Blocks blockType) => block != (Block)blockType;
     }
 }

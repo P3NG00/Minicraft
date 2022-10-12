@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 using Microsoft.Xna.Framework;
-using Minicraft.Game.Blocks;
+using Minicraft.Game.BlockType;
 using Minicraft.Utils;
 using SimplexNoise;
 
@@ -82,7 +82,7 @@ namespace Minicraft.Game.Worlds.Generation
             var world = new World();
             for (y = 0; y < World.HEIGHT; y++)
                 for (x = 0; x < World.WIDTH; x++)
-                    world.SetBlockType(x, y, BlockType.Air);
+                    world.SetBlock(x, y, Blocks.Air);
             // create random height map
             var relativeWidth = World.WIDTH / settings.ChunkWidth;
             var midHeight = World.HEIGHT / 2;
@@ -116,8 +116,8 @@ namespace Minicraft.Game.Worlds.Generation
                 for (y = 0; y < heightmapSmooth[x]; y++)
                 {
                     var isStone = y <= heightMax - settings.StoneOffset;
-                    var block = isStone ? BlockType.Stone : BlockType.Dirt;
-                    world.SetBlockType(x, y, block);
+                    var block = isStone ? Blocks.Stone : Blocks.Dirt;
+                    world.SetBlock(x, y, block);
                 }
             }
             // create noise map for caves
@@ -127,20 +127,20 @@ namespace Minicraft.Game.Worlds.Generation
             for (y = 0; y < World.HEIGHT; y++)
                 for (x = 0; x < World.WIDTH; x++)
                     if ((decimal)noiseMap[x, y] < settings.CaveNoiseCutoff)
-                        world.SetBlockType(x, y, BlockType.Air);
+                        world.SetBlock(x, y, Blocks.Air);
             // place grass on top-most dirt blocks
             for (x = 0; x < World.WIDTH; x++)
             {
                 var topBlock = world.GetTopBlock(x);
-                if (topBlock.blockType == BlockType.Dirt)
-                    world.SetBlockType(x, topBlock.y, BlockType.Grass);
+                if (topBlock.blockType == Blocks.Dirt)
+                    world.SetBlock(x, topBlock.y, Blocks.Grass);
             }
             // generate trees on surface grass
             for (x = settings.TreeSpacingMin; x < World.WIDTH - settings.TreeSpacingMin; x++)
             {
                 var topBlock = world.GetTopBlock(x);
                 // test tree chance
-                if (topBlock.blockType == BlockType.Grass && settings.TreeChance.Value.TestChance())
+                if (topBlock.blockType == Blocks.Grass && settings.TreeChance.Value.TestChance())
                 {
                     // generate tree
                     var startY = topBlock.y + 1;
@@ -149,7 +149,7 @@ namespace Minicraft.Game.Worlds.Generation
                     for (y = startY; y < startY + height && y < World.HEIGHT; y++)
                     {
                         var setPoint = new Point(x, y);
-                        world.SetBlockType(setPoint, BlockType.Wood);
+                        world.SetBlock(setPoint, Blocks.Wood);
                         // leaves and branches start 2 blocks above ground
                         if (y >= startY + 2)
                         {
@@ -158,8 +158,8 @@ namespace Minicraft.Game.Worlds.Generation
                             {
                                 // get reference of side block
                                 var sidePoint = setPoint + new Point(s, 0);
-                                if (sidePoint.X >= 0 && sidePoint.X < World.WIDTH && world.GetBlockType(sidePoint) == BlockType.Air)
-                                    world.SetBlockType(sidePoint, BlockType.Leaves);
+                                if (sidePoint.X >= 0 && sidePoint.X < World.WIDTH && world.GetBlock(sidePoint) == Blocks.Air)
+                                    world.SetBlock(sidePoint, Blocks.Leaves);
                             }
                             // test branch chance
                             if (settings.BranchChance.Value.TestChance())
@@ -176,25 +176,25 @@ namespace Minicraft.Game.Worlds.Generation
                                     if (branchPoint.X < 0 || branchPoint.X >= World.WIDTH)
                                         break;
                                     // get reference of block at that position
-                                    var branchBlock = world.GetBlockType(branchPoint);
+                                    var branchBlock = world.GetBlock(branchPoint);
                                     // replace if valid
-                                    if (branchBlock == BlockType.Air || branchBlock == BlockType.Leaves)
-                                        world.SetBlockType(branchPoint, BlockType.Wood);
+                                    if (branchBlock == Blocks.Air || branchBlock == Blocks.Leaves)
+                                        world.SetBlock(branchPoint, Blocks.Wood);
                                     // place leaves surrounding branch
                                     foreach (int o in new[] {-1, 1})
                                     {
                                         // get reference of block at new branch point
                                         var sidePoint = branchPoint + new Point(0, o);
                                         // replace if valid
-                                        if (sidePoint.Y < World.HEIGHT && world.GetBlockType(sidePoint) == BlockType.Air)
-                                            world.SetBlockType(sidePoint, BlockType.Leaves);
+                                        if (sidePoint.Y < World.HEIGHT && world.GetBlock(sidePoint) == Blocks.Air)
+                                            world.SetBlock(sidePoint, Blocks.Leaves);
                                     }
                                 }
                                 // get position of end of branch
                                 var endPoint = branchPoint + new Point(branchDirection, 0);
                                 // place leaves at end of branch if valid
-                                if (endPoint.X >= 0 && endPoint.X < World.WIDTH && world.GetBlockType(endPoint) == BlockType.Air)
-                                    world.SetBlockType(endPoint, BlockType.Leaves);
+                                if (endPoint.X >= 0 && endPoint.X < World.WIDTH && world.GetBlock(endPoint) == Blocks.Air)
+                                    world.SetBlock(endPoint, Blocks.Leaves);
                             }
                             else
                                 // reset branch direction
@@ -204,7 +204,7 @@ namespace Minicraft.Game.Worlds.Generation
                     // place leaves on top of tree
                     y = startY + height;
                     if (y < World.HEIGHT)
-                        world.SetBlockType(x, y, BlockType.Leaves);
+                        world.SetBlock(x, y, Blocks.Leaves);
                     // space trees by minimum amount
                     x += settings.TreeSpacingMin;
                 }

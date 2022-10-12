@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Minicraft.Font;
-using Minicraft.Game.Blocks;
+using Minicraft.Game.BlockType;
 using Minicraft.Game.Worlds;
 using Minicraft.Utils;
 
@@ -25,11 +25,11 @@ namespace Minicraft.Game.Inventories
                 _inventory[i] = new Slot();
         }
 
-        public List<Slot> GetSlotsOf(BlockType blockType)
+        public List<Slot> GetSlotsOf(Blocks blockType)
         {
             var slots = new List<Slot>();
             foreach (var slot in _inventory)
-                if (slot.BlockType == blockType)
+                if (slot.Block == blockType)
                     slots.Add(slot);
             return slots;
         }
@@ -50,18 +50,18 @@ namespace Minicraft.Game.Inventories
             var slot = _inventory[_activeSlot];
             if (slot.IsEmpty)
                 return;
-            if (world.GetBlockType(blockPos) == BlockType.Air)
+            if (world.GetBlock(blockPos) == Blocks.Air)
             {
-                world.SetBlockType(blockPos, slot.BlockType);
+                world.SetBlock(blockPos, slot.Block);
                 slot.Decrement();
             }
         }
 
-        public int? Add(BlockType blockType, int amount = 1)
+        public int? Add(Blocks blockType, int amount = 1)
         {
             if (amount <= 0)
                 throw new System.Exception("Amount must be greater than 0");
-            if (blockType == BlockType.Air)
+            if (blockType == Blocks.Air)
                 throw new System.Exception("Cannot add air to inventory");
             // add to slots of same type
             var slots = GetSlotsOf(blockType);
@@ -106,7 +106,7 @@ namespace Minicraft.Game.Inventories
                 Texture2D texture = null;
                 if (!slot.IsEmpty)
                 {
-                    var block = slot.BlockType.GetBlock();
+                    var block = slot.Block.GetBlock();
                     color = block.Color;
                     texture = block.Texture;
                 }

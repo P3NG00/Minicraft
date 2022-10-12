@@ -185,7 +185,7 @@ namespace Minicraft.Game.Entities.Living
             {
                 var blockPoint = new Point(x, sides.Bottom - 1);
                 Debug.AddAirCheck(blockPoint);
-                if (!world.GetBlockType(blockPoint).GetBlock().CanWalkThrough)
+                if (!world.GetBlock(blockPoint).GetBlock().CanWalkThrough)
                     // collision found, not on air
                     return false;
             }
