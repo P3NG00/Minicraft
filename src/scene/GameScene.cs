@@ -9,6 +9,7 @@ using Minicraft.Game.Entities;
 using Minicraft.Game.Entities.Living;
 using Minicraft.Game.Entities.Projectiles;
 using Minicraft.Game.Inventories;
+using Minicraft.Game.ItemType;
 using Minicraft.Game.Worlds;
 using Minicraft.Input;
 using Minicraft.UI;
@@ -211,9 +212,9 @@ namespace Minicraft.Scenes
                 {
                     // give items if holding debug button
                     if (Keybinds.Debug.Held)
-                        for (int i = 1; i < Blocks.Amount; i++)
+                        for (int i = 1; i < Items.Amount; i++)
                             if (InputManager.KeyPressedThisFrame(Keys.D0 + i))
-                                _inventory.Add(Blocks.GetByID(i));
+                                _inventory.Add(Items.GetByID(i));
                     // spawn projectiles
                     if (Keybinds.SpawnProjectile.PressedThisFrame)
                         SpawnEntity(new ProjectileEntity(_player.Position));
@@ -242,16 +243,18 @@ namespace Minicraft.Scenes
                         // handle right click (block placing & interaction)
                         if (Keybinds.MouseRight.PressedThisFrame)
                         {
-                            // if right click on air, place block
-                            if (block == Blocks.Air)
-                            {
-                                var inPlayer = _player.GetSides().Contains(_lastMouseBlockInt);
-                                if (!inPlayer)
-                                    _inventory.Place(_world, _lastMouseBlockInt);
-                            }
-                            // otherwise, interact with block
-                            else
-                                block.Interact(_world, _lastMouseBlockInt);
+                            _inventory.Use(_world, _player, _lastMouseBlock, _lastMouseBlockInt);
+                            // TODO move below to ItemBlock class or something
+                            // // if right click on air, place block
+                            // if (block == Blocks.Air)
+                            // {
+                            //     var inPlayer = _player.GetSides().Contains(_lastMouseBlockInt);
+                            //     if (!inPlayer)
+                            //         _inventory.Place(_world, _lastMouseBlockInt);
+                            // }
+                            // // otherwise, interact with block
+                            // else
+                            //     block.Interact(_world, _lastMouseBlockInt);
                         }
                         if (Keybinds.MouseMiddle.PressedThisFrame)
                             SpawnEntity(new NPCEntity(_lastMouseBlock));

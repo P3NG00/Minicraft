@@ -13,6 +13,7 @@ namespace Minicraft.Texture
         public static Texture2D Striped { get; private set; }
         public static Texture2D HighlightRing { get; private set; }
         public static Texture2D P3NG00Face { get; private set; }
+        public static Texture2D Stick { get; private set; }
 
         public static void Initialize()
         {
@@ -21,6 +22,7 @@ namespace Minicraft.Texture
             Striped = CreateTexture(StripedTexture);
             HighlightRing = CreateTexture(RingHighlightTexture);
             P3NG00Face = CreateTexture(P3NG00FaceTexture);
+            Stick = CreateTexture(StickTexture);
 
             // local funcs
             Texture2D CreateTexture(ColorFunc colorFunc)
@@ -84,6 +86,13 @@ namespace Minicraft.Texture
                     new Color(163, 130, 27)};
                 // return color of face pixel position
                 return colorArray[colorIDs[y, x]];
+            }
+
+            Color StickTexture(int x, int y)
+            {
+                var isEdgeX = x == 0 || x == EDGE;
+                var isEdgeY = y == 0 || y == EDGE;
+                return isEdgeX || isEdgeY ? new Color(255, 255, 255) : new Color(0, 0, 0, 0);
             }
         }
 

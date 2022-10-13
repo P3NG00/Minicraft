@@ -1,6 +1,5 @@
 using System.IO;
 using Microsoft.Xna.Framework;
-using Minicraft.Game.BlockType;
 using Minicraft.Game.Entities.Living;
 using Minicraft.Game.Inventories;
 using Minicraft.Game.Worlds;
@@ -13,25 +12,40 @@ namespace Minicraft.Utils
 
         public static bool SaveExists => File.Exists(SAVE_FILE);
 
+        // TODO account for blockitems when loading/saving
+
         public static void Save(World world, Inventory inventory, PlayerEntity player)
         {
             using (var stream = new BinaryWriter(File.Open(SAVE_FILE, FileMode.Create)))
             {
-                // write each block
-                foreach (var block in world.RawBlockGrid)
-                    stream.WriteBlock(block);
-                // write inventory
-                for (int i = 0; i < Inventory.SLOTS; i++)
+                WriteWorldBlocks();
+                WriteInventorySlots();
+                WritePlayerData();
+
+                void WriteWorldBlocks()
                 {
-                    var slot = inventory[i];
-                    stream.WriteBlock(slot.Block);
-                    stream.Write((char)slot.Amount);
+                    foreach (var block in world.RawBlockGrid)
+                        stream.WriteBlock(block);
                 }
-                // write player position
-                stream.Write(player.Position.X);
-                stream.Write(player.Position.Y);
-                // write player health
-                stream.Write(player.Life);
+
+                void WriteInventorySlots()
+                {
+                    for (int i = 0; i < Inventory.SLOTS; i++)
+                    {
+                        var slot = inventory[i];
+                        stream.WriteItem(slot.Item);
+                        stream.Write((char)slot.Amount);
+                    }
+                }
+
+                void WritePlayerData()
+                {
+                    // write player position
+                    stream.Write(player.Position.X);
+                    stream.Write(player.Position.Y);
+                    // write player health
+                    stream.Write(player.Life);
+                }
             }
         }
 
@@ -42,35 +56,44 @@ namespace Minicraft.Utils
             PlayerEntity player;
             using (var stream = new BinaryReader(File.Open(SAVE_FILE, FileMode.Open)))
             {
-                // read each block
-                for (int y = 0; y < World.HEIGHT; y++)
+                ReadWorldBlocks();
+                ReadInventorySlots();
+                ReadPlayerData();
+
+                void ReadWorldBlocks()
                 {
-                    for (int x = 0; x < World.WIDTH; x++)
+                    for (int y = 0; y < World.HEIGHT; y++)
                     {
-                        var block = stream.ReadBlock();
-                        world.SetBlock(x, y, block);
+                        for (int x = 0; x < World.WIDTH; x++)
+                        {
+                            var block = stream.ReadBlock();
+                            world.SetBlock(x, y, block);
+                        }
                     }
                 }
-                // read inventory
-                for (int i = 0; i < Inventory.SLOTS; i++)
+
+                void ReadInventorySlots()
                 {
-                    var block = stream.ReadBlock();
-                    var amount = stream.Read();
-                    inventory[i].Set(block, amount);
+                    for (int i = 0; i < Inventory.SLOTS; i++)
+                    {
+                        var item = stream.ReadItem();
+                        var amount = stream.Read();
+                        inventory[i].Set(item, amount);
+                    }
                 }
-                // read player position
-                var posX = stream.ReadSingle();
-                var posY = stream.ReadSingle();
-                player = new PlayerEntity(new Vector2(posX, posY));
-                // read player health
-                var life = stream.ReadSingle();
-                player.SetLife(life);
+
+                void ReadPlayerData()
+                {
+                    // read player position
+                    var posX = stream.ReadSingle();
+                    var posY = stream.ReadSingle();
+                    player = new PlayerEntity(new Vector2(posX, posY));
+                    // read player health
+                    var life = stream.ReadSingle();
+                    player.SetLife(life);
+                }
             }
             return new GameData(world, inventory, player);
         }
-
-        private static Block ReadBlock(this BinaryReader stream) => Blocks.GetByID(stream.Read());
-
-        private static void WriteBlock(this BinaryWriter stream, Block block) => stream.Write((char)Blocks.GetID(block));
     }
 }

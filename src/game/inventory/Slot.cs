@@ -1,4 +1,4 @@
-using Minicraft.Game.BlockType;
+using Minicraft.Game.ItemType;
 
 namespace Minicraft.Game.Inventories
 {
@@ -6,13 +6,13 @@ namespace Minicraft.Game.Inventories
     {
         private const int SLOT_MAX = 255;
 
-        public Block Block { get; private set; } // TODO to be changed to Item in future
+        public Item Item { get; private set; }
         public int Amount { get; private set; }
 
-        public bool IsEmpty => Block == Blocks.Air || Amount <= 0;
+        public bool IsEmpty => Item == Items.Nothing || Amount <= 0;
         public bool IsFull => Amount >= SLOT_MAX;
 
-        public Slot() => Set(Blocks.Air, 0);
+        public Slot() => Set(Items.Nothing, 0);
 
         // adds amount to slot without going over max and returns remainder
         public int? Add(int amount)
@@ -33,9 +33,9 @@ namespace Minicraft.Game.Inventories
             return amount - remainingCapacity;
         }
 
-        public int? Set(Block block, int amount)
+        public int? Set(Item item, int amount)
         {
-            Block = block;
+            Item = item;
             Amount = 0;
             return Add(amount);
         }

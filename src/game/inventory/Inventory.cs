@@ -1,7 +1,8 @@
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Minicraft.Font;
-using Minicraft.Game.BlockType;
+using Minicraft.Game.Entities.Living;
+using Minicraft.Game.ItemType;
 using Minicraft.Game.Worlds;
 using Minicraft.Utils;
 
@@ -24,11 +25,11 @@ namespace Minicraft.Game.Inventories
                 _inventory[i] = new Slot();
         }
 
-        public List<Slot> GetSlotsOf(Block block)
+        public List<Slot> GetSlotsOf(Item item)
         {
             var slots = new List<Slot>();
             foreach (var slot in _inventory)
-                if (slot.Block == block)
+                if (slot.Item == item)
                     slots.Add(slot);
             return slots;
         }
@@ -44,26 +45,29 @@ namespace Minicraft.Game.Inventories
 
         public void SetActiveSlot(int i) => _activeSlot = i;
 
-        public void Place(World world, Point blockPos)
+        public void Use(World world, PlayerEntity player, Vector2 mousePosition, Point blockPosition)
         {
             var slot = _inventory[_activeSlot];
-            if (slot.IsEmpty)
-                return;
-            if (world.GetBlock(blockPos) == Blocks.Air)
-            {
-                world.SetBlock(blockPos, slot.Block);
-                slot.Decrement();
-            }
+            if (!slot.IsEmpty)
+                slot.Item.Use(world, slot, player, mousePosition, blockPosition);
+            // TODO remove below?
+            // if (slot.IsEmpty)
+            //     return;
+            // if (world.GetBlock(blockPos) == Blocks.Air)
+            // {
+            //     world.SetBlock(blockPos, slot.Block);
+            //     slot.Decrement();
+            // }
         }
 
-        public int? Add(Block block, int amount = 1)
+        public int? Add(Item item, int amount = 1)
         {
             if (amount <= 0)
                 throw new System.Exception("Amount must be greater than 0");
-            if (block == Blocks.Air)
-                throw new System.Exception("Cannot add air to inventory");
+            if (item == Items.Nothing)
+                throw new System.Exception("Cannot add nothing to inventory");
             // add to slots of same type
-            var slots = GetSlotsOf(block);
+            var slots = GetSlotsOf(item);
             int? amountRemaining = amount;
             foreach (var slot in slots)
             {
@@ -75,7 +79,7 @@ namespace Minicraft.Game.Inventories
             slots = GetEmptySlots();
             foreach (var slot in slots)
             {
-                amountRemaining = slot.Set(block, amountRemaining.Value);
+                amountRemaining = slot.Set(item, amountRemaining.Value);
                 if (!amountRemaining.HasValue)
                     return null;
             }
@@ -96,7 +100,7 @@ namespace Minicraft.Game.Inventories
             for (var i = 0; i < _inventory.Length; i++)
             {
                 // TODO 1) draw slot background
-                // TODO 2) draw slot block (if not empty)
+                // TODO 2) draw slot item (if not empty)
                 // TODO 3) draw slot selected outline (if active slot)
 
                 slot = _inventory[i];
@@ -106,9 +110,9 @@ namespace Minicraft.Game.Inventories
                 // slot draw info
                 DrawData drawData = new(color: Colors.HotbarSlotBackground);
                 if (!slot.IsEmpty)
-                    drawData = slot.Block.DrawData;
+                    drawData = slot.Item.DrawData;
                 Display.Draw(drawPos, drawSize, drawData);
-                // draw string of amount of block in slot
+                // draw string of amount of item in slot
                 if (!slot.IsEmpty)
                     Display.DrawStringWithShadow(FontSize._12, drawPos + new Vector2(Util.UI_SPACER, Util.UI_SPACER), slot.Amount.ToString(), Colors.HotbarSlotText);
                 drawPos += slotOffset;
