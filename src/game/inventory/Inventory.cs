@@ -45,19 +45,11 @@ namespace Minicraft.Game.Inventories
 
         public void SetActiveSlot(int i) => _activeSlot = i;
 
-        public void Use(World world, PlayerEntity player, Vector2 mousePosition, Point blockPosition)
+        public void Use(World world, PlayerEntity player, Point blockPosition)
         {
             var slot = _inventory[_activeSlot];
             if (!slot.IsEmpty)
-                slot.Item.Use(world, slot, player, mousePosition, blockPosition);
-            // TODO remove below?
-            // if (slot.IsEmpty)
-            //     return;
-            // if (world.GetBlock(blockPos) == Blocks.Air)
-            // {
-            //     world.SetBlock(blockPos, slot.Block);
-            //     slot.Decrement();
-            // }
+                slot.Item.Use(world, slot, player, blockPosition);
         }
 
         public int? Add(Item item, int amount = 1)

@@ -7,7 +7,7 @@ using Minicraft.Utils;
 
 namespace Minicraft.Game.ItemType
 {
-    public sealed class Item
+    public class Item
     {
         public readonly string Name;
         public readonly DrawData DrawData;
@@ -21,10 +21,6 @@ namespace Minicraft.Game.ItemType
             DrawData = drawData;
         }
 
-        // TODO override for BlockItem
-        public void Use(World world, Slot slot, PlayerEntity player, Vector2 mousePosition, Point blockPosition)
-        {
-            // TODO
-        }
+        public virtual void Use(World world, Slot slot, PlayerEntity player, Point blockPosition) {}
     }
 }

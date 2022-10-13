@@ -242,20 +242,7 @@ namespace Minicraft.Scenes
                             _blockHit.Update(_world, _inventory, _lastMouseBlockInt);
                         // handle right click (block placing & interaction)
                         if (Keybinds.MouseRight.PressedThisFrame)
-                        {
-                            _inventory.Use(_world, _player, _lastMouseBlock, _lastMouseBlockInt);
-                            // TODO move below to ItemBlock class or something
-                            // // if right click on air, place block
-                            // if (block == Blocks.Air)
-                            // {
-                            //     var inPlayer = _player.GetSides().Contains(_lastMouseBlockInt);
-                            //     if (!inPlayer)
-                            //         _inventory.Place(_world, _lastMouseBlockInt);
-                            // }
-                            // // otherwise, interact with block
-                            // else
-                            //     block.Interact(_world, _lastMouseBlockInt);
-                        }
+                            _inventory.Use(_world, _player, _lastMouseBlockInt);
                         if (Keybinds.MouseMiddle.PressedThisFrame)
                             SpawnEntity(new NPCEntity(_lastMouseBlock));
                     }

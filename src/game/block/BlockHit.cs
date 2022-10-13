@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using Minicraft.Game.Inventories;
+using Minicraft.Game.ItemType;
 using Minicraft.Game.Worlds;
 
 namespace Minicraft.Game.BlockType
@@ -34,8 +35,7 @@ namespace Minicraft.Game.BlockType
             if (Hits >= block.HitsToBreak)
             {
                 // add to players inventory
-                // TODO fix to add item as BlockItem
-                // inventory.Add(block);
+                inventory.Add(new BlockItem(block));
                 // remove block from world
                 world.SetBlock(Position, Blocks.Air);
                 // reset info
