@@ -15,7 +15,7 @@ namespace Minicraft.Game.ItemType
         {
             Nothing = new Item("Nothing", new());
             DebugStick = new Item("Debug Stick", new(Textures.Stick, new Color(75, 55, 28)));
-            // TODO
+            // TODO more items
 
             _items = new[]
             {

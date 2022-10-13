@@ -26,14 +26,5 @@ namespace Minicraft.Game.BlockType
         public virtual void Update(World world, Point position) => Debug.AddBlockUpdate(position);
 
         public virtual void Interact(World world, Point position) => Debug.AddBlockInteract(position);
-
-        public override bool Equals(object obj)
-        {
-            if (obj is Block block)
-                return this == block;
-            return false;
-        }
-
-        public override int GetHashCode() => Name.GetHashCode();
     }
 }
