@@ -91,22 +91,22 @@ namespace Minicraft.Game.Inventories
             // draw each slot
             for (var i = 0; i < _inventory.Length; i++)
             {
-                // TODO 1) draw slot background
-                // TODO 2) draw slot item (if not empty)
-                // TODO 3) draw slot selected outline (if active slot)
-
                 slot = _inventory[i];
                 // if active slot, draw selected border 1 px thick around slot
                 if (i == _activeSlot)
                     Display.Draw(drawPos - new Vector2(2), drawSize + new Vector2(4), new(color: Colors.HotbarSelected));
-                // slot draw info
-                DrawData drawData = new(color: Colors.HotbarSlotBackground);
+                // draw slot background
+                Display.Draw(drawPos, drawSize, new(color: Colors.HotbarSlotBackground));
+                // draw item
                 if (!slot.IsEmpty)
-                    drawData = slot.Item.DrawData;
-                Display.Draw(drawPos, drawSize, drawData);
-                // draw string of amount of item in slot
-                if (!slot.IsEmpty)
-                    Display.DrawStringWithShadow(FontSize._12, drawPos + new Vector2(Util.UI_SPACER, Util.UI_SPACER), slot.Amount.ToString(), Colors.HotbarSlotText);
+                {
+                    // draw item
+                    Display.Draw(drawPos, drawSize, slot.Item.DrawData);
+                    // draw amount
+                    if (!slot.IsEmpty)
+                        Display.DrawStringWithShadow(FontSize._12, drawPos + new Vector2(Util.UI_SPACER, Util.UI_SPACER), slot.Amount.ToString(), Colors.HotbarSlotText);
+                }
+                // move draw position to next slot
                 drawPos += slotOffset;
             }
         }
