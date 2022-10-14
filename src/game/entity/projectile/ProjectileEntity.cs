@@ -1,5 +1,4 @@
 using Microsoft.Xna.Framework;
-using Minicraft.Game.Worlds;
 using Minicraft.Utils;
 
 namespace Minicraft.Game.Entities.Projectiles
@@ -8,11 +7,11 @@ namespace Minicraft.Game.Entities.Projectiles
     {
         public ProjectileEntity(Vector2 position) : base (position, new(color: Colors.Entity_Projectile)) {}
 
-        public sealed override void Update(World world)
+        public sealed override void Update(GameData gameData)
         {
             var testPosition = GetNextPosition();
             var testSides = GetSides(testPosition);
-            if (CheckHorizontalCollision(world, testSides) || CheckVerticalCollision(world, testSides))
+            if (CheckHorizontalCollision(gameData.World, testSides) || CheckVerticalCollision(gameData.World, testSides))
                 Kill();
             else
                 Position = testPosition;

@@ -48,7 +48,7 @@ namespace Minicraft.Game.Entities.Living
             }
         }
 
-        public override void Update(World world)
+        public override void Update(GameData gameData)
         {
             // add velocity if falling
             if (!IsGrounded)
@@ -61,11 +61,11 @@ namespace Minicraft.Game.Entities.Living
             // find collision points
             var testSides = GetSides(testPosition);
             // test horizontal collision
-            var horizontalCollision = CheckHorizontalCollision(world, testSides);
+            var horizontalCollision = CheckHorizontalCollision(gameData.World, testSides);
             // test vertical collision
             var verticalCollision = false;
             if (!IsGrounded)
-                verticalCollision = CheckVerticalCollision(world, testSides);
+                verticalCollision = CheckVerticalCollision(gameData.World, testSides);
             // figure out which collision happened first
             if (verticalCollision && horizontalCollision)
             {
@@ -88,7 +88,7 @@ namespace Minicraft.Game.Entities.Living
                 // handle first collision
                 firstCollision(ref testPosition);
                 // re-check second collision with new position
-                if (secondCollisionRecheck(world, GetSides(testPosition)))
+                if (secondCollisionRecheck(gameData.World, GetSides(testPosition)))
                     // handle second collision
                     secondCollision(ref testPosition);
             }
@@ -101,7 +101,7 @@ namespace Minicraft.Game.Entities.Living
             // if grounded, update last height
             if (IsGrounded)
             {
-                if (CheckOnAir(world))
+                if (CheckOnAir(gameData.World))
                     IsGrounded = false;
                 else
                     _lastHeight = Position.Y;

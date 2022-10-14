@@ -14,7 +14,7 @@ namespace Minicraft.Utils
 
         // TODO account for blockitems when loading/saving
 
-        public static void Save(World world, Inventory inventory, PlayerEntity player)
+        public static void Save(GameData gameData)
         {
             using (var stream = new BinaryWriter(File.Open(SAVE_FILE, FileMode.Create)))
             {
@@ -24,7 +24,7 @@ namespace Minicraft.Utils
 
                 void WriteWorldBlocks()
                 {
-                    foreach (var block in world.RawBlockGrid)
+                    foreach (var block in gameData.World.RawBlockGrid)
                         stream.WriteBlock(block);
                 }
 
@@ -32,7 +32,7 @@ namespace Minicraft.Utils
                 {
                     for (int i = 0; i < Inventory.SLOTS; i++)
                     {
-                        var slot = inventory[i];
+                        var slot = gameData.Inventory[i];
                         stream.WriteItem(slot.Item);
                         stream.Write((char)slot.Amount);
                     }
@@ -41,10 +41,10 @@ namespace Minicraft.Utils
                 void WritePlayerData()
                 {
                     // write player position
-                    stream.Write(player.Position.X);
-                    stream.Write(player.Position.Y);
+                    stream.Write(gameData.Player.Position.X);
+                    stream.Write(gameData.Player.Position.Y);
                     // write player health
-                    stream.Write(player.Life);
+                    stream.Write(gameData.Player.Life);
                 }
             }
         }

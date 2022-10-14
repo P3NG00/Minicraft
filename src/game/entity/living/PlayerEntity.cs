@@ -19,7 +19,7 @@ namespace Minicraft.Game.Entities.Living
 
         public void SpawnIntoWorld(World world) => Position = world.GetSpawnPosition().ToVector2();
 
-        public sealed override void Update(World world)
+        public sealed override void Update(GameData gameData)
         {
             // set horizontal movement
             RawVelocity.X = 0;
@@ -33,7 +33,7 @@ namespace Minicraft.Game.Entities.Living
             if (Keybinds.Jump.Held)
                 Jump();
             // base call
-            base.Update(world);
+            base.Update(gameData);
         }
     }
 }

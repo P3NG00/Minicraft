@@ -34,6 +34,7 @@ namespace Minicraft.Game.BlockType
             // break block
             if (Hits >= block.HitsToBreak)
             {
+                // TODO drop item entity center of block position
                 // add to players inventory
                 inventory.Add(new BlockItem(block));
                 // remove block from world

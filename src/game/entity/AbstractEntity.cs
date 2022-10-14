@@ -54,7 +54,7 @@ namespace Minicraft.Game.Entities
 
         public void Damage(float amount) => _life = Math.Max(_life - amount, 0f);
 
-        public virtual void Update(World world) {}
+        public virtual void Update(GameData gameData) {}
 
         public void Draw()
         {
@@ -71,6 +71,8 @@ namespace Minicraft.Game.Entities
             // draw to surface
             Display.DrawOffset(drawPos, currentSize, _drawData);
         }
+
+        public float DistanceTo(AbstractEntity other) => Vector2.Distance(Position, other.Position);
 
         public struct Sides
         {

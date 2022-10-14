@@ -19,32 +19,29 @@ namespace Minicraft.Scenes
 {
     public sealed class GameScene : AbstractScene
     {
+        // constants
         private const string TEXT_DEATH = "you died!";
         private const string TEXT_MAIN_MENU = "main menu";
         private const string TEXT_PAUSE = "paused...";
         private const string TEXT_RESPAWN = "respawn";
         private const string TEXT_RESUME = "resume";
-
         private const float PLAYER_REACH_RADIUS = 5f;
 
+        // readonly
         private static readonly Vector2 BarSize = new Vector2(150, 30);
-
         private readonly Button _buttonRespawn;
         private readonly Button _buttonResume;
         private readonly Button _buttonMainMenu;
         private readonly List<AbstractEntity> _entityList = new List<AbstractEntity>();
-        private readonly PlayerEntity _player;
-        private readonly Inventory _inventory;
-        private readonly World _world;
+        private readonly GameData _gameData;
 
         // tick & frame handling variables
         private int Ticks => _ticks[0];
         private float AverageFramesPerSecond => _lastFps.Average();
         private float AverageTicksPerFrame => (float)_lastTickDifferences.Average();
-
         private float _tickDelta = 0f;
         private int[] _ticks = new [] {0, 0};
-        private int[] _lastTickDifferences = new int[World.TICKS_PER_SECOND];
+        private int[] _lastTickDifferences = new int[Game.Worlds.World.TICKS_PER_SECOND];
         private float[] _lastFps = new float[Display.FRAMES_PER_SECOND];
         private bool _paused = false;
 
@@ -55,16 +52,19 @@ namespace Minicraft.Scenes
         private Point _lastMouseBlockInt;
         private bool _withinReach;
 
+        // getters
+        private PlayerEntity Player => _gameData.Player;
+        private Inventory Inventory => _gameData.Inventory;
+        private World World => _gameData.World;
+
         public GameScene(GameData gameData) : base(Blocks.Air.Color)
         {
             // initialize buttons
             _buttonRespawn = new Button(new Vector2(0.5f, 0.6f), new Point(250, 50), TEXT_RESPAWN, Colors.ThemeDefault, RespawnPlayer);
             _buttonResume = new Button(new Vector2(0.5f, 0.6f), new Point(250, 50), TEXT_RESUME, Colors.ThemeDefault, ResumeGame);
             _buttonMainMenu = new Button(new Vector2(0.5f, 0.7f), new Point(250, 50), TEXT_MAIN_MENU, Colors.ThemeExit, SaveAndMainMenu);
-            // cache game data
-            _world = gameData.World;
-            _inventory = gameData.Inventory;
-            _player = gameData.Player;
+            // store game data
+            _gameData = gameData;
         }
 
         public sealed override void Update(GameTime gameTime)
@@ -82,7 +82,7 @@ namespace Minicraft.Scenes
             {
                 UpdateTicks((float)gameTime.ElapsedGameTime.TotalSeconds * Debug.TimeScale);
                 // update ui buttons
-                if (!_player.Alive)
+                if (!Player.Alive)
                 {
                     // update buttons
                     _buttonRespawn.Update();
@@ -94,13 +94,13 @@ namespace Minicraft.Scenes
                     // update debug
                     Debug.Update();
                     // update world
-                    _world.Update();
+                    World.Update();
                     // update player
-                    if (_player.Alive)
-                        _player.Update(_world);
+                    if (Player.Alive)
+                        Player.Update(_gameData);
                     // update entities
                     foreach (var entity in _entityList)
-                        entity.Update(_world);
+                        entity.Update(_gameData);
                     // remove dead npc's
                     _entityList.RemoveAll(npc => !npc.Alive);
                 }
@@ -111,12 +111,12 @@ namespace Minicraft.Scenes
         {
             UpdateFramesPerSecond((float)gameTime.ElapsedGameTime.TotalMilliseconds);
             // update display handler
-            Display.UpdateCameraOffset(_player);
+            Display.UpdateCameraOffset(Player);
             // draw world
-            _world.Draw(_player, _blockHit, _lastMouseBlockInt, _withinReach);
+            World.Draw(Player, _blockHit, _lastMouseBlockInt, _withinReach);
             // draw player
-            if (_player.Alive)
-                _player.Draw();
+            if (Player.Alive)
+                Player.Draw();
             // draw entities
             foreach (var entity in _entityList)
                 entity.Draw();
@@ -128,24 +128,24 @@ namespace Minicraft.Scenes
 
         private void SaveAndMainMenu()
         {
-            Data.Save(_world, _inventory, _player);
+            Data.Save(_gameData);
             MinicraftGame.SetScene(new MainMenuScene());
         }
 
         private void RespawnPlayer()
         {
             // reset health
-            _player.ResetLife();
+            Player.ResetLife();
             // respawn
-            _player.SpawnIntoWorld(_world);
+            Player.SpawnIntoWorld(World);
         }
 
         private bool Tick()
         {
-            if (_tickDelta >= World.TICK_STEP)
+            if (_tickDelta >= Game.Worlds.World.TICK_STEP)
             {
                 // decrement delta time by tick step
-                _tickDelta -= World.TICK_STEP;
+                _tickDelta -= Game.Worlds.World.TICK_STEP;
                 // increment tick counter
                 _ticks[0]++;
                 // return success
@@ -179,7 +179,7 @@ namespace Minicraft.Scenes
         private void HandleInput()
         {
             // toggle pause
-            if (Keybinds.Pause.PressedThisFrame && _player.Alive)
+            if (Keybinds.Pause.PressedThisFrame && Player.Alive)
                 _paused = !_paused;
             // increase/decrease time scale
             if (Keybinds.TimeScaleDecrement.PressedThisFrame)
@@ -188,7 +188,7 @@ namespace Minicraft.Scenes
                 Debug.TimeScale += Debug.TIME_SCALE_STEP;
             // manually step time
             if (Keybinds.TimeTickStep.PressedThisFrame)
-                _tickDelta += World.TICK_STEP;
+                _tickDelta += Game.Worlds.World.TICK_STEP;
             // debug
             if (Debug.Enabled && Keybinds.DebugCheckUpdates.PressedThisFrame)
                 Debug.DisplayBlockChecks = !Debug.DisplayBlockChecks;
@@ -198,28 +198,28 @@ namespace Minicraft.Scenes
             if (!_paused)
             {
                 // check hotbar num keys
-                for (int i = 0; i < Inventory.SLOTS; i++)
+                for (int i = 0; i < Game.Inventories.Inventory.SLOTS; i++)
                     if (InputManager.KeyPressedThisFrame(Keys.D1 + i))
-                        _inventory.SetActiveSlot(i);
+                        this.Inventory.SetActiveSlot(i);
                 Display.BlockScale = MathHelper.Clamp(Display.BlockScale + InputManager.ScrollWheelDelta, Display.BLOCK_SCALE_MIN, Display.BLOCK_SCALE_MAX);
                 // get block position from mouse
                 var mousePos = InputManager.MousePosition.ToVector2();
                 mousePos.Y = Display.WindowSize.Y - mousePos.Y - 1;
-                _lastMouseBlock = ((mousePos - (Display.WindowSize.ToVector2() / 2f)) / Display.BlockScale) + (_player.Position + new Vector2(0, _player.Dimensions.Y / 2f));
+                _lastMouseBlock = ((mousePos - (Display.WindowSize.ToVector2() / 2f)) / Display.BlockScale) + (Player.Position + new Vector2(0, Player.Dimensions.Y / 2f));
                 _lastMouseBlockInt = _lastMouseBlock.ToPoint();
                 // if player alive
-                if (_player.Alive)
+                if (Player.Alive)
                 {
                     // give items if holding debug button
                     if (Keybinds.Debug.Held)
                         for (int i = 1; i < Items.Amount; i++)
                             if (InputManager.KeyPressedThisFrame(Keys.D0 + i))
-                                _inventory.Add(Items.FromID(i));
+                                Inventory.Add(Items.FromID(i));
                     // spawn projectiles
                     if (Keybinds.SpawnProjectile.PressedThisFrame)
-                        SpawnEntity(new ProjectileEntity(_player.Position));
+                        SpawnEntity(new ProjectileEntity(Player.Position));
                     if (Keybinds.SpawnBouncyProjectile.PressedThisFrame)
-                        SpawnEntity(new BouncyProjectileEntity(_player.Position));
+                        SpawnEntity(new BouncyProjectileEntity(Player.Position));
                     // toggle grid mode
                     if (Keybinds.ToggleGridMode.PressedThisFrame)
                     {
@@ -229,20 +229,20 @@ namespace Minicraft.Scenes
                             _gridMode++;
                     }
                     // test if within reach
-                    _withinReach = Vector2.Distance(_player.Center, _lastMouseBlock) <= PLAYER_REACH_RADIUS;
+                    _withinReach = Vector2.Distance(Player.Center, _lastMouseBlock) <= PLAYER_REACH_RADIUS;
                     // catch out of bounds
                     if (_withinReach &&
-                        _lastMouseBlockInt.X >= 0 && _lastMouseBlockInt.X < World.WIDTH &&
-                        _lastMouseBlockInt.Y >= 0 && _lastMouseBlockInt.Y < World.HEIGHT)
+                        _lastMouseBlockInt.X >= 0 && _lastMouseBlockInt.X < Game.Worlds.World.WIDTH &&
+                        _lastMouseBlockInt.Y >= 0 && _lastMouseBlockInt.Y < Game.Worlds.World.HEIGHT)
                     {
-                        var block = _world.GetBlock(_lastMouseBlockInt);
+                        var block = this.World.GetBlock(_lastMouseBlockInt);
                         // handle left click (block breaking)
                         // TODO instead of clicking to break blocks, hold left click for certain amount of ticks to break block
                         if (Keybinds.MouseLeft.PressedThisFrame && block != Blocks.Air)
-                            _blockHit.Update(_world, _inventory, _lastMouseBlockInt);
+                            _blockHit.Update((World)this.World, Inventory, _lastMouseBlockInt);
                         // handle right click (block placing & interaction)
                         if (Keybinds.MouseRight.PressedThisFrame)
-                            _inventory.Use(_world, _player, _lastMouseBlockInt);
+                            Inventory.Use((World)this.World, Player, _lastMouseBlockInt);
                         if (Keybinds.MouseMiddle.PressedThisFrame)
                             SpawnEntity(new NPCEntity(_lastMouseBlock));
                     }
@@ -257,23 +257,23 @@ namespace Minicraft.Scenes
         private void DrawUI()
         {
             // draw inventory hotbar
-            _inventory.Draw();
+            Inventory.Draw();
             // draw health bar
-            var drawPos = new Vector2((Display.WindowSize.X / 2f) - (BarSize.X / 2f), Display.WindowSize.Y - Inventory.HotbarSize.Y - BarSize.Y);
+            var drawPos = new Vector2((Display.WindowSize.X / 2f) - (BarSize.X / 2f), Display.WindowSize.Y - Game.Inventories.Inventory.HotbarSize.Y - BarSize.Y);
             Display.Draw(drawPos, BarSize, new(color: Colors.UI_Bar));
             // adjust size to fit within bar
             drawPos += new Vector2(Util.UI_SPACER);
             var healthSize = BarSize - new Vector2(Util.UI_SPACER * 2, Util.UI_SPACER);
             // readjust size to display real health
-            healthSize.X *= _player.Life / _player.MaxLife;
+            healthSize.X *= Player.Life / Player.MaxLife;
             Display.Draw(drawPos, healthSize, new(color: Colors.UI_Life));
             // draw health numbers on top of bar
-            var healthString = $"{_player.Life:0.#}/{_player.MaxLife:0.#}";
+            var healthString = $"{Player.Life:0.#}/{Player.MaxLife:0.#}";
             var textSize = FontSize._12.MeasureString(healthString);
-            drawPos = new Vector2((Display.WindowSize.X / 2f) - (textSize.X / 2f), Display.WindowSize.Y - Inventory.HotbarSize.Y - 20);
+            drawPos = new Vector2((Display.WindowSize.X / 2f) - (textSize.X / 2f), Display.WindowSize.Y - Game.Inventories.Inventory.HotbarSize.Y - 20);
             Display.DrawStringWithShadow(FontSize._12, drawPos, healthString, Colors.UI_TextLife);
             // draw death screen overlay
-            if (!_player.Alive)
+            if (!Player.Alive)
             {
                 Display.DrawFadedOverlay();
                 // draw text
@@ -297,23 +297,23 @@ namespace Minicraft.Scenes
                 drawPos = new Vector2(Util.UI_SPACER);
                 foreach (var debugInfo in new[] {
                     $"window_size: {Display.WindowSize.X}x{Display.WindowSize.Y}",
-                    $"world_size: {World.WIDTH}x{World.HEIGHT}",
+                    $"world_size: {Game.Worlds.World.WIDTH}x{Game.Worlds.World.HEIGHT}",
                     $"debug_blocks: {Debug.DisplayBlockChecks}",
                     $"paused: {_paused}",
                     $"time_scale: {Debug.TimeScale:0.00}",
-                    $"time: {(Ticks / (float)World.TICKS_PER_SECOND):0.000}",
-                    $"ticks: {Ticks} ({World.TICKS_PER_SECOND} ticks/sec)",
+                    $"time: {(Ticks / (float)Game.Worlds.World.TICKS_PER_SECOND):0.000}",
+                    $"ticks: {Ticks} ({Game.Worlds.World.TICKS_PER_SECOND} ticks/sec)",
                     $"frames_per_second: {AverageFramesPerSecond:0.000}",
                     $"ticks_per_frame: {AverageTicksPerFrame:0.000}",
-                    $"x: {_player.Position.X:0.000}",
-                    $"y: {_player.Position.Y:0.000}",
+                    $"x: {Player.Position.X:0.000}",
+                    $"y: {Player.Position.Y:0.000}",
                     $"block_scale: {Display.BlockScale}",
                     $"mouse_x: {_lastMouseBlock.X:0.000} ({_lastMouseBlockInt.X})",
                     $"mouse_y: {_lastMouseBlock.Y:0.000} ({_lastMouseBlockInt.Y})",
                     $"entity_count: {_entityList.Count}",
-                    $"player_velocity: {_player.Velocity.Length():0.000}",
-                    $"player_grounded: {_player.IsGrounded}",
-                    $"player_running: {_player.Running}"})
+                    $"player_velocity: {Player.Velocity.Length():0.000}",
+                    $"player_grounded: {Player.IsGrounded}",
+                    $"player_running: {Player.Running}"})
                 {
                     Display.DrawStringWithBackground(FontSize._12, drawPos, debugInfo, Colors.UI_TextDebug);
                     drawPos.Y += Util.UI_SPACER + FontSize._12.GetFont().LineSpacing;
