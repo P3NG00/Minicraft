@@ -9,6 +9,6 @@ namespace Minicraft.Game.Entities.Projectiles
         protected const float PROJECTILE_SPEED = 5f;
         private static readonly Vector2 ProjectileSize = new Vector2(0.5f);
 
-        public AbstractProjectileEntity(Vector2 position, Color color) : base(position, PROJECTILE_LIFE, color, ProjectileSize, PROJECTILE_SPEED) => RawVelocity = Util.Random.NextUnitVector();
+        public AbstractProjectileEntity(Vector2 position, DrawData drawData) : base(position, PROJECTILE_LIFE, ProjectileSize, PROJECTILE_SPEED, drawData) => RawVelocity = Util.Random.NextUnitVector();
     }
 }

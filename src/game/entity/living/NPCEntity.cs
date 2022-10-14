@@ -19,7 +19,7 @@ namespace Minicraft.Game.Entities.Living
         private int? _goalX = null;
         private int _aiUpdateTicks;
 
-        public NPCEntity(Vector2 position) : base(position, NPC_LIFE, Colors.Entity_NPC, NPCSize, NPC_SPEED, NPC_RUN_MULT, NPC_JUMP) => ResetAIUpdateTimer();
+        public NPCEntity(Vector2 position) : base(position, NPC_LIFE, NPCSize, NPC_SPEED, NPC_RUN_MULT, NPC_JUMP, new(color: Colors.Entity_NPC)) => ResetAIUpdateTimer();
 
         private void ResetAIUpdateTimer() => _aiUpdateTicks = Util.Random.Next(NPC_AI_UPDATE_TICKS_MIN, NPC_AI_UPDATE_TICKS_MAX + 1);
 

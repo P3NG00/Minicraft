@@ -6,7 +6,7 @@ namespace Minicraft.Game.Entities.Projectiles
 {
     public sealed class ProjectileEntity : AbstractProjectileEntity
     {
-        public ProjectileEntity(Vector2 position) : base (position, Colors.Entity_Projectile) {}
+        public ProjectileEntity(Vector2 position) : base (position, new(color: Colors.Entity_Projectile)) {}
 
         public sealed override void Update(World world)
         {

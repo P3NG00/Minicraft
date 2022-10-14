@@ -32,7 +32,7 @@ namespace Minicraft.Game.Entities.Living
 
         private float _lastHeight;
 
-        public AbstractLivingEntity(Vector2 position, float maxLife, Color color, Vector2 dimensions, float moveSpeed, float runMultiplier, float jumpVelocity) : base(position, maxLife, color, dimensions, moveSpeed)
+        public AbstractLivingEntity(Vector2 position, float maxLife, Vector2 dimensions, float moveSpeed, float runMultiplier, float jumpVelocity, DrawData drawData) : base(position, maxLife, dimensions, moveSpeed, drawData)
         {
             _lastHeight = position.Y;
             RunMultiplier = runMultiplier;

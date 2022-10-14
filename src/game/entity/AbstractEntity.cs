@@ -23,7 +23,7 @@ namespace Minicraft.Game.Entities
         public readonly float HalfWidth;
         public readonly float MoveSpeed;
 
-        private readonly Color _color;
+        private readonly DrawData _drawData;
 
         // public data
         public Vector2 Position;
@@ -35,15 +35,15 @@ namespace Minicraft.Game.Entities
 
         public Vector2 Center => Position + new Vector2(0, Dimensions.Y / 2f);
 
-        public AbstractEntity(Vector2 position, float maxLife, Color color, Vector2 dimensions, float moveSpeed)
+        public AbstractEntity(Vector2 position, float maxLife, Vector2 dimensions, float moveSpeed, DrawData drawData)
         {
             Position = position;
             MaxLife = maxLife;
             _life = maxLife;
-            _color = color;
             Dimensions = dimensions;
             HalfWidth = Dimensions.X / 2f;
             MoveSpeed = moveSpeed;
+            _drawData = drawData;
         }
 
         public void Kill() => SetLife(0);
@@ -69,7 +69,7 @@ namespace Minicraft.Game.Entities
             // find final screen draw position
             var drawPos = relativePosition - drawStartOffset;
             // draw to surface
-            Display.DrawOffset(drawPos, currentSize, new(color: _color));
+            Display.DrawOffset(drawPos, currentSize, _drawData);
         }
 
         public struct Sides
