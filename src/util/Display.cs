@@ -22,7 +22,7 @@ namespace MinicraftGame.Utils
         private static GraphicsDeviceManager _graphics;
         private static Point _lastWindowSize;
 
-        public static void Constructor(Microsoft.Xna.Framework.Game game) => _graphics = new GraphicsDeviceManager(game);
+        public static void CreateGraphicsManager(Microsoft.Xna.Framework.Game game) => _graphics = new GraphicsDeviceManager(game);
 
         public static void LoadContent() => SpriteBatch = new SpriteBatch(Minicraft.GraphicsDevice);
 

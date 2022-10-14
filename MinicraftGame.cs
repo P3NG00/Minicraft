@@ -23,7 +23,7 @@ namespace MinicraftGame
         public Minicraft()
         {
             _instance = this;
-            Display.Constructor(this);
+            Display.CreateGraphicsManager(this);
             Content.RootDirectory = "Content";
             IsFixedTimeStep = false;
             TargetElapsedTime = TimeSpan.FromMilliseconds(1000f / Display.FRAMES_PER_SECOND);
