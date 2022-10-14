@@ -1,12 +1,12 @@
 using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Minicraft.Game.Entities.Living;
-using Minicraft.Game.Inventories;
-using Minicraft.Game.Worlds;
-using Minicraft.Utils;
+using MinicraftGame.Game.Entities.Living;
+using MinicraftGame.Game.Inventories;
+using MinicraftGame.Game.Worlds;
+using MinicraftGame.Utils;
 
-namespace Minicraft.Game.ItemType
+namespace MinicraftGame.Game.ItemType
 {
     public class Item : IEquatable<Item>
     {

@@ -1,8 +1,8 @@
 using System;
 using Microsoft.Xna.Framework;
-using Minicraft.Texture;
+using MinicraftGame.Texture;
 
-namespace Minicraft.Game.BlockType
+namespace MinicraftGame.Game.BlockType
 {
     public static class Blocks
     {

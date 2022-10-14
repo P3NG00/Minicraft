@@ -1,7 +1,7 @@
 using Microsoft.Xna.Framework;
-using Minicraft.Utils;
+using MinicraftGame.Utils;
 
-namespace Minicraft.Scenes
+namespace MinicraftGame.Scenes
 {
     public abstract class AbstractScene
     {

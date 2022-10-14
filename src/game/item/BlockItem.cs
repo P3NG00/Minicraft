@@ -1,10 +1,10 @@
 using Microsoft.Xna.Framework;
-using Minicraft.Game.BlockType;
-using Minicraft.Game.Entities.Living;
-using Minicraft.Game.Inventories;
-using Minicraft.Game.Worlds;
+using MinicraftGame.Game.BlockType;
+using MinicraftGame.Game.Entities.Living;
+using MinicraftGame.Game.Inventories;
+using MinicraftGame.Game.Worlds;
 
-namespace Minicraft.Game.ItemType
+namespace MinicraftGame.Game.ItemType
 {
     public sealed class BlockItem : Item
     {

@@ -1,9 +1,9 @@
 using Microsoft.Xna.Framework;
-using Minicraft.Game.Worlds;
-using Minicraft.Input;
-using Minicraft.Utils;
+using MinicraftGame.Game.Worlds;
+using MinicraftGame.Input;
+using MinicraftGame.Utils;
 
-namespace Minicraft.Game.Entities.Living
+namespace MinicraftGame.Game.Entities.Living
 {
     public sealed class PlayerEntity : AbstractLivingEntity
     {

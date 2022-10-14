@@ -1,4 +1,4 @@
-namespace Minicraft.Input
+namespace MinicraftGame.Input
 {
     public enum MouseKeys
     {

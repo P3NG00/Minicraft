@@ -1,10 +1,10 @@
 using System;
 using System.IO;
 using Microsoft.Xna.Framework;
-using Minicraft.Game.BlockType;
-using Minicraft.Game.ItemType;
+using MinicraftGame.Game.BlockType;
+using MinicraftGame.Game.ItemType;
 
-namespace Minicraft.Utils
+namespace MinicraftGame.Utils
 {
     public static class Util
     {

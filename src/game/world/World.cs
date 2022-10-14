@@ -1,12 +1,12 @@
 using System;
 using Microsoft.Xna.Framework;
-using Minicraft.Font;
-using Minicraft.Game.BlockType;
-using Minicraft.Game.Entities;
-using Minicraft.Texture;
-using Minicraft.Utils;
+using MinicraftGame.Font;
+using MinicraftGame.Game.BlockType;
+using MinicraftGame.Game.Entities;
+using MinicraftGame.Texture;
+using MinicraftGame.Utils;
 
-namespace Minicraft.Game.Worlds
+namespace MinicraftGame.Game.Worlds
 {
     public sealed partial class World
     {

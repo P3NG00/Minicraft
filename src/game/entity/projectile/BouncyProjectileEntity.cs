@@ -1,7 +1,7 @@
 using Microsoft.Xna.Framework;
-using Minicraft.Utils;
+using MinicraftGame.Utils;
 
-namespace Minicraft.Game.Entities.Projectiles
+namespace MinicraftGame.Game.Entities.Projectiles
 {
     public sealed class BouncyProjectileEntity : AbstractProjectileEntity
     {

@@ -1,12 +1,12 @@
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
-using Minicraft.Font;
-using Minicraft.Game.Entities.Living;
-using Minicraft.Game.ItemType;
-using Minicraft.Game.Worlds;
-using Minicraft.Utils;
+using MinicraftGame.Font;
+using MinicraftGame.Game.Entities.Living;
+using MinicraftGame.Game.ItemType;
+using MinicraftGame.Game.Worlds;
+using MinicraftGame.Utils;
 
-namespace Minicraft.Game.Inventories
+namespace MinicraftGame.Game.Inventories
 {
     public sealed class Inventory
     {

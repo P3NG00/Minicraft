@@ -1,6 +1,6 @@
 using Microsoft.Xna.Framework.Input;
 
-namespace Minicraft.Input
+namespace MinicraftGame.Input
 {
     public sealed class KeyInput : AbstractInput<Keys>
     {

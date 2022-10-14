@@ -1,11 +1,11 @@
 using System;
 using System.Linq;
 using Microsoft.Xna.Framework;
-using Minicraft.Game.BlockType;
-using Minicraft.Utils;
+using MinicraftGame.Game.BlockType;
+using MinicraftGame.Utils;
 using SimplexNoise;
 
-namespace Minicraft.Game.Worlds.Generation
+namespace MinicraftGame.Game.Worlds.Generation
 {
     public static class WorldGen
     {

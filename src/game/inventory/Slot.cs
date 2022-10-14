@@ -1,6 +1,6 @@
-using Minicraft.Game.ItemType;
+using MinicraftGame.Game.ItemType;
 
-namespace Minicraft.Game.Inventories
+namespace MinicraftGame.Game.Inventories
 {
     public class Slot
     {

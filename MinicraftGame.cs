@@ -1,26 +1,26 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Minicraft.Font;
-using Minicraft.Game.BlockType;
-using Minicraft.Game.ItemType;
-using Minicraft.Input;
-using Minicraft.Scenes;
-using Minicraft.Texture;
-using Minicraft.Utils;
+using MinicraftGame.Font;
+using MinicraftGame.Game.BlockType;
+using MinicraftGame.Game.ItemType;
+using MinicraftGame.Input;
+using MinicraftGame.Scenes;
+using MinicraftGame.Texture;
+using MinicraftGame.Utils;
 
-namespace Minicraft
+namespace MinicraftGame
 {
-    public class MinicraftGame : Microsoft.Xna.Framework.Game
+    public class Minicraft : Microsoft.Xna.Framework.Game
     {
         public const string TITLE = "Minicraft";
 
         public static new GraphicsDevice GraphicsDevice { get; private set; }
 
-        private static MinicraftGame _instance;
+        private static Minicraft _instance;
         private static AbstractScene _scene = new MainMenuScene();
 
-        public MinicraftGame()
+        public Minicraft()
         {
             _instance = this;
             Display.Constructor(this);

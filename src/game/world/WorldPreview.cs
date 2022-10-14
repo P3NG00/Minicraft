@@ -1,8 +1,8 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Minicraft.Utils;
+using MinicraftGame.Utils;
 
-namespace Minicraft.Game.Worlds
+namespace MinicraftGame.Game.Worlds
 {
     public sealed class WorldPreview
     {
@@ -12,7 +12,7 @@ namespace Minicraft.Game.Worlds
         public WorldPreview(World world, Vector2 relativeScreenPosition)
         {
             _relativeScreenPosition = relativeScreenPosition;
-            _worldTexture = new Texture2D(MinicraftGame.GraphicsDevice, World.WIDTH, World.HEIGHT);
+            _worldTexture = new Texture2D(Minicraft.GraphicsDevice, World.WIDTH, World.HEIGHT);
             var data = new Color[World.WIDTH * World.HEIGHT];
             for (int y = 0; y < World.HEIGHT; y++)
             {

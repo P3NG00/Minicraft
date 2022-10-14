@@ -1,9 +1,9 @@
 using Microsoft.Xna.Framework;
-using Minicraft.Game.Worlds.Generation;
-using Minicraft.UI;
-using Minicraft.Utils;
+using MinicraftGame.Game.Worlds.Generation;
+using MinicraftGame.UI;
+using MinicraftGame.Utils;
 
-namespace Minicraft.Scenes
+namespace MinicraftGame.Scenes
 {
     public sealed class WorldCreationSettingsScene : AbstractScene
     {
@@ -21,9 +21,9 @@ namespace Minicraft.Scenes
         }
 
         // passes the settings back to the world creation scene
-        private void AcceptSettings() => MinicraftGame.SetScene(new WorldCreationScene(_settings));
+        private void AcceptSettings() => Minicraft.SetScene(new WorldCreationScene(_settings));
 
-        private void CancelChanges() => MinicraftGame.SetScene(new WorldCreationScene(_settingsOriginal));
+        private void CancelChanges() => Minicraft.SetScene(new WorldCreationScene(_settingsOriginal));
 
         public override void Update(GameTime gameTime)
         {

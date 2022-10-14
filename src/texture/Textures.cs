@@ -1,7 +1,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Minicraft.Texture
+namespace MinicraftGame.Texture
 {
     public static class Textures
     {
@@ -31,7 +31,7 @@ namespace Minicraft.Texture
                 for (int y = 0; y < SIZE; y++)
                     for (int x = 0; x < SIZE; x++)
                         data[(y * SIZE) + x] = colorFunc(x, y);
-                var texture = new Texture2D(MinicraftGame.GraphicsDevice, SIZE, SIZE);
+                var texture = new Texture2D(Minicraft.GraphicsDevice, SIZE, SIZE);
                 texture.SetData(data);
                 return texture;
             }

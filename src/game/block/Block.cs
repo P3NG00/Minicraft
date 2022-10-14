@@ -1,9 +1,9 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Minicraft.Game.Worlds;
-using Minicraft.Utils;
+using MinicraftGame.Game.Worlds;
+using MinicraftGame.Utils;
 
-namespace Minicraft.Game.BlockType
+namespace MinicraftGame.Game.BlockType
 {
     public class Block
     {

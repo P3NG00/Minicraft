@@ -1,8 +1,8 @@
-using Minicraft.Game.Entities.Living;
-using Minicraft.Game.Inventories;
-using Minicraft.Game.Worlds;
+using MinicraftGame.Game.Entities.Living;
+using MinicraftGame.Game.Inventories;
+using MinicraftGame.Game.Worlds;
 
-namespace Minicraft.Utils
+namespace MinicraftGame.Utils
 {
     public struct GameData
     {

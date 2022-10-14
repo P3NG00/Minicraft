@@ -1,7 +1,7 @@
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 
-namespace Minicraft.Utils
+namespace MinicraftGame.Utils
 {
     public static class Audio
     {

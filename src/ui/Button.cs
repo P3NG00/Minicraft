@@ -1,10 +1,10 @@
 using System;
 using Microsoft.Xna.Framework;
-using Minicraft.Font;
-using Minicraft.Input;
-using Minicraft.Utils;
+using MinicraftGame.Font;
+using MinicraftGame.Input;
+using MinicraftGame.Utils;
 
-namespace Minicraft.UI
+namespace MinicraftGame.UI
 {
     public sealed class Button
     {

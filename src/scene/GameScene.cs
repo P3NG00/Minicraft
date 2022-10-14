@@ -3,19 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
-using Minicraft.Font;
-using Minicraft.Game.BlockType;
-using Minicraft.Game.Entities;
-using Minicraft.Game.Entities.Living;
-using Minicraft.Game.Entities.Projectiles;
-using Minicraft.Game.Inventories;
-using Minicraft.Game.ItemType;
-using Minicraft.Game.Worlds;
-using Minicraft.Input;
-using Minicraft.UI;
-using Minicraft.Utils;
+using MinicraftGame.Font;
+using MinicraftGame.Game.BlockType;
+using MinicraftGame.Game.Entities;
+using MinicraftGame.Game.Entities.Living;
+using MinicraftGame.Game.Entities.Projectiles;
+using MinicraftGame.Game.Inventories;
+using MinicraftGame.Game.ItemType;
+using MinicraftGame.Game.Worlds;
+using MinicraftGame.Input;
+using MinicraftGame.UI;
+using MinicraftGame.Utils;
 
-namespace Minicraft.Scenes
+namespace MinicraftGame.Scenes
 {
     public sealed class GameScene : AbstractScene
     {
@@ -129,7 +129,7 @@ namespace Minicraft.Scenes
         private void SaveAndMainMenu()
         {
             Data.Save(_gameData);
-            MinicraftGame.SetScene(new MainMenuScene());
+            Minicraft.SetScene(new MainMenuScene());
         }
 
         private void RespawnPlayer()

@@ -1,12 +1,12 @@
 using System;
 using Microsoft.Xna.Framework;
-using Minicraft.Game.Entities;
-using Minicraft.Game.Entities.Living;
-using Minicraft.Game.Inventories;
-using Minicraft.Game.ItemType;
-using Minicraft.Game.Worlds;
+using MinicraftGame.Game.Entities;
+using MinicraftGame.Game.Entities.Living;
+using MinicraftGame.Game.Inventories;
+using MinicraftGame.Game.ItemType;
+using MinicraftGame.Game.Worlds;
 
-namespace Minicraft.Game.BlockType
+namespace MinicraftGame.Game.BlockType
 {
     public sealed class BlockHit
     {

@@ -1,8 +1,8 @@
 using Microsoft.Xna.Framework;
-using Minicraft.Game.ItemType;
-using Minicraft.Utils;
+using MinicraftGame.Game.ItemType;
+using MinicraftGame.Utils;
 
-namespace Minicraft.Game.Entities.Living
+namespace MinicraftGame.Game.Entities.Living
 {
     public sealed class ItemEntity : AbstractLivingEntity
     {

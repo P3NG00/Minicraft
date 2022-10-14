@@ -1,8 +1,8 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Minicraft.Texture;
+using MinicraftGame.Texture;
 
-namespace Minicraft.Utils
+namespace MinicraftGame.Utils
 {
     public struct DrawData
     {

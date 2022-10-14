@@ -1,6 +1,6 @@
 using Microsoft.Xna.Framework;
 
-namespace Minicraft.Game.Worlds.Generation
+namespace MinicraftGame.Game.Worlds.Generation
 {
     public sealed class WorldGenSettingDecimal : AbstractWorldGenSetting<decimal>
     {

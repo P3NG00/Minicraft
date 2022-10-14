@@ -1,9 +1,9 @@
 using System;
 using Microsoft.Xna.Framework;
-using Minicraft.Game.Worlds;
-using Minicraft.Utils;
+using MinicraftGame.Game.Worlds;
+using MinicraftGame.Utils;
 
-namespace Minicraft.Game.Entities
+namespace MinicraftGame.Game.Entities
 {
     public abstract class AbstractEntity
     {

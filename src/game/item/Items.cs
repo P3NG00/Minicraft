@@ -1,7 +1,7 @@
 using Microsoft.Xna.Framework;
-using Minicraft.Texture;
+using MinicraftGame.Texture;
 
-namespace Minicraft.Game.ItemType
+namespace MinicraftGame.Game.ItemType
 {
     public static class Items
     {

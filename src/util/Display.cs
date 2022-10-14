@@ -1,10 +1,10 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Minicraft.Font;
-using Minicraft.Game.Entities.Living;
-using Minicraft.Texture;
+using MinicraftGame.Font;
+using MinicraftGame.Game.Entities.Living;
+using MinicraftGame.Texture;
 
-namespace Minicraft.Utils
+namespace MinicraftGame.Utils
 {
     public static class Display
     {
@@ -24,7 +24,7 @@ namespace Minicraft.Utils
 
         public static void Constructor(Microsoft.Xna.Framework.Game game) => _graphics = new GraphicsDeviceManager(game);
 
-        public static void LoadContent() => SpriteBatch = new SpriteBatch(MinicraftGame.GraphicsDevice);
+        public static void LoadContent() => SpriteBatch = new SpriteBatch(Minicraft.GraphicsDevice);
 
         public static void Initialize() => SetSize(1280, 720, false);
 

@@ -1,12 +1,12 @@
 using Microsoft.Xna.Framework;
-using Minicraft.Game.Entities.Living;
-using Minicraft.Game.Inventories;
-using Minicraft.Game.Worlds;
-using Minicraft.Game.Worlds.Generation;
-using Minicraft.UI;
-using Minicraft.Utils;
+using MinicraftGame.Game.Entities.Living;
+using MinicraftGame.Game.Inventories;
+using MinicraftGame.Game.Worlds;
+using MinicraftGame.Game.Worlds.Generation;
+using MinicraftGame.UI;
+using MinicraftGame.Utils;
 
-namespace Minicraft.Scenes
+namespace MinicraftGame.Scenes
 {
     public sealed class WorldCreationScene : AbstractScene
     {
@@ -32,7 +32,7 @@ namespace Minicraft.Scenes
             GenerateRandomWorld();
         }
 
-        private void BackToMainMenu() => MinicraftGame.SetScene(new MainMenuScene());
+        private void BackToMainMenu() => Minicraft.SetScene(new MainMenuScene());
 
         private void GenerateRandomWorld()
         {
@@ -41,9 +41,9 @@ namespace Minicraft.Scenes
         }
 
         // passes the settings to the settings scene
-        private void OpenSettings() => MinicraftGame.SetScene(new WorldCreationSettingsScene(_settings));
+        private void OpenSettings() => Minicraft.SetScene(new WorldCreationSettingsScene(_settings));
 
-        private void StartWorld() => MinicraftGame.SetScene(new GameScene(new GameData(_world, new Inventory(), new PlayerEntity(_world))));
+        private void StartWorld() => Minicraft.SetScene(new GameScene(new GameData(_world, new Inventory(), new PlayerEntity(_world))));
 
         public sealed override void Update(GameTime gameTime)
         {

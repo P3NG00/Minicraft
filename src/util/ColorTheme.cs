@@ -1,6 +1,6 @@
 using Microsoft.Xna.Framework;
 
-namespace Minicraft.Utils
+namespace MinicraftGame.Utils
 {
     public struct ColorTheme
     {

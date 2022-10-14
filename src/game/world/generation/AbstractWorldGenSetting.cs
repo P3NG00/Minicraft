@@ -1,9 +1,9 @@
 using Microsoft.Xna.Framework;
-using Minicraft.Input;
-using Minicraft.UI;
-using Minicraft.Utils;
+using MinicraftGame.Input;
+using MinicraftGame.UI;
+using MinicraftGame.Utils;
 
-namespace Minicraft.Game.Worlds.Generation
+namespace MinicraftGame.Game.Worlds.Generation
 {
     public abstract class AbstractWorldGenSetting<T> : IWorldGenSetting
     {

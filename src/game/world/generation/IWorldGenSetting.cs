@@ -1,4 +1,4 @@
-namespace Minicraft.Game.Worlds.Generation
+namespace MinicraftGame.Game.Worlds.Generation
 {
     public interface IWorldGenSetting
     {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using Microsoft.Xna.Framework;
 
-namespace Minicraft.Utils
+namespace MinicraftGame.Utils
 {
     public static class Debug
     {
