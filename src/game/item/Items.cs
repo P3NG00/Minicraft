@@ -1,4 +1,3 @@
-using System;
 using Microsoft.Xna.Framework;
 using Minicraft.Texture;
 
@@ -13,21 +12,24 @@ namespace Minicraft.Game.ItemType
 
         public static void Initialize()
         {
-            Nothing = new Item("Nothing", new());
-            DebugStick = new Item("Debug Stick", new(Textures.Stick, new Color(75, 55, 28)));
+            // instantiate items
+            Nothing = new Item("Nothing", new(), 0);
+            DebugStick = new Item("Debug Stick", new(Textures.Stick, new Color(75, 55, 28)), 1);
             // TODO more items
-
+            // add to array in order of id
             _items = new[]
             {
-                Nothing,
-                DebugStick,
+                Nothing,    // 0
+                DebugStick, // 1
             };
+            // check item id's
+            for (int i = 0; i < _items.Length; i++)
+                if (_items[i].ID != i)
+                    throw new System.Exception($"Item ID mismatch: {_items[i].Name} has ID {_items[i].ID} but is at index {i}.");
         }
 
         public static int Amount => _items.Length;
 
-        public static Item GetByID(int i) => _items[i];
-
-        public static int GetID(Item item) => Array.IndexOf(_items, item);
+        public static Item FromID(int i) => _items[i];
     }
 }

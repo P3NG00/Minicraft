@@ -6,7 +6,7 @@ namespace Minicraft.Game.BlockType
 {
     public sealed class P3NG00FaceBlock : Block
     {
-        public P3NG00FaceBlock(string name, int hitsToBreak, bool canWalkThrough, DrawData drawData) : base(name, hitsToBreak, canWalkThrough, drawData) {}
+        public P3NG00FaceBlock(string name, int hitsToBreak, bool canWalkThrough, DrawData drawData, int id = -1) : base(name, hitsToBreak, canWalkThrough, drawData, id) {}
 
         public sealed override void Interact(World world, Point position)
         {

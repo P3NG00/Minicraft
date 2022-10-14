@@ -10,14 +10,16 @@ namespace Minicraft.Game.ItemType
 {
     public class Item : IEquatable<Item>
     {
+        public readonly int ID;
         public readonly string Name;
         public readonly DrawData DrawData;
 
         public Texture2D Texture => DrawData.Texture;
         public Color Color => DrawData.Color;
 
-        public Item(string name, DrawData drawData)
+        public Item(string name, DrawData drawData, int id = -1)
         {
+            ID = id;
             Name = name;
             DrawData = drawData;
         }

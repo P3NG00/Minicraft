@@ -88,6 +88,7 @@ namespace Minicraft.Texture
                 return colorArray[colorIDs[y, x]];
             }
 
+            // TODO make this look like a stick
             Color StickTexture(int x, int y)
             {
                 var isEdgeX = x == 0 || x == EDGE;

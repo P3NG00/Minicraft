@@ -7,6 +7,7 @@ namespace Minicraft.Game.BlockType
 {
     public class Block
     {
+        public readonly int ID;
         public readonly string Name;
         public readonly int HitsToBreak;
         public readonly bool CanWalkThrough;
@@ -15,8 +16,9 @@ namespace Minicraft.Game.BlockType
         public Texture2D Texture => DrawData.Texture;
         public Color Color => DrawData.Color;
 
-        public Block(string name, int hitsToBreak, bool canWalkThrough, DrawData drawData)
+        public Block(string name, int hitsToBreak, bool canWalkThrough, DrawData drawData, int id = -1)
         {
+            ID = id;
             Name = name;
             HitsToBreak = hitsToBreak;
             CanWalkThrough = canWalkThrough;

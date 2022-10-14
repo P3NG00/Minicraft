@@ -46,13 +46,13 @@ namespace Minicraft.Utils
             return new Vector2((float)Math.Cos(angle), (float)Math.Sin(angle));
         }
 
-        public static Item ReadItem(this BinaryReader stream) => Items.GetByID(stream.Read());
+        public static Item ReadItem(this BinaryReader stream) => Items.FromID(stream.Read());
 
         public static Block ReadBlock(this BinaryReader stream) => Blocks.GetByID(stream.Read());
 
-        public static void WriteItem(this BinaryWriter stream, Item item) => stream.Write((char)Items.GetID(item));
+        public static void WriteItem(this BinaryWriter stream, Item item) => stream.Write((char)item.ID);
 
-        public static void WriteBlock(this BinaryWriter stream, Block block) => stream.Write((char)Blocks.GetID(block));
+        public static void WriteBlock(this BinaryWriter stream, Block block) => stream.Write((char)block.ID);
 
         public delegate void ActionRef<T>(ref T t);
     }

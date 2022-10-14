@@ -6,7 +6,7 @@ namespace Minicraft.Game.BlockType
 {
     public sealed class TNTBlock : Block
     {
-        public TNTBlock(string name, int hitsToBreak, bool canWalkThrough, DrawData drawData) : base(name, hitsToBreak, canWalkThrough, drawData) {}
+        public TNTBlock(string name, int hitsToBreak, bool canWalkThrough, DrawData drawData, int id = -1) : base(name, hitsToBreak, canWalkThrough, drawData, id) {}
 
         // TODO summon TNTEntity
 

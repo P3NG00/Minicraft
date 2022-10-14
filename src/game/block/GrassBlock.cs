@@ -13,7 +13,7 @@ namespace Minicraft.Game.BlockType
             new Point(-1, -1), new Point(1, -1),
         };
 
-        public GrassBlock(string name, int hitsToBreak, bool canWalkThrough, DrawData drawData) : base(name, hitsToBreak, canWalkThrough, drawData) {}
+        public GrassBlock(string name, int hitsToBreak, bool canWalkThrough, DrawData drawData, int id = -1) : base(name, hitsToBreak, canWalkThrough, drawData, id) {}
 
         public sealed override void Update(World world, Point position)
         {

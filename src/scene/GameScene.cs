@@ -214,7 +214,7 @@ namespace Minicraft.Scenes
                     if (Keybinds.Debug.Held)
                         for (int i = 1; i < Items.Amount; i++)
                             if (InputManager.KeyPressedThisFrame(Keys.D0 + i))
-                                _inventory.Add(Items.GetByID(i));
+                                _inventory.Add(Items.FromID(i));
                     // spawn projectiles
                     if (Keybinds.SpawnProjectile.PressedThisFrame)
                         SpawnEntity(new ProjectileEntity(_player.Position));
