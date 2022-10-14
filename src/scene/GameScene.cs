@@ -54,7 +54,7 @@ namespace MinicraftGame.Scenes
 
         // getters
         private PlayerEntity Player => _gameData.Player;
-        private Inventory Inventory => _gameData.Inventory;
+        private Inventory Inventory => Player.Inventory;
         private World World => _gameData.World;
 
         public GameScene(GameData gameData) : base(Blocks.Air.Color)

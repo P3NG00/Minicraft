@@ -43,7 +43,7 @@ namespace MinicraftGame.Scenes
         // passes the settings to the settings scene
         private void OpenSettings() => Minicraft.SetScene(new WorldCreationSettingsScene(_settings));
 
-        private void StartWorld() => Minicraft.SetScene(new GameScene(new GameData(_world, new Inventory(), new PlayerEntity(_world))));
+        private void StartWorld() => Minicraft.SetScene(new GameScene(new GameData(_world, new PlayerEntity(_world))));
 
         public sealed override void Update(GameTime gameTime)
         {

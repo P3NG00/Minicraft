@@ -32,7 +32,7 @@ namespace MinicraftGame.Utils
                 {
                     for (int i = 0; i < Inventory.SLOTS; i++)
                     {
-                        var slot = gameData.Inventory[i];
+                        var slot = gameData.Player.Inventory[i];
                         stream.WriteItem(slot.Item);
                         stream.Write((char)slot.Amount);
                     }
@@ -87,13 +87,13 @@ namespace MinicraftGame.Utils
                     // read player position
                     var posX = stream.ReadSingle();
                     var posY = stream.ReadSingle();
-                    player = new PlayerEntity(new Vector2(posX, posY));
+                    player = new PlayerEntity(new Vector2(posX, posY), inventory);
                     // read player health
                     var life = stream.ReadSingle();
                     player.SetLife(life);
                 }
             }
-            return new GameData(world, inventory, player);
+            return new GameData(world, player);
         }
     }
 }

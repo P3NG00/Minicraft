@@ -21,7 +21,7 @@ namespace MinicraftGame.Game.Entities.Living
         {
             if (DistanceTo(gameData.Player) <= PICKUP_DISTANCE)
             {
-                gameData.Inventory.Add(_item);
+                gameData.Player.Inventory.Add(_item);
                 Kill();
             }
             // base call
