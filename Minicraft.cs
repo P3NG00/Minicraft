@@ -18,7 +18,8 @@ namespace MinicraftGame
         public static new GraphicsDevice GraphicsDevice { get; private set; }
 
         private static Minicraft _instance;
-        private static AbstractScene _scene = new MainMenuScene();
+        private AbstractScene _scene = new MainMenuScene();
+        private AbstractScene _nextScene = null;
 
         public Minicraft()
         {
@@ -60,6 +61,12 @@ namespace MinicraftGame
 
         protected override void Update(GameTime gameTime)
         {
+            // update scene if set
+            if (_nextScene != null)
+            {
+                _scene = _nextScene;
+                _nextScene = null;
+            }
             // update input
             InputManager.Update();
             // togglable fullscreen
@@ -85,7 +92,7 @@ namespace MinicraftGame
             base.Draw(gameTime);
         }
 
-        public static void SetScene(AbstractScene scene) => _scene = scene;
+        public static void SetScene(AbstractScene scene) => _instance._nextScene = scene;
 
         public static void EndProgram() => _instance.Exit();
     }
