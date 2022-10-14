@@ -77,33 +77,32 @@ namespace MinicraftGame.Scenes
                 // update pause menu
                 _buttonResume.Update();
                 _buttonMainMenu.Update();
+                return;
             }
-            else
+
+            UpdateTicks((float)gameTime.ElapsedGameTime.TotalSeconds * Debug.TimeScale);
+            // update ui buttons
+            if (!Player.Alive)
             {
-                UpdateTicks((float)gameTime.ElapsedGameTime.TotalSeconds * Debug.TimeScale);
-                // update ui buttons
-                if (!Player.Alive)
-                {
-                    // update buttons
-                    _buttonRespawn.Update();
-                    _buttonMainMenu.Update();
-                }
-                // update for every tick step
-                while (Tick())
-                {
-                    // update debug
-                    Debug.Update();
-                    // update world
-                    World.Update();
-                    // update player
-                    if (Player.Alive)
-                        Player.Update(_gameData);
-                    // update entities
-                    foreach (var entity in _entityList)
-                        entity.Update(_gameData);
-                    // remove dead npc's
-                    _entityList.RemoveAll(npc => !npc.Alive);
-                }
+                // update buttons
+                _buttonRespawn.Update();
+                _buttonMainMenu.Update();
+            }
+            // update for every tick step
+            while (Tick())
+            {
+                // update debug
+                Debug.Update();
+                // update world
+                World.Update();
+                // update player
+                if (Player.Alive)
+                    Player.Update(_gameData);
+                // update entities
+                foreach (var entity in _entityList)
+                    entity.Update(_gameData);
+                // remove dead npc's
+                _entityList.RemoveAll(npc => !npc.Alive);
             }
         }
 
@@ -194,61 +193,61 @@ namespace MinicraftGame.Scenes
                 Debug.DisplayBlockChecks = !Debug.DisplayBlockChecks;
             if (Keybinds.Debug.PressedThisFrame)
                 Debug.Enabled = !Debug.Enabled;
-            // update if not paused
-            if (!_paused)
+            // pause check
+            if (_paused)
             {
-                // check hotbar num keys
-                for (int i = 0; i < Game.Inventories.Inventory.SLOTS; i++)
-                    if (InputManager.KeyPressedThisFrame(Keys.D1 + i))
-                        Inventory.SetActiveSlot(i);
-                Display.BlockScale = MathHelper.Clamp(Display.BlockScale + InputManager.ScrollWheelDelta, Display.BLOCK_SCALE_MIN, Display.BLOCK_SCALE_MAX);
-                // get block position from mouse
-                var mousePos = InputManager.MousePosition.ToVector2();
-                mousePos.Y = Display.WindowSize.Y - mousePos.Y - 1;
-                _lastMouseBlock = ((mousePos - (Display.WindowSize.ToVector2() / 2f)) / Display.BlockScale) + (Player.Position + new Vector2(0, Player.Dimensions.Y / 2f));
-                _lastMouseBlockInt = _lastMouseBlock.ToPoint();
-                // if player alive
-                if (Player.Alive)
+                _withinReach = false;
+                return;
+            }
+            // check hotbar num keys
+            for (int i = 0; i < Game.Inventories.Inventory.SLOTS; i++)
+                if (InputManager.KeyPressedThisFrame(Keys.D1 + i))
+                    Inventory.SetActiveSlot(i);
+            Display.BlockScale = MathHelper.Clamp(Display.BlockScale + InputManager.ScrollWheelDelta, Display.BLOCK_SCALE_MIN, Display.BLOCK_SCALE_MAX);
+            // get block position from mouse
+            var mousePos = InputManager.MousePosition.ToVector2();
+            mousePos.Y = Display.WindowSize.Y - mousePos.Y - 1;
+            _lastMouseBlock = ((mousePos - (Display.WindowSize.ToVector2() / 2f)) / Display.BlockScale) + (Player.Position + new Vector2(0, Player.Dimensions.Y / 2f));
+            _lastMouseBlockInt = _lastMouseBlock.ToPoint();
+            // if player alive
+            if (Player.Alive)
+            {
+                // give items if holding debug button
+                if (Keybinds.Debug.Held)
+                    for (int i = 1; i < Items.Amount; i++)
+                        if (InputManager.KeyPressedThisFrame(Keys.D0 + i))
+                            Inventory.Add(Items.FromID(i));
+                // spawn projectiles
+                if (Keybinds.SpawnProjectile.PressedThisFrame)
+                    SpawnEntity(new ProjectileEntity(Player.Position));
+                if (Keybinds.SpawnBouncyProjectile.PressedThisFrame)
+                    SpawnEntity(new BouncyProjectileEntity(Player.Position));
+                // toggle grid mode
+                if (Keybinds.ToggleGridMode.PressedThisFrame)
                 {
-                    // give items if holding debug button
-                    if (Keybinds.Debug.Held)
-                        for (int i = 1; i < Items.Amount; i++)
-                            if (InputManager.KeyPressedThisFrame(Keys.D0 + i))
-                                Inventory.Add(Items.FromID(i));
-                    // spawn projectiles
-                    if (Keybinds.SpawnProjectile.PressedThisFrame)
-                        SpawnEntity(new ProjectileEntity(Player.Position));
-                    if (Keybinds.SpawnBouncyProjectile.PressedThisFrame)
-                        SpawnEntity(new BouncyProjectileEntity(Player.Position));
-                    // toggle grid mode
-                    if (Keybinds.ToggleGridMode.PressedThisFrame)
-                    {
-                        if ((int)_gridMode >= Enum.GetValues<GridMode>().Length - 1)
-                            _gridMode = (GridMode)0;
-                        else
-                            _gridMode++;
-                    }
-                    // test if within reach
-                    _withinReach = Vector2.Distance(Player.Center, _lastMouseBlock) <= PLAYER_REACH_RADIUS;
-                    // catch out of bounds
-                    if (_withinReach &&
-                        _lastMouseBlockInt.X >= 0 && _lastMouseBlockInt.X < Game.Worlds.World.WIDTH &&
-                        _lastMouseBlockInt.Y >= 0 && _lastMouseBlockInt.Y < Game.Worlds.World.HEIGHT)
-                    {
-                        var block = World.GetBlock(_lastMouseBlockInt);
-                        // handle left click (block breaking)
-                        // TODO instead of clicking to break blocks, hold left click for certain amount of ticks to break block
-                        if (Keybinds.MouseLeft.PressedThisFrame && block != Blocks.Air)
-                            _blockHit.Hit(World, Inventory, _lastMouseBlockInt, SpawnEntity);
-                        // handle right click (block placing & interaction)
-                        if (Keybinds.MouseRight.PressedThisFrame)
-                            Inventory.Use(World, Player, _lastMouseBlockInt);
-                        if (Keybinds.MouseMiddle.PressedThisFrame)
-                            SpawnEntity(new NPCEntity(_lastMouseBlock));
-                    }
+                    if ((int)_gridMode >= Enum.GetValues<GridMode>().Length - 1)
+                        _gridMode = (GridMode)0;
+                    else
+                        _gridMode++;
                 }
-                else
-                    _withinReach = false;
+                // test if within reach
+                _withinReach = Vector2.Distance(Player.Center, _lastMouseBlock) <= PLAYER_REACH_RADIUS;
+                // catch out of bounds
+                if (_withinReach &&
+                    _lastMouseBlockInt.X >= 0 && _lastMouseBlockInt.X < Game.Worlds.World.WIDTH &&
+                    _lastMouseBlockInt.Y >= 0 && _lastMouseBlockInt.Y < Game.Worlds.World.HEIGHT)
+                {
+                    var block = World.GetBlock(_lastMouseBlockInt);
+                    // handle left click (block breaking)
+                    // TODO instead of clicking to break blocks, hold left click for certain amount of ticks to break block
+                    if (Keybinds.MouseLeft.PressedThisFrame && block != Blocks.Air)
+                        _blockHit.Hit(World, Inventory, _lastMouseBlockInt, SpawnEntity);
+                    // handle right click (block placing & interaction)
+                    if (Keybinds.MouseRight.PressedThisFrame)
+                        Inventory.Use(World, Player, _lastMouseBlockInt);
+                    if (Keybinds.MouseMiddle.PressedThisFrame)
+                        SpawnEntity(new NPCEntity(_lastMouseBlock));
+                }
             }
             else
                 _withinReach = false;
