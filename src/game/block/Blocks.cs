@@ -1,4 +1,3 @@
-using System;
 using Microsoft.Xna.Framework;
 using MinicraftGame.Texture;
 
@@ -48,6 +47,6 @@ namespace MinicraftGame.Game.BlockType
 
         public static int Amount => _blocks.Length;
 
-        public static Block GetByID(int i) => _blocks[i];
+        public static Block FromID(int i) => _blocks[i];
     }
 }

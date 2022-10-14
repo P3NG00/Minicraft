@@ -1,9 +1,7 @@
 using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using MinicraftGame.Game.Entities.Living;
 using MinicraftGame.Game.Inventories;
-using MinicraftGame.Game.Worlds;
 using MinicraftGame.Utils;
 
 namespace MinicraftGame.Game.ItemType
@@ -24,7 +22,7 @@ namespace MinicraftGame.Game.ItemType
             DrawData = drawData;
         }
 
-        public virtual void Use(World world, Slot slot, PlayerEntity player, Point blockPosition) {}
+        public virtual void Use(Slot slot, Point blockPosition) {}
 
         public bool Equals(Item other)
         {

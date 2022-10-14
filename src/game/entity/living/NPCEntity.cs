@@ -23,7 +23,7 @@ namespace MinicraftGame.Game.Entities.Living
 
         private void ResetAIUpdateTimer() => _aiUpdateTicks = Util.Random.Next(NPC_AI_UPDATE_TICKS_MIN, NPC_AI_UPDATE_TICKS_MAX + 1);
 
-        public sealed override void Update(GameData gameData)
+        public sealed override void Tick()
         {
             // decrement update ticks
             _aiUpdateTicks--;
@@ -55,14 +55,14 @@ namespace MinicraftGame.Game.Entities.Living
                         checkSide = sides.Left - 1;
                     else
                         checkSide = sides.Right + 1;
-                    if (!gameData.World.GetBlock(new Point(checkSide, sides.Bottom)).CanWalkThrough)
+                    if (!Minicraft.World.GetBlock(new Point(checkSide, sides.Bottom)).CanWalkThrough)
                         Jump();
                 }
             }
             else
                 RawVelocity.X = 0f;
             // base call
-            base.Update(gameData);
+            base.Tick();
         }
     }
 }

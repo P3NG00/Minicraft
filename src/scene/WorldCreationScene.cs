@@ -1,6 +1,4 @@
 using Microsoft.Xna.Framework;
-using MinicraftGame.Game.Entities.Living;
-using MinicraftGame.Game.Inventories;
 using MinicraftGame.Game.Worlds;
 using MinicraftGame.Game.Worlds.Generation;
 using MinicraftGame.UI;
@@ -15,7 +13,6 @@ namespace MinicraftGame.Scenes
         private readonly Button _buttonSettings;
         private readonly Button _buttonStart;
 
-        private World _world;
         private WorldPreview _worldPreview;
         private WorldGen.Settings _settings;
 
@@ -36,14 +33,20 @@ namespace MinicraftGame.Scenes
 
         private void GenerateRandomWorld()
         {
-            _world = WorldGen.GenerateWorld(_settings);
-            _worldPreview = new WorldPreview(_world, new Vector2(0.5f, 0.4f));
+            // generate world before it's referenced in new world preview
+            Minicraft.World = WorldGen.GenerateWorld(_settings);
+            _worldPreview = new WorldPreview(new Vector2(0.5f, 0.4f));
         }
 
         // passes the settings to the settings scene
         private void OpenSettings() => Minicraft.SetScene(new WorldCreationSettingsScene(_settings));
 
-        private void StartWorld() => Minicraft.SetScene(new GameScene(new GameData(_world, new PlayerEntity(_world))));
+        private void StartWorld()
+        {
+            // instantiate player so it can be referenced in new game scene
+            Minicraft.Player = new();
+            Minicraft.SetScene(new GameScene());
+        }
 
         public sealed override void Update(GameTime gameTime)
         {

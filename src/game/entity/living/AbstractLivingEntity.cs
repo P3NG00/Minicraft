@@ -48,7 +48,7 @@ namespace MinicraftGame.Game.Entities.Living
             }
         }
 
-        public override void Update(GameData gameData)
+        public override void Tick()
         {
             // add velocity if falling
             if (!IsGrounded)
@@ -61,18 +61,18 @@ namespace MinicraftGame.Game.Entities.Living
             // find collision points
             var testSides = GetSides(testPosition);
             // test horizontal collision
-            var horizontalCollision = CheckHorizontalCollision(gameData.World, testSides);
+            var horizontalCollision = CheckHorizontalCollision(testSides);
             // test vertical collision
             var verticalCollision = false;
             if (!IsGrounded)
-                verticalCollision = CheckVerticalCollision(gameData.World, testSides);
+                verticalCollision = CheckVerticalCollision(testSides);
             // figure out which collision happened first
             if (verticalCollision && horizontalCollision)
             {
                 var horizontalHappenedFirst = WhichCollisionFirstHorizontalElseVertical();
                 Util.ActionRef<Vector2> firstCollision;
                 Util.ActionRef<Vector2> secondCollision;
-                Func<World, Sides, bool> secondCollisionRecheck;
+                Func<Sides, bool> secondCollisionRecheck;
                 if (horizontalHappenedFirst)
                 {
                     firstCollision = HandleHorizontalCollision;
@@ -88,7 +88,7 @@ namespace MinicraftGame.Game.Entities.Living
                 // handle first collision
                 firstCollision(ref testPosition);
                 // re-check second collision with new position
-                if (secondCollisionRecheck(gameData.World, GetSides(testPosition)))
+                if (secondCollisionRecheck(GetSides(testPosition)))
                     // handle second collision
                     secondCollision(ref testPosition);
             }
@@ -101,7 +101,7 @@ namespace MinicraftGame.Game.Entities.Living
             // if grounded, update last height
             if (IsGrounded)
             {
-                if (CheckOnAir(gameData.World))
+                if (CheckOnAir(Minicraft.World))
                     IsGrounded = false;
                 else
                     _lastHeight = Position.Y;

@@ -1,15 +1,13 @@
-using System;
 using Microsoft.Xna.Framework;
-using MinicraftGame.Game.Entities;
 using MinicraftGame.Game.Entities.Living;
-using MinicraftGame.Game.Inventories;
 using MinicraftGame.Game.ItemType;
-using MinicraftGame.Game.Worlds;
 
 namespace MinicraftGame.Game.BlockType
 {
     public sealed class BlockHit
     {
+        // TODO consider if this needs to be it's own class any more. probably can be integrated with GameScene
+
         // TODO store tick count the time the hit happened. once certain amount of seconds/ticks have passed, nullify blockhit
         public Point Position { get; private set; }
         public int Hits { get; private set; }
@@ -20,7 +18,7 @@ namespace MinicraftGame.Game.BlockType
             Hits = hits;
         }
 
-        public void Hit(World world, Inventory inventory, Point hitPosition, Action<AbstractEntity> spawnEntityFunc)
+        public void Hit(Point hitPosition)
         {
             // if hit same block
             if (Position == hitPosition)
@@ -33,16 +31,16 @@ namespace MinicraftGame.Game.BlockType
                 Hits = 1;
             }
             // get block
-            var block = world.GetBlock(Position);
+            var block = Minicraft.World.GetBlock(Position);
             // break block
             if (Hits >= block.HitsToBreak)
             {
+                // remove block from world
+                Minicraft.World.SetBlock(Position, Blocks.Air);
                 // spawn item entity where block broke
                 var pos = Position.ToVector2() + new Vector2(0.5f, 0.125f);
                 var itemEntity = new ItemEntity(pos, new BlockItem(block));
-                spawnEntityFunc(itemEntity);
-                // remove block from world
-                world.SetBlock(Position, Blocks.Air);
+                Minicraft.World.AddEntity(itemEntity);
                 // reset info
                 Position = new Point(-1);
                 Hits = 0;

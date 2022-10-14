@@ -15,7 +15,7 @@ namespace MinicraftGame.Game.BlockType
 
         public LeavesBlock(string name, int hitsToBreak, bool canWalkThrough, DrawData drawData, int id = -1) : base(name, hitsToBreak, canWalkThrough, drawData, id) {}
 
-        public sealed override void Update(World world, Point position)
+        public sealed override void RandomTick(Point position)
         {
             // check surrounding blocks for logs
             bool log = false;
@@ -27,7 +27,7 @@ namespace MinicraftGame.Game.BlockType
                     checkPos.Y >= 0 && checkPos.Y < World.HEIGHT)
                 {
                     // if wood detected
-                    if (world.GetBlock(checkPos) == Blocks.Wood)
+                    if (Minicraft.World.GetBlock(checkPos) == Blocks.Wood)
                     {
                         // set log flag
                         log = true;
@@ -38,9 +38,9 @@ namespace MinicraftGame.Game.BlockType
             }
             // if no log, remove leaves
             if (!log)
-                world.SetBlock(position, Blocks.Air);
+                Minicraft.World.SetBlock(position, Blocks.Air);
             // base call
-            base.Update(world, position);
+            base.RandomTick(position);
         }
     }
 }

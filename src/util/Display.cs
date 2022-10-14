@@ -1,7 +1,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MinicraftGame.Font;
-using MinicraftGame.Game.Entities.Living;
 using MinicraftGame.Texture;
 
 namespace MinicraftGame.Utils
@@ -28,10 +27,10 @@ namespace MinicraftGame.Utils
 
         public static void Initialize() => SetSize(1280, 720, false);
 
-        public static void UpdateCameraOffset(PlayerEntity player)
+        public static void UpdateCameraOffset()
         {
             var centeredScreen = -(WindowSize.ToVector2() / 2f);
-            var relativePlayerPosition = player.Center * BlockScale;
+            var relativePlayerPosition = Minicraft.Player.Center * BlockScale;
             CameraOffset = new Vector2(centeredScreen.X + relativePlayerPosition.X,
                                        centeredScreen.Y - relativePlayerPosition.Y);
         }

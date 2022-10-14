@@ -14,7 +14,7 @@ namespace MinicraftGame.Utils
 
         // TODO account for blockitems when loading/saving
 
-        public static void Save(GameData gameData)
+        public static void Save()
         {
             using (var stream = new BinaryWriter(File.Open(SAVE_FILE, FileMode.Create)))
             {
@@ -24,7 +24,7 @@ namespace MinicraftGame.Utils
 
                 void WriteWorldBlocks()
                 {
-                    foreach (var block in gameData.World.RawBlockGrid)
+                    foreach (var block in Minicraft.World.RawBlockGrid)
                         stream.WriteBlock(block);
                 }
 
@@ -32,7 +32,7 @@ namespace MinicraftGame.Utils
                 {
                     for (int i = 0; i < Inventory.SLOTS; i++)
                     {
-                        var slot = gameData.Player.Inventory[i];
+                        var slot = Minicraft.Player.Inventory[i];
                         stream.WriteItem(slot.Item);
                         stream.Write((char)slot.Amount);
                     }
@@ -41,19 +41,20 @@ namespace MinicraftGame.Utils
                 void WritePlayerData()
                 {
                     // write player position
-                    stream.Write(gameData.Player.Position.X);
-                    stream.Write(gameData.Player.Position.Y);
+                    stream.Write(Minicraft.Player.Position.X);
+                    stream.Write(Minicraft.Player.Position.Y);
                     // write player health
-                    stream.Write(gameData.Player.Life);
+                    stream.Write(Minicraft.Player.Life);
                 }
             }
         }
 
-        public static GameData Load()
+        public static void Load()
         {
             var world = new World();
             var inventory = new Inventory();
             PlayerEntity player;
+
             using (var stream = new BinaryReader(File.Open(SAVE_FILE, FileMode.Open)))
             {
                 ReadWorldBlocks();
@@ -93,7 +94,9 @@ namespace MinicraftGame.Utils
                     player.SetLife(life);
                 }
             }
-            return new GameData(world, player);
+
+            Minicraft.Player = player;
+            Minicraft.World = world;
         }
     }
 }

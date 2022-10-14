@@ -1,6 +1,5 @@
 using Microsoft.Xna.Framework;
 using MinicraftGame.Game.Inventories;
-using MinicraftGame.Game.Worlds;
 using MinicraftGame.Input;
 using MinicraftGame.Utils;
 
@@ -18,11 +17,17 @@ namespace MinicraftGame.Game.Entities.Living
 
         public PlayerEntity(Vector2 position, Inventory inventory = null) : base(position, PLAYER_LIFE, PlayerSize, PLAYER_SPEED, PLAYER_RUN_MULT, PLAYER_JUMP, new(color: Colors.Entity_Player)) => Inventory = inventory ?? new();
 
-        public PlayerEntity(World world) : this(Vector2.Zero) => SpawnIntoWorld(world);
+        public PlayerEntity() : this(Vector2.Zero) => SpawnIntoWorld();
 
-        public void SpawnIntoWorld(World world) => Position = world.GetSpawnPosition().ToVector2();
+        public void SpawnIntoWorld() => Position = Minicraft.World.GetSpawnPosition().ToVector2();
 
-        public sealed override void Update(GameData gameData)
+        public void Respawn()
+        {
+            ResetLife();
+            SpawnIntoWorld();
+        }
+
+        public sealed override void Tick()
         {
             // set horizontal movement
             RawVelocity.X = 0;
@@ -36,7 +41,7 @@ namespace MinicraftGame.Game.Entities.Living
             if (Keybinds.Jump.Held)
                 Jump();
             // base call
-            base.Update(gameData);
+            base.Tick();
         }
     }
 }

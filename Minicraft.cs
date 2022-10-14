@@ -3,7 +3,9 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MinicraftGame.Font;
 using MinicraftGame.Game.BlockType;
+using MinicraftGame.Game.Entities.Living;
 using MinicraftGame.Game.ItemType;
+using MinicraftGame.Game.Worlds;
 using MinicraftGame.Input;
 using MinicraftGame.Scenes;
 using MinicraftGame.Texture;
@@ -16,6 +18,9 @@ namespace MinicraftGame
         public const string TITLE = "Minicraft";
 
         public static new GraphicsDevice GraphicsDevice { get; private set; }
+
+        public static PlayerEntity Player = null;
+        public static World World = null;
 
         private static Minicraft _instance;
         private AbstractScene _scene = new MainMenuScene();

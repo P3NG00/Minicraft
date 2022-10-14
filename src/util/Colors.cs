@@ -38,7 +38,7 @@ namespace MinicraftGame.Utils
         // debug
         public static Color DebugReason_AirCheck => new Color(255, 128, 0, 64);
         public static Color DebugReadon_BlockInteract => new Color(255, 0, 0);
-        public static Color DebugReason_BlockUpdate => new Color(255, 0, 255, 64);
+        public static Color DebugReason_RandomBlockTick => new Color(255, 0, 255, 64);
         public static Color DebugReason_CollisionCheck => new Color(0, 0, 255, 64);
 
         // color themes

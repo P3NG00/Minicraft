@@ -1,5 +1,4 @@
 using Microsoft.Xna.Framework;
-using MinicraftGame.Game.Worlds;
 using MinicraftGame.Utils;
 
 namespace MinicraftGame.Game.BlockType
@@ -10,7 +9,7 @@ namespace MinicraftGame.Game.BlockType
 
         // TODO summon TNTEntity
 
-        public sealed override void Interact(World world, Point position)
+        public sealed override void Interact(Point position)
         {
             // play explosion sound
             Audio.Explosion.Play();
@@ -22,11 +21,11 @@ namespace MinicraftGame.Game.BlockType
                     var isEdgeX = x == position.X - 2 || x == position.X + 2;
                     var isEdgeY = y == position.Y - 2 || y == position.Y + 2;
                     if (!isEdgeX || !isEdgeY)
-                        world.SetBlock(x, y, Blocks.Air);
+                        Minicraft.World.SetBlock(x, y, Blocks.Air);
                 }
             }
             // base call
-            base.Interact(world, position);
+            base.Interact(position);
         }
     }
 }

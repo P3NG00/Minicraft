@@ -40,6 +40,10 @@ namespace MinicraftGame.Scenes
 
         private void CreateNewWorld() => Minicraft.SetScene(new WorldCreationScene());
 
-        private void LoadSavedWorld() => Minicraft.SetScene(new GameScene(Data.Load()));
+        private void LoadSavedWorld()
+        {
+            Data.Load();
+            Minicraft.SetScene(new GameScene());
+        }
     }
 }

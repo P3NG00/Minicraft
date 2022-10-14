@@ -1,6 +1,5 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using MinicraftGame.Game.Worlds;
 using MinicraftGame.Utils;
 
 namespace MinicraftGame.Game.BlockType
@@ -25,8 +24,8 @@ namespace MinicraftGame.Game.BlockType
             DrawData = drawData;
         }
 
-        public virtual void Update(World world, Point position) => Debug.AddBlockUpdate(position);
+        public virtual void RandomTick(Point position) => Debug.AddRandomBlockTick(position);
 
-        public virtual void Interact(World world, Point position) => Debug.AddBlockInteract(position);
+        public virtual void Interact(Point position) => Debug.AddBlockInteract(position);
     }
 }

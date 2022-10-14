@@ -1,9 +1,7 @@
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using MinicraftGame.Font;
-using MinicraftGame.Game.Entities.Living;
 using MinicraftGame.Game.ItemType;
-using MinicraftGame.Game.Worlds;
 using MinicraftGame.Utils;
 
 namespace MinicraftGame.Game.Inventories
@@ -45,11 +43,11 @@ namespace MinicraftGame.Game.Inventories
 
         public void SetActiveSlot(int i) => _activeSlot = i;
 
-        public void Use(World world, PlayerEntity player, Point blockPosition)
+        public void Use(Point blockPosition)
         {
             var slot = _inventory[_activeSlot];
             if (!slot.IsEmpty)
-                slot.Item.Use(world, slot, player, blockPosition);
+                slot.Item.Use(slot, blockPosition);
         }
 
         public int? Add(Item item, int amount = 1)

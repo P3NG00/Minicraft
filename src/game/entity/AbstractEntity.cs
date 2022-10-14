@@ -52,7 +52,7 @@ namespace MinicraftGame.Game.Entities
 
         public void Damage(float amount) => _life = Math.Max(_life - amount, 0f);
 
-        public virtual void Update(GameData gameData) {}
+        public virtual void Tick() {}
 
         public void Draw()
         {
@@ -113,7 +113,7 @@ namespace MinicraftGame.Game.Entities
         protected Vector2 GetNextPosition() => Position + (Velocity * World.TICK_STEP);
 
         // returns true if a collision happened while moving horizontally
-        protected bool CheckHorizontalCollision(World world, Sides sides)
+        protected bool CheckHorizontalCollision(Sides sides)
         {
             int side;
             if (IsMovingLeft)
@@ -134,7 +134,7 @@ namespace MinicraftGame.Game.Entities
             {
                 var sidePoint = new Point(side, y);
                 Debug.AddCollisionCheck(sidePoint);
-                if (!world.GetBlock(sidePoint).CanWalkThrough)
+                if (!Minicraft.World.GetBlock(sidePoint).CanWalkThrough)
                     // found collision
                     return true;
             }
@@ -144,7 +144,7 @@ namespace MinicraftGame.Game.Entities
         }
 
         // returns true if a collision happened while moving vertically
-        protected bool CheckVerticalCollision(World world, Sides sides)
+        protected bool CheckVerticalCollision(Sides sides)
         {
             int side;
             if (IsMovingUp)
@@ -165,7 +165,7 @@ namespace MinicraftGame.Game.Entities
             {
                 var sidePoint = new Point(x, side);
                 Debug.AddCollisionCheck(sidePoint);
-                if (!world.GetBlock(sidePoint).CanWalkThrough)
+                if (!Minicraft.World.GetBlock(sidePoint).CanWalkThrough)
                     // found collision
                     return true;
             }

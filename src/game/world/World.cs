@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using MinicraftGame.Font;
 using MinicraftGame.Game.BlockType;
@@ -21,6 +22,9 @@ namespace MinicraftGame.Game.Worlds
         // TODO make grid hold only id of blocks
         private readonly Block[,] _blockGrid = new Block[HEIGHT, WIDTH];
         // TODO add 2nd layer for 'background' tiles. make dirt, stone, and wood backgrounds. dirt and stone will generate on its respective block and the back layer will stay when caves are removed from the foreground
+        private readonly List<AbstractEntity> _entityList = new();
+
+        public int EntityCount => _entityList.Count;
 
         public Block[,] RawBlockGrid => _blockGrid;
 
@@ -54,25 +58,37 @@ namespace MinicraftGame.Game.Worlds
             return (Blocks.Air, 0);
         }
 
-        public void Update()
+        public void AddEntity(AbstractEntity entity) => _entityList.Add(entity);
+
+        public void Tick()
         {
             for (int i = 0; i < BLOCK_UPDATES_PER_TICK; i++)
             {
                 // get random point
                 var pos = Util.Random.NextPoint(new Point(WIDTH, HEIGHT));
                 // update block at that point
-                GetBlock(pos).Update(this, pos);
+                GetBlock(pos).RandomTick(pos);
             }
         }
 
-        public void Draw(AbstractEntity player, BlockHit blockHit, Point mouseBlock, bool withinReach)
+        public void TickEntities()
+        {
+            // remove dead npc's
+            _entityList.RemoveAll(entity =>
+            {
+                entity.Tick();
+                return !entity.Alive;
+            });
+        }
+
+        public void Draw(BlockHit blockHit, Point mouseBlock, bool withinReach)
         {
             var drawScale = new Vector2(Display.BlockScale);
             // find edge to start drawing
             var visualWidth = (int)Math.Ceiling((double)Display.WindowSize.X / (double)Display.BlockScale) + 2;
             var visualHeight = (int)Math.Ceiling((double)Display.WindowSize.Y / (double)Display.BlockScale) + 2;
-            var visualStartX = (int)Math.Floor(player.Center.X - (visualWidth / 2f));
-            var visualStartY = (int)Math.Floor(player.Center.Y - (visualHeight / 2f));
+            var visualStartX = (int)Math.Floor(Minicraft.Player.Center.X - (visualWidth / 2f));
+            var visualStartY = (int)Math.Floor(Minicraft.Player.Center.Y - (visualHeight / 2f));
             // fix variables if out of bounds
             if (visualStartX < 0)
             {
@@ -131,6 +147,12 @@ namespace MinicraftGame.Game.Worlds
                             Display.DrawOffset(drawPos, drawScale, new(color: color));
                 }
             }
+        }
+
+        public void DrawEntities()
+        {
+            foreach (var entity in _entityList)
+                entity.Draw();
         }
     }
 }

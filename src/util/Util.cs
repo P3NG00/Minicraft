@@ -8,6 +8,8 @@ namespace MinicraftGame.Utils
 {
     public static class Util
     {
+        // TODO implement 'renderer' classes like InventoryRenderer that take data from Inventory and render it to the screen
+
         public const int UI_SPACER = 5;
 
         public static readonly Random Random = new Random();
@@ -48,7 +50,7 @@ namespace MinicraftGame.Utils
 
         public static Item ReadItem(this BinaryReader stream) => Items.FromID(stream.Read());
 
-        public static Block ReadBlock(this BinaryReader stream) => Blocks.GetByID(stream.Read());
+        public static Block ReadBlock(this BinaryReader stream) => Blocks.FromID(stream.Read());
 
         public static void WriteItem(this BinaryWriter stream, Item item) => stream.Write((char)item.ID);
 

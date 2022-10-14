@@ -20,11 +20,11 @@ namespace MinicraftGame.Utils
         private static readonly Hashtable _debugUpdates = new Hashtable();
         private static float _timeScale = 1f;
 
-        public static void Update() => _debugUpdates.Clear();
+        public static void Tick() => _debugUpdates.Clear();
 
         public static void AddBlockInteract(Point blockPos) => Add(blockPos, Colors.DebugReadon_BlockInteract);
 
-        public static void AddBlockUpdate(Point blockPos) => Add(blockPos, Colors.DebugReason_BlockUpdate);
+        public static void AddRandomBlockTick(Point blockPos) => Add(blockPos, Colors.DebugReason_RandomBlockTick);
 
         public static void AddCollisionCheck(Point blockPos) => Add(blockPos, Colors.DebugReason_CollisionCheck);
 

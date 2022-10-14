@@ -1,6 +1,5 @@
 using Microsoft.Xna.Framework;
 using MinicraftGame.Game.ItemType;
-using MinicraftGame.Utils;
 
 namespace MinicraftGame.Game.Entities.Living
 {
@@ -17,15 +16,15 @@ namespace MinicraftGame.Game.Entities.Living
 
         public ItemEntity(Vector2 position, Item item) : base(position, ITEM_LIFE, ItemEntityDimensions, ITEM_SPEED, ITEM_RUN_MULTIPLIER, ITEM_JUMP_VELOCITY, item.DrawData) => _item = item;
 
-        public sealed override void Update(GameData gameData)
+        public sealed override void Tick()
         {
-            if (DistanceTo(gameData.Player) <= PICKUP_DISTANCE)
+            if (DistanceTo(Minicraft.Player) <= PICKUP_DISTANCE)
             {
-                gameData.Player.Inventory.Add(_item);
+                Minicraft.Player.Inventory.Add(_item);
                 Kill();
             }
             // base call
-            base.Update(gameData);
+            base.Tick();
         }
     }
 }
