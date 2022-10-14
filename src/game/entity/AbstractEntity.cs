@@ -5,8 +5,6 @@ using Minicraft.Utils;
 
 namespace Minicraft.Game.Entities
 {
-    // TODO add item entities for player to pickup to add to inventory. blocks will drop items instead of going directly into inventory
-
     public abstract class AbstractEntity
     {
         // getters
@@ -72,7 +70,7 @@ namespace Minicraft.Game.Entities
             Display.DrawOffset(drawPos, currentSize, _drawData);
         }
 
-        public float DistanceTo(AbstractEntity other) => Vector2.Distance(Position, other.Position);
+        public float DistanceTo(AbstractEntity other) => Vector2.Distance(Center, other.Center);
 
         public struct Sides
         {

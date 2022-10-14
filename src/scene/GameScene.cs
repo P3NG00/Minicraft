@@ -200,7 +200,7 @@ namespace Minicraft.Scenes
                 // check hotbar num keys
                 for (int i = 0; i < Game.Inventories.Inventory.SLOTS; i++)
                     if (InputManager.KeyPressedThisFrame(Keys.D1 + i))
-                        this.Inventory.SetActiveSlot(i);
+                        Inventory.SetActiveSlot(i);
                 Display.BlockScale = MathHelper.Clamp(Display.BlockScale + InputManager.ScrollWheelDelta, Display.BLOCK_SCALE_MIN, Display.BLOCK_SCALE_MAX);
                 // get block position from mouse
                 var mousePos = InputManager.MousePosition.ToVector2();
@@ -235,14 +235,14 @@ namespace Minicraft.Scenes
                         _lastMouseBlockInt.X >= 0 && _lastMouseBlockInt.X < Game.Worlds.World.WIDTH &&
                         _lastMouseBlockInt.Y >= 0 && _lastMouseBlockInt.Y < Game.Worlds.World.HEIGHT)
                     {
-                        var block = this.World.GetBlock(_lastMouseBlockInt);
+                        var block = World.GetBlock(_lastMouseBlockInt);
                         // handle left click (block breaking)
                         // TODO instead of clicking to break blocks, hold left click for certain amount of ticks to break block
                         if (Keybinds.MouseLeft.PressedThisFrame && block != Blocks.Air)
-                            _blockHit.Update((World)this.World, Inventory, _lastMouseBlockInt);
+                            _blockHit.Hit(World, Inventory, _lastMouseBlockInt, SpawnEntity);
                         // handle right click (block placing & interaction)
                         if (Keybinds.MouseRight.PressedThisFrame)
-                            Inventory.Use((World)this.World, Player, _lastMouseBlockInt);
+                            Inventory.Use(World, Player, _lastMouseBlockInt);
                         if (Keybinds.MouseMiddle.PressedThisFrame)
                             SpawnEntity(new NPCEntity(_lastMouseBlock));
                     }

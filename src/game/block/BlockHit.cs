@@ -1,4 +1,7 @@
+using System;
 using Microsoft.Xna.Framework;
+using Minicraft.Game.Entities;
+using Minicraft.Game.Entities.Living;
 using Minicraft.Game.Inventories;
 using Minicraft.Game.ItemType;
 using Minicraft.Game.Worlds;
@@ -17,7 +20,7 @@ namespace Minicraft.Game.BlockType
             Hits = hits;
         }
 
-        public void Update(World world, Inventory inventory, Point hitPosition)
+        public void Hit(World world, Inventory inventory, Point hitPosition, Action<AbstractEntity> spawnEntityFunc)
         {
             // if hit same block
             if (Position == hitPosition)
@@ -30,13 +33,14 @@ namespace Minicraft.Game.BlockType
                 Hits = 1;
             }
             // get block
-            var block = world.GetBlock(hitPosition);
+            var block = world.GetBlock(Position);
             // break block
             if (Hits >= block.HitsToBreak)
             {
-                // TODO drop item entity center of block position
-                // add to players inventory
-                inventory.Add(new BlockItem(block));
+                // spawn item entity where block broke
+                var pos = Position.ToVector2() + new Vector2(0.5f, 0.125f);
+                var itemEntity = new ItemEntity(pos, new BlockItem(block));
+                spawnEntityFunc(itemEntity);
                 // remove block from world
                 world.SetBlock(Position, Blocks.Air);
                 // reset info
