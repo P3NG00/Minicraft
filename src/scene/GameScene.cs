@@ -118,16 +118,14 @@ namespace MinicraftGame.Scenes
 
         private bool Tick()
         {
-            if (_tickDelta >= World.TICK_STEP)
-            {
-                // decrement delta time by tick step
-                _tickDelta -= World.TICK_STEP;
-                // increment tick counter
-                _ticks[0]++;
-                // return success
-                return true;
-            }
-            return false;
+            if (_tickDelta < World.TICK_STEP)
+                return false;
+            // decrement delta time by tick step
+            _tickDelta -= World.TICK_STEP;
+            // increment tick counter
+            _ticks[0]++;
+            // return success
+            return true;
         }
 
         private void UpdateTicks(float timeThisUpdate)
