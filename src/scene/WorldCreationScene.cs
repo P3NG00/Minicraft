@@ -1,4 +1,5 @@
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using MinicraftGame.Game.Worlds;
 using MinicraftGame.Game.Worlds.Generation;
 using MinicraftGame.UI;
@@ -8,13 +9,14 @@ namespace MinicraftGame.Scenes
 {
     public sealed class WorldCreationScene : AbstractScene
     {
+        private readonly Vector2 _worldPreviewDrawingPosition = new Vector2(0.5f, 0.4f);
         private readonly Button _buttonBack;
         private readonly Button _buttonRandom;
         private readonly Button _buttonSettings;
         private readonly Button _buttonStart;
 
-        private WorldPreview _worldPreview;
         private WorldGen.Settings _settings;
+        private DrawData _worldDrawData;
 
         public WorldCreationScene(WorldGen.Settings settings = null) : base()
         {
@@ -35,7 +37,21 @@ namespace MinicraftGame.Scenes
         {
             // generate world before it's referenced in new world preview
             Minicraft.World = WorldGen.GenerateWorld(_settings);
-            _worldPreview = new WorldPreview(new Vector2(0.5f, 0.4f));
+            // create world preview
+            var worldTexture = new Texture2D(Minicraft.GraphicsDevice, World.WIDTH, World.HEIGHT);
+            var data = new Color[World.WIDTH * World.HEIGHT];
+            for (int y = 0; y < World.HEIGHT; y++)
+            {
+                var flipY = World.HEIGHT - y - 1;
+                for (int x = 0; x < World.WIDTH; x++)
+                {
+                    var block = Minicraft.World.GetBlock(x, y);
+                    var index = (flipY * World.WIDTH) + x;
+                    data[index] = block.Color;
+                }
+            }
+            worldTexture.SetData(data);
+            _worldDrawData = new(worldTexture);
         }
 
         // passes the settings to the settings scene
@@ -65,7 +81,7 @@ namespace MinicraftGame.Scenes
             _buttonSettings.Draw();
             _buttonStart.Draw();
             // draw world preview
-            _worldPreview.Draw();
+            Display.DrawCentered(_worldPreviewDrawingPosition, new Vector2(World.WIDTH, World.HEIGHT), _worldDrawData);
         }
     }
 }
