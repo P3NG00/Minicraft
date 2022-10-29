@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using MinicraftGame.Font;
@@ -23,20 +24,15 @@ namespace MinicraftGame.Game.Inventories
                 _inventory[i] = new Slot();
         }
 
-        public List<Slot> GetSlotsOf(Item item)
-        {
-            var slots = new List<Slot>();
-            foreach (var slot in _inventory)
-                if (slot.Item == item)
-                    slots.Add(slot);
-            return slots;
-        }
+        public List<Slot> GetSlotsOf(Item item) => GetSlots(slot => slot.Item == item);
 
-        public List<Slot> GetEmptySlots()
+        public List<Slot> GetEmptySlots() => GetSlots(slot => slot.IsEmpty);
+
+        private List<Slot> GetSlots(Predicate<Slot> predicate)
         {
             var slots = new List<Slot>();
             foreach (var slot in _inventory)
-                if (slot.IsEmpty)
+                if (predicate(slot))
                     slots.Add(slot);
             return slots;
         }
