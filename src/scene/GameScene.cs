@@ -42,8 +42,10 @@ namespace MinicraftGame.Scenes
         private bool _paused = false;
 
         // cache
-        private BlockHit _blockHit = new BlockHit(Point.Zero, 0);
         private GridMode _gridMode = (GridMode)0; // TODO utilize
+        // TODO store tick count the time the hit happened. once certain amount of seconds/ticks have passed, nullify blockhit
+        private Point _blockHitPos = new(-1);
+        private int _blockHits = 0;
         private Vector2 _lastMouseBlock;
         private Point _lastMouseBlockInt;
         private bool _withinReach;
@@ -98,7 +100,7 @@ namespace MinicraftGame.Scenes
             // update display handler
             Display.UpdateCameraOffset();
             // draw world
-            Minicraft.World.Draw(_blockHit, _lastMouseBlockInt, _withinReach);
+            Minicraft.World.Draw(_blockHitPos, _blockHits, _lastMouseBlockInt, _withinReach);
             // draw player
             if (Minicraft.Player.Alive)
                 Minicraft.Player.Draw();
@@ -216,7 +218,7 @@ namespace MinicraftGame.Scenes
                     // handle left click (block breaking)
                     // TODO instead of clicking to break blocks, hold left click for certain amount of ticks to break block
                     if (Keybinds.MouseLeft.PressedThisFrame && block != Blocks.Air)
-                        _blockHit.Hit(_lastMouseBlockInt);
+                        HitBlock(_lastMouseBlockInt);
                     // handle right click (block placing & interaction)
                     if (Keybinds.MouseRight.PressedThisFrame)
                         Minicraft.Player.Inventory.Use(_lastMouseBlockInt);
@@ -226,6 +228,35 @@ namespace MinicraftGame.Scenes
             }
             else
                 _withinReach = false;
+        }
+
+        private void HitBlock(Point hitPosition)
+        {
+            // if hit same block
+            if (_blockHitPos == hitPosition)
+                // increase hits
+                _blockHits++;
+            // if not same block hit start counting at new position
+            else
+            {
+                _blockHitPos = hitPosition;
+                _blockHits = 1;
+            }
+            // get block
+            var block = Minicraft.World.GetBlock(_blockHitPos);
+            // break block
+            if (_blockHits >= block.HitsToBreak)
+            {
+                // remove block from world
+                Minicraft.World.SetBlock(_blockHitPos, Blocks.Air);
+                // spawn item entity where block broke
+                var pos = _blockHitPos.ToVector2() + new Vector2(0.5f, 0.125f);
+                var itemEntity = new ItemEntity(pos, new BlockItem(block));
+                Minicraft.World.AddEntity(itemEntity);
+                // reset info
+                _blockHitPos = new Point(-1);
+                _blockHits = 0;
+            }
         }
 
         private void DrawUI()

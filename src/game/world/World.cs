@@ -81,7 +81,7 @@ namespace MinicraftGame.Game.Worlds
             });
         }
 
-        public void Draw(BlockHit blockHit, Point mouseBlock, bool withinReach)
+        public void Draw(Point blockHitPos, int blockHits, Point mouseBlock, bool withinReach)
         {
             var drawScale = new Vector2(Display.BlockScale);
             // find edge to start drawing
@@ -132,9 +132,9 @@ namespace MinicraftGame.Game.Worlds
                         Display.DrawOffset(drawPos, drawScale, drawData);
                     }
                     // draw blockhit string
-                    if (blockHit.Position == blockPos)
+                    if (blockHitPos == blockPos)
                     {
-                        var hitsLeft = block.HitsToBreak - blockHit.Hits;
+                        var hitsLeft = block.HitsToBreak - blockHits;
                         if (hitsLeft > 0)
                         {
                             var stringScale = new Vector2((float)Display.BlockScale / (float)(Textures.SIZE * 2));
