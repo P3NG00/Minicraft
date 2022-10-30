@@ -72,7 +72,7 @@ namespace MinicraftGame.Game.Entities.Living
                 var horizontalHappenedFirst = WhichCollisionFirstHorizontalElseVertical();
                 Util.ActionRef<Vector2> firstCollision;
                 Util.ActionRef<Vector2> secondCollision;
-                Func<Sides, bool> secondCollisionRecheck;
+                Predicate<Sides> secondCollisionRecheck;
                 if (horizontalHappenedFirst)
                 {
                     firstCollision = HandleHorizontalCollision;
@@ -142,8 +142,8 @@ namespace MinicraftGame.Game.Entities.Living
         {
             var sides = GetSides();
             var subVelocity = (Velocity * World.TICK_STEP) / (float)MOVEMENT_SUBCHECKS;
-            Func<Sides, bool> crossHorizontal;
-            Func<Sides, bool> crossVertical;
+            Predicate<Sides> crossHorizontal;
+            Predicate<Sides> crossVertical;
 
             if (IsMovingLeft)
                 crossHorizontal = subSides => sides.Left != subSides.Left;

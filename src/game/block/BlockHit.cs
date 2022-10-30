@@ -6,7 +6,7 @@ namespace MinicraftGame.Game.BlockType
 {
     public sealed class BlockHit
     {
-        // TODO consider if this needs to be it's own class any more. probably can be integrated with GameScene
+        // TODO remove this class. integrate with GameScene
 
         // TODO store tick count the time the hit happened. once certain amount of seconds/ticks have passed, nullify blockhit
         public Point Position { get; private set; }
