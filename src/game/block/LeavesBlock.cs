@@ -6,33 +6,32 @@ namespace MinicraftGame.Game.BlockType
 {
     public sealed class LeavesBlock : Block
     {
-        private static readonly Point[] _checkOffsets = new []
-        {
-            new Point(-1,  1), new Point(0,  1), new Point(1,  1),
-            new Point(-1,  0), /*   center   */  new Point(1,  0),
-            new Point(-1, -1), new Point(0, -1), new Point(1, -1),
-        };
-
         public LeavesBlock(string name, int hitsToBreak, bool canWalkThrough, DrawData drawData, int id = -1) : base(name, hitsToBreak, canWalkThrough, drawData, id) {}
 
         public sealed override void RandomTick(Point position)
         {
             // check surrounding blocks for logs
             bool log = false;
-            foreach (var offset in _checkOffsets)
+            for (int y = -1; y <= 1; y++)
             {
-                var checkPos = position + offset;
-                // test valid position
-                if (checkPos.X >= 0 && checkPos.X < World.WIDTH &&
-                    checkPos.Y >= 0 && checkPos.Y < World.HEIGHT)
+                for (int x = -1; x <= 1; x++)
                 {
-                    // if wood detected
-                    if (Minicraft.World.GetBlock(checkPos) == Blocks.Wood)
+                    // skip checking self
+                    if (x == 0 && y == 0)
+                        continue;
+                    // test valid position
+                    var checkPos = position + new Point(x, y);
+                    if (checkPos.X >= 0 && checkPos.X < World.WIDTH &&
+                        checkPos.Y >= 0 && checkPos.Y < World.HEIGHT)
                     {
-                        // set log flag
-                        log = true;
-                        // break check loop
-                        break;
+                        // if wood detected
+                        if (Minicraft.World.GetBlock(checkPos) == Blocks.Wood)
+                        {
+                            // set log flag
+                            log = true;
+                            // break check loop
+                            break;
+                        }
                     }
                 }
             }

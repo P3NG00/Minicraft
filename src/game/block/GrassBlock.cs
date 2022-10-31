@@ -6,13 +6,6 @@ namespace MinicraftGame.Game.BlockType
 {
     public sealed class GrassBlock : Block
     {
-        private static readonly Point[] _spreadOffsets = new []
-        {
-            new Point(-1,  1), new Point(1,  1),
-            new Point(-1,  0), new Point(1,  0),
-            new Point(-1, -1), new Point(1, -1),
-        };
-
         public GrassBlock(string name, int hitsToBreak, bool canWalkThrough, DrawData drawData, int id = -1) : base(name, hitsToBreak, canWalkThrough, drawData, id) {}
 
         public sealed override void RandomTick(Point position)
@@ -21,7 +14,9 @@ namespace MinicraftGame.Game.BlockType
             if (position.Y + 1 == World.HEIGHT || Minicraft.World.GetBlock(position + new Point(0, 1)).CanWalkThrough)
             {
                 // check random spread position
-                var offset = _spreadOffsets.GetRandom();
+                var randomX = new[] {-1, 1}.GetRandom();
+                var randomY = new[] {-1, 0, 1}.GetRandom();
+                var offset = new Point(randomX, randomY);
                 var checkPos = position + offset;
                 if (checkPos.X >= 0 && checkPos.X < World.WIDTH &&
                     checkPos.Y >= 0 && checkPos.Y < World.HEIGHT)
