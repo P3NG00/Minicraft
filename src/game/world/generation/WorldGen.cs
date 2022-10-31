@@ -57,6 +57,8 @@ namespace MinicraftGame.Game.Worlds.Generation
                         settingInt.Value = ((WorldGenSettingInt)_settings[i]).Value;
                     else if (setting is WorldGenSettingDecimal settingDecimal)
                         settingDecimal.Value = ((WorldGenSettingDecimal)_settings[i]).Value;
+                    else
+                        throw new Exception("Unknown setting type.");
                 }
                 return copy;
             }
