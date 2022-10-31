@@ -88,6 +88,8 @@ namespace MinicraftGame.Game.Entities
             }
 
             public bool Contains(Point p) => p.X >= Left && p.X <= Right && p.Y <= Top && p.Y >= Bottom;
+
+            public bool Intersects(Sides other) => Contains(new Point(other.Left, other.Top)) || Contains(new Point(other.Right, other.Top)) || Contains(new Point(other.Left, other.Bottom)) || Contains(new Point(other.Right, other.Bottom));
         }
 
         public Sides GetSides() => GetSides(Position);

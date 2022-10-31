@@ -18,7 +18,7 @@ namespace MinicraftGame.Game.Entities.Living
 
         public sealed override void Tick()
         {
-            if (DistanceTo(Minicraft.Player) <= PICKUP_DISTANCE)
+            if (Minicraft.Player.GetSides().Intersects(this.GetSides()))
             {
                 Minicraft.Player.Inventory.Add(_item);
                 Kill();
