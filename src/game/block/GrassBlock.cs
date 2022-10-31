@@ -18,6 +18,8 @@ namespace MinicraftGame.Game.BlockType
                 var randomY = new[] {-1, 0, 1}.GetRandom();
                 var offset = new Point(randomX, randomY);
                 var checkPos = position + offset;
+                // debug grass spread check
+                Debug.AddGrassSpreadCheck(checkPos);
                 if (checkPos.X >= 0 && checkPos.X < World.WIDTH &&
                     checkPos.Y >= 0 && checkPos.Y < World.HEIGHT)
                 {

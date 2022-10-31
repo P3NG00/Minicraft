@@ -22,13 +22,17 @@ namespace MinicraftGame.Utils
 
         public static void Tick() => _debugUpdates.Clear();
 
-        public static void AddBlockInteract(Point blockPos) => Add(blockPos, Colors.DebugReadon_BlockInteract);
+        public static void AddBlockInteract(Point blockPos) => Add(blockPos, Colors.DebugReason_BlockInteract);
 
         public static void AddRandomBlockTick(Point blockPos) => Add(blockPos, Colors.DebugReason_RandomBlockTick);
 
         public static void AddCollisionCheck(Point blockPos) => Add(blockPos, Colors.DebugReason_CollisionCheck);
 
         public static void AddAirCheck(Point blockPos) => Add(blockPos, Colors.DebugReason_AirCheck);
+
+        public static void AddGrassSpreadCheck(Point blockPos) => Add(blockPos, Colors.DebugReason_GrassSpreadCheck);
+
+        public static void AddWoodCheck(Point blockPos) => Add(blockPos, Colors.DebugReason_WoodCheck);
 
         public static bool HasDebugUpdate(Point blockPos) => _debugUpdates.Contains(blockPos);
 

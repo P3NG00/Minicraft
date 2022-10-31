@@ -12,15 +12,17 @@ namespace MinicraftGame.Game.BlockType
         {
             // check surrounding blocks for logs
             bool log = false;
-            for (int y = -1; y <= 1; y++)
+            for (int y = -1; y <= 1 && !log; y++)
             {
-                for (int x = -1; x <= 1; x++)
+                for (int x = -1; x <= 1 && !log; x++)
                 {
                     // skip checking self
                     if (x == 0 && y == 0)
                         continue;
                     // test valid position
                     var checkPos = position + new Point(x, y);
+                    // debug wood check
+                    Debug.AddWoodCheck(checkPos);
                     if (checkPos.X >= 0 && checkPos.X < World.WIDTH &&
                         checkPos.Y >= 0 && checkPos.Y < World.HEIGHT)
                     {
@@ -29,8 +31,6 @@ namespace MinicraftGame.Game.BlockType
                         {
                             // set log flag
                             log = true;
-                            // break check loop
-                            break;
                         }
                     }
                 }
