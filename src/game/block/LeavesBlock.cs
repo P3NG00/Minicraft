@@ -19,19 +19,16 @@ namespace MinicraftGame.Game.BlockType
                     // skip checking self
                     if (x == 0 && y == 0)
                         continue;
-                    // test valid position
                     var checkPos = position + new Point(x, y);
                     // debug wood check
                     Debug.AddWoodCheck(checkPos);
+                    // test valid position & check wood
                     if (checkPos.X >= 0 && checkPos.X < World.WIDTH &&
-                        checkPos.Y >= 0 && checkPos.Y < World.HEIGHT)
+                        checkPos.Y >= 0 && checkPos.Y < World.HEIGHT &&
+                        Minicraft.World.GetBlock(checkPos) == Blocks.Wood)
                     {
-                        // if wood detected
-                        if (Minicraft.World.GetBlock(checkPos) == Blocks.Wood)
-                        {
-                            // set log flag
-                            log = true;
-                        }
+                        // set log flag
+                        log = true;
                     }
                 }
             }

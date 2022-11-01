@@ -9,7 +9,7 @@ using MinicraftGame.Utils;
 
 namespace MinicraftGame.Game.Worlds
 {
-    public sealed partial class World
+    public sealed class World
     {
         public const float WORLD_UPDATED_PER_SECOND = 1f / 32f;
         public const int TICKS_PER_SECOND = 32;
