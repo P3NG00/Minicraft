@@ -209,21 +209,21 @@ namespace MinicraftGame.Scenes
                 }
                 // test if within reach
                 _withinReach = Vector2.Distance(Minicraft.Player.Center, _lastMouseBlock) <= PLAYER_REACH_RADIUS;
-                // catch out of bounds
-                if (_withinReach &&
-                    _lastMouseBlockInt.X >= 0 && _lastMouseBlockInt.X < World.WIDTH &&
-                    _lastMouseBlockInt.Y >= 0 && _lastMouseBlockInt.Y < World.HEIGHT)
+                if (_withinReach)
                 {
                     var block = Minicraft.World.GetBlock(_lastMouseBlockInt);
-                    // handle left click (block breaking)
-                    // TODO instead of clicking to break blocks, hold left click for certain amount of ticks to break block
-                    if (Keybinds.MouseLeft.PressedThisFrame && block != Blocks.Air)
-                        HitBlock(_lastMouseBlockInt);
-                    // handle right click (block placing & interaction)
-                    if (Keybinds.MouseRight.PressedThisFrame)
-                        Minicraft.Player.Inventory.Use(_lastMouseBlockInt);
-                    if (Keybinds.MouseMiddle.PressedThisFrame)
-                        Minicraft.World.AddEntity(new NPCEntity(_lastMouseBlock));
+                    if (block != null)
+                    {
+                        // handle left click (block breaking)
+                        // TODO instead of clicking to break blocks, hold left click for certain amount of ticks to break block
+                        if (Keybinds.MouseLeft.PressedThisFrame && block != Blocks.Air)
+                            HitBlock(_lastMouseBlockInt);
+                        // handle right click (block placing & interaction)
+                        if (Keybinds.MouseRight.PressedThisFrame)
+                            Minicraft.Player.Inventory.Use(_lastMouseBlockInt);
+                        if (Keybinds.MouseMiddle.PressedThisFrame)
+                            Minicraft.World.AddEntity(new NPCEntity(_lastMouseBlock));
+                    }
                 }
             }
             else

@@ -32,11 +32,24 @@ namespace MinicraftGame.Game.Worlds
 
         public Block GetBlock(Point point) => GetBlock(point.X, point.Y);
 
-        public Block GetBlock(int x, int y) => BlockAt(x, y);
+        public Block GetBlock(int x, int y)
+        {
+            if (World.IsValidPosition(x, y))
+                return BlockAt(x, y);
+            return null;
+        }
 
-        public void SetBlock(Point point, Block block) => SetBlock(point.X, point.Y, block);
+        public bool SetBlock(Point point, Block block) => SetBlock(point.X, point.Y, block);
 
-        public void SetBlock(int x, int y, Block block) => BlockAt(x, y) = block;
+        public bool SetBlock(int x, int y, Block block)
+        {
+            if (World.IsValidPosition(x, y))
+            {
+                BlockAt(x, y) = block;
+                return true;
+            }
+            return false;
+        }
 
         public Point GetSpawnPosition()
         {
@@ -62,10 +75,11 @@ namespace MinicraftGame.Game.Worlds
 
         public void Tick()
         {
+            var worldSize = new Point(WIDTH, HEIGHT);
             for (int i = 0; i < BLOCK_UPDATES_PER_TICK; i++)
             {
                 // get random point
-                var pos = Util.Random.NextPoint(new Point(WIDTH, HEIGHT));
+                var pos = Util.Random.NextPoint(worldSize);
                 // update block at that point
                 GetBlock(pos).RandomTick(pos);
             }
@@ -154,5 +168,9 @@ namespace MinicraftGame.Game.Worlds
             foreach (var entity in _entityList)
                 entity.Draw();
         }
+
+        public static bool IsValidPosition(Point position) => IsValidPosition(position.X, position.Y);
+
+        public static bool IsValidPosition(int x, int y) => x >= 0 && x < WIDTH && y >= 0 && y < HEIGHT;
     }
 }

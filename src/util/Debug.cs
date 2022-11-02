@@ -7,14 +7,14 @@ namespace MinicraftGame.Utils
 {
     public static class Debug
     {
-        public const float TIME_SCALE_STEP = 0.05f;
+        public const float TIME_SCALE_STEP = 0.1f;
 
         public static bool Enabled = false;
         public static bool DisplayBlockChecks = false;
         public static float TimeScale
         {
             get => _timeScale;
-            set => _timeScale = MathHelper.Clamp(value, 0f, 1f);
+            set => _timeScale = MathHelper.Clamp(value, 0f, 5f);
         }
 
         private static readonly Hashtable _debugUpdates = new Hashtable();
