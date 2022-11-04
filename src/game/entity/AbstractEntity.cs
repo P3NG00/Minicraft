@@ -72,6 +72,7 @@ namespace MinicraftGame.Game.Entities
 
         public float DistanceTo(AbstractEntity other) => Vector2.Distance(Center, other.Center);
 
+        // TODO someday this will be replaced with Rectangles
         public struct Sides
         {
             public readonly int Top;
@@ -87,9 +88,11 @@ namespace MinicraftGame.Game.Entities
                 Right = right;
             }
 
-            public bool Contains(Point p) => p.X >= Left && p.X <= Right && p.Y <= Top && p.Y >= Bottom;
+            public bool Contains(int x, int y) => x >= Left && x <= Right && y <= Top && y >= Bottom;
 
-            public bool Intersects(Sides other) => Contains(new Point(other.Left, other.Top)) || Contains(new Point(other.Right, other.Top)) || Contains(new Point(other.Left, other.Bottom)) || Contains(new Point(other.Right, other.Bottom));
+            public bool Contains(Point point) => Contains(point.X, point.Y);
+
+            public bool Intersects(Sides other) => Contains(other.Left, other.Top) || Contains(other.Right, other.Top) || Contains(other.Left, other.Bottom) || Contains(other.Right, other.Bottom);
         }
 
         public Sides GetSides() => GetSides(Position);

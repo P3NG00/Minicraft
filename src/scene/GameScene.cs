@@ -87,6 +87,7 @@ namespace MinicraftGame.Scenes
                 // update world
                 Minicraft.World.Tick();
                 // update player
+                // TODO update player outside of tick. use delta time to update player position instead of tick delta
                 if (Minicraft.Player.Alive)
                     Minicraft.Player.Tick();
                 // update entities
