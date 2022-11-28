@@ -76,9 +76,8 @@ namespace MinicraftGame.Game.Worlds.Generation
             }
         }
 
-        public static World GenerateWorld(Settings settings = null)
+        public static World GenerateWorld(Settings settings)
         {
-            settings ??= new Settings();
             // create world of air blocks for modification
             int x, y;
             var world = new World();
