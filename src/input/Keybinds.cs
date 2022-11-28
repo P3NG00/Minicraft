@@ -4,9 +4,9 @@ namespace MinicraftGame.Input
 {
     public static class Keybinds
     {
-        public static readonly MouseKeyInput MouseLeft = new MouseKeyInput(MouseKeys.Left);
-        public static readonly MouseKeyInput MouseMiddle = new MouseKeyInput(MouseKeys.Middle);
-        public static readonly MouseKeyInput MouseRight = new MouseKeyInput(MouseKeys.Right);
+        public static readonly MouseInput MouseLeft = new MouseInput(MouseKeys.Left);
+        public static readonly MouseInput MouseMiddle = new MouseInput(MouseKeys.Middle);
+        public static readonly MouseInput MouseRight = new MouseInput(MouseKeys.Right);
 
         public static readonly KeyInput Pause = new(Keys.Escape);
         public static readonly KeyInput DebugCheckUpdates = new(Keys.F9);
