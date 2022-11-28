@@ -22,7 +22,8 @@ namespace MinicraftGame.Game.ItemType
             DrawData = drawData;
         }
 
-        public virtual void Use(Slot slot, Point blockPosition) {}
+        // TODO override in future for items with special purposes
+        public virtual void Use(Slot slot, Point blockPosition) => Minicraft.World.GetBlock(blockPosition).Interact(blockPosition);
 
         public bool Equals(Item other)
         {

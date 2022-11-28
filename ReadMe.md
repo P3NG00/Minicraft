@@ -10,7 +10,7 @@
 
 [Left Mouse] - Break Block
 
-[Right Mouse] - Place Block
+[Right Mouse] - Place Block / Interact
 
 [Middle Mouse (Click)] - Spawn NPC
 
@@ -39,5 +39,7 @@
 ## Debug
 
 [F12] - Toggle Debug Overlay
+
+[F10] - Toggle Give Mode
 
 [F9] - Toggle Display Block Checks

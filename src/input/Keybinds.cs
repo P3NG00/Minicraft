@@ -8,9 +8,11 @@ namespace MinicraftGame.Input
         public static readonly MouseInput MouseMiddle = new MouseInput(MouseKeys.Middle);
         public static readonly MouseInput MouseRight = new MouseInput(MouseKeys.Right);
 
-        public static readonly KeyInput Pause = new(Keys.Escape);
         public static readonly KeyInput DebugCheckUpdates = new(Keys.F9);
+        public static readonly KeyInput DebugToggleGiveMode = new(Keys.F10);
         public static readonly KeyInput Debug = new(Keys.F12);
+
+        public static readonly KeyInput Pause = new(Keys.Escape);
         public static readonly KeyInput Fullscreen = new(Keys.F11);
         public static readonly KeyInput MoveLeft = new(Keys.A);
         public static readonly KeyInput MoveRight = new(Keys.D);

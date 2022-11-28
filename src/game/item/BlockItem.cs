@@ -21,6 +21,8 @@ namespace MinicraftGame.Game.ItemType
                     slot.Decrement();
                 }
             }
+            else
+                base.Use(slot, blockPosition);
         }
     }
 }

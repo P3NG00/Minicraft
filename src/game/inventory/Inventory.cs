@@ -44,6 +44,8 @@ namespace MinicraftGame.Game.Inventories
             var slot = _inventory[_activeSlot];
             if (!slot.IsEmpty)
                 slot.Item.Use(slot, blockPosition);
+            else
+                Minicraft.World.GetBlock(blockPosition).Interact(blockPosition);
         }
 
         public int? Add(Item item, int amount = 1)

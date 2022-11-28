@@ -11,6 +11,7 @@ namespace MinicraftGame.Utils
 
         public static bool Enabled = false;
         public static bool DisplayBlockChecks = false;
+        public static bool GiveBlocksElseItems = true;
         public static float TimeScale
         {
             get => _timeScale;

@@ -171,6 +171,8 @@ namespace MinicraftGame.Scenes
                 Debug.DisplayBlockChecks = !Debug.DisplayBlockChecks;
             if (Keybinds.Debug.PressedThisFrame)
                 Debug.Enabled = !Debug.Enabled;
+            if (Keybinds.DebugToggleGiveMode.PressedThisFrame)
+                Debug.GiveBlocksElseItems = !Debug.GiveBlocksElseItems;
             // pause check
             if (_paused)
             {
@@ -192,9 +194,21 @@ namespace MinicraftGame.Scenes
             {
                 // give items if holding debug button
                 if (Keybinds.Debug.Held)
-                    for (int i = 1; i < Items.Amount; i++)
-                        if (InputManager.KeyPressedThisFrame(Keys.D0 + i))
-                            Minicraft.Player.Inventory.Add(Items.FromID(i));
+                {
+                    int i;
+                    if (Debug.GiveBlocksElseItems)
+                    {
+                        for (i = 1; i < Blocks.Amount; i++)
+                            if (InputManager.KeyPressedThisFrame(Keys.D0 + i))
+                                Minicraft.Player.Inventory.Add(new BlockItem(Blocks.FromID(i)));
+                    }
+                    else
+                    {
+                        for (i = 1; i < Items.Amount; i++)
+                            if (InputManager.KeyPressedThisFrame(Keys.D0 + i))
+                                Minicraft.Player.Inventory.Add(Items.FromID(i));
+                    }
+                }
                 // spawn projectiles
                 if (Keybinds.SpawnProjectile.PressedThisFrame)
                     Minicraft.World.AddEntity(new ProjectileEntity(Minicraft.Player.Position));
@@ -222,6 +236,7 @@ namespace MinicraftGame.Scenes
                         // handle right click (block placing & interaction)
                         if (Keybinds.MouseRight.PressedThisFrame)
                             Minicraft.Player.Inventory.Use(_lastMouseBlockInt);
+                        // handle middle click (spawn npc entity) // TODO remove later
                         if (Keybinds.MouseMiddle.PressedThisFrame)
                             Minicraft.World.AddEntity(new NPCEntity(_lastMouseBlock));
                     }
@@ -305,6 +320,7 @@ namespace MinicraftGame.Scenes
                     $"window_size: {Display.WindowSize.X}x{Display.WindowSize.Y}",
                     $"world_size: {World.WIDTH}x{World.HEIGHT}",
                     $"debug_blocks: {Debug.DisplayBlockChecks}",
+                    $"give_mode: {(Debug.GiveBlocksElseItems ? "blocks" : "items")}",
                     $"paused: {_paused}",
                     $"time_scale: {Debug.TimeScale:0.00}",
                     $"time: {(Ticks / (float)World.TICKS_PER_SECOND):0.000}",
