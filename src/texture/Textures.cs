@@ -10,6 +10,7 @@ namespace MinicraftGame.Texture
 
         public static Texture2D Blank { get; private set; }
         public static Texture2D Shaded { get; private set; }
+        public static Texture2D ShadedLeaves { get; private set; }
         public static Texture2D Striped { get; private set; }
         public static Texture2D HighlightRing { get; private set; }
         public static Texture2D P3NG00Face { get; private set; }
@@ -19,6 +20,7 @@ namespace MinicraftGame.Texture
         {
             Blank = CreateTexture(FilledTexture);
             Shaded = CreateTexture(ShadedTexture);
+            ShadedLeaves = CreateTexture(ShadedLeavesTexture);
             Striped = CreateTexture(StripedTexture);
             HighlightRing = CreateTexture(RingHighlightTexture);
             P3NG00Face = CreateTexture(P3NG00FaceTexture);
@@ -43,6 +45,14 @@ namespace MinicraftGame.Texture
                 var isRightEdge = x == EDGE;
                 var isBottomEdge = y == EDGE;
                 return isRightEdge || isBottomEdge ? new Color(192, 192, 192) : new Color(255, 255, 255);
+            }
+
+            Color ShadedLeavesTexture(int x, int y)
+            {
+                var transparentPixel = (x + y) % 4 == 0;
+                if (transparentPixel)
+                    return new Color(0, 0, 0, 0);
+                return ShadedTexture(x, y);
             }
 
             Color StripedTexture(int x, int y)

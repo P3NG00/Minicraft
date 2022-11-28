@@ -24,7 +24,7 @@ namespace MinicraftGame.Game.BlockType
             Grass = new GrassBlock("Grass Block", 3, false, new(Textures.Shaded, new Color(32, 160, 16)), 2);
             Stone = new Block("Stone Block", 7, false, new(Textures.Shaded, new Color(192, 192, 192)), 3);
             Wood = new Block("Wood Block", 4, true, new (Textures.Shaded, new Color(128, 92, 32)), 4);
-            Leaves = new LeavesBlock("Leaves Block", 2, true, new(Textures.Shaded, new Color(48, 128, 32)), 5); // TODO create shaded leaves texture with holes in it
+            Leaves = new LeavesBlock("Leaves Block", 2, true, new(Textures.ShadedLeaves, new Color(48, 128, 32)), 5);
             TNT = new TNTBlock("TNT", 1, true, new(Textures.Striped, new Color(255, 0, 0)), 6);
             P3NG00Face = new P3NG00FaceBlock("P3NG00's Face as a Block", 1, false, new(Textures.P3NG00Face), 7);
             // add to array in order of id
