@@ -5,7 +5,7 @@ using MinicraftGame.Utils;
 
 namespace MinicraftGame.Game.Entities.Living
 {
-    public class TNTEntity : AbstractLivingEntity
+    public sealed class TNTEntity : AbstractLivingEntity
     {
         private const float TNT_FUSE = 3f;
         private const float TNT_SPEED = 1f;
@@ -43,6 +43,12 @@ namespace MinicraftGame.Game.Entities.Living
             }
         }
 
-        // TODO make able to override the draw method to add a white flash to TNTEntity
+        protected sealed override DrawData GetDrawData()
+        {
+            var drawData = base.GetDrawData();
+            var deltaTick = Life % World.TICKS_PER_SECOND;
+            var color = deltaTick <= World.TICKS_PER_SECOND / 2f ? Color.White : drawData.Color;
+            return new DrawData(drawData.Texture, color);
+        }
     }
 }

@@ -54,6 +54,8 @@ namespace MinicraftGame.Game.Entities
 
         public virtual void Tick() {}
 
+        protected virtual DrawData GetDrawData() => _drawData;
+
         public void Draw()
         {
             // get current screen size of entity
@@ -67,7 +69,7 @@ namespace MinicraftGame.Game.Entities
             // find final screen draw position
             var drawPos = relativePosition - drawStartOffset;
             // draw to surface
-            Display.DrawOffset(drawPos, currentSize, _drawData);
+            Display.DrawOffset(drawPos, currentSize, GetDrawData());
         }
 
         public float DistanceTo(AbstractEntity other) => Vector2.Distance(Center, other.Center);
