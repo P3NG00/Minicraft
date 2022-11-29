@@ -27,16 +27,22 @@ namespace MinicraftGame.Game.Entities.Living
             // get position
             var position = Center.ToPoint();
             // break blocks in a 5x5 area except for corners
-            for (int x = position.X - 2; x <= position.X + 2; x++)
+            var edgeLeft = position.X - 2;
+            var edgeRight = position.X + 2;
+            var edgeBottom = position.Y - 2;
+            var edgeTop = position.Y + 2;
+            for (int x = edgeLeft; x <= edgeRight; x++)
             {
-                for (int y = position.Y - 2; y <= position.Y + 2; y++)
+                for (int y = edgeBottom; y <= edgeTop; y++)
                 {
-                    var isEdgeX = x == position.X - 2 || x == position.X + 2;
-                    var isEdgeY = y == position.Y - 2 || y == position.Y + 2;
+                    var isEdgeX = x == edgeLeft || x == edgeRight;
+                    var isEdgeY = y == edgeBottom || y == edgeTop;
                     if (!isEdgeX || !isEdgeY)
                         Minicraft.World.SetBlock(x, y, Blocks.Air);
                 }
             }
         }
+
+        // TODO make able to override the draw method to add a white flash to TNTEntity
     }
 }
