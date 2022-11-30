@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using Microsoft.Xna.Framework;
 using MinicraftGame.Game.BlockType;
+using MinicraftGame.Game.Inventories;
 using MinicraftGame.Game.ItemType;
 
 namespace MinicraftGame.Utils
@@ -48,13 +49,34 @@ namespace MinicraftGame.Utils
             return new Vector2((float)Math.Cos(angle), (float)Math.Sin(angle));
         }
 
-        public static Item ReadItem(this BinaryReader stream) => Items.FromID(stream.Read());
+        public static Item ReadItem(this BinaryReader stream)
+        {
+            var id = stream.ReadByte();
+            switch (id)
+            {
+                case 0: return Items.FromID(stream.ReadInt32());
+                case 1: return new BlockItem(Blocks.FromID(stream.ReadInt32()));
+            }
+            return null;
+        }
 
-        public static Block ReadBlock(this BinaryReader stream) => Blocks.FromID(stream.Read());
+        public static Block ReadBlock(this BinaryReader stream) => Blocks.FromID(stream.ReadInt32());
 
-        public static void WriteItem(this BinaryWriter stream, Item item) => stream.Write((char)item.ID);
+        public static void Write(this BinaryWriter stream, Item item)
+        {
+            if (item is BlockItem blockItem)
+            {
+                stream.Write((byte)1);
+                stream.Write(blockItem.Block);
+            }
+            else
+            {
+                stream.Write((byte)0);
+                stream.Write(item.ID);
+            }
+        }
 
-        public static void WriteBlock(this BinaryWriter stream, Block block) => stream.Write((char)block.ID);
+        public static void Write(this BinaryWriter stream, Block block) => stream.Write(block.ID);
 
         public delegate void ActionRef<T>(ref T t);
     }

@@ -12,8 +12,6 @@ namespace MinicraftGame.Utils
 
         public static bool SaveExists => File.Exists(SAVE_FILE);
 
-        // TODO account for blockitems when loading/saving
-
         public static void Save()
         {
             using (var stream = new BinaryWriter(File.Open(SAVE_FILE, FileMode.Create)))
@@ -25,7 +23,7 @@ namespace MinicraftGame.Utils
                 void WriteWorldBlocks()
                 {
                     foreach (var block in Minicraft.World.RawBlockGrid)
-                        stream.WriteBlock(block);
+                        stream.Write(block);
                 }
 
                 void WriteInventorySlots()
@@ -33,8 +31,8 @@ namespace MinicraftGame.Utils
                     for (int i = 0; i < Inventory.SLOTS; i++)
                     {
                         var slot = Minicraft.Player.Inventory[i];
-                        stream.WriteItem(slot.Item);
-                        stream.Write((char)slot.Amount);
+                        stream.Write(slot.Item);
+                        stream.Write(slot.Amount);
                     }
                 }
 
@@ -78,7 +76,7 @@ namespace MinicraftGame.Utils
                     for (int i = 0; i < Inventory.SLOTS; i++)
                     {
                         var item = stream.ReadItem();
-                        var amount = stream.Read();
+                        var amount = stream.ReadInt32();
                         inventory[i].Set(item, amount);
                     }
                 }
