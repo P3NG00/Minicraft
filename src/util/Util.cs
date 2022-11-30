@@ -2,7 +2,6 @@ using System;
 using System.IO;
 using Microsoft.Xna.Framework;
 using MinicraftGame.Game.BlockType;
-using MinicraftGame.Game.Inventories;
 using MinicraftGame.Game.ItemType;
 
 namespace MinicraftGame.Utils
@@ -25,7 +24,7 @@ namespace MinicraftGame.Utils
         {
             if (chance >= 1.0f)
                 return true;
-            if (chance < 0.0f)
+            if (chance <= 0.0f)
                 return false;
             return Random.NextDouble() < chance;
         }
@@ -34,7 +33,7 @@ namespace MinicraftGame.Utils
         {
             if (chance >= 1.0m)
                 return true;
-            if (chance < 0.0m)
+            if (chance <= 0.0m)
                 return false;
             return (decimal)Random.NextDouble() < chance;
         }
@@ -51,11 +50,10 @@ namespace MinicraftGame.Utils
 
         public static Item ReadItem(this BinaryReader stream)
         {
-            var id = stream.ReadByte();
-            switch (id)
+            switch (stream.ReadByte())
             {
-                case 0: return Items.FromID(stream.ReadInt32());
-                case 1: return new BlockItem(Blocks.FromID(stream.ReadInt32()));
+                case (byte)ItemType.Item: return Items.FromID(stream.ReadInt32());
+                case (byte)ItemType.BlockItem: return new BlockItem(Blocks.FromID(stream.ReadInt32()));
             }
             return null;
         }
@@ -66,12 +64,12 @@ namespace MinicraftGame.Utils
         {
             if (item is BlockItem blockItem)
             {
-                stream.Write((byte)1);
+                stream.Write((byte)ItemType.BlockItem);
                 stream.Write(blockItem.Block);
             }
             else
             {
-                stream.Write((byte)0);
+                stream.Write((byte)ItemType.Item);
                 stream.Write(item.ID);
             }
         }
@@ -79,5 +77,11 @@ namespace MinicraftGame.Utils
         public static void Write(this BinaryWriter stream, Block block) => stream.Write(block.ID);
 
         public delegate void ActionRef<T>(ref T t);
+
+        private enum ItemType
+        {
+            Item = 0,
+            BlockItem = 1,
+        }
     }
 }
