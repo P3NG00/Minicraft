@@ -21,7 +21,6 @@ namespace MinicraftGame.Input
         public static readonly KeyInput Shift = new(Keys.LeftShift);
         public static readonly KeyInput SpawnProjectile = new(Keys.Q);
         public static readonly KeyInput SpawnBouncyProjectile = new(Keys.E);
-        public static readonly KeyInput ToggleGridMode = new(Keys.Tab);
 
         public static readonly KeyInput TimeScaleDecrement = new(Keys.F1);
         public static readonly KeyInput TimeScaleIncrement = new(Keys.F2);

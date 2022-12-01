@@ -42,7 +42,6 @@ namespace MinicraftGame.Scenes
         private bool _paused = false;
 
         // cache
-        private GridMode _gridMode = (GridMode)0; // TODO utilize
         // TODO store tick count the time the hit happened. once certain amount of seconds/ticks have passed, nullify blockhit
         private Point _blockHitPos = new(-1);
         private int _blockHits = 0;
@@ -214,14 +213,6 @@ namespace MinicraftGame.Scenes
                     Minicraft.World.AddEntity(new ProjectileEntity(Minicraft.Player.Position));
                 if (Keybinds.SpawnBouncyProjectile.PressedThisFrame)
                     Minicraft.World.AddEntity(new BouncyProjectileEntity(Minicraft.Player.Position));
-                // toggle grid mode
-                if (Keybinds.ToggleGridMode.PressedThisFrame)
-                {
-                    if ((int)_gridMode >= Enum.GetValues<GridMode>().Length - 1)
-                        _gridMode = (GridMode)0;
-                    else
-                        _gridMode++;
-                }
                 // test if within reach
                 _withinReach = Vector2.Distance(Minicraft.Player.Center, _lastMouseBlock) <= PLAYER_REACH_RADIUS;
                 if (_withinReach)
@@ -341,13 +332,6 @@ namespace MinicraftGame.Scenes
                     drawPos.Y += Util.UI_SPACER + FontSize._12.GetFont().LineSpacing;
                 }
             }
-        }
-
-        private enum GridMode
-        {
-            Default,
-            AllGrid,
-            AllBlank,
         }
     }
 }
