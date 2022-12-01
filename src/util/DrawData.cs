@@ -9,7 +9,6 @@ namespace MinicraftGame.Utils
         public readonly Texture2D Texture;
         public readonly Color Color;
 
-        // TODO cache these if used in classes that are updated frequently
         public DrawData(Texture2D texture = null, Color? color = null)
         {
             Texture = texture ?? Textures.Blank;

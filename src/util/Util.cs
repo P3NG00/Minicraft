@@ -8,8 +8,6 @@ namespace MinicraftGame.Utils
 {
     public static class Util
     {
-        // TODO implement 'renderer' classes like InventoryRenderer that take data from Inventory and render it to the screen
-
         public const int UI_SPACER = 5;
 
         public static readonly Random Random = new Random();
