@@ -55,7 +55,7 @@ namespace MinicraftGame.Utils
                 case (byte)ItemType.Item: return Items.FromID(id);
                 case (byte)ItemType.BlockItem: return new BlockItem(Blocks.FromID(id));
             }
-            return null;
+            throw new Exception("Invalid item type ID: " + itemTypeID);
         }
 
         public static Block ReadBlock(this BinaryReader stream) => Blocks.FromID(stream.ReadInt32());
