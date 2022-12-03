@@ -4,10 +4,10 @@ namespace MinicraftGame.Input
     {
         public MouseInput(MouseKeys mouseKey) : base(mouseKey) {}
 
-        public sealed override bool PressedThisFrame => InputManager.MouseKeyPressedThisFrame(InputType);
+        public sealed override bool PressedThisFrame => InputManager.MousePressedThisFrame(InputType);
 
-        public sealed override bool ReleasedThisFrame => InputManager.MouseKeyReleasedThisFrame(InputType);
+        public sealed override bool ReleasedThisFrame => InputManager.MouseReleasedThisFrame(InputType);
 
-        public sealed override bool Held => InputManager.MouseKeyHeld(InputType);
+        public sealed override bool Held => InputManager.MouseHeld(InputType);
     }
 }

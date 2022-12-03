@@ -22,19 +22,19 @@ namespace MinicraftGame.Input
 
         internal static bool KeyHeld(Keys key) => _keyStates[0].IsKeyDown(key);
 
-        internal static bool MouseKeyPressedThisFrame(MouseKeys mouseKey)
+        internal static bool MousePressedThisFrame(MouseKeys mouseKey)
         {
             var states = GetMouseButtonStates(mouseKey);
             return states.previous == ButtonState.Released && states.current == ButtonState.Pressed;
         }
 
-        internal static bool MouseKeyReleasedThisFrame(MouseKeys mouseKey)
+        internal static bool MouseReleasedThisFrame(MouseKeys mouseKey)
         {
             var states = GetMouseButtonStates(mouseKey);
             return states.previous == ButtonState.Pressed && states.current == ButtonState.Released;
         }
 
-        internal static bool MouseKeyHeld(MouseKeys mouseKey)
+        internal static bool MouseHeld(MouseKeys mouseKey)
         {
             var states = GetMouseButtonStates(mouseKey);
             return states.current == ButtonState.Pressed;
