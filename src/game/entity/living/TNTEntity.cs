@@ -9,7 +9,7 @@ namespace MinicraftGame.Game.Entities.Living
     {
         private const float TNT_FUSE = 3f;
         private const float TNT_SPEED = 1f;
-        private static readonly Vector2 TNTSize = Vector2.One;
+        private static Vector2 TNTSize => Vector2.One;
 
         public TNTEntity(Vector2 position, float fuseTime = TNT_FUSE) : base(position, World.TICKS_PER_SECOND * fuseTime, TNTSize, TNT_SPEED, 0, 0, Blocks.TNT.DrawData) {}
 

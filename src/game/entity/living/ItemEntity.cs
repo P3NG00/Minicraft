@@ -10,7 +10,7 @@ namespace MinicraftGame.Game.Entities.Living
         private const float ITEM_SPEED = 1f;
         private const float ITEM_RUN_MULTIPLIER = 1f;
         private const float ITEM_JUMP_VELOCITY = 1f;
-        private static readonly Vector2 ItemEntityDimensions = new(0.75f, 0.75f);
+        private static Vector2 ItemEntityDimensions => new(0.75f, 0.75f);
 
         private readonly Item _item;
 

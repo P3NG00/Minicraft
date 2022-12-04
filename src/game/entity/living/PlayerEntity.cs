@@ -11,7 +11,7 @@ namespace MinicraftGame.Game.Entities.Living
         private const float PLAYER_JUMP = 3.5f;
         private const float PLAYER_RUN_MULT = 1.5f;
         private const float PLAYER_LIFE = 10f;
-        private static readonly Vector2 PlayerSize = new Vector2(1.8f, 2.8f);
+        private static Vector2 PlayerSize => new Vector2(1.8f, 2.8f);
 
         public readonly Inventory Inventory;
 
