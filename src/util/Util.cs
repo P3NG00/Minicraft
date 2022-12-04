@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using Microsoft.Xna.Framework;
 using MinicraftGame.Game.BlockType;
@@ -34,6 +35,18 @@ namespace MinicraftGame.Utils
             if (chance <= 0.0m)
                 return false;
             return (decimal)Random.NextDouble() < chance;
+        }
+
+        public static double Average(this IEnumerable<uint> source)
+        {
+            uint sum = 0;
+            int count = 0;
+            foreach (uint i in source)
+            {
+                sum += i;
+                count++;
+            }
+            return (double)sum / (double)count;
         }
 
         public static bool NextBool(this Random random) => (0.5f).TestChance();

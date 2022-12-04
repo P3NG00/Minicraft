@@ -28,13 +28,13 @@ namespace MinicraftGame
         private AbstractScene _nextScene = null;
 
         // tick & frame handling variables
-        public static int Ticks => _ticks[0];
-        public static float AverageFramesPerSecond => _lastFps.Average();
-        public static float AverageTicksPerFrame => (float)_lastTickDifferences.Average();
-        private static int[] _ticks = new [] {0, 0};
-        private static int[] _lastTickDifferences = new int[World.TICKS_PER_SECOND];
-        private static float[] _lastFps = new float[Display.FRAMES_PER_SECOND];
-        private static float _tickDelta = 0f;
+        public static uint Ticks => _ticks[0];
+        public static double AverageFramesPerSecond => _lastFps.Average();
+        public static double AverageTicksPerFrame => _lastTickDifferences.Average();
+        private static uint[] _ticks = new uint[] {0, 0};
+        private static uint[] _lastTickDifferences = new uint[World.TICKS_PER_SECOND];
+        private static double[] _lastFps = new double[Display.FRAMES_PER_SECOND];
+        private static double _tickDelta = 0f;
 
         public Minicraft()
         {
@@ -88,7 +88,7 @@ namespace MinicraftGame
             if (Keybinds.Fullscreen.PressedThisFrame)
                 Display.ToggleFullscreen();
             // update ticks
-            UpdateTicks((float)gameTime.ElapsedGameTime.TotalSeconds * Debug.TimeScale);
+            UpdateTicks(gameTime.ElapsedGameTime.TotalSeconds * (double)Debug.TimeScale);
             // update scene
             _scene.Update(gameTime);
             // tick scene
@@ -105,7 +105,7 @@ namespace MinicraftGame
             // begin drawing
             Display.SpriteBatch.Begin(samplerState: SamplerState.PointClamp);
             // update frames per second
-            UpdateFramesPerSecond((float)gameTime.ElapsedGameTime.TotalMilliseconds);
+            UpdateFramesPerSecond(gameTime.ElapsedGameTime.TotalMilliseconds);
             // draw scene
             _scene.Draw(gameTime);
             // end drawing
@@ -126,7 +126,7 @@ namespace MinicraftGame
             return true;
         }
 
-        private void UpdateTicks(float timeThisUpdate)
+        private void UpdateTicks(double timeThisUpdate)
         {
             // add delta time
             _tickDelta += timeThisUpdate;
@@ -139,7 +139,7 @@ namespace MinicraftGame
             _ticks[1] = _ticks[0];
         }
 
-        private void UpdateFramesPerSecond(float timeThisFrame)
+        private void UpdateFramesPerSecond(double timeThisFrame)
         {
             // move values down
             for (int i = _lastFps.Length - 2; i >= 0; i--)
