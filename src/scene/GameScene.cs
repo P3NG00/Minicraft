@@ -143,52 +143,52 @@ namespace MinicraftGame.Scenes
             _lastMouseBlock = ((mousePos - (Display.WindowSize.ToVector2() / 2f)) / Display.BlockScale) + (Minicraft.Player.Position + new Vector2(0, Minicraft.Player.Dimensions.Y / 2f));
             _lastMouseBlockInt = _lastMouseBlock.ToPoint();
             // if player alive
-            if (Minicraft.Player.Alive)
+            if (!Minicraft.Player.Alive)
             {
-                // give items if holding debug button
-                if (Keybinds.Debug.Held)
+                _withinReach = false;
+                return;
+            }
+            // give items if holding debug button
+            if (Keybinds.Debug.Held)
+            {
+                int i;
+                if (Debug.GiveBlocksElseItems)
                 {
-                    int i;
-                    if (Debug.GiveBlocksElseItems)
-                    {
-                        for (i = 1; i < Blocks.Amount; i++)
-                            if (InputManager.KeyPressedThisFrame(Keys.D0 + i))
-                                Minicraft.Player.Inventory.Add(new BlockItem(Blocks.FromID(i)));
-                    }
-                    else
-                    {
-                        for (i = 1; i < Items.Amount; i++)
-                            if (InputManager.KeyPressedThisFrame(Keys.D0 + i))
-                                Minicraft.Player.Inventory.Add(Items.FromID(i));
-                    }
+                    for (i = 1; i < Blocks.Amount; i++)
+                        if (InputManager.KeyPressedThisFrame(Keys.D0 + i))
+                            Minicraft.Player.Inventory.Add(new BlockItem(Blocks.FromID(i)));
                 }
-                // spawn projectiles
-                if (Keybinds.SpawnProjectile.PressedThisFrame)
-                    Minicraft.World.AddEntity(new ProjectileEntity(Minicraft.Player.Position));
-                if (Keybinds.SpawnBouncyProjectile.PressedThisFrame)
-                    Minicraft.World.AddEntity(new BouncyProjectileEntity(Minicraft.Player.Position));
-                // test if within reach
-                _withinReach = Vector2.Distance(Minicraft.Player.Center, _lastMouseBlock) <= PLAYER_REACH_RADIUS;
-                if (_withinReach)
+                else
                 {
-                    var block = Minicraft.World.GetBlock(_lastMouseBlockInt);
-                    if (block != null)
-                    {
-                        // handle left click (block breaking)
-                        // TODO instead of clicking to break blocks, hold left click for certain amount of ticks to break block
-                        if (Keybinds.MouseLeft.PressedThisFrame && block != Blocks.Air)
-                            HitBlock(_lastMouseBlockInt);
-                        // handle right click (block placing & interaction)
-                        if (Keybinds.MouseRight.PressedThisFrame)
-                            Minicraft.Player.Inventory.Use(_lastMouseBlockInt);
-                        // handle middle click (spawn npc entity) // TODO remove later
-                        if (Keybinds.MouseMiddle.PressedThisFrame)
-                            Minicraft.World.AddEntity(new NPCEntity(_lastMouseBlock));
-                    }
+                    for (i = 1; i < Items.Amount; i++)
+                        if (InputManager.KeyPressedThisFrame(Keys.D0 + i))
+                            Minicraft.Player.Inventory.Add(Items.FromID(i));
                 }
             }
-            else
-                _withinReach = false;
+            // spawn projectiles
+            if (Keybinds.SpawnProjectile.PressedThisFrame)
+                Minicraft.World.AddEntity(new ProjectileEntity(Minicraft.Player.Position));
+            if (Keybinds.SpawnBouncyProjectile.PressedThisFrame)
+                Minicraft.World.AddEntity(new BouncyProjectileEntity(Minicraft.Player.Position));
+            // test if within reach
+            _withinReach = Vector2.Distance(Minicraft.Player.Center, _lastMouseBlock) <= PLAYER_REACH_RADIUS;
+            if (_withinReach)
+            {
+                var block = Minicraft.World.GetBlock(_lastMouseBlockInt);
+                if (block != null)
+                {
+                    // handle left click (block breaking)
+                    // TODO instead of clicking to break blocks, hold left click for certain amount of ticks to break block
+                    if (Keybinds.MouseLeft.PressedThisFrame && block != Blocks.Air)
+                        HitBlock(_lastMouseBlockInt);
+                    // handle right click (block placing & interaction)
+                    if (Keybinds.MouseRight.PressedThisFrame)
+                        Minicraft.Player.Inventory.Use(_lastMouseBlockInt);
+                    // handle middle click (spawn npc entity) // TODO remove later
+                    if (Keybinds.MouseMiddle.PressedThisFrame)
+                        Minicraft.World.AddEntity(new NPCEntity(_lastMouseBlock));
+                }
+            }
         }
 
         private void HitBlock(Point hitPosition)

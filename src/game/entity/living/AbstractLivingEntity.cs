@@ -47,11 +47,10 @@ namespace MinicraftGame.Game.Entities.Living
 
         public void Jump()
         {
-            if (IsGrounded)
-            {
-                _velocityJump.Y = _jumpVelocity;
-                IsGrounded = false;
-            }
+            if (!IsGrounded)
+                return;
+            _velocityJump.Y = _jumpVelocity;
+            IsGrounded = false;
         }
 
         public override void Tick()
