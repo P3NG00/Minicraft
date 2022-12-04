@@ -47,9 +47,9 @@ namespace MinicraftGame.Game.Worlds.Generation
             StepShift = stepShift;
         }
 
-        public abstract void IncrementFunc();
+        protected abstract void IncrementFunc();
 
-        public abstract void DecrementFunc();
+        protected abstract void DecrementFunc();
 
         public void Increment()
         {

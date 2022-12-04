@@ -6,8 +6,8 @@ namespace MinicraftGame.Game.Worlds.Generation
     {
         public WorldGenSettingInt(Vector2 relativeScreenPosition, string name, int defaultValue, int min, int max, int step, int stepShift) : base(relativeScreenPosition, name, defaultValue, min, max, step, stepShift) {}
 
-        public override void IncrementFunc() => Value += StepValue;
+        protected override void IncrementFunc() => Value += StepValue;
 
-        public override void DecrementFunc() => Value -= StepValue;
+        protected override void DecrementFunc() => Value -= StepValue;
     }
 }
