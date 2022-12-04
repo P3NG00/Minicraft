@@ -25,9 +25,11 @@ namespace MinicraftGame.Game.Worlds.Generation
         private readonly Button _buttonDecrement;
         private readonly Button _buttonIncrement;
 
-        public T Value;
+        public T Value => _value;
 
         protected T StepValue => Keybinds.Shift.Held ? StepShift : Step;
+
+        private T _value;
 
         // TODO '_highlighted' to display a highlight behind this setting box when drawing and hovered over with mouse
         // TODO when highlighted, allow scrollwheel up to increment and down to decrement
@@ -40,7 +42,7 @@ namespace MinicraftGame.Game.Worlds.Generation
             _buttonDecrement = new(relativeScreenPosition - buttonOffset, buttonSize, TEXT_DECREMENT, Colors.ThemeDefault, Decrement);
             _buttonIncrement = new(relativeScreenPosition + buttonOffset, buttonSize, TEXT_INCREMENT, Colors.ThemeDefault, Increment);
             Name = name;
-            Value = defaultValue;
+            _value = defaultValue;
             Min = min;
             Max = max;
             Step = step;
@@ -59,7 +61,7 @@ namespace MinicraftGame.Game.Worlds.Generation
                 IncrementFunc();
                 // ensure value at most max
                 if (Value.CompareTo(Max) > 0)
-                    Value = Max;
+                    _value = Max;
             }
         }
 
@@ -71,7 +73,7 @@ namespace MinicraftGame.Game.Worlds.Generation
                 DecrementFunc();
                 // ensure value at least min
                 if (Value.CompareTo(Min) < 0)
-                    Value = Min;
+                    _value = Min;
             }
         }
 
