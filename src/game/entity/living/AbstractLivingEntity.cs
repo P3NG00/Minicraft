@@ -15,16 +15,15 @@ namespace MinicraftGame.Game.Entities.Living
 
         public bool IsGrounded { get; protected set; } = false;
         public bool Running { get; protected set; } = false;
-        public override Vector2 Velocity
+        public sealed override Vector2 Velocity
         {
             get
             {
-                var velocity = base.RawVelocity;
+                var velocity = new Vector2(RawVelocity.X, 0);
                 if (Running)
                     velocity *= _runMultiplier;
-                velocity += _velocityJump;
-                velocity *= MoveSpeed;
-                return velocity;
+                velocity.Y = RawVelocity.Y;
+                return velocity * MoveSpeed;
             }
         }
 
@@ -33,8 +32,6 @@ namespace MinicraftGame.Game.Entities.Living
         // vertical velocity to add when jumping
         private readonly float _jumpVelocity;
 
-        // velocity of current jump
-        private Vector2 _velocityJump = Vector2.Zero;
         // player height when last on ground
         private float _lastGroundHeight;
 
@@ -49,7 +46,7 @@ namespace MinicraftGame.Game.Entities.Living
         {
             if (!IsGrounded)
                 return;
-            _velocityJump.Y = _jumpVelocity;
+            RawVelocity.Y = _jumpVelocity;
             IsGrounded = false;
         }
 
@@ -57,7 +54,7 @@ namespace MinicraftGame.Game.Entities.Living
         {
             // add velocity if falling
             if (!IsGrounded)
-                _velocityJump.Y -= World.GRAVITY * World.TICK_STEP;
+                RawVelocity.Y -= World.GRAVITY * World.TICK_STEP;
             // fix max velocity
             if (Velocity.Length() > VELOCITY_MAX)
                 RawVelocity = Vector2.Normalize(RawVelocity) * (VELOCITY_MAX / MoveSpeed);
@@ -141,7 +138,6 @@ namespace MinicraftGame.Game.Entities.Living
             else
                 throw new Exception("Vertical collision handled when entity's vertical velocity is 0");
             RawVelocity.Y = 0f;
-            _velocityJump.Y = 0f;
         }
 
         private bool WhichCollisionFirstHorizontalElseVertical()
