@@ -35,7 +35,7 @@ namespace MinicraftGame.Scenes
             const float freq = 0.025f;
             const float amp = 0.125f;
             var rotation = MathF.Sin(Minicraft.Ticks * freq) * amp;
-            Display.DrawCenteredString(FontSize._36, new Vector2(0.5f, 0.4f), Minicraft.TITLE, Colors.UI_Title, rotation: rotation, drawStringFunc: Display.DrawStringWithShadow);
+            Display.DrawCenteredString(FontSize._48, new Vector2(0.5f, 0.35f), Minicraft.TITLE, Colors.UI_Title, rotation: rotation, drawStringFunc: Display.DrawStringWithShadow);
             // draw buttons
             _buttonWorldNew.Draw();
             _buttonExit.Draw();

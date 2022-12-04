@@ -46,3 +46,10 @@
 /processorParam:TextureFormat=Compressed
 /build:type_writer_36.spritefont
 
+#begin type_writer_48.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:type_writer_48.spritefont
+
