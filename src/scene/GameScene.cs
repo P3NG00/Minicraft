@@ -101,6 +101,7 @@ namespace MinicraftGame.Scenes
         {
             Data.Save();
             Minicraft.SetScene(new MainMenuScene());
+            Debug.TimeScale = 1f;
         }
 
         private void HandleInput()
