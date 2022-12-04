@@ -12,6 +12,8 @@ namespace MinicraftGame.Utils
 
         public static bool SaveExists => File.Exists(SAVE_FILE);
 
+        // TODO save all types of entities: items, npcs, tnt, etc.
+
         public static void Save()
         {
             using (var stream = new BinaryWriter(File.Open(SAVE_FILE, FileMode.Create)))
@@ -43,6 +45,11 @@ namespace MinicraftGame.Utils
                     stream.Write(Minicraft.Player.Position.Y);
                     // write player health
                     stream.Write(Minicraft.Player.Life);
+                    // write player velocity
+                    stream.Write(Minicraft.Player.RawVelocity.X);
+                    stream.Write(Minicraft.Player.RawVelocity.Y);
+                    // write last grounded height
+                    stream.Write(Minicraft.Player.LastGroundedHeight);
                 }
             }
         }
@@ -90,6 +97,13 @@ namespace MinicraftGame.Utils
                     // read player health
                     var life = stream.ReadSingle();
                     player.SetLife(life);
+                    // read player velocity
+                    var velX = stream.ReadSingle();
+                    var velY = stream.ReadSingle();
+                    player.RawVelocity = new Vector2(velX, velY);
+                    // read last grounded height
+                    var lastGroundHeight = stream.ReadSingle();
+                    player.LastGroundedHeight = lastGroundHeight;
                 }
             }
 

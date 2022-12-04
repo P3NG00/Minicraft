@@ -27,17 +27,17 @@ namespace MinicraftGame.Game.Entities.Living
             }
         }
 
+        // player height when last on ground
+        public float LastGroundedHeight;
+
         // speed multiplier when running
         private readonly float _runMultiplier;
         // vertical velocity to add when jumping
         private readonly float _jumpVelocity;
 
-        // player height when last on ground
-        private float _lastGroundHeight;
-
         public AbstractLivingEntity(Vector2 position, float maxLife, Vector2 dimensions, float moveSpeed, float runMultiplier, float jumpVelocity, DrawData drawData) : base(position, maxLife, dimensions, moveSpeed, drawData)
         {
-            _lastGroundHeight = position.Y;
+            LastGroundedHeight = position.Y;
             _runMultiplier = runMultiplier;
             _jumpVelocity = jumpVelocity;
         }
@@ -106,7 +106,7 @@ namespace MinicraftGame.Game.Entities.Living
                 if (CheckOnAir(Minicraft.World))
                     IsGrounded = false;
                 else
-                    _lastGroundHeight = Position.Y;
+                    LastGroundedHeight = Position.Y;
             }
         }
 
@@ -129,7 +129,7 @@ namespace MinicraftGame.Game.Entities.Living
             {
                 testPosition.Y = sides.Bottom + 1f;
                 IsGrounded = true;
-                var fallenDistance = _lastGroundHeight - testPosition.Y - FALL_DISTANCE_MIN;
+                var fallenDistance = LastGroundedHeight - testPosition.Y - FALL_DISTANCE_MIN;
                 if (fallenDistance > 0f)
                     Damage(fallenDistance * FALL_DAMAGE_PER_BLOCK);
             }
