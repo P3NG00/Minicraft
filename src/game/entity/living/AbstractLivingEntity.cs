@@ -13,37 +13,43 @@ namespace MinicraftGame.Game.Entities.Living
         private const float VELOCITY_MAX = 50f;
         private const int MOVEMENT_SUBCHECKS = 16;
 
-        public readonly float RunMultiplier;
-        public readonly float JumpVelocity;
-
         public bool IsGrounded { get; protected set; } = false;
         public bool Running { get; protected set; } = false;
-        // TODO stop running from affecting jump velocity
         public override Vector2 Velocity
         {
             get
             {
-                var velocity = base.Velocity;
+                var velocity = base.RawVelocity;
                 if (Running)
-                    velocity *= RunMultiplier;
+                    velocity *= _runMultiplier;
+                velocity += _velocityJump;
+                velocity *= MoveSpeed;
                 return velocity;
             }
         }
 
-        private float _lastHeight;
+        // speed multiplier when running
+        private readonly float _runMultiplier;
+        // vertical velocity to add when jumping
+        private readonly float _jumpVelocity;
+
+        // velocity of current jump
+        private Vector2 _velocityJump = Vector2.Zero;
+        // player height when last on ground
+        private float _lastGroundHeight;
 
         public AbstractLivingEntity(Vector2 position, float maxLife, Vector2 dimensions, float moveSpeed, float runMultiplier, float jumpVelocity, DrawData drawData) : base(position, maxLife, dimensions, moveSpeed, drawData)
         {
-            _lastHeight = position.Y;
-            RunMultiplier = runMultiplier;
-            JumpVelocity = jumpVelocity;
+            _lastGroundHeight = position.Y;
+            _runMultiplier = runMultiplier;
+            _jumpVelocity = jumpVelocity;
         }
 
         public void Jump()
         {
             if (IsGrounded)
             {
-                RawVelocity.Y = JumpVelocity;
+                _velocityJump.Y = _jumpVelocity;
                 IsGrounded = false;
             }
         }
@@ -52,7 +58,7 @@ namespace MinicraftGame.Game.Entities.Living
         {
             // add velocity if falling
             if (!IsGrounded)
-                RawVelocity.Y -= World.GRAVITY * World.TICK_STEP;
+                _velocityJump.Y -= World.GRAVITY * World.TICK_STEP;
             // fix max velocity
             if (Velocity.Length() > VELOCITY_MAX)
                 RawVelocity = Vector2.Normalize(RawVelocity) * (VELOCITY_MAX / MoveSpeed);
@@ -104,7 +110,7 @@ namespace MinicraftGame.Game.Entities.Living
                 if (CheckOnAir(Minicraft.World))
                     IsGrounded = false;
                 else
-                    _lastHeight = Position.Y;
+                    _lastGroundHeight = Position.Y;
             }
         }
 
@@ -127,7 +133,7 @@ namespace MinicraftGame.Game.Entities.Living
             {
                 testPosition.Y = sides.Bottom + 1f;
                 IsGrounded = true;
-                var fallenDistance = _lastHeight - testPosition.Y - FALL_DISTANCE_MIN;
+                var fallenDistance = _lastGroundHeight - testPosition.Y - FALL_DISTANCE_MIN;
                 if (fallenDistance > 0f)
                     Damage(fallenDistance * FALL_DAMAGE_PER_BLOCK);
             }
@@ -136,6 +142,7 @@ namespace MinicraftGame.Game.Entities.Living
             else
                 throw new Exception("Vertical collision handled when entity's vertical velocity is 0");
             RawVelocity.Y = 0f;
+            _velocityJump.Y = 0f;
         }
 
         private bool WhichCollisionFirstHorizontalElseVertical()

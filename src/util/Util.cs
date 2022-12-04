@@ -40,7 +40,7 @@ namespace MinicraftGame.Utils
         public static double Average(this IEnumerable<uint> source)
         {
             uint sum = 0;
-            int count = 0;
+            uint count = 0;
             foreach (uint i in source)
             {
                 sum += i;
