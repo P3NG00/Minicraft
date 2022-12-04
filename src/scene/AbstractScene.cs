@@ -11,6 +11,8 @@ namespace MinicraftGame.Scenes
 
         public abstract void Update(GameTime gameTime);
 
+        public virtual void Tick() {}
+
         public abstract void Draw(GameTime gameTime);
     }
 }

@@ -1,5 +1,3 @@
-using System;
-using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using MinicraftGame.Font;
@@ -31,16 +29,6 @@ namespace MinicraftGame.Scenes
         private readonly Button _buttonResume;
         private readonly Button _buttonMainMenu;
 
-        // tick & frame handling variables
-        private int Ticks => _ticks[0];
-        private float AverageFramesPerSecond => _lastFps.Average();
-        private float AverageTicksPerFrame => (float)_lastTickDifferences.Average();
-        private float _tickDelta = 0f;
-        private int[] _ticks = new [] {0, 0};
-        private int[] _lastTickDifferences = new int[World.TICKS_PER_SECOND];
-        private float[] _lastFps = new float[Display.FRAMES_PER_SECOND];
-        private bool _paused = false;
-
         // cache
         // TODO store tick count the time the hit happened. once certain amount of seconds/ticks have passed, nullify blockhit
         private Point _blockHitPos = new(-1);
@@ -48,6 +36,7 @@ namespace MinicraftGame.Scenes
         private Vector2 _lastMouseBlock;
         private Point _lastMouseBlockInt;
         private bool _withinReach;
+        private bool _paused = false;
 
         public GameScene() : base(Blocks.Air.Color)
         {
@@ -69,8 +58,6 @@ namespace MinicraftGame.Scenes
                 _buttonMainMenu.Update();
                 return;
             }
-
-            UpdateTicks((float)gameTime.ElapsedGameTime.TotalSeconds * Debug.TimeScale);
             // update ui buttons
             if (!Minicraft.Player.Alive)
             {
@@ -78,25 +65,23 @@ namespace MinicraftGame.Scenes
                 _buttonRespawn.Update();
                 _buttonMainMenu.Update();
             }
-            // update for every tick step
-            while (Tick())
-            {
-                // update debug
-                Debug.Tick();
-                // update world
-                Minicraft.World.Tick();
-                // update player
-                // TODO update player outside of tick. use delta time to update player position instead of tick delta
-                if (Minicraft.Player.Alive)
-                    Minicraft.Player.Tick();
-                // update entities
-                Minicraft.World.TickEntities();
-            }
+        }
+
+        public sealed override void Tick()
+        {
+            // update debug
+            Debug.Tick();
+            // update world
+            Minicraft.World.Tick();
+            // update player
+            if (Minicraft.Player.Alive)
+                Minicraft.Player.Tick();
+            // update entities
+            Minicraft.World.TickEntities();
         }
 
         public sealed override void Draw(GameTime gameTime)
         {
-            UpdateFramesPerSecond((float)gameTime.ElapsedGameTime.TotalMilliseconds);
             // update display handler
             Display.UpdateCameraOffset();
             // draw world
@@ -118,40 +103,6 @@ namespace MinicraftGame.Scenes
             Minicraft.SetScene(new MainMenuScene());
         }
 
-        private bool Tick()
-        {
-            if (_tickDelta < World.TICK_STEP)
-                return false;
-            // decrement delta time by tick step
-            _tickDelta -= World.TICK_STEP;
-            // increment tick counter
-            _ticks[0]++;
-            // return success
-            return true;
-        }
-
-        private void UpdateTicks(float timeThisUpdate)
-        {
-            // add delta time
-            _tickDelta += timeThisUpdate;
-            // move last tick count down
-            for (int i = _lastTickDifferences.Length - 2; i >= 0; i--)
-                _lastTickDifferences[i + 1] = _lastTickDifferences[i];
-            // set last tick difference
-            _lastTickDifferences[0] = _ticks[0] - _ticks[1];
-            // update last tick count
-            _ticks[1] = _ticks[0];
-        }
-
-        private void UpdateFramesPerSecond(float timeThisFrame)
-        {
-            // move values down
-            for (int i = _lastFps.Length - 2; i >= 0; i--)
-                _lastFps[i + 1] = _lastFps[i];
-            // store fps value
-            _lastFps[0] = 1000f / timeThisFrame;
-        }
-
         private void HandleInput()
         {
             // toggle pause
@@ -164,7 +115,7 @@ namespace MinicraftGame.Scenes
                 Debug.TimeScale += Debug.TIME_SCALE_STEP;
             // manually step time
             if (Keybinds.TimeTickStep.PressedThisFrame)
-                _tickDelta += World.TICK_STEP;
+                Minicraft.AddTick();
             // debug
             if (Debug.Enabled && Keybinds.DebugCheckUpdates.PressedThisFrame)
                 Debug.DisplayBlockChecks = !Debug.DisplayBlockChecks;
@@ -314,10 +265,10 @@ namespace MinicraftGame.Scenes
                     $"give_mode: {(Debug.GiveBlocksElseItems ? "blocks" : "items")}",
                     $"paused: {_paused}",
                     $"time_scale: {Debug.TimeScale:0.00}",
-                    $"time: {(Ticks / (float)World.TICKS_PER_SECOND):0.000}",
-                    $"ticks: {Ticks} ({World.TICKS_PER_SECOND} ticks/sec)",
-                    $"frames_per_second: {AverageFramesPerSecond:0.000}",
-                    $"ticks_per_frame: {AverageTicksPerFrame:0.000}",
+                    $"time: {(Minicraft.Ticks / (float)World.TICKS_PER_SECOND):0.000}",
+                    $"ticks: {Minicraft.Ticks} ({World.TICKS_PER_SECOND} ticks/sec)",
+                    $"frames_per_second: {Minicraft.AverageFramesPerSecond:0.000}",
+                    $"ticks_per_frame: {Minicraft.AverageTicksPerFrame:0.000}",
                     $"x: {Minicraft.Player.Position.X:0.000}",
                     $"y: {Minicraft.Player.Position.Y:0.000}",
                     $"block_scale: {Display.BlockScale}",

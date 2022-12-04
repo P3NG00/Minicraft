@@ -12,9 +12,6 @@ namespace MinicraftGame.Scenes
         private readonly Button _buttonExit;
         private readonly Button _buttonWorldContinue = null;
 
-        // TODO make this tick dependent, not frame dependent
-        private int _updates = 0;
-
         public MainMenuScene() : base()
         {
             _buttonWorldNew = new Button(new Vector2(0.5f, 0.6f), new Point(250, 50), "create world", Colors.ThemeBlue, CreateNewWorld);
@@ -35,7 +32,9 @@ namespace MinicraftGame.Scenes
         public sealed override void Draw(GameTime gameTime)
         {
             // draw title
-            var rotation = MathF.Sin(_updates++ * 0.01f) * 0.1f;
+            const float freq = 0.025f;
+            const float amp = 0.125f;
+            var rotation = MathF.Sin(Minicraft.Ticks * freq) * amp;
             Display.DrawCenteredString(FontSize._36, new Vector2(0.5f, 0.4f), Minicraft.TITLE, Colors.UI_Title, rotation: rotation, drawStringFunc: Display.DrawStringWithShadow);
             // draw buttons
             _buttonWorldNew.Draw();
