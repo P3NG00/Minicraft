@@ -28,6 +28,7 @@ namespace MinicraftGame.Utils
         public static Color UI_TextDebug => new Color(255, 255, 255);
         public static Color UI_TextLife => new Color(255, 255, 255);
         public static Color UI_YouDied => new Color(255, 0, 0);
+        public static Color SettingHighlight => new Color(144, 144, 144);
 
         // inventory
         public static Color HotbarBackground => new Color(0, 0, 0);

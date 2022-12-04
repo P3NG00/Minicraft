@@ -21,7 +21,7 @@ namespace MinicraftGame.Game.Worlds.Generation
         protected readonly T Step;
         protected readonly T StepShift;
 
-        private readonly Vector2 _relativeScreenPosition;
+        private readonly Vector2 _relativeCenter;
         private readonly Button _buttonDecrement;
         private readonly Button _buttonIncrement;
 
@@ -29,16 +29,16 @@ namespace MinicraftGame.Game.Worlds.Generation
 
         protected T StepValue => Keybinds.Shift.Held ? StepShift : Step;
 
-        // TODO '_highlighted' to display a highlight behind this setting box when drawing and hovered over with mouse
-        // TODO when highlighted, allow scrollwheel up to increment and down to decrement
+        private Rectangle _lastRect;
+        private bool _highlighted;
 
-        public AbstractWorldGenSetting(Vector2 relativeScreenPosition, string name, T defaultValue, T min, T max, T step, T stepShift)
+        public AbstractWorldGenSetting(Vector2 relativeCenter, string name, T defaultValue, T min, T max, T step, T stepShift)
         {
-            _relativeScreenPosition = relativeScreenPosition;
+            _relativeCenter = relativeCenter;
             var buttonOffset = new Vector2(RELATIVE_BUTTON_OFFSET, 0);
             var buttonSize = new Point(BUTTON_SIZE);
-            _buttonDecrement = new(relativeScreenPosition - buttonOffset, buttonSize, TEXT_DECREMENT, Colors.ThemeDefault, Decrement);
-            _buttonIncrement = new(relativeScreenPosition + buttonOffset, buttonSize, TEXT_INCREMENT, Colors.ThemeDefault, Increment);
+            _buttonDecrement = new(relativeCenter - buttonOffset, buttonSize, TEXT_DECREMENT, Colors.ThemeDefault, Decrement);
+            _buttonIncrement = new(relativeCenter + buttonOffset, buttonSize, TEXT_INCREMENT, Colors.ThemeDefault, Increment);
             Name = name;
             Value = defaultValue;
             Min = min;
@@ -77,22 +77,40 @@ namespace MinicraftGame.Game.Worlds.Generation
 
         public void Update()
         {
+            // find rectangle bounds
+            var windowSize = Display.WindowSize.ToVector2();
+            var width = (int)(((_relativeCenter.X + RELATIVE_BUTTON_OFFSET) - (_relativeCenter.X - RELATIVE_BUTTON_OFFSET)) * windowSize.X) + BUTTON_SIZE;
+            var size = new Point(width, BUTTON_SIZE);
+            var pos = ((windowSize * _relativeCenter) - (size.ToVector2() / 2f)).ToPoint();
+            _lastRect = new Rectangle(pos, size);
+            // update highlighted
+            _highlighted = _lastRect.Contains(InputManager.MousePosition);
+            // check scroll wheel
+            if (_highlighted)
+            {
+                if (InputManager.ScrollWheelDelta > 0)
+                    Increment();
+                else if (InputManager.ScrollWheelDelta < 0)
+                    Decrement();
+            }
             // update buttons
             _buttonDecrement.Update();
             _buttonIncrement.Update();
-            // TODO add ability to change value with scrollwheel while hovering over area of entire setting (use _lastRect like you did in UI.Button class)
         }
 
         public void Draw()
         {
+            // draw highlight
+            if (_highlighted)
+                Display.Draw(_lastRect.Location.ToVector2(), _lastRect.Size.ToVector2(), new(color: Colors.SettingHighlight));
             // draw buttons
             _buttonDecrement.Draw();
             _buttonIncrement.Draw();
             // draw name label
             var textOffset = new Vector2(0, RELATIVE_TEXT_OFFSET);
-            Display.DrawCenteredString(Font.FontSize._12, _relativeScreenPosition - textOffset, Name, Colors.TextWorldGenSetting);
+            Display.DrawCenteredString(Font.FontSize._12, _relativeCenter - textOffset, Name, Colors.TextWorldGenSetting);
             // draw value label
-            Display.DrawCenteredString(Font.FontSize._12, _relativeScreenPosition + textOffset, Value.ToString(), Colors.TextWorldGenSetting);
+            Display.DrawCenteredString(Font.FontSize._12, _relativeCenter + textOffset, Value.ToString(), Colors.TextWorldGenSetting);
         }
 
         public static implicit operator T(AbstractWorldGenSetting<T> setting) => setting.Value;
