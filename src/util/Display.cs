@@ -77,7 +77,11 @@ namespace MinicraftGame.Utils
             Draw(drawPos, size, drawData);
         }
 
-        public static void DrawOffset(Vector2 position, Vector2 size, DrawData drawData) => Draw(position - CameraOffset, size, drawData);
+        public static void DrawOffset(Vector2 position, Vector2 size, DrawData drawData)
+        {
+            var drawPos = position - CameraOffset;
+            Draw(drawPos, size, drawData);
+        }
 
         // draws faded overlay over entire window
         public static void DrawFadedOverlay() => Display.Draw(Vector2.Zero, WindowSize.ToVector2(), new(color: Colors.Overlay));

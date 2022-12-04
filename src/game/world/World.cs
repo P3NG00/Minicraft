@@ -151,6 +151,7 @@ namespace MinicraftGame.Game.Worlds
                         var hitsLeft = block.HitsToBreak - blockHits;
                         if (hitsLeft > 0)
                         {
+                            // TODO figure out weirdness in pixel position
                             var stringScale = new Vector2((float)Display.BlockScale / (float)(Textures.SIZE * 2));
                             Display.DrawOffsetString(FontSize._12, drawPos, hitsLeft.ToString(), Colors.UI_BlockHit, stringScale, drawStringFunc: Display.DrawStringWithShadow);
                         }
