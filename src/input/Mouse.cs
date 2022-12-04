@@ -1,6 +1,6 @@
 namespace MinicraftGame.Input
 {
-    public enum MouseKeys
+    public enum Mouse
     {
         Left,
         Middle,
