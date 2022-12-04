@@ -71,6 +71,8 @@ namespace MinicraftGame.Scenes
 
         public sealed override void Tick()
         {
+            if (_paused)
+                return;
             // update debug
             Debug.Tick();
             // update world
