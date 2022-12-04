@@ -1,3 +1,4 @@
+using System;
 using Microsoft.Xna.Framework;
 using MinicraftGame.Input;
 using MinicraftGame.UI;
@@ -5,7 +6,7 @@ using MinicraftGame.Utils;
 
 namespace MinicraftGame.Game.Worlds.Generation
 {
-    public abstract class AbstractWorldGenSetting<T> : IWorldGenSetting
+    public abstract class AbstractWorldGenSetting<T> : IWorldGenSetting where T : IComparable<T>
     {
         private const string TEXT_DECREMENT = "<";
         private const string TEXT_INCREMENT = ">";
@@ -28,6 +29,9 @@ namespace MinicraftGame.Game.Worlds.Generation
 
         protected T StepValue => Keybinds.Shift.Held ? StepShift : Step;
 
+        // TODO '_highlighted' to display a highlight behind this setting box when drawing and hovered over with mouse
+        // TODO when highlighted, allow scrollwheel up to increment and down to decrement
+
         public AbstractWorldGenSetting(Vector2 relativeScreenPosition, string name, T defaultValue, T min, T max, T step, T stepShift)
         {
             _relativeScreenPosition = relativeScreenPosition;
@@ -43,9 +47,33 @@ namespace MinicraftGame.Game.Worlds.Generation
             StepShift = stepShift;
         }
 
-        public abstract void Increment();
+        public abstract void IncrementFunc();
 
-        public abstract void Decrement();
+        public abstract void DecrementFunc();
+
+        public void Increment()
+        {
+            // increment value if below max
+            if (Value.CompareTo(Max) < 0)
+            {
+                IncrementFunc();
+                // ensure value at most max
+                if (Value.CompareTo(Max) > 0)
+                    Value = Max;
+            }
+        }
+
+        public void Decrement()
+        {
+            // decrement value if above min
+            if (Value.CompareTo(Min) > 0)
+            {
+                DecrementFunc();
+                // ensure value at least min
+                if (Value.CompareTo(Min) < 0)
+                    Value = Min;
+            }
+        }
 
         public void Update()
         {

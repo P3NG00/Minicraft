@@ -6,30 +6,16 @@ namespace MinicraftGame.Game.Worlds.Generation
     {
         public WorldGenSettingIntMult(Vector2 relativeScreenPosition, string name, int defaultValue, int min, int max, int step, int stepShift) : base(relativeScreenPosition, name, defaultValue, min, max, step, stepShift) {}
 
-        public sealed override void Increment()
+        public sealed override void IncrementFunc()
         {
-            // increment value if below max
-            if (Value < Max)
-            {
-                for (int i = 0; i < StepValue; i++)
-                    Value *= 2;
-                // ensure value at most max
-                if (Value > Max)
-                    Value = Max;
-            }
+            for (int i = 0; i < StepValue; i++)
+                Value *= 2;
         }
 
-        public sealed override void Decrement()
+        public sealed override void DecrementFunc()
         {
-            // decrement value if above min
-            if (Value > Min)
-            {
-                for (int i = 0; i < StepValue; i++)
-                    Value /= 2;
-                // ensure value at least min
-                if (Value < Min)
-                    Value = Min;
-            }
+            for (int i = 0; i < StepValue; i++)
+                Value /= 2;
         }
     }
 }
