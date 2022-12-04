@@ -11,7 +11,7 @@ namespace MinicraftGame.Game.Worlds
 {
     public sealed class World
     {
-        public const float WORLD_UPDATED_PER_SECOND = 1f / 32f;
+        public const float WORLD_UPDATED_PER_SECOND = 1f / (float)TICKS_PER_SECOND;
         public const int TICKS_PER_SECOND = 32;
         public const float GRAVITY = 10f;
         public const int WIDTH = 1024;
@@ -152,7 +152,7 @@ namespace MinicraftGame.Game.Worlds
                         if (hitsLeft > 0)
                         {
                             var stringScale = new Vector2((float)Display.BlockScale / (float)(Textures.SIZE * 2));
-                            Display.DrawOffsetString(FontSize._12, drawPos, hitsLeft.ToString(), Colors.UI_BlockHit, stringScale, Display.DrawStringWithShadow);
+                            Display.DrawOffsetString(FontSize._12, drawPos, hitsLeft.ToString(), Colors.UI_BlockHit, stringScale, drawStringFunc: Display.DrawStringWithShadow);
                         }
                     }
                     // draw debug updates

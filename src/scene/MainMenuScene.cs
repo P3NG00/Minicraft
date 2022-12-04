@@ -1,3 +1,4 @@
+using System;
 using Microsoft.Xna.Framework;
 using MinicraftGame.Font;
 using MinicraftGame.UI;
@@ -10,6 +11,9 @@ namespace MinicraftGame.Scenes
         private readonly Button _buttonWorldNew;
         private readonly Button _buttonExit;
         private readonly Button _buttonWorldContinue = null;
+
+        // TODO make this tick dependent, not frame dependent
+        private int _updates = 0;
 
         public MainMenuScene() : base()
         {
@@ -31,7 +35,8 @@ namespace MinicraftGame.Scenes
         public sealed override void Draw(GameTime gameTime)
         {
             // draw title
-            Display.DrawCenteredString(FontSize._36, new Vector2(0.5f, 0.4f), Minicraft.TITLE, Colors.UI_Title, drawStringFunc: Display.DrawStringWithShadow);
+            var rotation = MathF.Sin(_updates++ * 0.01f) * 0.1f;
+            Display.DrawCenteredString(FontSize._36, new Vector2(0.5f, 0.4f), Minicraft.TITLE, Colors.UI_Title, rotation: rotation, drawStringFunc: Display.DrawStringWithShadow);
             // draw buttons
             _buttonWorldNew.Draw();
             _buttonExit.Draw();
