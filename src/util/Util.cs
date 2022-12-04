@@ -37,11 +37,11 @@ namespace MinicraftGame.Utils
             return (decimal)Random.NextDouble() < chance;
         }
 
-        public static double Average(this IEnumerable<uint> source)
+        public static double Average(this IEnumerable<ulong> source)
         {
-            uint sum = 0;
-            uint count = 0;
-            foreach (uint i in source)
+            ulong sum = 0;
+            ulong count = 0;
+            foreach (ulong i in source)
             {
                 sum += i;
                 count++;

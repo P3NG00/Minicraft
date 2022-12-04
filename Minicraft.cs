@@ -28,11 +28,11 @@ namespace MinicraftGame
         private AbstractScene _nextScene = null;
 
         // tick & frame handling variables
-        public static uint Ticks => _ticks[0];
+        public static ulong Ticks => _ticks[0];
         public static double AverageFramesPerSecond => _lastFps.Average();
         public static double AverageTicksPerFrame => _lastTickDifferences.Average();
-        private static uint[] _ticks = new uint[] {0, 0};
-        private static uint[] _lastTickDifferences = new uint[World.TICKS_PER_SECOND];
+        private static ulong[] _ticks = new ulong[] {0, 0};
+        private static ulong[] _lastTickDifferences = new ulong[World.TICKS_PER_SECOND];
         private static double[] _lastFps = new double[Display.FRAMES_PER_SECOND];
         private static double _tickDelta = 0f;
 
