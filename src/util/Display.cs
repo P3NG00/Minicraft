@@ -60,10 +60,13 @@ namespace MinicraftGame.Utils
             _graphics.PreferredBackBufferHeight = height;
         }
 
-        public static void Draw(Vector2 position, Vector2 size, DrawData drawData)
+        public static void Draw(Vector2 position, Vector2 size, DrawData drawData, float rotation = 0f)
         {
-            var scale = size / drawData.Texture.Bounds.Size.ToVector2();
-            SpriteBatch.Draw(drawData.Texture, position, null, drawData.Color, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
+            var textureSize = drawData.Texture.Bounds.Size.ToVector2();
+            var scale = size / textureSize;
+            var origin = textureSize / 2f;
+            var drawOffset = position + (size / 2f);
+            SpriteBatch.Draw(drawData.Texture, drawOffset, null, drawData.Color, rotation, origin, scale, SpriteEffects.None, 0f);
         }
 
         public static void DrawCentered(Vector2 relativeScreenPosition, Vector2 size, DrawData drawData)
@@ -91,7 +94,7 @@ namespace MinicraftGame.Utils
             // draw text background
             var textSize = fontSize.MeasureString(text);
             var uiSpacerVec = new Vector2(Util.UI_SPACER);
-            Draw(position - (uiSpacerVec / 2f), textSize + uiSpacerVec, new(color: Colors.TextBackground));
+            Draw(position - (uiSpacerVec / 2f), textSize + uiSpacerVec, new(color: Colors.TextBackground), rotation);
             // draw text
             DrawString(fontSize, position, text, color, scale, rotation);
         }

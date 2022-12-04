@@ -38,6 +38,8 @@ namespace MinicraftGame.Scenes
         private bool _withinReach;
         private bool _paused = false;
 
+        // TODO add a parralax background somehow
+
         public GameScene() : base(Blocks.Air.Color)
         {
             // initialize buttons
