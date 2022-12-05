@@ -28,7 +28,7 @@ namespace MinicraftGame.Game.Inventories
                 Amount += amount;
                 return null;
             }
-            // capacity is less than amount, add remaining capacity and return amoutn left;
+            // capacity is less than amount, add remaining capacity and return amount left;
             Amount = SLOT_MAX;
             return amount - remainingCapacity;
         }
