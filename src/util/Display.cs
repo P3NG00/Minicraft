@@ -59,26 +59,27 @@ namespace MinicraftGame.Utils
             _graphics.PreferredBackBufferHeight = height;
         }
 
-        public static void Draw(Vector2 position, Vector2 size, DrawData drawData, float rotation = 0f)
+        public static void Draw(Vector2 position, Vector2 size, DrawData drawData, Vector2? scale = null, float rotation = 0f)
         {
+            FixScale(ref scale);
             var textureSize = drawData.Texture.Bounds.Size.ToVector2();
-            var scale = size / textureSize;
+            var textureScale = (size / textureSize) * scale.Value;
             var origin = textureSize / 2f;
             var drawOffset = position + (size / 2f);
-            SpriteBatch.Draw(drawData.Texture, drawOffset, null, drawData.Color, rotation, origin, scale, SpriteEffects.None, 0f);
+            SpriteBatch.Draw(drawData.Texture, drawOffset, null, drawData.Color, rotation, origin, textureScale, SpriteEffects.None, 0f);
         }
 
-        public static void DrawCentered(Vector2 relativeScreenPosition, Vector2 size, DrawData drawData, float rotation = 0f)
+        public static void DrawCentered(Vector2 relativeScreenPosition, Vector2 size, DrawData drawData, Vector2? scale = null, float rotation = 0f)
         {
             var screenPosition = relativeScreenPosition * WindowSize.ToVector2();
             var drawPos = screenPosition - (size / 2f);
-            Draw(drawPos, size, drawData, rotation);
+            Draw(drawPos, size, drawData, scale, rotation);
         }
 
-        public static void DrawOffset(Vector2 position, Vector2 size, DrawData drawData, float rotation = 0f)
+        public static void DrawOffset(Vector2 position, Vector2 size, DrawData drawData, Vector2? scale = null, float rotation = 0f)
         {
             var drawPos = position - CameraOffset;
-            Draw(drawPos, size, drawData, rotation);
+            Draw(drawPos, size, drawData, scale, rotation);
         }
 
         // draws faded overlay over entire window
@@ -96,7 +97,7 @@ namespace MinicraftGame.Utils
             // draw text background
             var textSize = fontSize.MeasureString(text);
             var uiSpacerVec = new Vector2(Util.UI_SPACER);
-            Draw(position - (uiSpacerVec / 2f), textSize + uiSpacerVec, new(color: Colors.TextBackground), rotation);
+            Draw(position - (uiSpacerVec / 2f), textSize + uiSpacerVec, new(color: Colors.TextBackground), scale, rotation);
             // draw text
             DrawString(fontSize, position, text, color, scale, rotation);
         }
@@ -129,5 +130,9 @@ namespace MinicraftGame.Utils
         }
 
         public delegate void DrawStringFunc(FontSize fontSize, Vector2 position, string text, Color color, Vector2? scale, float rotation);
+
+        private static void FixScale(ref Vector2? scale) => scale ??= Vector2.One;
+
+        private static void FixDrawStringFunc(ref DrawStringFunc drawStringFunc) => drawStringFunc ??= DrawString;
     }
 }
