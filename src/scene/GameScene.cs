@@ -262,6 +262,9 @@ namespace MinicraftGame.Scenes
             // draw debug
             if (Debug.Enabled)
             {
+                // draw center point
+                Display.DrawCentered(new Vector2(0.5f), new Vector2(6), new(color: Colors.Debug_CenterPoint));
+                // draw ui info
                 drawPos = new Vector2(Util.UI_SPACER);
                 foreach (var debugInfo in new[] {
                     $"window_size: {Display.WindowSize.X}x{Display.WindowSize.Y}",

@@ -68,18 +68,17 @@ namespace MinicraftGame.Utils
             SpriteBatch.Draw(drawData.Texture, drawOffset, null, drawData.Color, rotation, origin, scale, SpriteEffects.None, 0f);
         }
 
-        public static void DrawCentered(Vector2 relativeScreenPosition, Vector2 size, DrawData drawData)
+        public static void DrawCentered(Vector2 relativeScreenPosition, Vector2 size, DrawData drawData, float rotation = 0f)
         {
-            var textureSize = drawData.Texture.Bounds.Size.ToVector2();
             var screenPosition = relativeScreenPosition * WindowSize.ToVector2();
-            var drawPos = screenPosition - (textureSize / 2f);
-            Draw(drawPos, size, drawData);
+            var drawPos = screenPosition - (size / 2f);
+            Draw(drawPos, size, drawData, rotation);
         }
 
-        public static void DrawOffset(Vector2 position, Vector2 size, DrawData drawData)
+        public static void DrawOffset(Vector2 position, Vector2 size, DrawData drawData, float rotation = 0f)
         {
             var drawPos = position - CameraOffset;
-            Draw(drawPos, size, drawData);
+            Draw(drawPos, size, drawData, rotation);
         }
 
         // draws faded overlay over entire window
