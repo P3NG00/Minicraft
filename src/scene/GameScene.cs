@@ -112,7 +112,7 @@ namespace MinicraftGame.Scenes
         {
             // toggle pause
             if (Keybinds.Pause.PressedThisFrame && Minicraft.Player.Alive)
-                _paused = !_paused;
+                Util.Toggle(ref _paused);
             // increase/decrease time scale
             if (Keybinds.TimeScaleDecrement.PressedThisFrame)
                 Debug.TimeScale -= Debug.TIME_SCALE_STEP;
@@ -123,11 +123,11 @@ namespace MinicraftGame.Scenes
                 Minicraft.AddTick();
             // debug
             if (Debug.Enabled && Keybinds.DebugCheckUpdates.PressedThisFrame)
-                Debug.DisplayBlockChecks = !Debug.DisplayBlockChecks;
+                Util.Toggle(ref Debug.DisplayBlockChecks);
             if (Keybinds.Debug.PressedThisFrame)
-                Debug.Enabled = !Debug.Enabled;
+                Util.Toggle(ref Debug.Enabled);
             if (Keybinds.DebugToggleGiveMode.PressedThisFrame)
-                Debug.GiveBlocksElseItems = !Debug.GiveBlocksElseItems;
+                Util.Toggle(ref Debug.GiveBlocksElseItems);
             // pause check
             if (_paused)
             {

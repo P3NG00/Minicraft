@@ -13,6 +13,8 @@ namespace MinicraftGame.Utils
 
         public static readonly Random Random = new Random();
 
+        public static void Toggle(ref bool b) => b = !b;
+
         public static bool IsInteger(this float f) => f % 1f == 0f;
 
         public static int Floor(this float f) => (int)Math.Floor((double)f);
@@ -67,8 +69,8 @@ namespace MinicraftGame.Utils
             {
                 case (byte)ItemType.Item: return Items.FromID(id);
                 case (byte)ItemType.BlockItem: return new BlockItem(Blocks.FromID(id));
+                default: throw new Exception("Invalid item type ID: " + itemTypeID);
             }
-            throw new Exception("Invalid item type ID: " + itemTypeID);
         }
 
         public static Block ReadBlock(this BinaryReader stream) => Blocks.FromID(stream.ReadInt32());
