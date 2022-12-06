@@ -9,10 +9,10 @@ namespace MinicraftGame.Scenes
 
         public AbstractScene(Color? backgroundColor = null) => BackgroundColor = backgroundColor ?? Colors.Background;
 
-        public abstract void Update(GameTime gameTime);
+        public virtual void Update(GameTime gameTime) {}
 
         public virtual void Tick() {}
 
-        public abstract void Draw(GameTime gameTime);
+        public virtual void Draw(GameTime gameTime) {}
     }
 }
