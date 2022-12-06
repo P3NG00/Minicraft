@@ -22,7 +22,7 @@ namespace MinicraftGame.Utils
 
         public static void CreateGraphicsManager(Microsoft.Xna.Framework.Game game) => _graphics = new GraphicsDeviceManager(game);
 
-        public static void LoadContent() => SpriteBatch = new SpriteBatch(Minicraft.GraphicsDevice);
+        public static void LoadContent() => SpriteBatch = new SpriteBatch(Minicraft.Instance.GraphicsDevice);
 
         public static void Initialize() => SetSize(1280, 720, false);
 

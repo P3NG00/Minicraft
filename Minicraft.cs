@@ -18,12 +18,10 @@ namespace MinicraftGame
     {
         public const string TITLE = "Minicraft";
 
-        public static new GraphicsDevice GraphicsDevice { get; private set; }
-
+        public static Minicraft Instance { get; private set; }
         public static PlayerEntity Player = null;
         public static World World = null;
 
-        private static Minicraft _instance;
         private AbstractScene _scene = new MainMenuScene();
         private AbstractScene _nextScene = null;
 
@@ -38,7 +36,7 @@ namespace MinicraftGame
 
         public Minicraft()
         {
-            _instance = this;
+            Instance = this;
             Display.CreateGraphicsManager(this);
             Content.RootDirectory = "Content";
             IsFixedTimeStep = true;
@@ -62,7 +60,6 @@ namespace MinicraftGame
 
         protected override void LoadContent()
         {
-            GraphicsDevice = base.GraphicsDevice;
             Textures.Initialize();
             Fonts.Initialize(Content);
             Audio.Initialize(Content);
@@ -150,8 +147,8 @@ namespace MinicraftGame
 
         public static void AddTick() => _tickDelta += World.TICK_STEP;
 
-        public static void SetScene(AbstractScene scene) => _instance._nextScene = scene;
+        public static void SetScene(AbstractScene scene) => Instance._nextScene = scene;
 
-        public static void EndProgram() => _instance.Exit();
+        public static void EndProgram() => Instance.Exit();
     }
 }

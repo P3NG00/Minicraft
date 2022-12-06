@@ -38,7 +38,7 @@ namespace MinicraftGame.Scenes
             // generate world before it's referenced in new world preview
             Minicraft.World = WorldGen.GenerateWorld(_settings);
             // create world preview
-            var worldTexture = new Texture2D(Minicraft.GraphicsDevice, World.WIDTH, World.HEIGHT);
+            var worldTexture = new Texture2D(Minicraft.Instance.GraphicsDevice, World.WIDTH, World.HEIGHT);
             var data = new Color[World.WIDTH * World.HEIGHT];
             for (int y = 0; y < World.HEIGHT; y++)
             {
