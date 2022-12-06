@@ -63,17 +63,9 @@ namespace MinicraftGame.Game.Worlds.Generation
                 return copy;
             }
 
-            public void Update()
-            {
-                foreach (var setting in _settings)
-                    setting.Update();
-            }
+            public void Update() => _settings.ForEach(s => s.Update());
 
-            public void Draw()
-            {
-                foreach (var setting in _settings)
-                    setting.Draw();
-            }
+            public void Draw() => _settings.ForEach(s => s.Draw());
         }
 
         public static World GenerateWorld(Settings settings)
