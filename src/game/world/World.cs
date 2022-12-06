@@ -6,6 +6,7 @@ using MinicraftGame.Game.BlockType;
 using MinicraftGame.Game.Entities;
 using MinicraftGame.Texture;
 using MinicraftGame.Utils;
+using System.Linq;
 
 namespace MinicraftGame.Game.Worlds
 {
@@ -169,6 +170,10 @@ namespace MinicraftGame.Game.Worlds
             foreach (var entity in _entityList)
                 entity.Draw();
         }
+
+        public List<AbstractEntity> GetEntitiesOfType(Type type) => _entityList.Where(entity => entity.GetType() == type).ToList();
+
+        public List<AbstractEntity> GetEntitiesOfType<T>() => GetEntitiesOfType(typeof(T));
 
         public static bool IsValidPosition(Point position) => IsValidPosition(position.X, position.Y);
 

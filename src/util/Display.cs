@@ -12,7 +12,7 @@ namespace MinicraftGame.Utils
         public const int BLOCK_SCALE_MAX = Textures.SIZE * 5;
 
         public static SpriteBatch SpriteBatch { get; private set; }
-        public static Point WindowSize => new Point(_graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight);
+        public static Point WindowSize => new(_graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight);
 
         public static Vector2 CameraOffset;
         public static int BlockScale = Textures.SIZE * 2;
@@ -26,12 +26,13 @@ namespace MinicraftGame.Utils
 
         public static void Initialize() => SetSize(1280, 720, false);
 
-        public static void UpdateCameraOffset()
+        // Focuses camera around given position
+        public static void UpdateCameraOffset(Vector2 position)
         {
             var centeredScreen = -(WindowSize.ToVector2() / 2f);
-            var relativePlayerPosition = Minicraft.Player.Center * BlockScale;
-            CameraOffset = new Vector2(centeredScreen.X + relativePlayerPosition.X,
-                                       centeredScreen.Y - relativePlayerPosition.Y);
+            var relativePosition = position * BlockScale;
+            CameraOffset = new Vector2(centeredScreen.X + relativePosition.X,
+                                       centeredScreen.Y - relativePosition.Y);
         }
 
         public static void ToggleFullscreen()

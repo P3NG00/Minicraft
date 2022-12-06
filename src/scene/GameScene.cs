@@ -86,8 +86,8 @@ namespace MinicraftGame.Scenes
 
         public sealed override void Draw(GameTime gameTime)
         {
-            // update display handler
-            Display.UpdateCameraOffset();
+            // focus camera around player
+            Display.UpdateCameraOffset(Minicraft.Player.Center);
             // draw world
             Minicraft.World.Draw(_blockHitPos, _blockHits, _lastMouseBlockInt, _withinReach);
             // draw player
