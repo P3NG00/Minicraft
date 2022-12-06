@@ -55,9 +55,7 @@ namespace MinicraftGame.Utils
             if (!HasDebugUpdate(blockPos))
             {
                 // create new list for point
-                var entries = new List<Color>();
-                // add color to list
-                entries.Add(color);
+                var entries = new List<Color>(new[] { color });
                 // add list to hash table
                 _debugUpdates.Add(blockPos, entries);
             }
