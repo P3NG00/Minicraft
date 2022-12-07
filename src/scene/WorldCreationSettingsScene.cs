@@ -16,8 +16,9 @@ namespace MinicraftGame.Scenes
         {
             _settings = settings;
             _settingsOriginal = settings.CreateCopy();
-            _buttonAccept = new(new(0.5f, 3f / 7f), new(200, 50), "Accept", Colors.ThemeBlue, AcceptSettings);
-            _buttonBack = new(new(0.5f, 4f / 7f), new(200, 50), "Back", Colors.ThemeExit, CancelChanges);
+            var buttonSize = new Point(200, 50);
+            _buttonAccept = new(new(0.5f, 3f / 7f), buttonSize, "Accept", Colors.ThemeBlue, AcceptSettings);
+            _buttonBack = new(new(0.5f, 4f / 7f), buttonSize, "Back", Colors.ThemeExit, CancelChanges);
         }
 
         // passes the settings back to the world creation scene

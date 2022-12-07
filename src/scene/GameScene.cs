@@ -42,10 +42,11 @@ namespace MinicraftGame.Scenes
 
         public GameScene() : base(Blocks.Air.Color)
         {
+            var buttonSize = new Point(250, 50);
             // initialize buttons
-            _buttonRespawn = new Button(new Vector2(0.5f, 0.6f), new Point(250, 50), TEXT_RESPAWN, Colors.ThemeDefault, Minicraft.Player.Respawn);
-            _buttonResume = new Button(new Vector2(0.5f, 0.6f), new Point(250, 50), TEXT_RESUME, Colors.ThemeDefault, ResumeGame);
-            _buttonMainMenu = new Button(new Vector2(0.5f, 0.7f), new Point(250, 50), TEXT_MAIN_MENU, Colors.ThemeExit, SaveAndMainMenu);
+            _buttonRespawn = new Button(new Vector2(0.5f, 0.6f), buttonSize, TEXT_RESPAWN, Colors.ThemeDefault, Minicraft.Player.Respawn);
+            _buttonResume = new Button(new Vector2(0.5f, 0.6f), buttonSize, TEXT_RESUME, Colors.ThemeDefault, ResumeGame);
+            _buttonMainMenu = new Button(new Vector2(0.5f, 0.7f), buttonSize, TEXT_MAIN_MENU, Colors.ThemeExit, SaveAndMainMenu);
         }
 
         public sealed override void Update(GameTime gameTime)

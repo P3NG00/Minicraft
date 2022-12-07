@@ -20,11 +20,12 @@ namespace MinicraftGame.Scenes
 
         public WorldCreationScene(WorldGen.Settings settings = null) : base()
         {
+            var buttonSize = new Point(250, 50);
             // create buttons
-            _buttonBack = new(new Vector2(0.25f, 0.9f), new Point(250, 50), "Back", Colors.ThemeExit, BackToMainMenu);
-            _buttonRandom = new(new Vector2(0.5f, 0.8f), new Point(250, 50), "Random World", Colors.ThemeDefault, GenerateRandomWorld);
-            _buttonSettings = new(new Vector2(0.5f, 0.9f), new Point(250, 50), "Settings", Colors.ThemeDefault, OpenSettings);
-            _buttonStart = new(new Vector2(0.75f, 0.9f), new Point(250, 50), "Start World", Colors.ThemeBlue, StartWorld);
+            _buttonBack = new(new Vector2(0.25f, 0.9f), buttonSize, "Back", Colors.ThemeExit, BackToMainMenu);
+            _buttonRandom = new(new Vector2(0.5f, 0.8f), buttonSize, "Random World", Colors.ThemeDefault, GenerateRandomWorld);
+            _buttonSettings = new(new Vector2(0.5f, 0.9f), buttonSize, "Settings", Colors.ThemeDefault, OpenSettings);
+            _buttonStart = new(new Vector2(0.75f, 0.9f), buttonSize, "Start World", Colors.ThemeBlue, StartWorld);
             // default settings if not given
             _settings = settings ?? new();
             // create random world with settings
