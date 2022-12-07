@@ -7,11 +7,13 @@ namespace MinicraftGame.Game.Entities.Living
 {
     public sealed class TNTEntity : AbstractLivingEntity
     {
-        private const float TNT_FUSE = 3f;
+        public const float TNT_FUSE = 3f;
+        private const float TNT_FUSE_CHAIN = 0.25f;
+
         private const float TNT_SPEED = 1f;
         private static Vector2 TNTSize => Vector2.One;
 
-        public TNTEntity(Vector2 position, float fuseTime = TNT_FUSE) : base(position, World.TICKS_PER_SECOND * fuseTime, TNTSize, TNT_SPEED, 0, 0, Blocks.TNT.DrawData) {}
+        public TNTEntity(Vector2 position, float fuseTime) : base(position, World.TICKS_PER_SECOND * fuseTime, TNTSize, TNT_SPEED, 0, 0, Blocks.TNT.DrawData) {}
 
         public override void Tick()
         {
@@ -41,7 +43,7 @@ namespace MinicraftGame.Game.Entities.Living
                     {
                         var block = Minicraft.World.GetBlock(x, y);
                         if (block is TNTBlock tntBlock)
-                            tntBlock.Interact(new Point(x, y));
+                            tntBlock.Ignite(new Point(x, y), TNT_FUSE_CHAIN);
                         else
                             Minicraft.World.SetBlock(x, y, Blocks.Air);
                     }

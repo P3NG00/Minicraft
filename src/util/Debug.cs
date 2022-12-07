@@ -35,6 +35,8 @@ namespace MinicraftGame.Utils
 
         public static void AddWoodCheck(Point blockPos) => Add(blockPos, Colors.DebugReason_WoodCheck);
 
+        public static void AddTNTIgnite(Point blockPos) => Add(blockPos, Colors.DebugReason_TNTIgnite);
+
         public static bool HasDebugUpdate(Point blockPos) => _debugUpdates.Contains(blockPos);
 
         public static ImmutableArray<Color> GetDebugColors(Point blockPos)

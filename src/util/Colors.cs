@@ -43,6 +43,7 @@ namespace MinicraftGame.Utils
         public static Color DebugReason_CollisionCheck => new Color(0, 0, 255, 64);
         public static Color DebugReason_GrassSpreadCheck => new Color(0, 255, 0, 64);
         public static Color DebugReason_WoodCheck => new Color(255, 255, 0, 64);
+        public static Color DebugReason_TNTIgnite => new Color(255, 0, 0, 64);
         public static Color Debug_CenterPoint => new Color(0, 0, 255);
 
         // color themes
