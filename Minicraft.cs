@@ -85,7 +85,7 @@ namespace MinicraftGame
             if (Keybinds.Fullscreen.PressedThisFrame)
                 Display.ToggleFullscreen();
             // update ticks
-            UpdateTicks(gameTime.ElapsedGameTime.TotalSeconds * (double)Debug.TimeScale);
+            UpdateTicks(gameTime.ElapsedGameTime.TotalSeconds * Debug.TimeScale);
             // update scene
             _scene.Update(gameTime);
             // tick scene

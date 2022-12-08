@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -7,19 +8,19 @@ namespace MinicraftGame.Utils
 {
     public static class Debug
     {
-        public const float TIME_SCALE_STEP = 0.1f;
+        public const double TIME_SCALE_STEP = 0.1f;
 
         public static bool Enabled = false;
         public static bool DisplayBlockChecks = false;
         public static bool GiveBlocksElseItems = true;
-        public static float TimeScale
+        public static double TimeScale
         {
             get => _timeScale;
-            set => _timeScale = MathHelper.Clamp(value, 0f, 5f);
+            set => _timeScale = Math.Clamp(value, 0, 5);
         }
 
         private static readonly Hashtable _debugUpdates = new Hashtable();
-        private static float _timeScale = 1f;
+        private static double _timeScale = 1f;
 
         public static void Tick() => _debugUpdates.Clear();
 
