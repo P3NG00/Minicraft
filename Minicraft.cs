@@ -22,7 +22,7 @@ namespace MinicraftGame
         public static PlayerEntity Player = null;
         public static World World = null;
 
-        private AbstractScene _scene = new MainMenuScene();
+        private AbstractScene _scene;
         private AbstractScene _nextScene = null;
 
         // tick & frame handling variables
@@ -37,6 +37,8 @@ namespace MinicraftGame
         public Minicraft()
         {
             Instance = this;
+            // initialize scene after instance is set
+            _scene = new MainMenuScene();
             Display.CreateGraphicsManager(this);
             Content.RootDirectory = "Content";
             IsFixedTimeStep = true;
