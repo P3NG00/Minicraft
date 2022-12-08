@@ -148,7 +148,5 @@ namespace MinicraftGame
         public static void AddTick() => _tickDelta += World.TICK_STEP;
 
         public static void SetScene(AbstractScene scene) => Instance._nextScene = scene;
-
-        public static void EndProgram() => Instance.Exit();
     }
 }

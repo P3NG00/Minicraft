@@ -15,7 +15,7 @@ namespace MinicraftGame.Scenes
         public MainMenuScene() : base()
         {
             _buttonWorldNew = new Button(new Vector2(0.5f, 0.6f), new Point(250, 50), "create world", Colors.ThemeBlue, CreateNewWorld);
-            _buttonExit = new Button(new Vector2(0.5f, 0.8f), new Point(120, 30), "exit", Colors.ThemeExit, Minicraft.EndProgram);
+            _buttonExit = new Button(new Vector2(0.5f, 0.8f), new Point(120, 30), "exit", Colors.ThemeExit, Minicraft.Instance.Exit);
             // check if save exists
             if (Data.SaveExists)
                 _buttonWorldContinue = new Button(new Vector2(0.5f, 0.7f), new Point(250, 50), "continue world", Colors.ThemeBlue, LoadSavedWorld);

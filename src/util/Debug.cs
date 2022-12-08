@@ -53,21 +53,21 @@ namespace MinicraftGame.Utils
         {
             if (!Enabled || !DisplayBlockChecks)
                 return;
-            // if entry does not exist for point
-            if (!HasDebugUpdate(blockPos))
-            {
-                // create new list for point
-                var entries = new List<Color>(new[] { color });
-                // add list to hash table
-                _debugUpdates.Add(blockPos, entries);
-            }
-            // entry already exists for point
-            else
+            // entry exists for point
+            if (HasDebugUpdate(blockPos))
             {
                 // get list for point
                 var entries = GetDebugColorEntries(blockPos);
                 // add color to list
                 entries.Add(color);
+            }
+            // entry doesn't exist for point
+            else
+            {
+                // create new list for point
+                var entries = new List<Color>(new[] { color });
+                // add list to hash table
+                _debugUpdates.Add(blockPos, entries);
             }
         }
     }
