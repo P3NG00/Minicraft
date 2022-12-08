@@ -67,8 +67,8 @@ namespace MinicraftGame
             Audio.Initialize(Content);
             Display.LoadContent();
             // initialize blocks and items (after textures)
-            Blocks.Initialize();
-            Items.Initialize();
+            new Blocks().Initialize();
+            new Items().Initialize();
             // base call
             base.LoadContent();
         }

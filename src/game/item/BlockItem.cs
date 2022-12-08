@@ -10,7 +10,7 @@ namespace MinicraftGame.Game.ItemType
 
         public Block Block => _block;
 
-        public BlockItem(Block block) : base(block.Name, block.DrawData) => _block = block;
+        public BlockItem(Block block) : base(block.Name, block.DrawData, -1) => _block = block;
 
         public sealed override void Use(Slot slot, Point blockPosition)
         {

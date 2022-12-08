@@ -1,26 +1,13 @@
 using System;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using MinicraftGame.Game.Inventories;
 using MinicraftGame.Utils;
 
 namespace MinicraftGame.Game.ItemType
 {
-    public class Item : IEquatable<Item>
+    public class Item : GameObject, IEquatable<Item>
     {
-        public readonly int ID;
-        public readonly string Name;
-        public readonly DrawData DrawData;
-
-        public Texture2D Texture => DrawData.Texture;
-        public Color Color => DrawData.Color;
-
-        public Item(string name, DrawData drawData, int id = -1)
-        {
-            ID = id;
-            Name = name;
-            DrawData = drawData;
-        }
+        public Item(string name, DrawData drawData, int id) : base (name, drawData, id) {}
 
         // TODO override in future for items with special purposes
         public virtual void Use(Slot slot, Point blockPosition) => Minicraft.World.GetBlock(blockPosition).Interact(blockPosition);

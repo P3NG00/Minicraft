@@ -13,6 +13,13 @@ namespace MinicraftGame.Utils
 
         public static readonly Random Random = new Random();
 
+        public static void SingletonCheck<T>(ref T singleton, T instance)
+        {
+            if (singleton != null)
+                throw new System.Exception("Singleton already instantiated.");
+            singleton = instance;
+        }
+
         public static void Toggle(ref bool b) => b = !b;
 
         public static void ForEach<T>(this T[] array, Action<T> action) => Array.ForEach(array, action);
