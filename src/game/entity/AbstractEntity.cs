@@ -72,8 +72,6 @@ namespace MinicraftGame.Game.Entities
             Display.DrawOffset(drawPos, currentSize, GetDrawData());
         }
 
-        public float DistanceTo(AbstractEntity other) => Vector2.Distance(Center, other.Center);
-
         // TODO someday this will be replaced with Rectangles
         public struct Sides
         {
