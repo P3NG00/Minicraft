@@ -41,11 +41,15 @@ namespace MinicraftGame.Game.Entities.Living
                     var isEdgeY = y == edgeBottom || y == edgeTop;
                     if (!isEdgeX || !isEdgeY)
                     {
-                        var block = Minicraft.World.GetBlock(x, y);
+                        var blockPos = new Point(x, y);
+                        var block = Minicraft.World.GetBlock(blockPos);
                         if (block is TNTBlock tntBlock)
-                            tntBlock.Ignite(new Point(x, y), TNT_FUSE_CHAIN);
+                            tntBlock.Ignite(blockPos, TNT_FUSE_CHAIN);
                         else
-                            Minicraft.World.SetBlock(x, y, Blocks.Air);
+                        {
+                            Minicraft.World.GetBlock(blockPos).Interact(blockPos);
+                            Minicraft.World.SetBlock(blockPos, Blocks.Air);
+                        }
                     }
                 }
             }

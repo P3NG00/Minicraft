@@ -7,13 +7,13 @@ namespace MinicraftGame.Game.Objects
         public void Initialize()
         {
             InstantiateObjects();
-            AddObjects(out _objects);
+            _objects = GetObjectArray();
             CheckIDs();
         }
 
         protected abstract void InstantiateObjects();
 
-        protected abstract void AddObjects(out T[] objects);
+        protected abstract T[] GetObjectArray();
 
         private void CheckIDs()
         {

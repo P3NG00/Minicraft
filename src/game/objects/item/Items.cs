@@ -20,14 +20,11 @@ namespace MinicraftGame.Game.Objects.ItemObject
             // TODO more items
         }
 
-        protected sealed override void AddObjects(out Item[] items)
+        protected sealed override Item[] GetObjectArray() => new[]
         {
-            items = new[]
-            {
-                Nothing,    // 0
-                DebugStick, // 1
-            };
-        }
+            Nothing,    // 0
+            DebugStick, // 1
+        };
 
         public static int Amount => _instance.ObjectAmount;
 
