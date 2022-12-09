@@ -1,4 +1,4 @@
-namespace MinicraftGame.Utils
+namespace MinicraftGame.Game.Objects
 {
     public abstract class ObjectManager<T> where T : GameObject
     {

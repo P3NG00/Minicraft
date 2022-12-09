@@ -1,7 +1,8 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using MinicraftGame.Utils;
 
-namespace MinicraftGame.Utils
+namespace MinicraftGame.Game.Objects
 {
     public abstract class GameObject
     {
