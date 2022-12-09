@@ -12,13 +12,12 @@ namespace MinicraftGame.Game.Worlds
 {
     public sealed class World
     {
-        public const float WORLD_UPDATED_PER_SECOND = 1f / (float)TICKS_PER_SECOND;
-        public const int TICKS_PER_SECOND = 32;
+        public const float WORLD_UPDATED_PER_SECOND = 1f / (float)Minicraft.TICKS_PER_SECOND;
         public const float GRAVITY = 10f;
         public const int WIDTH = 1024;
         public const int HEIGHT = 512;
-        public const float TICK_STEP = 1f / TICKS_PER_SECOND;
-        private const int BLOCK_UPDATES_PER_TICK = (int)(((WIDTH * HEIGHT) * WORLD_UPDATED_PER_SECOND) / World.TICKS_PER_SECOND);
+        public const float TICK_STEP = 1f / Minicraft.TICKS_PER_SECOND;
+        private const int BLOCK_UPDATES_PER_TICK = (int)(((WIDTH * HEIGHT) * WORLD_UPDATED_PER_SECOND) / Minicraft.TICKS_PER_SECOND);
 
         // TODO make grid hold only id of blocks
         private readonly Block[,] _blockGrid = new Block[HEIGHT, WIDTH];

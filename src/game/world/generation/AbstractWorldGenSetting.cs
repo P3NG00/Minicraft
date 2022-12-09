@@ -88,9 +88,10 @@ namespace MinicraftGame.Game.Worlds.Generation
             // check scroll wheel
             if (_highlighted)
             {
-                if (InputManager.ScrollWheelDelta > 0)
+                var scroll = InputManager.ScrollWheelDelta;
+                if (scroll > 0)
                     Increment();
-                else if (InputManager.ScrollWheelDelta < 0)
+                else if (scroll < 0)
                     Decrement();
             }
             // update buttons

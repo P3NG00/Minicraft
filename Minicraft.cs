@@ -17,6 +17,7 @@ namespace MinicraftGame
     public class Minicraft : Microsoft.Xna.Framework.Game
     {
         public const string TITLE = "Minicraft";
+        public const int TICKS_PER_SECOND = 60;
 
         public static Minicraft Instance => _instance;
         public static PlayerEntity Player = null;
@@ -32,7 +33,7 @@ namespace MinicraftGame
         public static double AverageFramesPerSecond => _lastFps.Average();
         public static double AverageTicksPerFrame => _lastTickDifferences.Average();
         private static ulong[] _ticks = new ulong[] {0, 0};
-        private static ulong[] _lastTickDifferences = new ulong[World.TICKS_PER_SECOND];
+        private static ulong[] _lastTickDifferences = new ulong[TICKS_PER_SECOND];
         private static double[] _lastFps = new double[Display.FRAMES_PER_SECOND];
         private static double _tickDelta = 0f;
 

@@ -13,7 +13,7 @@ namespace MinicraftGame.Game.Entities.Living
         private const float TNT_SPEED = 1f;
         private static Vector2 TNTSize => Vector2.One;
 
-        public TNTEntity(Vector2 position, float fuseTime) : base(position, World.TICKS_PER_SECOND * fuseTime, TNTSize, TNT_SPEED, 0, 0, Blocks.TNT.DrawData) {}
+        public TNTEntity(Vector2 position, float fuseTime) : base(position, Minicraft.TICKS_PER_SECOND * fuseTime, TNTSize, TNT_SPEED, 0, 0, Blocks.TNT.DrawData) {}
 
         public override void Tick()
         {
@@ -54,8 +54,8 @@ namespace MinicraftGame.Game.Entities.Living
         protected sealed override DrawData GetDrawData()
         {
             var drawData = base.GetDrawData();
-            var deltaTick = Life % World.TICKS_PER_SECOND;
-            var color = deltaTick <= World.TICKS_PER_SECOND / 2f ? Color.White : drawData.Color;
+            var deltaTick = Life % Minicraft.TICKS_PER_SECOND;
+            var color = deltaTick <= Minicraft.TICKS_PER_SECOND / 2f ? Color.White : drawData.Color;
             return new DrawData(drawData.Texture, color);
         }
     }

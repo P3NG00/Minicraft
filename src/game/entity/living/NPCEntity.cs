@@ -12,8 +12,8 @@ namespace MinicraftGame.Game.Entities.Living
         private const float NPC_RUN_MULT = 1.25f;
         private const float NPC_LIFE = 2f;
         private const float NPC_AI_GOAL_DISTANCE_MIN = 0.5f;
-        private const int NPC_AI_UPDATE_TICKS_MIN = World.TICKS_PER_SECOND * 3;
-        private const int NPC_AI_UPDATE_TICKS_MAX = World.TICKS_PER_SECOND * 5;
+        private const int NPC_AI_UPDATE_TICKS_MIN = Minicraft.TICKS_PER_SECOND * 3;
+        private const int NPC_AI_UPDATE_TICKS_MAX = Minicraft.TICKS_PER_SECOND * 5;
         private static Vector2 NPCSize => new Vector2(1.5f, 2.2f);
 
         private int? _goalX = null;
