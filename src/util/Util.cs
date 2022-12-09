@@ -13,7 +13,7 @@ namespace MinicraftGame.Utils
 
         public static readonly Random Random = new Random();
 
-        public static void SingletonCheck<T>(ref T singleton, T instance)
+        public static void SingletonCheck<T>(this T instance, ref T singleton)
         {
             if (singleton != null)
                 throw new System.Exception("Singleton already instantiated.");

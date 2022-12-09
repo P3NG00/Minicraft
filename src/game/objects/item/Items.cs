@@ -11,7 +11,7 @@ namespace MinicraftGame.Game.Objects.ItemObject
         public static Item Nothing { get; private set; }
         public static Item DebugStick { get; private set; }
 
-        public Items() => Util.SingletonCheck(ref _instance, this);
+        public Items() => this.SingletonCheck(ref _instance);
 
         protected sealed override void InstantiateObjects()
         {

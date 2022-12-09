@@ -38,7 +38,7 @@ namespace MinicraftGame
 
         public Minicraft()
         {
-            Util.SingletonCheck(ref _instance, this);
+            this.SingletonCheck(ref _instance);
             // initialize scene after instance is set
             _scene = new MainMenuScene();
             Display.CreateGraphicsManager(this);

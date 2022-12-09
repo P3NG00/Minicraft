@@ -17,7 +17,7 @@ namespace MinicraftGame.Game.Objects.BlockObject
         public static Block TNT { get; private set; }
         public static Block P3NG00Face { get; private set; }
 
-        public Blocks() => Util.SingletonCheck(ref _instance, this);
+        public Blocks() => this.SingletonCheck(ref _instance);
 
         protected sealed override void InstantiateObjects()
         {
