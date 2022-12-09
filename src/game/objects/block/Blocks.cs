@@ -31,7 +31,7 @@ namespace MinicraftGame.Game.Objects.BlockObject
             P3NG00Face = new P3NG00FaceBlock("P3NG00's Face as a Block", 1, false, new(Textures.P3NG00Face), 7);
         }
 
-        protected sealed override void AddObjects(ref Block[] blocks)
+        protected sealed override void AddObjects(out Block[] blocks)
         {
             blocks = new[]
             {

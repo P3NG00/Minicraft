@@ -20,7 +20,7 @@ namespace MinicraftGame.Game.Objects.ItemObject
             // TODO more items
         }
 
-        protected sealed override void AddObjects(ref Item[] items)
+        protected sealed override void AddObjects(out Item[] items)
         {
             items = new[]
             {
