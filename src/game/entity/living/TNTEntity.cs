@@ -1,6 +1,5 @@
 using Microsoft.Xna.Framework;
 using MinicraftGame.Game.Objects.BlockObject;
-using MinicraftGame.Game.Worlds;
 using MinicraftGame.Utils;
 
 namespace MinicraftGame.Game.Entities.Living

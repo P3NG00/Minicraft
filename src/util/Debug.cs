@@ -40,36 +40,18 @@ namespace MinicraftGame.Utils
 
         public static bool HasDebugUpdate(Point blockPos) => _debugUpdates.Contains(blockPos);
 
-        public static ImmutableArray<Color> GetDebugColors(Point blockPos)
-        {
-            // get entry list
-            var entryList = GetDebugColorEntries(blockPos);
-            // return as array
-            return entryList.ToImmutableArray();
-        }
-
-        private static List<Color> GetDebugColorEntries(Point blockPos) => (List<Color>)_debugUpdates[blockPos];
+        public static List<Color> GetDebugColors(Point blockPos) => (List<Color>)_debugUpdates[blockPos];
 
         private static void Add(Point blockPos, Color color)
         {
             if (!Enabled || !DisplayBlockChecks)
                 return;
-            // entry exists for point
             if (HasDebugUpdate(blockPos))
             {
-                // get list for point
-                var entries = GetDebugColorEntries(blockPos);
-                // add color to list
-                entries.Add(color);
+                GetDebugColors(blockPos).Add(color);
+                return;
             }
-            // entry doesn't exist for point
-            else
-            {
-                // create new list for point
-                var entries = new List<Color>(new[] { color });
-                // add list to hash table
-                _debugUpdates.Add(blockPos, entries);
-            }
+            _debugUpdates.Add(blockPos, new List<Color>(new[] { color }));
         }
     }
 }
