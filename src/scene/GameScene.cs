@@ -49,7 +49,7 @@ namespace MinicraftGame.Scenes
             _buttonMainMenu = new Button(new Vector2(0.5f, 0.7f), buttonSize, TEXT_MAIN_MENU, Colors.ThemeExit, SaveAndMainMenu);
         }
 
-        public sealed override void Update(GameTime gameTime)
+        public sealed override void Update()
         {
             // handle input
             HandleInput();
@@ -85,7 +85,7 @@ namespace MinicraftGame.Scenes
             Minicraft.World.TickEntities();
         }
 
-        public sealed override void Draw(GameTime gameTime)
+        public sealed override void Draw()
         {
             // focus camera around player
             Display.UpdateCameraOffset(Minicraft.Player.Center);

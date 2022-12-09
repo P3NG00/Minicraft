@@ -9,7 +9,7 @@ namespace MinicraftGame.Game.Worlds.Generation
 {
     public static class WorldGen
     {
-        public sealed class Settings
+        public sealed class Settings : ISceneObject
         {
             // settings
             public readonly WorldGenSettingIntMult ChunkWidth = new(new(0.25f, 1f / 7f), "Chunk Width", 16, 1, World.WIDTH, 1, 2);

@@ -92,7 +92,7 @@ namespace MinicraftGame
             // update ticks
             UpdateTicks(gameTime.ElapsedGameTime.TotalSeconds * Debug.TimeScale);
             // update scene
-            _scene.Update(gameTime);
+            _scene.Update();
             // tick scene
             while (GameTick())
                 _scene.Tick();
@@ -109,7 +109,7 @@ namespace MinicraftGame
             // update frames per second
             UpdateFramesPerSecond(gameTime.ElapsedGameTime.TotalMilliseconds);
             // draw scene
-            _scene.Draw(gameTime);
+            _scene.Draw();
             // end drawing
             Display.SpriteBatch.End();
             // base call

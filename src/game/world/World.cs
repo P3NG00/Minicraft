@@ -85,15 +85,12 @@ namespace MinicraftGame.Game.Worlds
             }
         }
 
-        public void TickEntities()
+        // ticks then removes dead npcs
+        public void TickEntities() => _entityList.RemoveAll(entity =>
         {
-            // remove dead npc's
-            _entityList.RemoveAll(entity =>
-            {
-                entity.Tick();
-                return !entity.Alive;
-            });
-        }
+            entity.Tick();
+            return !entity.Alive;
+        });
 
         public void Draw(Point blockHitPos, int blockHits, Point mouseBlock, bool withinReach)
         {

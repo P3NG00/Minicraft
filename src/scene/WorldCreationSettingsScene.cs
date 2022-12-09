@@ -5,43 +5,26 @@ using MinicraftGame.Utils;
 
 namespace MinicraftGame.Scenes
 {
-    public sealed class WorldCreationSettingsScene : AbstractScene
+    public sealed class WorldCreationSettingsScene : AbstractSimpleScene
     {
         private readonly WorldGen.Settings _settings;
         private readonly WorldGen.Settings _settingsOriginal;
-        private readonly Button _buttonAccept;
-        private readonly Button _buttonBack;
 
         public WorldCreationSettingsScene(WorldGen.Settings settings) : base()
         {
             _settings = settings;
             _settingsOriginal = settings.CreateCopy();
             var buttonSize = new Point(200, 50);
-            _buttonAccept = new(new(0.5f, 3f / 7f), buttonSize, "Accept", Colors.ThemeBlue, AcceptSettings);
-            _buttonBack = new(new(0.5f, 4f / 7f), buttonSize, "Back", Colors.ThemeExit, CancelChanges);
+            var buttonAccept = new Button(new(0.5f, 3f / 7f), buttonSize, "Accept", Colors.ThemeBlue, AcceptSettings);
+            var buttonBack = new Button(new(0.5f, 4f / 7f), buttonSize, "Back", Colors.ThemeExit, CancelChanges);
+            // add scene objects
+            AddSceneObjects(_settings, buttonAccept, buttonBack);
         }
 
-        // passes the settings back to the world creation scene
+        // passes new settings to world creation scene
         private void AcceptSettings() => Minicraft.SetScene(new WorldCreationScene(_settings));
 
+        // passes original settings to world creation scene
         private void CancelChanges() => Minicraft.SetScene(new WorldCreationScene(_settingsOriginal));
-
-        public override void Update(GameTime gameTime)
-        {
-            // update settings
-            _settings.Update();
-            // update accept button
-            _buttonAccept.Update();
-            _buttonBack.Update();
-        }
-
-        public override void Draw(GameTime gameTime)
-        {
-            // draw settings
-            _settings.Draw();
-            // draw buttons
-            _buttonAccept.Draw();
-            _buttonBack.Draw();
-        }
     }
 }

@@ -6,7 +6,7 @@ using MinicraftGame.Utils;
 
 namespace MinicraftGame.UI
 {
-    public sealed class Button
+    public sealed class Button : ISceneObject
     {
         private readonly Vector2 _relativeCenter;
         private readonly ColorTheme _colorTheme;
