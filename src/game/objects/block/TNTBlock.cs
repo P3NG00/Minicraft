@@ -2,7 +2,7 @@ using Microsoft.Xna.Framework;
 using MinicraftGame.Game.Entities.Living;
 using MinicraftGame.Utils;
 
-namespace MinicraftGame.Game.BlockType
+namespace MinicraftGame.Game.Objects.BlockObject
 {
     public sealed class TNTBlock : Block
     {

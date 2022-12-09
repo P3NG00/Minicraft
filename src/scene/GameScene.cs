@@ -1,11 +1,11 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using MinicraftGame.Font;
-using MinicraftGame.Game.BlockType;
 using MinicraftGame.Game.Entities.Living;
 using MinicraftGame.Game.Entities.Projectiles;
 using MinicraftGame.Game.Inventories;
-using MinicraftGame.Game.ItemType;
+using MinicraftGame.Game.Objects.BlockObject;
+using MinicraftGame.Game.Objects.ItemObject;
 using MinicraftGame.Game.Worlds;
 using MinicraftGame.Input;
 using MinicraftGame.UI;

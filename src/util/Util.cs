@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using Microsoft.Xna.Framework;
-using MinicraftGame.Game.BlockType;
-using MinicraftGame.Game.ItemType;
+using MinicraftGame.Game.Objects.BlockObject;
+using MinicraftGame.Game.Objects.ItemObject;
 
 namespace MinicraftGame.Utils
 {

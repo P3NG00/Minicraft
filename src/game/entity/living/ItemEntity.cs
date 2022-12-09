@@ -1,5 +1,5 @@
 using Microsoft.Xna.Framework;
-using MinicraftGame.Game.ItemType;
+using MinicraftGame.Game.Objects.ItemObject;
 
 namespace MinicraftGame.Game.Entities.Living
 {

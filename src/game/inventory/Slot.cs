@@ -1,4 +1,4 @@
-using MinicraftGame.Game.ItemType;
+using MinicraftGame.Game.Objects.ItemObject;
 
 namespace MinicraftGame.Game.Inventories
 {

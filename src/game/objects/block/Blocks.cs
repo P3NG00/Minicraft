@@ -2,7 +2,7 @@ using Microsoft.Xna.Framework;
 using MinicraftGame.Texture;
 using MinicraftGame.Utils;
 
-namespace MinicraftGame.Game.BlockType
+namespace MinicraftGame.Game.Objects.BlockObject
 {
     public sealed class Blocks : ObjectManager<Block>
     {

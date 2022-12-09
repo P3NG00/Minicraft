@@ -2,7 +2,7 @@ using Microsoft.Xna.Framework;
 using MinicraftGame.Texture;
 using MinicraftGame.Utils;
 
-namespace MinicraftGame.Game.ItemType
+namespace MinicraftGame.Game.Objects.ItemObject
 {
     public sealed class Items : ObjectManager<Item>
     {

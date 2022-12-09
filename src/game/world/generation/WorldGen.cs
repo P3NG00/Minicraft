@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 using Microsoft.Xna.Framework;
-using MinicraftGame.Game.BlockType;
+using MinicraftGame.Game.Objects.BlockObject;
 using MinicraftGame.Utils;
 using SimplexNoise;
 

@@ -1,7 +1,7 @@
 using Microsoft.Xna.Framework;
 using MinicraftGame.Utils;
 
-namespace MinicraftGame.Game.BlockType
+namespace MinicraftGame.Game.Objects.BlockObject
 {
     public sealed class P3NG00FaceBlock : Block
     {

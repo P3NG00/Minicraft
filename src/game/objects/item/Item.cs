@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework;
 using MinicraftGame.Game.Inventories;
 using MinicraftGame.Utils;
 
-namespace MinicraftGame.Game.ItemType
+namespace MinicraftGame.Game.Objects.ItemObject
 {
     public class Item : GameObject, IEquatable<Item>
     {

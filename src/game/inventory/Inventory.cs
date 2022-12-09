@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using MinicraftGame.Font;
-using MinicraftGame.Game.ItemType;
+using MinicraftGame.Game.Objects.ItemObject;
 using MinicraftGame.Utils;
 
 namespace MinicraftGame.Game.Inventories
