@@ -18,9 +18,11 @@ namespace MinicraftGame
     {
         public const string TITLE = "Minicraft";
 
-        public static Minicraft Instance { get; private set; }
+        public static Minicraft Instance => _instance;
         public static PlayerEntity Player = null;
         public static World World = null;
+
+        private static Minicraft _instance;
 
         private AbstractScene _scene;
         private AbstractScene _nextScene = null;
@@ -36,7 +38,7 @@ namespace MinicraftGame
 
         public Minicraft()
         {
-            Instance = this;
+            Util.SingletonCheck(ref _instance, this);
             // initialize scene after instance is set
             _scene = new MainMenuScene();
             Display.CreateGraphicsManager(this);
