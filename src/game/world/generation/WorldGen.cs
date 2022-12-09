@@ -30,6 +30,8 @@ namespace MinicraftGame.Game.Worlds.Generation
 
             public Settings()
             {
+                TreeHeightMin.SetOnIncrement(() => TreeHeightMax.Value = Math.Max(TreeHeightMin.Value, TreeHeightMax.Value));
+                TreeHeightMax.SetOnDecrement(() => TreeHeightMin.Value = Math.Min(TreeHeightMin.Value, TreeHeightMax.Value));
                 _settings = new IWorldGenSetting[]
                 {
                     ChunkWidth,

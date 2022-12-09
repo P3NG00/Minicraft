@@ -31,6 +31,8 @@ namespace MinicraftGame.Game.Worlds.Generation
 
         private Rectangle _lastRect;
         private bool _highlighted;
+        private Action _onIncrement = null;
+        private Action _onDecrement = null;
 
         public AbstractWorldGenSetting(Vector2 relativeCenter, string name, T defaultValue, T min, T max, T step, T stepShift)
         {
@@ -60,6 +62,7 @@ namespace MinicraftGame.Game.Worlds.Generation
                 // ensure value at most max
                 if (Value.CompareTo(Max) > 0)
                     Value = Max;
+                _onIncrement?.Invoke();
             }
         }
 
@@ -72,8 +75,13 @@ namespace MinicraftGame.Game.Worlds.Generation
                 // ensure value at least min
                 if (Value.CompareTo(Min) < 0)
                     Value = Min;
+                _onDecrement?.Invoke();
             }
         }
+
+        public void SetOnIncrement(Action onIncrement) => _onIncrement = onIncrement;
+
+        public void SetOnDecrement(Action onDecrement) => _onDecrement = onDecrement;
 
         public void Update()
         {
