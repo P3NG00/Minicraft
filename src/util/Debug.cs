@@ -1,7 +1,5 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using Microsoft.Xna.Framework;
 
 namespace MinicraftGame.Utils
@@ -19,7 +17,7 @@ namespace MinicraftGame.Utils
             set => _timeScale = Math.Clamp(value, 0, 5);
         }
 
-        private static readonly Hashtable _debugUpdates = new Hashtable();
+        private static readonly Dictionary<Point, List<Color>> _debugUpdates = new();
         private static double _timeScale = 1f;
 
         public static void Tick() => _debugUpdates.Clear();
@@ -38,9 +36,9 @@ namespace MinicraftGame.Utils
 
         public static void AddTNTIgnite(Point blockPos) => Add(blockPos, Colors.DebugReason_TNTIgnite);
 
-        public static bool HasDebugUpdate(Point blockPos) => _debugUpdates.Contains(blockPos);
+        public static bool HasDebugUpdate(Point blockPos) => _debugUpdates.ContainsKey(blockPos);
 
-        public static List<Color> GetDebugColors(Point blockPos) => (List<Color>)_debugUpdates[blockPos];
+        public static List<Color> GetDebugColors(Point blockPos) => _debugUpdates[blockPos];
 
         private static void Add(Point blockPos, Color color)
         {
