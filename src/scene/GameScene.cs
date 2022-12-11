@@ -24,7 +24,7 @@ namespace MinicraftGame.Scenes
         private const float PLAYER_REACH_RADIUS = 5f;
 
         // readonly
-        private static readonly Vector2 BarSize = new Vector2(150, 30);
+        private readonly Vector2 _barSize = new Vector2(150, 30);
         private readonly Button _buttonRespawn;
         private readonly Button _buttonResume;
         private readonly Button _buttonMainMenu;
@@ -230,11 +230,11 @@ namespace MinicraftGame.Scenes
             // draw inventory hotbar
             Minicraft.Player.Inventory.Draw();
             // draw health bar
-            var drawPos = new Vector2((Display.WindowSize.X / 2f) - (BarSize.X / 2f), Display.WindowSize.Y - Inventory.HotbarSize.Y - BarSize.Y);
-            Display.Draw(drawPos, BarSize, new(color: Colors.UI_Bar));
+            var drawPos = new Vector2((Display.WindowSize.X / 2f) - (_barSize.X / 2f), Display.WindowSize.Y - Inventory.HotbarSize.Y - _barSize.Y);
+            Display.Draw(drawPos, _barSize, new(color: Colors.UI_Bar));
             // adjust size to fit within bar
             drawPos += new Vector2(Util.UI_SPACER);
-            var healthSize = BarSize - new Vector2(Util.UI_SPACER * 2, Util.UI_SPACER);
+            var healthSize = _barSize - new Vector2(Util.UI_SPACER * 2, Util.UI_SPACER);
             // readjust size to display real health
             healthSize.X *= Minicraft.Player.Life / Minicraft.Player.MaxLife;
             Display.Draw(drawPos, healthSize, new(color: Colors.UI_Life));
