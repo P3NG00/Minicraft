@@ -6,11 +6,9 @@ namespace MinicraftGame.Game.Objects.ItemObject
 {
     public sealed class BlockItem : Item
     {
-        private readonly Block _block;
+        public Block Block { get; private set; }
 
-        public Block Block => _block;
-
-        public BlockItem(Block block) : base(block.Name, block.DrawData, -1) => _block = block;
+        public BlockItem(Block block) : base(block.Name, block.DrawData, -1) => Block = block;
 
         public sealed override void Use(Slot slot, Point blockPosition)
         {
@@ -19,7 +17,7 @@ namespace MinicraftGame.Game.Objects.ItemObject
                 var inPlayer = Minicraft.Player.GetSides().Contains(blockPosition);
                 if (!inPlayer)
                 {
-                    Minicraft.World.SetBlock(blockPosition, _block);
+                    Minicraft.World.SetBlock(blockPosition, Block);
                     slot.Decrement();
                 }
             }
