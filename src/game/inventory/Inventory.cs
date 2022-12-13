@@ -10,9 +10,8 @@ namespace MinicraftGame.Game.Inventories
     public sealed class Inventory
     {
         public const int SLOTS = 9;
-        private const int SLOT_SIZE = 50;
 
-        public static readonly Point HotbarSize = new Point((SLOT_SIZE * SLOTS) + (Util.UI_SPACER * (SLOTS + 1)), SLOT_SIZE + (Util.UI_SPACER * 2));
+        public static readonly Point HotbarSize = new Point((Slot.SIZE * SLOTS) + (Util.UI_SPACER * (SLOTS + 1)), Slot.SIZE + (Util.UI_SPACER * 2));
 
         private readonly Slot[] _inventory = new Slot[SLOTS];
         private int _activeSlot = 0;
@@ -81,8 +80,8 @@ namespace MinicraftGame.Game.Inventories
             Display.Draw(drawPos, HotbarSize.ToVector2(), new(color: Colors.HotbarBackground));
             // draw each slot background
             drawPos += new Vector2(Util.UI_SPACER);
-            var drawSize = new Vector2(SLOT_SIZE);
-            var slotOffset = new Vector2(Util.UI_SPACER + SLOT_SIZE, 0);
+            var drawSize = new Vector2(Slot.SIZE);
+            var slotOffset = new Vector2(Util.UI_SPACER + Slot.SIZE, 0);
             Slot slot;
             // draw each slot
             for (var i = 0; i < _inventory.Length; i++)

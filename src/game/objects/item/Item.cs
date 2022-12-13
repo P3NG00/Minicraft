@@ -27,7 +27,11 @@ namespace MinicraftGame.Game.Objects.ItemObject
 
         public static bool operator ==(Item a, Item b)
         {
-            if (ReferenceEquals(a, null) || ReferenceEquals(b, null))
+            bool aNull = ReferenceEquals(a, null);
+            bool bNull = ReferenceEquals(b, null);
+            if (aNull && bNull)
+                return true;
+            if (aNull || bNull)
                 return false;
             if (ReferenceEquals(a, b))
                 return true;

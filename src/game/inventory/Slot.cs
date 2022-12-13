@@ -1,9 +1,11 @@
+using System;
 using MinicraftGame.Game.Objects.ItemObject;
 
 namespace MinicraftGame.Game.Inventories
 {
     public class Slot
     {
+        public const int SIZE = 50;
         private const int SLOT_MAX = 255;
 
         public Item Item { get; private set; }
@@ -28,7 +30,7 @@ namespace MinicraftGame.Game.Inventories
                 Amount += amount;
                 return null;
             }
-            // capacity is less than amount, add remaining capacity and return amount left;
+            // capacity is less than amount, add remaining capacity and return amount left
             Amount = SLOT_MAX;
             return amount - remainingCapacity;
         }
@@ -40,6 +42,6 @@ namespace MinicraftGame.Game.Inventories
             return Add(amount);
         }
 
-        public void Decrement() => Amount--;
+        public void Decrement(int amount = 1) => Math.Max(Amount -= amount, 0);
     }
 }

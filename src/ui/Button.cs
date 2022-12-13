@@ -8,7 +8,7 @@ namespace MinicraftGame.UI
 {
     public sealed class Button : ISceneObject
     {
-        private readonly Vector2 _relativeCenter;
+        private readonly Vector2 _relativeScreenPosition;
         private readonly ColorTheme _colorTheme;
         private readonly Point _size;
         private readonly string _text;
@@ -21,7 +21,7 @@ namespace MinicraftGame.UI
         // (1f, 1f) = bottom-right of window.
         public Button(Vector2 relativeCenter, Point size, string text, ColorTheme colorTheme, Action action)
         {
-            _relativeCenter = relativeCenter;
+            _relativeScreenPosition = relativeCenter;
             _size = size;
             _text = text;
             _colorTheme = colorTheme;
@@ -31,7 +31,7 @@ namespace MinicraftGame.UI
         public void Update()
         {
             // find rectangle bounds
-            var pos = ((Display.WindowSize.ToVector2() * _relativeCenter) - (_size.ToVector2() / 2f)).ToPoint();
+            var pos = ((Display.WindowSize.ToVector2() * _relativeScreenPosition) - (_size.ToVector2() / 2f)).ToPoint();
             _lastRect = new Rectangle(pos, _size);
             // test bounds
             _highlighted = _lastRect.Contains(InputManager.MousePosition);
@@ -45,7 +45,7 @@ namespace MinicraftGame.UI
             Display.Draw(_lastRect.Location.ToVector2(), _lastRect.Size.ToVector2(), new(color: _highlighted ? _colorTheme.MainHighlight : _colorTheme.Main));
             // draw text centered in box
             var color = _highlighted ? _colorTheme.TextHighlight : _colorTheme.Text;
-            Display.DrawCenteredString(FontSize._12, _relativeCenter, _text, color, drawStringFunc: Display.DrawStringWithShadow);
+            Display.DrawCenteredString(FontSize._12, _relativeScreenPosition, _text, color, drawStringFunc: Display.DrawStringWithShadow);
         }
     }
 }
