@@ -2,7 +2,7 @@ namespace MinicraftGame.Input
 {
     public sealed class MouseInput : AbstractInput<Mouse>
     {
-        public MouseInput(Mouse mouseKey) : base(mouseKey) {}
+        public MouseInput(Mouse mouse) : base(mouse) {}
 
         public sealed override bool PressedThisFrame => InputManager.MousePressedThisFrame(InputType);
 
