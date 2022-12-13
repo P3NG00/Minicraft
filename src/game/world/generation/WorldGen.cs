@@ -15,7 +15,7 @@ namespace MinicraftGame.Game.Worlds.Generation
             public readonly WorldGenSettingIntMult ChunkWidth = new(new(0.25f, 1f / 7f), "Chunk Width", 16, 1, World.WIDTH, 1, 2);
             public readonly WorldGenSettingInt ChunkHeightVariationRadius = new(new(0.25f, 2f / 7f), "Chunk Height Variation Radius", 32, 0, World.HEIGHT / 2, 1, 10);
             public readonly WorldGenSettingInt StoneOffset = new(new(0.25f, 3f / 7f), "Stone Offset", 32, 0, World.HEIGHT, 1, 10);
-            public readonly WorldGenSettingInt SmoothScanRadius = new(new(0.25f, 4f / 7f), "Smooth Scan Radius", 32, 0, World.WIDTH, 1, 10);
+            public readonly WorldGenSettingInt SmoothScanRadius = new(new(0.25f, 4f / 7f), "Smooth Scan Radius", 32, 1, World.WIDTH, 1, 10);
             public readonly WorldGenSettingInt TreeSpacingMin = new(new(0.25f, 5f / 7f), "Tree Spacing Min", 5, 0, World.WIDTH, 1, 10);
             public readonly WorldGenSettingInt TreeHeightMin = new(new(0.25f, 6f / 7f), "Tree Height Min", 8, 0, World.HEIGHT, 1, 10);
             public readonly WorldGenSettingInt TreeHeightMax = new(new(0.75f, 1f / 7f), "Tree Height Max", 24, 0, World.HEIGHT, 1, 10);
