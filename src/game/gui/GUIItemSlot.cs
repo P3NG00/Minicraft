@@ -22,7 +22,7 @@ namespace MinicraftGame.Game.GUI
         {
             var drawPos = screenPosition + _relativeOffset - new Vector2(SIZE / 2f);
             var drawSize = new Vector2(GUIItemSlot.SIZE);
-            // draw selected border 1 px thick around slot
+            // draw border around selected slot
             if (isSelected)
                 Display.Draw(drawPos - new Vector2(2), drawSize + new Vector2(4), new(color: Colors.HotbarSelected));
             // draw slot background

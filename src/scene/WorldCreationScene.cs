@@ -11,10 +11,10 @@ namespace MinicraftGame.Scenes
     {
         private readonly Vector2 _worldPreviewDrawingPosition = new Vector2(0.5f, 0.4f);
 
-        private WorldGen.Settings _settings;
+        private WorldGenSettings _settings;
         private DrawData _worldDrawData;
 
-        public WorldCreationScene(WorldGen.Settings settings = null) : base()
+        public WorldCreationScene(WorldGenSettings settings = null) : base()
         {
             var buttonSize = new Point(250, 50);
             // create buttons

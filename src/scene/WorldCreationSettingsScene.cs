@@ -7,10 +7,10 @@ namespace MinicraftGame.Scenes
 {
     public sealed class WorldCreationSettingsScene : AbstractSimpleScene
     {
-        private readonly WorldGen.Settings _settings;
-        private readonly WorldGen.Settings _settingsOriginal;
+        private readonly WorldGenSettings _settings;
+        private readonly WorldGenSettings _settingsOriginal;
 
-        public WorldCreationSettingsScene(WorldGen.Settings settings) : base()
+        public WorldCreationSettingsScene(WorldGenSettings settings) : base()
         {
             _settings = settings;
             _settingsOriginal = settings.CreateCopy();
