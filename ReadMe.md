@@ -24,6 +24,8 @@
 
 [Escape] - Pause
 
+[Z] - Spawn Projectile (hold shift for Bouncy Projectile) [TEMPORARY]
+
 
 
 ## Time Control

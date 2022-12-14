@@ -175,9 +175,10 @@ namespace MinicraftGame.Scenes
             }
             // spawn projectiles
             if (Keybinds.SpawnProjectile.PressedThisFrame)
-                Minicraft.World.AddEntity(new ProjectileEntity(Minicraft.Player.Position));
-            if (Keybinds.SpawnBouncyProjectile.PressedThisFrame)
-                Minicraft.World.AddEntity(new BouncyProjectileEntity(Minicraft.Player.Position));
+            {
+                AbstractProjectileEntity entity = Keybinds.Shift.Held ? new BouncyProjectileEntity(Minicraft.Player.Position) : new ProjectileEntity(Minicraft.Player.Position);
+                Minicraft.World.AddEntity(entity);
+            }
             // test if within reach
             _withinReach = Vector2.Distance(Minicraft.Player.Center, _lastMouseBlock) <= PLAYER_REACH_RADIUS;
             if (_withinReach)
