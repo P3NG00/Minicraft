@@ -171,6 +171,8 @@ namespace MinicraftGame.Game.Worlds
 
         public List<AbstractEntity> GetEntitiesOfType<T>() => GetEntitiesOfType(typeof(T));
 
+        public void Interact(Point blockPos) => GetBlock(blockPos).Interact(blockPos);
+
         public static bool IsValidPosition(Point position) => IsValidPosition(position.X, position.Y);
 
         public static bool IsValidPosition(int x, int y) => x >= 0 && x < WIDTH && y >= 0 && y < HEIGHT;

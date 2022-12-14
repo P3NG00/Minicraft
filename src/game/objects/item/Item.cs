@@ -10,7 +10,7 @@ namespace MinicraftGame.Game.Objects.ItemObject
         public Item(string name, DrawData drawData, int id) : base (name, drawData, id) {}
 
         // TODO override in future for items with special purposes
-        public virtual void Use(Slot slot, Point blockPosition) => Minicraft.World.GetBlock(blockPosition).Interact(blockPosition);
+        public virtual void Use(Slot slot, Point blockPosition) => Minicraft.World.Interact(blockPosition);
 
         public bool Equals(Item other)
         {

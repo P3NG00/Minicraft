@@ -46,7 +46,7 @@ namespace MinicraftGame.Game.Entities.Living
                             tntBlock.Ignite(blockPos, TNT_FUSE_CHAIN);
                         else
                         {
-                            Minicraft.World.GetBlock(blockPos).Interact(blockPos);
+                            Minicraft.World.Interact(blockPos);
                             Minicraft.World.SetBlock(blockPos, Blocks.Air);
                         }
                     }
