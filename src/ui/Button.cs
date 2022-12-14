@@ -6,46 +6,43 @@ using MinicraftGame.Utils;
 
 namespace MinicraftGame.UI
 {
-    public sealed class Button : ISceneObject
+    public sealed class Button : AbstractHighlightable, ISceneObject
     {
-        private readonly Vector2 _relativeScreenPosition;
         private readonly ColorTheme _colorTheme;
-        private readonly Point _size;
         private readonly string _text;
         private readonly Action _action;
 
-        private Rectangle _lastRect;
-        private bool _highlighted = false;
-
         // (0f, 0f) = top-left of window.
         // (1f, 1f) = bottom-right of window.
-        public Button(Vector2 relativeCenter, Point size, string text, ColorTheme colorTheme, Action action)
+        public Button(Vector2 relativeCenter, Point size, string text, ColorTheme colorTheme, Action action) : base(relativeCenter, size)
         {
-            _relativeScreenPosition = relativeCenter;
-            _size = size;
             _text = text;
             _colorTheme = colorTheme;
             _action = action;
         }
 
-        public void Update()
+        protected sealed override Rectangle GetRect()
         {
-            // find rectangle bounds
-            var pos = ((Display.WindowSize.ToVector2() * _relativeScreenPosition) - (_size.ToVector2() / 2f)).ToPoint();
-            _lastRect = new Rectangle(pos, _size);
-            // test bounds
-            _highlighted = _lastRect.Contains(InputManager.MousePosition);
-            if (Keybinds.MouseLeft.ReleasedThisFrame && _highlighted)
+            var pos = ((Display.WindowSize.ToVector2() * RelativeCenter) - (Size.ToVector2() / 2f)).ToPoint();
+            return new Rectangle(pos, Size);
+        }
+
+        public sealed override void Update()
+        {
+            // base call
+            base.Update();
+            // check if mouse was released over button
+            if (Keybinds.MouseLeft.ReleasedThisFrame && Highlighted)
                 _action();
         }
 
         public void Draw()
         {
             // draw box
-            Display.Draw(_lastRect.Location.ToVector2(), _lastRect.Size.ToVector2(), new(color: _highlighted ? _colorTheme.MainHighlight : _colorTheme.Main));
+            Display.Draw(LastRectangle.Location.ToVector2(), Size.ToVector2(), new(color: Highlighted ? _colorTheme.MainHighlight : _colorTheme.Main));
             // draw text centered in box
-            var color = _highlighted ? _colorTheme.TextHighlight : _colorTheme.Text;
-            Display.DrawCenteredString(FontSize._12, _relativeScreenPosition, _text, color, drawStringFunc: Display.DrawStringWithShadow);
+            var color = Highlighted ? _colorTheme.TextHighlight : _colorTheme.Text;
+            Display.DrawCenteredString(FontSize._12, RelativeCenter, _text, color, drawStringFunc: Display.DrawStringWithShadow);
         }
     }
 }

@@ -6,7 +6,7 @@ using MinicraftGame.Utils;
 
 namespace MinicraftGame.Game.Worlds.Generation
 {
-    public abstract class AbstractWorldGenSetting<T> : IWorldGenSetting where T : IComparable<T>
+    public abstract class AbstractWorldGenSetting<T> : AbstractHighlightable, IWorldGenSetting where T : IComparable<T>
     {
         private const string TEXT_DECREMENT = "<";
         private const string TEXT_INCREMENT = ">";
@@ -21,7 +21,6 @@ namespace MinicraftGame.Game.Worlds.Generation
         protected readonly T Step;
         protected readonly T StepShift;
 
-        private readonly Vector2 _relativeCenter;
         private readonly Button _buttonDecrement;
         private readonly Button _buttonIncrement;
 
@@ -29,14 +28,11 @@ namespace MinicraftGame.Game.Worlds.Generation
 
         protected T StepValue => Keybinds.Shift.Held ? StepShift : Step;
 
-        private Rectangle _lastRect;
-        private bool _highlighted;
         private Action _onIncrement = null;
         private Action _onDecrement = null;
 
-        public AbstractWorldGenSetting(Vector2 relativeCenter, string name, T defaultValue, T min, T max, T step, T stepShift)
+        public AbstractWorldGenSetting(Vector2 relativeCenter, string name, T defaultValue, T min, T max, T step, T stepShift) : base(relativeCenter)
         {
-            _relativeCenter = relativeCenter;
             var buttonOffset = new Vector2(RELATIVE_BUTTON_OFFSET, 0);
             var buttonSize = new Point(BUTTON_SIZE);
             _buttonDecrement = new(relativeCenter - buttonOffset, buttonSize, TEXT_DECREMENT, Colors.ThemeDefault, Decrement);
@@ -52,6 +48,16 @@ namespace MinicraftGame.Game.Worlds.Generation
         protected abstract void IncrementFunc();
 
         protected abstract void DecrementFunc();
+
+        protected sealed override Point Size
+        {
+            get
+            {
+                var windowSize = Display.WindowSize.ToVector2();
+                var width = (int)(((RelativeCenter.X + RELATIVE_BUTTON_OFFSET) - (RelativeCenter.X - RELATIVE_BUTTON_OFFSET)) * windowSize.X) + BUTTON_SIZE;
+                return new Point(width, BUTTON_SIZE);
+            }
+        }
 
         public void Increment()
         {
@@ -83,18 +89,18 @@ namespace MinicraftGame.Game.Worlds.Generation
 
         public void SetOnDecrement(Action onDecrement) => _onDecrement = onDecrement;
 
-        public void Update()
+        protected sealed override Rectangle GetRect()
         {
-            // find rectangle bounds
-            var windowSize = Display.WindowSize.ToVector2();
-            var width = (int)(((_relativeCenter.X + RELATIVE_BUTTON_OFFSET) - (_relativeCenter.X - RELATIVE_BUTTON_OFFSET)) * windowSize.X) + BUTTON_SIZE;
-            var size = new Point(width, BUTTON_SIZE);
-            var pos = ((windowSize * _relativeCenter) - (size.ToVector2() / 2f)).ToPoint();
-            _lastRect = new Rectangle(pos, size);
-            // update highlighted
-            _highlighted = _lastRect.Contains(InputManager.MousePosition);
+            var pos = ((Display.WindowSize.ToVector2() * RelativeCenter) - (Size.ToVector2() / 2f)).ToPoint();
+            return new Rectangle(pos, Size);
+        }
+
+        public sealed override void Update()
+        {
+            // base call
+            base.Update();
             // check scroll wheel
-            if (_highlighted)
+            if (Highlighted)
             {
                 var scroll = InputManager.ScrollWheelDelta;
                 if (scroll > 0)
@@ -110,16 +116,16 @@ namespace MinicraftGame.Game.Worlds.Generation
         public void Draw()
         {
             // draw highlight
-            if (_highlighted)
-                Display.Draw(_lastRect.Location.ToVector2(), _lastRect.Size.ToVector2(), new(color: Colors.SettingHighlight));
+            if (Highlighted)
+                Display.Draw(LastRectangle.Location.ToVector2(), Size.ToVector2(), new(color: Colors.SettingHighlight));
             // draw buttons
             _buttonDecrement.Draw();
             _buttonIncrement.Draw();
             // draw name label
             var textOffset = new Vector2(0, RELATIVE_TEXT_OFFSET);
-            Display.DrawCenteredString(Font.FontSize._12, _relativeCenter - textOffset, Name, Colors.TextWorldGenSetting);
+            Display.DrawCenteredString(Font.FontSize._12, RelativeCenter - textOffset, Name, Colors.TextWorldGenSetting);
             // draw value label
-            Display.DrawCenteredString(Font.FontSize._12, _relativeCenter + textOffset, Value.ToString(), Colors.TextWorldGenSetting);
+            Display.DrawCenteredString(Font.FontSize._12, RelativeCenter + textOffset, Value.ToString(), Colors.TextWorldGenSetting);
         }
 
         public static implicit operator T(AbstractWorldGenSetting<T> setting) => setting.Value;
