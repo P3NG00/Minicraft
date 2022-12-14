@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Input;
 using MinicraftGame.Font;
 using MinicraftGame.Game.Entities.Living;
 using MinicraftGame.Game.Entities.Projectiles;
+using MinicraftGame.Game.GUI;
 using MinicraftGame.Game.Inventories;
 using MinicraftGame.Game.Objects.BlockObject;
 using MinicraftGame.Game.Objects.ItemObject;
@@ -30,6 +31,7 @@ namespace MinicraftGame.Scenes
         private readonly Button _buttonMainMenu;
 
         // cache
+        private GUIHotbar _hotbar = new GUIHotbar();
         // TODO store tick count the time the hit happened. once certain amount of seconds/ticks have passed, nullify blockhit
         private Point _blockHitPos = new(-1);
         private int _blockHits = 0;
@@ -136,9 +138,9 @@ namespace MinicraftGame.Scenes
                 return;
             }
             // check hotbar num keys
-            for (int i = 0; i < Inventory.SLOTS; i++)
+            for (int i = 0; i < Inventory.SLOTS_WIDTH; i++)
                 if (InputManager.KeyPressedThisFrame(Keys.D1 + i))
-                    Minicraft.Player.Inventory.SetActiveSlot(i);
+                    _hotbar.ActiveSlot = i;
             var scroll = InputManager.ScrollWheelDelta;
             if (scroll != 0)
                 Display.BlockScale = MathHelper.Clamp(Display.BlockScale + scroll, Display.BLOCK_SCALE_MIN, Display.BLOCK_SCALE_MAX);
@@ -188,7 +190,7 @@ namespace MinicraftGame.Scenes
                         HitBlock(_lastMouseBlockInt);
                     // handle right click (block placing & interaction)
                     if (Keybinds.MouseRight.PressedThisFrame)
-                        Minicraft.Player.Inventory.Use(_lastMouseBlockInt);
+                        Minicraft.Player.Inventory.Use(_hotbar.ActiveSlot, _lastMouseBlockInt);
                     // handle middle click (spawn npc entity) // TODO remove later
                     if (Keybinds.MouseMiddle.PressedThisFrame)
                         Minicraft.World.AddEntity(new NPCEntity(_lastMouseBlock));
@@ -228,9 +230,9 @@ namespace MinicraftGame.Scenes
         private void DrawUI()
         {
             // draw inventory hotbar
-            Minicraft.Player.Inventory.Draw();
+            _hotbar.Draw();
             // draw health bar
-            var drawPos = new Vector2((Display.WindowSize.X / 2f) - (_barSize.X / 2f), Display.WindowSize.Y - Inventory.HotbarSize.Y - _barSize.Y);
+            var drawPos = new Vector2((Display.WindowSize.X / 2f) - (_barSize.X / 2f), Display.WindowSize.Y - GUIHotbar.HotbarSize.Y - _barSize.Y);
             Display.Draw(drawPos, _barSize, new(color: Colors.UI_Bar));
             // adjust size to fit within bar
             drawPos += new Vector2(Util.UI_SPACER);
@@ -241,7 +243,7 @@ namespace MinicraftGame.Scenes
             // draw health numbers on top of bar
             var healthString = $"{Minicraft.Player.Life:0.#}/{Minicraft.Player.MaxLife:0.#}";
             var textSize = FontSize._12.MeasureString(healthString);
-            drawPos = new Vector2((Display.WindowSize.X / 2f) - (textSize.X / 2f), Display.WindowSize.Y - Inventory.HotbarSize.Y - 20);
+            drawPos = new Vector2((Display.WindowSize.X / 2f) - (textSize.X / 2f), Display.WindowSize.Y - GUIHotbar.HotbarSize.Y - 20);
             Display.DrawStringWithShadow(FontSize._12, drawPos, healthString, Colors.UI_TextLife);
             // draw death screen overlay
             if (!Minicraft.Player.Alive)

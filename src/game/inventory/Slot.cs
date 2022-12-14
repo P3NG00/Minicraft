@@ -5,14 +5,13 @@ namespace MinicraftGame.Game.Inventories
 {
     public class Slot
     {
-        public const int SIZE = 50;
-        private const int SLOT_MAX = 255;
+        private const int MAX = 255;
 
         public Item Item { get; private set; }
         public int Amount { get; private set; }
 
         public bool IsEmpty => Item == Items.Nothing || Amount <= 0;
-        public bool IsFull => Amount >= SLOT_MAX;
+        public bool IsFull => Amount >= MAX;
 
         public Slot() => Set(Items.Nothing, 0);
 
@@ -20,7 +19,7 @@ namespace MinicraftGame.Game.Inventories
         public int? Add(int amount)
         {
             // find remainder of slot capacity
-            var remainingCapacity = SLOT_MAX - Amount;
+            var remainingCapacity = MAX - Amount;
             // if no capacity, do nothing and return amount given
             if (remainingCapacity == 0)
                 return amount;
@@ -31,7 +30,7 @@ namespace MinicraftGame.Game.Inventories
                 return null;
             }
             // capacity is less than amount, add remaining capacity and return amount left
-            Amount = SLOT_MAX;
+            Amount = MAX;
             return amount - remainingCapacity;
         }
 
