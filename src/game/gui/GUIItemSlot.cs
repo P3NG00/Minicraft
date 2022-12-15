@@ -29,7 +29,7 @@ namespace MinicraftGame.Game.GUI
         {
             // base call
             base.Update();
-            // TODO when clicked, swap with cursor slot
+            // when clicked, swap with cursor slot
             if (Keybinds.MouseLeft.PressedThisFrame && Highlighted)
             {
                 var cursorSlot = GameScene.CursorSlot;
