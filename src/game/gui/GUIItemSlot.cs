@@ -1,6 +1,5 @@
 using Microsoft.Xna.Framework;
 using MinicraftGame.Font;
-using MinicraftGame.Input;
 using MinicraftGame.Scenes;
 using MinicraftGame.Texture;
 using MinicraftGame.Utils;
@@ -15,22 +14,25 @@ namespace MinicraftGame.Game.GUI
 
         private Vector2 _screenPosition;
 
+        protected override Rectangle GetRectangle
+        {
+            get
+            {
+                var drawPos = _screenPosition + RelativeCenter - new Vector2(SIZE / 2f);
+                return new Rectangle(drawPos.ToPoint(), Size);
+            }
+        }
+
         public GUIItemSlot(Vector2 relativeOffset, int slotId) : base(relativeOffset, new(SIZE)) => _slotId = slotId;
 
         public void SetScreenPos(Vector2 screenPos) => _screenPosition = screenPos;
-
-        protected override Rectangle GetRect()
-        {
-            var drawPos = _screenPosition + RelativeCenter - new Vector2(SIZE / 2f);
-            return new Rectangle(drawPos.ToPoint(), Size);
-        }
 
         public sealed override void Update()
         {
             // base call
             base.Update();
             // when clicked, swap with cursor slot
-            if (Keybinds.MouseLeft.PressedThisFrame && Highlighted)
+            if (Clicked)
             {
                 var cursorSlot = GameScene.CursorSlot;
                 var slot = Minicraft.Player.Inventory[_slotId];

@@ -9,6 +9,10 @@ namespace MinicraftGame.Utils
         protected Vector2 RelativeCenter { get; private set; }
         protected bool Highlighted { get; private set; }
 
+        protected abstract Rectangle GetRectangle { get; }
+
+        protected bool Clicked => Keybinds.MouseLeft.ReleasedThisFrame && Highlighted;
+
         protected virtual Point Size
         {
             get
@@ -27,11 +31,9 @@ namespace MinicraftGame.Utils
             _size = size;
         }
 
-        protected abstract Rectangle GetRect();
-
         public virtual void Update()
         {
-            LastRectangle = GetRect();
+            LastRectangle = GetRectangle;
             Highlighted = LastRectangle.Contains(InputManager.MousePosition);
         }
     }

@@ -1,7 +1,6 @@
 using System;
 using Microsoft.Xna.Framework;
 using MinicraftGame.Font;
-using MinicraftGame.Input;
 using MinicraftGame.Utils;
 
 namespace MinicraftGame.UI
@@ -12,6 +11,15 @@ namespace MinicraftGame.UI
         private readonly string _text;
         private readonly Action _action;
 
+        protected sealed override Rectangle GetRectangle
+        {
+            get
+            {
+                var pos = ((Display.WindowSize.ToVector2() * RelativeCenter) - (Size.ToVector2() / 2f)).ToPoint();
+                return new Rectangle(pos, Size);
+            }
+        }
+
         // (0f, 0f) = top-left of window.
         // (1f, 1f) = bottom-right of window.
         public Button(Vector2 relativeCenter, Point size, string text, ColorTheme colorTheme, Action action) : base(relativeCenter, size)
@@ -21,18 +29,12 @@ namespace MinicraftGame.UI
             _action = action;
         }
 
-        protected sealed override Rectangle GetRect()
-        {
-            var pos = ((Display.WindowSize.ToVector2() * RelativeCenter) - (Size.ToVector2() / 2f)).ToPoint();
-            return new Rectangle(pos, Size);
-        }
-
         public sealed override void Update()
         {
             // base call
             base.Update();
             // check if mouse was released over button
-            if (Keybinds.MouseLeft.ReleasedThisFrame && Highlighted)
+            if (Clicked)
                 _action();
         }
 

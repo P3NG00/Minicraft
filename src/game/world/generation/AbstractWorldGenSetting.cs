@@ -27,6 +27,14 @@ namespace MinicraftGame.Game.Worlds.Generation
         public T Value;
 
         protected T StepValue => Keybinds.Shift.Held ? StepShift : Step;
+        protected sealed override Rectangle GetRectangle
+        {
+            get
+            {
+                var pos = ((Display.WindowSize.ToVector2() * RelativeCenter) - (Size.ToVector2() / 2f)).ToPoint();
+                return new Rectangle(pos, Size);
+            }
+        }
 
         private Action _onIncrement = null;
         private Action _onDecrement = null;
@@ -88,12 +96,6 @@ namespace MinicraftGame.Game.Worlds.Generation
         public void SetOnIncrement(Action onIncrement) => _onIncrement = onIncrement;
 
         public void SetOnDecrement(Action onDecrement) => _onDecrement = onDecrement;
-
-        protected sealed override Rectangle GetRect()
-        {
-            var pos = ((Display.WindowSize.ToVector2() * RelativeCenter) - (Size.ToVector2() / 2f)).ToPoint();
-            return new Rectangle(pos, Size);
-        }
 
         public sealed override void Update()
         {
