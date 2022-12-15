@@ -20,7 +20,8 @@ namespace MinicraftGame.Scenes
             Button buttonWorldContinue = null;
             if (Data.SaveExists)
                 buttonWorldContinue = new Button(new Vector2(0.5f, 0.7f), new Point(250, 50), "continue world", Colors.ThemeBlue, LoadSavedWorld);
-            AddSceneObjects(buttonWorldNew, buttonExit, buttonWorldContinue);
+            // set scene objects
+            SetSceneObjects(buttonWorldNew, buttonExit, buttonWorldContinue);
         }
 
         public sealed override void Draw()

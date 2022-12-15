@@ -17,8 +17,8 @@ namespace MinicraftGame.Scenes
             var buttonSize = new Point(200, 50);
             var buttonAccept = new Button(new(0.5f, 3f / 7f), buttonSize, "Accept", Colors.ThemeBlue, AcceptSettings);
             var buttonBack = new Button(new(0.5f, 4f / 7f), buttonSize, "Back", Colors.ThemeExit, CancelChanges);
-            // add scene objects
-            AddSceneObjects(_settings, buttonAccept, buttonBack);
+            // set scene objects
+            SetSceneObjects(_settings, buttonAccept, buttonBack);
         }
 
         // passes new settings to world creation scene

@@ -1,13 +1,12 @@
-using System.Collections.Generic;
 using MinicraftGame.Utils;
 
 namespace MinicraftGame.Scenes
 {
     public abstract class AbstractSimpleScene : AbstractScene
     {
-        private readonly List<ISceneObject> _sceneObjects = new List<ISceneObject>();
+        private ISceneObject[] _sceneObjects;
 
-        public void AddSceneObjects(params ISceneObject[] sceneObjects) => _sceneObjects.AddRange(sceneObjects);
+        public void SetSceneObjects(params ISceneObject[] sceneObjects) => _sceneObjects = sceneObjects;
 
         public override void Update() => _sceneObjects.ForEach(sceneObject => sceneObject?.Update());
 

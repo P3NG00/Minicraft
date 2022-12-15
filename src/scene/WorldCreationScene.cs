@@ -26,8 +26,8 @@ namespace MinicraftGame.Scenes
             _settings = settings ?? new();
             // create random world with settings
             GenerateRandomWorld();
-            // add scene objects
-            AddSceneObjects(buttonBack, buttonRandom, buttonSettings, buttonStart);
+            // set scene objects
+            SetSceneObjects(buttonBack, buttonRandom, buttonSettings, buttonStart);
         }
 
         private void BackToMainMenu() => Minicraft.SetScene(new MainMenuScene());
