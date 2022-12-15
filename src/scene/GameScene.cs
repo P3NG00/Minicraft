@@ -25,6 +25,7 @@ namespace MinicraftGame.Scenes
         private const float PLAYER_REACH_RADIUS = 5f;
 
         public static GameScene Instance => _instance;
+        // TODO make visible on cursor
         public static Slot CursorSlot = new();
 
         private static GameScene _instance;

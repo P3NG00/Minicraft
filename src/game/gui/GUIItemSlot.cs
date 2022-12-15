@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using MinicraftGame.Font;
+using MinicraftGame.Game.Inventories;
 using MinicraftGame.Scenes;
 using MinicraftGame.Texture;
 using MinicraftGame.Utils;
@@ -34,26 +35,9 @@ namespace MinicraftGame.Game.GUI
             // when clicked, swap with cursor slot
             if (Clicked)
             {
-                var cursorSlot = GameScene.CursorSlot;
-                var slot = Minicraft.Player.Inventory[_slotId];
-                if (cursorSlot == null || cursorSlot.IsEmpty)
-                {
-                    // pick up item
-                    GameScene.CursorSlot = slot;
-                    Minicraft.Player.Inventory[_slotId] = new();
-                }
-                else if (slot.IsEmpty)
-                {
-                    // place item
-                    Minicraft.Player.Inventory[_slotId] = cursorSlot;
-                    GameScene.CursorSlot = new();
-                }
-                else
-                {
-                    // swap items
-                    Minicraft.Player.Inventory[_slotId] = cursorSlot;
-                    GameScene.CursorSlot = slot;
-                }
+                Slot swap = Minicraft.Player.Inventory[_slotId];
+                Minicraft.Player.Inventory[_slotId] = GameScene.CursorSlot;
+                GameScene.CursorSlot = swap;
             }
         }
 
