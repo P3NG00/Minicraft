@@ -70,7 +70,10 @@ namespace MinicraftGame.Scenes
                 // update buttons
                 _buttonRespawn.Update();
                 _buttonMainMenu.Update();
+                return;
             }
+            // update hotbar
+            _hotbar.Update();
         }
 
         public sealed override void Tick()

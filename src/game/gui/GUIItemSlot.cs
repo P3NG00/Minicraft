@@ -5,23 +5,28 @@ using MinicraftGame.Utils;
 
 namespace MinicraftGame.Game.GUI
 {
-    public sealed class GUIItemSlot
+    public sealed class GUIItemSlot : AbstractHighlightable // TODO implement
     {
         public const int SIZE = Textures.SIZE * 6;
 
-        private readonly Vector2 _relativeOffset;
         private readonly int _slotId;
 
-        public GUIItemSlot(Vector2 relativeOffset, int slotId)
+        private Vector2 _screenPosition;
+
+        public GUIItemSlot(Vector2 relativeOffset, int slotId) : base(relativeOffset, new(SIZE)) => _slotId = slotId;
+
+        public void SetScreenPos(Vector2 screenPos) => _screenPosition = screenPos;
+
+        protected override Rectangle GetRect()
         {
-            _relativeOffset = relativeOffset;
-            _slotId = slotId;
+            var drawPos = _screenPosition + RelativeCenter - new Vector2(SIZE / 2f);
+            return new Rectangle(drawPos.ToPoint(), Size);
         }
 
-        public void Draw(Vector2 screenPosition, bool isSelected)
+        public void Draw(bool isSelected)
         {
-            var drawPos = screenPosition + _relativeOffset - new Vector2(SIZE / 2f);
-            var drawSize = new Vector2(GUIItemSlot.SIZE);
+            var drawPos = LastRectangle.Location.ToVector2();
+            var drawSize = Size.ToVector2();
             // draw border around selected slot
             if (isSelected)
                 Display.Draw(drawPos - new Vector2(2), drawSize + new Vector2(4), new(color: Colors.HotbarSelected));
@@ -37,6 +42,9 @@ namespace MinicraftGame.Game.GUI
                 if (!slot.IsEmpty)
                     Display.DrawStringWithShadow(FontSize._12, drawPos + new Vector2(Util.UI_SPACER), slot.Amount.ToString(), Colors.HotbarSlotText);
             }
+            // draw highlight
+            if (Highlighted)
+                Display.Draw(drawPos, drawSize, new(color: Colors.HotbarSlotHighlight));
         }
     }
 }

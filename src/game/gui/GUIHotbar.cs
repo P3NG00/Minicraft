@@ -29,18 +29,27 @@ namespace MinicraftGame.Game.GUI
             }
         }
 
+        public void Update()
+        {
+            var screenPos = Display.WindowSize.ToVector2() * new Vector2(0.5f, 1f);
+            foreach (var slot in _slots)
+            {
+                slot.SetScreenPos(screenPos);
+                slot.Update();
+            }
+        }
+
         public void Draw()
         {
             // draw bar background
             var drawPos = new Vector2((Display.WindowSize.X / 2f) - (HOTBAR_WIDTH / 2f), Display.WindowSize.Y - HOTBAR_HEIGHT);
             Display.Draw(drawPos, HotbarSize.ToVector2(), new(color: Colors.HotbarBackground));
             // draw slots
-            var screenPos = Display.WindowSize.ToVector2() * new Vector2(0.5f, 1f);
             for (int i = 0; i < Inventory.SLOTS_WIDTH; i++)
             {
                 var slot = _slots[i];
                 var isSelected = i == ActiveSlot;
-                slot.Draw(screenPos, isSelected);
+                slot.Draw(isSelected);
             }
         }
     }

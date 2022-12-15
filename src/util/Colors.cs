@@ -35,6 +35,7 @@ namespace MinicraftGame.Utils
         public static Color HotbarSelected => new Color(255, 255, 255);
         public static Color HotbarSlotBackground => new Color(64, 64, 64);
         public static Color HotbarSlotText => new Color(255, 255, 255);
+        public static Color HotbarSlotHighlight => new Color(64, 64, 64, 32);
 
         // debug
         public static Color DebugReason_AirCheck => new Color(255, 128, 0, 64);
