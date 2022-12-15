@@ -36,7 +36,7 @@ namespace MinicraftGame.Game.Entities.Living
             if (Keybinds.MoveRight.Held)
                 RawVelocity.X++;
             // check running
-            Running = Keybinds.Run.Held;
+            Running = Keybinds.Shift.Held;
             // check jump
             if (Keybinds.Jump.Held)
                 Jump();
