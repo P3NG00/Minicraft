@@ -1,11 +1,13 @@
 using Microsoft.Xna.Framework;
 using MinicraftGame.Font;
+using MinicraftGame.Input;
+using MinicraftGame.Scenes;
 using MinicraftGame.Texture;
 using MinicraftGame.Utils;
 
 namespace MinicraftGame.Game.GUI
 {
-    public sealed class GUIItemSlot : AbstractHighlightable // TODO implement
+    public sealed class GUIItemSlot : AbstractHighlightable
     {
         public const int SIZE = Textures.SIZE * 6;
 
@@ -21,6 +23,36 @@ namespace MinicraftGame.Game.GUI
         {
             var drawPos = _screenPosition + RelativeCenter - new Vector2(SIZE / 2f);
             return new Rectangle(drawPos.ToPoint(), Size);
+        }
+
+        public sealed override void Update()
+        {
+            // base call
+            base.Update();
+            // TODO when clicked, swap with cursor slot
+            if (Keybinds.MouseLeft.PressedThisFrame && Highlighted)
+            {
+                var cursorSlot = GameScene.CursorSlot;
+                var slot = Minicraft.Player.Inventory[_slotId];
+                if (cursorSlot == null || cursorSlot.IsEmpty)
+                {
+                    // pick up item
+                    GameScene.CursorSlot = slot;
+                    Minicraft.Player.Inventory[_slotId] = new();
+                }
+                else if (slot.IsEmpty)
+                {
+                    // place item
+                    Minicraft.Player.Inventory[_slotId] = cursorSlot;
+                    GameScene.CursorSlot = new();
+                }
+                else
+                {
+                    // swap items
+                    Minicraft.Player.Inventory[_slotId] = cursorSlot;
+                    GameScene.CursorSlot = slot;
+                }
+            }
         }
 
         public void Draw(bool isSelected)

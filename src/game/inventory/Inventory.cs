@@ -68,6 +68,6 @@ namespace MinicraftGame.Game.Inventories
             return amountRemaining;
         }
 
-        public Slot this[int i] => _inventory[i];
+        public ref Slot this[int i] => ref _inventory[i];
     }
 }

@@ -24,6 +24,11 @@ namespace MinicraftGame.Scenes
         private const string TEXT_RESUME = "resume";
         private const float PLAYER_REACH_RADIUS = 5f;
 
+        public static GameScene Instance => _instance;
+        public static Slot CursorSlot = new();
+
+        private static GameScene _instance;
+
         private Vector2 HealthBarSize => new Vector2(150, 30);
 
         // readonly
@@ -45,8 +50,9 @@ namespace MinicraftGame.Scenes
 
         public GameScene() : base(Blocks.Air.Color)
         {
-            var buttonSize = new Point(250, 50);
+            this.SingletonCheck(ref _instance);
             // initialize buttons
+            var buttonSize = new Point(250, 50);
             _buttonRespawn = new Button(new Vector2(0.5f, 0.6f), buttonSize, TEXT_RESPAWN, Colors.ThemeDefault, Minicraft.Player.Respawn);
             _buttonResume = new Button(new Vector2(0.5f, 0.6f), buttonSize, TEXT_RESUME, Colors.ThemeDefault, ResumeGame);
             _buttonMainMenu = new Button(new Vector2(0.5f, 0.7f), buttonSize, TEXT_MAIN_MENU, Colors.ThemeExit, SaveAndMainMenu);
