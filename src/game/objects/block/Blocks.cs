@@ -17,6 +17,18 @@ namespace MinicraftGame.Game.Objects.BlockObject
         public static Block TNT { get; private set; }
         public static Block P3NG00Face { get; private set; }
 
+        protected sealed override Block[] ObjectArray => new[]
+        {
+            Air,            // 0
+            Dirt,           // 1
+            Grass,          // 2
+            Stone,          // 3
+            Wood,           // 4
+            Leaves,         // 5
+            TNT,            // 6
+            P3NG00Face,     // 7
+        };
+
         public Blocks() => this.SingletonCheck(ref _instance);
 
         protected sealed override void InstantiateObjects()
@@ -30,18 +42,6 @@ namespace MinicraftGame.Game.Objects.BlockObject
             TNT = new TNTBlock("TNT", 1, true, new(Textures.Striped, new Color(255, 0, 0)), 6);
             P3NG00Face = new P3NG00FaceBlock("P3NG00's Face as a Block", 1, false, new(Textures.P3NG00Face), 7);
         }
-
-        protected sealed override Block[] GetObjectArray() => new[]
-        {
-            Air,            // 0
-            Dirt,           // 1
-            Grass,          // 2
-            Stone,          // 3
-            Wood,           // 4
-            Leaves,         // 5
-            TNT,            // 6
-            P3NG00Face,     // 7
-        };
 
         public static int Amount => _instance.ObjectAmount;
 

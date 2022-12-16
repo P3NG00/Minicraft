@@ -4,16 +4,16 @@ namespace MinicraftGame.Game.Objects
     {
         private T[] _objects;
 
+        protected abstract T[] ObjectArray { get; }
+
         public void Initialize()
         {
             InstantiateObjects();
-            _objects = GetObjectArray();
+            _objects = ObjectArray;
             CheckIDs();
         }
 
         protected abstract void InstantiateObjects();
-
-        protected abstract T[] GetObjectArray();
 
         private void CheckIDs()
         {

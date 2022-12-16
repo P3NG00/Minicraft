@@ -11,6 +11,12 @@ namespace MinicraftGame.Game.Objects.ItemObject
         public static Item Nothing { get; private set; }
         public static Item DebugStick { get; private set; }
 
+        protected sealed override Item[] ObjectArray => new[]
+        {
+            Nothing,    // 0
+            DebugStick, // 1
+        };
+
         public Items() => this.SingletonCheck(ref _instance);
 
         protected sealed override void InstantiateObjects()
@@ -19,12 +25,6 @@ namespace MinicraftGame.Game.Objects.ItemObject
             DebugStick = new Item("Debug Stick", new(Textures.Stick, new Color(75, 55, 28)), 1);
             // TODO more items
         }
-
-        protected sealed override Item[] GetObjectArray() => new[]
-        {
-            Nothing,    // 0
-            DebugStick, // 1
-        };
 
         public static int Amount => _instance.ObjectAmount;
 
