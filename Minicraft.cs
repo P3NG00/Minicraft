@@ -128,18 +128,7 @@ namespace MinicraftGame
             return true;
         }
 
-        private void UpdateTicks(double timeThisUpdate)
-        {
-            // add delta time
-            _tickDelta += timeThisUpdate;
-            // move last tick count down
-            for (int i = _lastTickDifferences.Length - 2; i >= 0; i--)
-                _lastTickDifferences[i + 1] = _lastTickDifferences[i];
-            // set last tick difference
-            _lastTickDifferences[0] = _ticks[0] - _ticks[1];
-            // update last tick count
-            _ticks[1] = _ticks[0];
-        }
+        private void UpdateTicks(double timeThisUpdate) => _tickDelta += timeThisUpdate;
 
         private void UpdateFramesPerSecond(double timeThisFrame)
         {
@@ -148,6 +137,13 @@ namespace MinicraftGame
                 _lastFps[i + 1] = _lastFps[i];
             // store fps value
             _lastFps[0] = 1000f / timeThisFrame;
+            // move last tick count down
+            for (int i = _lastTickDifferences.Length - 2; i >= 0; i--)
+                _lastTickDifferences[i + 1] = _lastTickDifferences[i];
+            // set last tick difference
+            _lastTickDifferences[0] = _ticks[0] - _ticks[1];
+            // update last tick count
+            _ticks[1] = _ticks[0];
         }
 
         public static void AddTick() => _tickDelta += World.TICK_STEP;
