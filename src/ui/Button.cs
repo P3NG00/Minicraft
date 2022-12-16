@@ -8,8 +8,8 @@ namespace MinicraftGame.UI
     public sealed class Button : AbstractHighlightable, ISceneObject
     {
         private readonly ColorTheme _colorTheme;
-        private readonly string _text;
         private readonly Action _action;
+        private readonly string _text;
 
         protected sealed override Rectangle GetRectangle
         {
