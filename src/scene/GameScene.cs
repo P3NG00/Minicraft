@@ -25,15 +25,14 @@ namespace MinicraftGame.Scenes
         private const float PLAYER_REACH_RADIUS = 5f;
 
         public static GameScene Instance => _instance;
-        // TODO make visible on cursor
-        public static Slot CursorSlot = new();
 
         private static GameScene _instance;
 
         private Vector2 HealthBarSize => new Vector2(150, 30);
 
         // readonly
-        private readonly GUIHotbar _hotbar = new GUIHotbar();
+        public readonly GUICursorSlot CursorSlot = new();
+        private readonly GUIHotbar _hotbar = new();
         private readonly Button _buttonRespawn;
         private readonly Button _buttonResume;
         private readonly Button _buttonMainMenu;
@@ -245,6 +244,8 @@ namespace MinicraftGame.Scenes
         {
             // draw inventory hotbar
             _hotbar.Draw();
+            // draw cursor slot
+            CursorSlot.Draw();
             // draw health bar
             var drawPos = new Vector2((Display.WindowSize.X / 2f) - (HealthBarSize.X / 2f), Display.WindowSize.Y - GUIHotbar.HotbarSize.Y - HealthBarSize.Y);
             Display.Draw(drawPos, HealthBarSize, new(color: Colors.UI_Bar));

@@ -1,6 +1,4 @@
 using Microsoft.Xna.Framework;
-using MinicraftGame.Font;
-using MinicraftGame.Game.Inventories;
 using MinicraftGame.Scenes;
 using MinicraftGame.Texture;
 using MinicraftGame.Utils;
@@ -34,11 +32,7 @@ namespace MinicraftGame.Game.GUI
             base.Update();
             // when clicked, swap with cursor slot
             if (Clicked)
-            {
-                Slot swap = Minicraft.Player.Inventory[_slotId];
-                Minicraft.Player.Inventory[_slotId] = GameScene.CursorSlot;
-                GameScene.CursorSlot = swap;
-            }
+                GameScene.Instance.CursorSlot.Swap(ref Minicraft.Player.Inventory[_slotId]);
         }
 
         public void Draw(bool isSelected)
@@ -50,16 +44,8 @@ namespace MinicraftGame.Game.GUI
                 Display.Draw(drawPos - new Vector2(2), drawSize + new Vector2(4), new(color: Colors.HotbarSelected));
             // draw slot background
             Display.Draw(drawPos, drawSize, new(color: Colors.HotbarSlotBackground));
-            // draw item
-            var slot = Minicraft.Player.Inventory[_slotId];
-            if (!slot.IsEmpty)
-            {
-                // draw item
-                Display.Draw(drawPos, drawSize, slot.Item.DrawData);
-                // draw amount
-                if (!slot.IsEmpty)
-                    Display.DrawStringWithShadow(FontSize._12, drawPos + new Vector2(Util.UI_SPACER), slot.Amount.ToString(), Colors.HotbarSlotText);
-            }
+            // draw slot
+            Minicraft.Player.Inventory[_slotId].Draw(drawPos);
             // draw highlight
             if (Highlighted)
                 Display.Draw(drawPos, drawSize, new(color: Colors.HotbarSlotHighlight));

@@ -13,6 +13,7 @@ namespace MinicraftGame.Utils
         public static bool SaveExists => File.Exists(SAVE_FILE);
 
         // TODO save all types of entities: items, npcs, tnt, etc.
+        // TODO save cursor slot
 
         public static void Save()
         {

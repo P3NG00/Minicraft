@@ -1,5 +1,9 @@
 using System;
+using Microsoft.Xna.Framework;
+using MinicraftGame.Font;
+using MinicraftGame.Game.GUI;
 using MinicraftGame.Game.Objects.ItemObject;
+using MinicraftGame.Utils;
 
 namespace MinicraftGame.Game.Inventories
 {
@@ -42,5 +46,18 @@ namespace MinicraftGame.Game.Inventories
         }
 
         public void Decrement(int amount = 1) => Math.Max(Amount -= amount, 0);
+
+        public void Draw(Vector2 drawPos)
+        {
+            var drawSize = new Vector2(GUIItemSlot.SIZE);
+            // draw item
+            if (!IsEmpty)
+            {
+                // draw item
+                Display.Draw(drawPos, drawSize, Item.DrawData);
+                // draw amount
+                Display.DrawStringWithShadow(FontSize._12, drawPos + new Vector2(Util.UI_SPACER), Amount.ToString(), Colors.HotbarSlotText);
+            }
+        }
     }
 }
