@@ -11,14 +11,7 @@ namespace MinicraftGame.UI
         private readonly Action _action;
         private readonly string _text;
 
-        protected sealed override Rectangle GetRectangle
-        {
-            get
-            {
-                var pos = ((Display.WindowSize.ToVector2() * RelativeCenter) - (Size.ToVector2() / 2f)).ToPoint();
-                return new Rectangle(pos, Size);
-            }
-        }
+        protected sealed override Rectangle GetRectangle => new Rectangle(((Display.WindowSize.ToVector2() * RelativeCenter) - (Size.ToVector2() / 2f)).ToPoint(), Size);
 
         // (0f, 0f) = top-left of window.
         // (1f, 1f) = bottom-right of window.
