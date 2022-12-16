@@ -120,6 +120,8 @@ namespace MinicraftGame.Scenes
             Data.Save();
             Minicraft.SetScene(new MainMenuScene());
             Debug.TimeScale = 1f;
+            // nullify singleton instance
+            _instance = null;
         }
 
         private void HandleInput()
