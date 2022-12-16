@@ -106,12 +106,12 @@ namespace MinicraftGame
             GraphicsDevice.Clear(_scene.BackgroundColor);
             // begin drawing
             Display.SpriteBatch.Begin(samplerState: SamplerState.PointClamp);
-            // update frames per second
-            UpdateFramesPerSecond(gameTime.ElapsedGameTime.TotalMilliseconds);
             // draw scene
             _scene.Draw();
             // end drawing
             Display.SpriteBatch.End();
+            // update frames per second
+            UpdateFramesPerSecond(gameTime.ElapsedGameTime.TotalMilliseconds);
             // base call
             base.Draw(gameTime);
         }
