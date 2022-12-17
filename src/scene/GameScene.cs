@@ -32,13 +32,14 @@ namespace MinicraftGame.Scenes
 
         // readonly
         public readonly GUICursorSlot CursorSlot = new();
-        private readonly GUIHotbar _hotbar = new();
+        private readonly GUIHotbar _guiHotbar = new();
         private readonly Button _buttonRespawn;
         private readonly Button _buttonResume;
         private readonly Button _buttonMainMenu;
 
         // cache
         // TODO store tick count the time the hit happened. once certain amount of seconds/ticks have passed, nullify blockhit
+        private GUIInventory _guiInventory = null;
         private Point _blockHitPos = new(-1);
         private int _blockHits = 0;
         private Vector2 _lastMouseBlock;
@@ -79,7 +80,9 @@ namespace MinicraftGame.Scenes
                 return;
             }
             // update hotbar
-            _hotbar.Update();
+            _guiHotbar.Update();
+            // update inventory
+            _guiInventory?.Update();
         }
 
         public sealed override void Tick()
@@ -112,6 +115,8 @@ namespace MinicraftGame.Scenes
             DrawUI();
         }
 
+        public void CloseInventoryGUI() => _guiInventory = null;
+
         private void ResumeGame() => _paused = false;
 
         private void SaveAndMainMenu()
@@ -127,7 +132,12 @@ namespace MinicraftGame.Scenes
         {
             // toggle pause
             if (Keybinds.Pause.PressedThisFrame && Minicraft.Player.Alive)
-                Util.Toggle(ref _paused);
+            {
+                if (_guiInventory != null)
+                    CloseInventoryGUI();
+                else
+                    Util.Toggle(ref _paused);
+            }
             // increase/decrease time scale
             if (Keybinds.TimeScaleDecrement.PressedThisFrame)
                 Debug.TimeScale -= Debug.TIME_SCALE_STEP;
@@ -143,16 +153,20 @@ namespace MinicraftGame.Scenes
                 Util.Toggle(ref Debug.Enabled);
             if (Keybinds.DebugToggleGiveMode.PressedThisFrame)
                 Util.Toggle(ref Debug.GiveBlocksElseItems);
-            // pause check
-            if (_paused)
+            // check if paused or dead
+            if (_paused || !Minicraft.Player.Alive)
             {
                 _withinReach = false;
                 return;
             }
+            // check inventory keybind
+            if (Keybinds.Inventory.PressedThisFrame && _guiInventory == null)
+                _guiInventory = new();
             // check hotbar num keys
             for (int i = 0; i < Inventory.SLOTS_WIDTH; i++)
                 if (InputManager.KeyPressedThisFrame(Keys.D1 + i))
-                    _hotbar.ActiveSlot = i;
+                    _guiHotbar.ActiveSlot = i;
+            // check block scale update
             var scroll = InputManager.ScrollWheelDelta;
             if (scroll != 0)
                 Display.BlockScale = MathHelper.Clamp(Display.BlockScale + scroll, Display.BLOCK_SCALE_MIN, Display.BLOCK_SCALE_MAX);
@@ -161,12 +175,6 @@ namespace MinicraftGame.Scenes
             mousePos.Y = Display.WindowSize.Y - mousePos.Y - 1;
             _lastMouseBlock = ((mousePos - (Display.WindowSize.ToVector2() / 2f)) / Display.BlockScale) + (Minicraft.Player.Position + new Vector2(0, Minicraft.Player.Dimensions.Y / 2f));
             _lastMouseBlockInt = _lastMouseBlock.ToPoint();
-            // if player alive
-            if (!Minicraft.Player.Alive)
-            {
-                _withinReach = false;
-                return;
-            }
             // give items if holding debug button
             if (Keybinds.Debug.Held)
             {
@@ -203,7 +211,7 @@ namespace MinicraftGame.Scenes
                         HitBlock(_lastMouseBlockInt);
                     // handle right click (block placing & interaction)
                     if (Keybinds.MouseRight.PressedThisFrame)
-                        Minicraft.Player.Inventory.Use(_hotbar.ActiveSlot, _lastMouseBlockInt);
+                        Minicraft.Player.Inventory.Use(_guiHotbar.ActiveSlot, _lastMouseBlockInt);
                     // handle middle click (spawn npc entity) // TODO remove later
                     if (Keybinds.MouseMiddle.PressedThisFrame)
                         Minicraft.World.AddEntity(new NPCEntity(_lastMouseBlock));
@@ -242,8 +250,10 @@ namespace MinicraftGame.Scenes
 
         private void DrawUI()
         {
-            // draw inventory hotbar
-            _hotbar.Draw();
+            // draw hotbar
+            _guiHotbar.Draw();
+            // draw inventory
+            _guiInventory?.Draw();
             // draw cursor slot
             CursorSlot.Draw();
             // draw health bar
@@ -294,7 +304,7 @@ namespace MinicraftGame.Scenes
                     $"paused: {_paused}",
                     $"time_scale: {Debug.TimeScale:0.00}",
                     $"time: {(Minicraft.Ticks / (float)Minicraft.TICKS_PER_SECOND):0.000}",
-                    $"ticks: {Minicraft.Ticks} ({Minicraft.TICKS_PER_SECOND} ticks/sec)",
+                    $"ticks: {Minicraft.Ticks} ({Minicraft.TICKS_PER_SECOND} tps)",
                     $"frames_per_second: {Minicraft.AverageFramesPerSecond:0.000}",
                     $"ticks_per_frame: {Minicraft.AverageTicksPerFrame:0.000}",
                     $"x: {Minicraft.Player.Position.X:0.000}",

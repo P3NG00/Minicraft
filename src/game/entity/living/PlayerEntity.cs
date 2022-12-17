@@ -1,6 +1,7 @@
 using Microsoft.Xna.Framework;
 using MinicraftGame.Game.Inventories;
 using MinicraftGame.Input;
+using MinicraftGame.Scenes;
 using MinicraftGame.Utils;
 
 namespace MinicraftGame.Game.Entities.Living
@@ -18,6 +19,14 @@ namespace MinicraftGame.Game.Entities.Living
         public PlayerEntity(Vector2 position, Inventory inventory = null) : base(position, PLAYER_LIFE, PlayerSize, PLAYER_SPEED, PLAYER_RUN_MULT, PLAYER_JUMP, new(color: Colors.Entity_Player)) => Inventory = inventory ?? new();
 
         public PlayerEntity() : this(Vector2.Zero) => SpawnIntoWorld();
+
+        protected sealed override void OnDeath()
+        {
+            // TODO implement way to drop items from inventory
+            // TODO then implement method to drop all items at once from inventory
+            // Minicraft.Player.Inventory.DropAll();
+            GameScene.Instance.CloseInventoryGUI();
+        }
 
         public void SpawnIntoWorld() => Position = Minicraft.World.GetSpawnPosition().ToVector2();
 

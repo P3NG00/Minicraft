@@ -49,12 +49,11 @@ namespace MinicraftGame.Game.Inventories
 
         public void Draw(Vector2 drawPos)
         {
-            var drawSize = new Vector2(GUIItemSlot.SIZE);
             // draw item
             if (!IsEmpty)
             {
                 // draw item
-                Display.Draw(drawPos, drawSize, Item.DrawData);
+                Display.Draw(drawPos, new Vector2(GUIItemSlot.SIZE), Item.DrawData);
                 // draw amount
                 Display.DrawStringWithShadow(FontSize._12, drawPos + new Vector2(Util.UI_SPACER), Amount.ToString(), Colors.HotbarSlotText);
             }

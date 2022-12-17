@@ -18,6 +18,8 @@
 
 [1 - 9] - Change Hotbar Slot
 
+[E] - Inventory
+
 [Tab] - Toggle Grid
 
 [F11] - Toggle Fullscreen

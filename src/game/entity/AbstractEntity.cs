@@ -44,13 +44,20 @@ namespace MinicraftGame.Game.Entities
             _drawData = drawData;
         }
 
+        protected virtual void OnDeath() {}
+
         public void Kill() => SetLife(0);
 
         public void ResetLife() => SetLife(MaxLife);
 
-        public void SetLife(float value) => _life = Math.Clamp(value, 0f, MaxLife);
+        public void SetLife(float value)
+        {
+            _life = Math.Clamp(value, 0f, MaxLife);
+            if (_life <= 0f)
+                OnDeath();
+        }
 
-        public void Damage(float amount) => _life = Math.Max(_life - amount, 0f);
+        public void Damage(float amount) => SetLife(_life - amount);
 
         public virtual void Tick() {}
 
