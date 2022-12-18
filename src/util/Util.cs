@@ -78,14 +78,14 @@ namespace MinicraftGame.Utils
 
         public static Item ReadItem(this BinaryReader stream)
         {
-            int itemTypeID = stream.ReadByte();
+            byte itemTypeID = stream.ReadByte();
             int id = stream.ReadInt32();
-            switch (itemTypeID)
+            return itemTypeID switch
             {
-                case (byte)ItemType.Item: return Items.FromID(id);
-                case (byte)ItemType.BlockItem: return new BlockItem(Blocks.FromID(id));
-                default: throw new Exception("Invalid item type ID: " + itemTypeID);
-            }
+                (byte)ItemType.Item => Items.FromID(id),
+                (byte)ItemType.BlockItem => new BlockItem(Blocks.FromID(id)),
+                _ => throw new Exception("Invalid item type ID: " + itemTypeID),
+            };
         }
 
         public static Block ReadBlock(this BinaryReader stream) => Blocks.FromID(stream.ReadInt32());
