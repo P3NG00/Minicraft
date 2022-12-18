@@ -88,7 +88,7 @@ namespace MinicraftGame.Utils
 
         public static void DrawString(FontSize fontSize, Vector2 position, string text, Color color, Vector2? scale = null, float rotation = 0f)
         {
-            scale ??= Vector2.One;
+            FixScale(ref scale);
             var font = fontSize.GetFont();
             var origin = font.MeasureString(text) / 2f;
             SpriteBatch.DrawString(font, text, position + origin, color, rotation, origin, scale.Value, SpriteEffects.None, 0f);
