@@ -160,8 +160,13 @@ namespace MinicraftGame.Scenes
                 return;
             }
             // check inventory keybind
-            if (Keybinds.Inventory.PressedThisFrame && _guiInventory == null)
-                _guiInventory = new();
+            if (Keybinds.Inventory.PressedThisFrame)
+            {
+                if (_guiInventory == null)
+                    _guiInventory = new();
+                else
+                    CloseInventoryGUI();
+            }
             // check hotbar num keys
             for (int i = 0; i < Inventory.SLOTS_WIDTH; i++)
                 if (InputManager.KeyPressedThisFrame(Keys.D1 + i))
