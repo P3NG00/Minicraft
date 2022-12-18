@@ -117,7 +117,7 @@ namespace MinicraftGame.Utils
         // (1f, 1f) = bottom-right of window.
         public static void DrawCenteredString(FontSize fontSize, Vector2 relativeScreenPosition, string text, Color color, Vector2? scale = null, float rotation = 0f, DrawStringFunc drawStringFunc = null)
         {
-            drawStringFunc ??= DrawString;
+            FixDrawStringFunc(ref drawStringFunc);
             var textSize = fontSize.MeasureString(text);
             var screenPosition = relativeScreenPosition * WindowSize.ToVector2();
             var drawPos = screenPosition - (textSize / 2f);
@@ -126,7 +126,7 @@ namespace MinicraftGame.Utils
 
         public static void DrawOffsetString(FontSize fontSize, Vector2 position, string text, Color color, Vector2? scale = null, float rotation = 0f, DrawStringFunc drawStringFunc = null)
         {
-            drawStringFunc ??= DrawString;
+            FixDrawStringFunc(ref drawStringFunc);
             var drawPos = position - CameraOffset;
             drawStringFunc(fontSize, drawPos, text, color, scale, rotation);
         }
