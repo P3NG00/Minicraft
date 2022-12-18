@@ -1,12 +1,11 @@
 using Microsoft.Xna.Framework;
 using MinicraftGame.Texture;
-using MinicraftGame.Utils;
 
 namespace MinicraftGame.Game.Objects.BlockObject
 {
     public sealed class Blocks : ObjectManager<Block>
     {
-        private static Blocks _instance;
+        private static ObjectManager<Block> _instance;
 
         public static Block Air { get; private set; }
         public static Block Dirt { get; private set; }
@@ -29,7 +28,7 @@ namespace MinicraftGame.Game.Objects.BlockObject
             P3NG00Face,     // 7
         };
 
-        public Blocks() => this.SingletonCheck(ref _instance);
+        public Blocks() : base(ref _instance) {}
 
         protected sealed override void InstantiateObjects()
         {

@@ -1,12 +1,11 @@
 using Microsoft.Xna.Framework;
 using MinicraftGame.Texture;
-using MinicraftGame.Utils;
 
 namespace MinicraftGame.Game.Objects.ItemObject
 {
     public sealed class Items : ObjectManager<Item>
     {
-        private static Items _instance;
+        private static ObjectManager<Item> _instance;
 
         public static Item Nothing { get; private set; }
         public static Item DebugStick { get; private set; }
@@ -17,7 +16,7 @@ namespace MinicraftGame.Game.Objects.ItemObject
             DebugStick, // 1
         };
 
-        public Items() => this.SingletonCheck(ref _instance);
+        public Items() : base(ref _instance) {}
 
         protected sealed override void InstantiateObjects()
         {
