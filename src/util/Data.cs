@@ -23,11 +23,7 @@ namespace MinicraftGame.Utils
                 WriteInventorySlots();
                 WritePlayerData();
 
-                void WriteWorldBlocks()
-                {
-                    foreach (var block in Minicraft.World.RawBlockGrid)
-                        stream.Write(block);
-                }
+                void WriteWorldBlocks() => Minicraft.World.RawBlockGrid.ForEach(stream.Write);
 
                 void WriteInventorySlots()
                 {
