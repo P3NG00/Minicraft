@@ -9,7 +9,7 @@ namespace MinicraftGame.Game.Entities.Living
     public sealed class PlayerEntity : AbstractLivingEntity
     {
         private const float PLAYER_SPEED = 5f;
-        private const float PLAYER_JUMP = 3.5f;
+        private const float PLAYER_JUMP = 3f;
         private const float PLAYER_RUN_MULT = 1.5f;
         private const float PLAYER_LIFE = 10f;
         private static Vector2 PlayerSize => new Vector2(14f / 8f, 21f / 8f);
