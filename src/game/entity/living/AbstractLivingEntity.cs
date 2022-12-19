@@ -118,7 +118,7 @@ namespace MinicraftGame.Game.Entities.Living
             else if (IsMovingRight)
                 testPosition.X = sides.Right - HalfWidth;
             else
-                throw new Exception("Vertical collision handled when entity's horizontal velocity is 0");
+                throw new Exception("Horizontal collision handled when entity's horizontal velocity is 0");
             RawVelocity.X = 0f;
         }
 
