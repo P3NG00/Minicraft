@@ -14,7 +14,9 @@ namespace MinicraftGame.Game.Entities.Living
 
         public TNTEntity(Vector2 position, float fuseTime) : base(position, Minicraft.TICKS_PER_SECOND * fuseTime, TNTSize, TNT_SPEED, 0, 0, Blocks.TNT.DrawData) {}
 
-        public override void Tick()
+        public sealed override void Damage(float amount) {}
+
+        public sealed override void Tick()
         {
             // base call
             base.Tick();

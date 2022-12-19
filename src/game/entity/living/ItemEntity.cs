@@ -16,6 +16,8 @@ namespace MinicraftGame.Game.Entities.Living
 
         public ItemEntity(Vector2 position, Item item) : base(position, ITEM_LIFE, ItemEntityDimensions, ITEM_SPEED, ITEM_RUN_MULTIPLIER, ITEM_JUMP_VELOCITY, item.DrawData) => _item = item;
 
+        public sealed override void Damage(float amount) {}
+
         public sealed override void Tick()
         {
             if (Minicraft.Player.GetSides().Intersects(this.GetSides()))

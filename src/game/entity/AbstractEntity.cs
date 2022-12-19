@@ -57,7 +57,7 @@ namespace MinicraftGame.Game.Entities
                 OnDeath();
         }
 
-        public void Damage(float amount) => SetLife(_life - amount);
+        public virtual void Damage(float amount) => SetLife(_life - amount);
 
         public virtual void Tick() {}
 
