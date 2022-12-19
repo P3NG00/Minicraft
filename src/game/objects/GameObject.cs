@@ -32,7 +32,7 @@ namespace MinicraftGame.Game.Objects
 
         public sealed override bool Equals(object obj) => Equals(obj as GameObject);
 
-        public sealed override int GetHashCode() => Name.GetHashCode() ^ DrawData.GetHashCode();
+        public sealed override int GetHashCode() => Name.GetHashCode() ^ DrawData.GetHashCode() ^ ID.GetHashCode();
 
         public static bool operator ==(GameObject a, GameObject b)
         {
